@@ -11,10 +11,10 @@
                     </span>
                     <input name="name" type="text" value="{{item.name}}" placeholder="{{localize 'DG.ItemWindow.Tome.NamePlaceholder'}}"/>
 
-                    <span class="resource-label">Language:</span>
+                    <span class="resource-label">{{localize 'DG.Tome.Language'}}:</span>
                     <input name="system.language" type="text" value="{{item.system.language}}" placeholder="{{localize 'DG.ItemWindow.Tome.LanguagePlaceholder'}}"/>
 
-                    <span class="resource-label">Study Time:</span>
+                    <span class="resource-label">{{localize 'DG.Tome.StudyTime'}}:</span>
                     <input name="system.studyTime" type="text" value="{{item.system.studyTime}}" placeholder="{{localize 'DG.ItemWindow.Tome.StudyTime'}}"/>
                 {{else}}
                     {{#if (playerHasGamemasterPrivileges)}}
@@ -24,10 +24,10 @@
                         </span>
                         <input name="name" type="text" value="{{item.name}}" placeholder="{{localize 'DG.ItemWindow.Tome.NamePlaceholder'}}"/>
 
-                        <span class="resource-label">Language:</span>
+                        <span class="resource-label">{{localize 'DG.Tome.Language'}}:</span>
                         <input name="system.language" type="text" value="{{item.system.language}}" placeholder="{{localize 'DG.ItemWindow.Tome.LanguagePlaceholder'}}"/>
 
-                        <span class="resource-label">Study Time:</span>
+                        <span class="resource-label">{{localize 'DG.Tome.StudyTime'}}:</span>
                         <input name="system.studyTime" type="text" value="{{item.system.studyTime}}" placeholder="{{localize 'DG.ItemWindow.Tome.StudyTime'}}"/>
                     {{else}}
                         <span class="resource-label">
@@ -36,10 +36,10 @@
                         </span>
                         <span>???</span>
 
-                        <span class="resource-label">Language:</span>
+                        <span class="resource-label">{{localize 'DG.Tome.Language'}}:</span>
                         <span>???</span>
 
-                        <span class="resource-label">Study Time:</span>
+                        <span class="resource-label">{{localize 'DG.Tome.StudyTime'}}:</span>
                         <span>???</span>
                     {{/if}}
                 {{/if}}

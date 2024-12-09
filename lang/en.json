@@ -298,6 +298,8 @@
   "DG.Ritual.Name": "Name",
 
   "DG.Tome.Name": "Name",
+  "DG.Tome.Language": "Language",
+  "DG.Tome.StudyTime": "Study Time",
   "DG.ItemWindow.Tome.Description": "Description",
   "DG.ItemWindow.Tome.LanguagePlaceholder": "Language",
   "DG.ItemWindow.Tome.StudyTime": "Study Time",
