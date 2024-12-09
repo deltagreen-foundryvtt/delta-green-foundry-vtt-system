@@ -11,6 +11,7 @@ packs/operation-code-name-generator-macro
 packs/operation-code-name-generator-macro*
 packs/pregens
 packs/pregens*
+deltagreen.lock
 
 # Ignore npm modules
 node_modules
