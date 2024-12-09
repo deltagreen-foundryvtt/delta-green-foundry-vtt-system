@@ -71,6 +71,12 @@
       "name": "Svenska",
       "path": "lang/sv.json",
       "flags": {}
+    },
+    {
+      "lang": "cn",
+      "name": "中文",
+      "path": "lang/cn.json",
+      "flags": {}
     }
   ],
   "packs": [
