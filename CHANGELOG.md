@@ -1,5 +1,10 @@
 ## Release/Patch Notes
 
+### Version 1.4.9 - 2024-12-08 (FOUNDRY V12+ COMPATIBLE ONLY)
+
+- Fix/Enhancement [GitHub #161] - Hrunh has updated/fixed some of the French (FR) localization.
+- Enhancement [GitHub #160] - Baixian-main has added a Chinese (CN) localization.
+
 ### Version 1.4.8 - 2024-10-05 (FOUNDRY V12+ COMPATIBLE ONLY)
 
 - Fix [GitHub #147] - Vehicle Actor sheet broken from last set of changes, should open again.
