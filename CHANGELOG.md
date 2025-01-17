@@ -1,5 +1,10 @@
 ## Release/Patch Notes
 
+### Version 1.4.10 - 2025-01-16 (FOUNDRY V12+ COMPATIBLE ONLY)
+
+- Further French Language Fixes/Improvements by Hrunh, and updated contributor list.
+- Thanks to ryotai-rpg for fixing up the Japanese localization.
+
 ### Version 1.4.9 - 2024-12-08 (FOUNDRY V12+ COMPATIBLE ONLY)
 
 - Fix/Enhancement [GitHub #161] - Hrunh has updated/fixed some of the French (FR) localization.
