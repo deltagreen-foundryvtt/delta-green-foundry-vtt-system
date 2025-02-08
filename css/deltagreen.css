@@ -121,7 +121,7 @@ form.program-style {
 .rollable:hover,
 .rollable:focus {
   color: #000;
-  text-shadow: 0 0 10px red;
+  text-shadow: 0 0 5px #374e13;
   cursor: pointer;
 }
 
@@ -1179,4 +1179,34 @@ input.item-sheet-short-input {
   width: 20px !important;
   margin: 0px;
   vertical-align: text-bottom;
+}
+
+/*
+:root {
+  --color-shadow-primary: #374e13;
+  --color-shadow-highlight: #406539;
+  --color-border-highlight: #406539;
+  --color-border-highlight-alt: #374e13;
+  --color-underline-header: #406539;
+  --color-text-dark-header: #406539;
+  scrollbar-color: var(--color-text-dark-header) #111;
+}
+*/
+
+#interface * {
+  --color-shadow-primary: #374e13 !important;
+  --color-shadow-highlight: #406539 !important;
+  --color-border-highlight: #406539 !important;
+  --color-border-highlight-alt: #374e13 !important;
+  --color-underline-header: #406539 !important;
+  --color-text-dark-header: #406539 !important;
+  scrollbar-color: var(--color-text-dark-header) #111 !important;
+}
+
+#logo {
+  content: url("../assets/img/Delta_Green_Logo.webp");
+  width: 90px;
+  height: auto;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
