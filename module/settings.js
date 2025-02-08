@@ -24,7 +24,7 @@ export default function registerSystemSettings() {
     hint: "Checked sorts by column. Unchecked sorts by row.",
     scope: "client",
     config: true,
-    requiresReload: false,
+    requiresReload: true,
     type: Boolean,
     default: false,
   });
@@ -70,7 +70,7 @@ export default function registerSystemSettings() {
       requiresReload: true,
       type: Boolean,
       default: false,
-    },
+    }
   );
 
   game.settings.register("deltagreen", "showImpossibleLandscapesContent", {
