@@ -97,37 +97,37 @@
           </div>
           
           <div class="grid grid-3col {{#if sortSkillsSetting}}grid-13row{{/if}}">
-            {{#each actor.system.skills as |skill key|}}
+            {{#each actor.system.sortedSkills as |skill key|}}
               <div class="flexrow flex-group-center flex-thin-border">
-                <label class="{{if_gt skill.proficiency 0 'rollable' 'not-rollable'}} skill-label" data-key="{{key}}" data-rolltype="skill" for="system.skills.{{key}}.value" 
+                <label class="{{if_gt skill.proficiency 0 'rollable' 'not-rollable'}} skill-label" data-key="{{skill.key}}" data-rolltype="skill" for="system.skills.{{skill.key}}.value" 
                     {{#if skill.proficiency}}title="{{localize 'DG.Tooltip.SkillLabel'}}"{{/if}}
                     {{#unless skill.proficiency}}title="{{localize 'DG.Tooltip.CannotRollSkillLabel'}}"{{/unless}}
                   >
-                  {{localizeWithFallback (concat "DG.Skills." key) skill.label }}
+                  {{localizeWithFallback (concat "DG.Skills." skill.key) skill.label }}
                   <i class="fas fa-dice"></i>
                 </label>
                 
-                {{#if_eq key 'ritual' }}
+                {{#if_eq skill.key 'ritual' }}
 
                   {{#if (keepSanityPrivate)}}
-                    <input class="percentile-skill-input" type="text" name="system.skills.{{key}}.proficiency" value="??" data-dtype="Number" {{#if skill.isCalculatedValue}} disabled {{/if}}/>
-                    <input class="checkbox-skill-input" type="checkbox" name="system.skills.{{key}}.failure" {{checked skill.failure}} data-dtype="Boolean" {{#if skill.cannotBeImprovedByFailure}} disabled {{/if}} 
+                    <input class="percentile-skill-input" type="text" name="system.skills.{{skill.key}}.proficiency" value="??" data-dtype="Number" {{#if skill.isCalculatedValue}} disabled {{/if}}/>
+                    <input class="checkbox-skill-input" type="checkbox" name="system.skills.{{skill.key}}.failure" {{checked skill.failure}} data-dtype="Boolean" {{#if skill.cannotBeImprovedByFailure}} disabled {{/if}} 
                       title="{{localize 'DG.Tooltip.SkillFailCheckbox'}}"
                       />
                   {{/if}}
 
                   {{#unless (keepSanityPrivate)}}
-                    <input class="percentile-skill-input" type="text" name="system.skills.{{key}}.proficiency" value="{{skill.proficiency}}" data-dtype="Number" {{#if skill.isCalculatedValue}} disabled {{/if}}/>
-                    <input class="checkbox-skill-input" type="checkbox" name="system.skills.{{key}}.failure" {{checked skill.failure}} data-dtype="Boolean" {{#if skill.cannotBeImprovedByFailure}} disabled {{/if}} 
+                    <input class="percentile-skill-input" type="text" name="system.skills.{{skill.key}}.proficiency" value="{{skill.proficiency}}" data-dtype="Number" {{#if skill.isCalculatedValue}} disabled {{/if}}/>
+                    <input class="checkbox-skill-input" type="checkbox" name="system.skills.{{skill.key}}.failure" {{checked skill.failure}} data-dtype="Boolean" {{#if skill.cannotBeImprovedByFailure}} disabled {{/if}} 
                       title="{{localize 'DG.Tooltip.SkillFailCheckbox'}}"
                       />
                   {{/unless}}
                   
                 {{/if_eq}}
 
-                {{#if_not_eq key 'ritual' }}
-                  <input class="percentile-skill-input" type="text" name="system.skills.{{key}}.proficiency" value="{{skill.proficiency}}" data-dtype="Number" {{#if skill.isCalculatedValue}} disabled {{/if}}/>
-                  <input class="checkbox-skill-input" type="checkbox" name="system.skills.{{key}}.failure" {{checked skill.failure}} data-dtype="Boolean" {{#if skill.cannotBeImprovedByFailure}} disabled {{/if}} 
+                {{#if_not_eq skill.key 'ritual' }}
+                  <input class="percentile-skill-input" type="text" name="system.skills.{{skill.key}}.proficiency" value="{{skill.proficiency}}" data-dtype="Number" {{#if skill.isCalculatedValue}} disabled {{/if}}/>
+                  <input class="checkbox-skill-input" type="checkbox" name="system.skills.{{skill.key}}.failure" {{checked skill.failure}} data-dtype="Boolean" {{#if skill.cannotBeImprovedByFailure}} disabled {{/if}} 
                     title="{{localize 'DG.Tooltip.SkillFailCheckbox'}}"
                     />
                 {{/if_not_eq}}

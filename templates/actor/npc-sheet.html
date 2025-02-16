@@ -98,18 +98,18 @@
         </a>
       </div>
       <div class="grid grid-3col {{#if sortSkillsSetting}}grid-13row{{/if}}">
-        {{#each actor.system.skills as |skill key|}}
+        {{#each actor.system.sortedSkills as |skill key|}}
           
           {{#if (hideSkillBasedOnProficiencyAndUserChoice ../actor.system.showUntrainedSkills skill.proficiency)}}
           <div class="flexrow flex-group-center flex-thin-border">
-            <label class="{{if_gt skill.proficiency 0 'rollable' 'not-rollable'}} skill-label" data-rolltype="skill" data-key="{{key}}" for="system.skills.{{key}}.value" 
+            <label class="{{if_gt skill.proficiency 0 'rollable' 'not-rollable'}} skill-label" data-rolltype="skill" data-key="{{skill.key}}" for="system.skills.{{skill.key}}.value" 
                 {{#if skill.proficiency}}title="{{localize 'DG.Tooltip.SkillLabel'}}"{{/if}}
                 {{#unless skill.proficiency}}title="{{localize 'DG.Tooltip.CannotRollSkillLabel'}}"{{/unless}}
               >
-              {{localizeWithFallback (concat "DG.Skills." key) skill.label }}
+              {{localizeWithFallback (concat "DG.Skills." skill.key) skill.label }}
               <i class="fas fa-dice"></i>
             </label>
-            <input class="percentile-skill-input" type="text" name="system.skills.{{key}}.proficiency" value="{{skill.proficiency}}" data-dtype="Number" {{#if skill.isCalculatedValue}} disabled {{/if}}/>
+            <input class="percentile-skill-input" type="text" name="system.skills.{{skill.key}}.proficiency" value="{{skill.proficiency}}" data-dtype="Number" {{#if skill.isCalculatedValue}} disabled {{/if}}/>
             
           </div>
           {{/if}}

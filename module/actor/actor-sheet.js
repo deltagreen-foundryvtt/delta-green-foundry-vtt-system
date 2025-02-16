@@ -64,11 +64,31 @@ export default class DeltaGreenActorSheet extends ActorSheet {
     this._prepareCharacterItems(data);
 
     data.showHyperGeometrySection = this.shouldShowHyperGeometrySection(
-      this.actor,
+      this.actor
     );
 
     // Make it easy for the sheet handlebars to understand how to sort the skills.
     data.sortSkillsSetting = game.settings.get("deltagreen", "sortSkills");
+
+    let sortedSkills = [];
+    for (const [key, skill] of Object.entries(this.actor.system.skills)) {
+      skill.key = key;
+      skill.sortLabel = game.i18n.localize(`DG.Skills.${key}`);
+
+      if (skill.sortLabel === "" || skill.sortLabel === `DG.Skills.${key}`) {
+        skill.sortLabel = skill.label;
+      }
+
+      sortedSkills.push(skill);
+    }
+
+    //console.log(sortedSkills);
+
+    sortedSkills.sort(function (a, b) {
+      return a.sortLabel.localeCompare(b.sortLabel, game.i18n.lang);
+    });
+
+    this.actor.system.sortedSkills = sortedSkills;
 
     // Prepare a simplified version of the special training for display on sheet.
     if (this.actor.type !== "vehicle") {
@@ -104,7 +124,7 @@ export default class DeltaGreenActorSheet extends ActorSheet {
               break;
           }
           return simplifiedTraining;
-        },
+        }
       );
       data.specialTraining = specialTraining;
     }
@@ -113,20 +133,20 @@ export default class DeltaGreenActorSheet extends ActorSheet {
       case "agent":
         data.enrichedDescription = await TextEditor.enrichHTML(
           this.object.system.physicalDescription,
-          { async: true },
+          { async: true }
         );
         break;
       case "vehicle":
         data.enrichedDescription = await TextEditor.enrichHTML(
           this.object.system.description,
-          { async: true },
+          { async: true }
         );
         break;
       case "npc":
       case "unnatural":
         data.enrichedDescription = await TextEditor.enrichHTML(
           this.object.system.notes,
-          { async: true },
+          { async: true }
         );
         break;
       default:
@@ -147,7 +167,7 @@ export default class DeltaGreenActorSheet extends ActorSheet {
     if (
       game.settings.get(
         "deltagreen",
-        "alwaysShowHypergeometrySectionForPlayers",
+        "alwaysShowHypergeometrySectionForPlayers"
       )
     ) {
       return true;
@@ -307,7 +327,7 @@ export default class DeltaGreenActorSheet extends ActorSheet {
       label2 = game.i18n.translations.DG.Luck;
     } catch {
       console.error(
-        "Missing translation key for either DG.RollLuck or DG.Luck key.",
+        "Missing translation key for either DG.RollLuck or DG.Luck key."
       );
     }
 
@@ -372,7 +392,7 @@ export default class DeltaGreenActorSheet extends ActorSheet {
           },
         ],
       },
-      owner,
+      owner
     ).create();
   }
 
@@ -414,7 +434,7 @@ export default class DeltaGreenActorSheet extends ActorSheet {
     html.find(".toggle-untrained").click(() =>
       this.actor.update({
         "system.showUntrainedSkills": !this.actor.system.showUntrainedSkills,
-      }),
+      })
     );
 
     // Macro for toggling an item's equipped state
@@ -464,7 +484,7 @@ export default class DeltaGreenActorSheet extends ActorSheet {
       this._showNewEditTypeSkillDialog(
         targetskill,
         existingLabel,
-        existingGroup,
+        existingGroup
       );
     });
 
@@ -488,11 +508,11 @@ export default class DeltaGreenActorSheet extends ActorSheet {
       event.preventDefault();
       const targetID = event.currentTarget.getAttribute("data-id");
       const specialTrainingArray = foundry.utils.duplicate(
-        this.actor.system.specialTraining,
+        this.actor.system.specialTraining
       );
       // Get the index of the training to be deleted
       const index = specialTrainingArray.findIndex(
-        (training) => training.id === targetID,
+        (training) => training.id === targetID
       );
 
       specialTrainingArray.splice(index, 1);
@@ -503,10 +523,10 @@ export default class DeltaGreenActorSheet extends ActorSheet {
       event.preventDefault();
 
       const failedSkills = Object.entries(this.actor.system.skills).filter(
-        (skill) => skill[1].failure,
+        (skill) => skill[1].failure
       );
       const failedTypedSkills = Object.entries(
-        this.actor.system.typedSkills,
+        this.actor.system.typedSkills
       ).filter((skill) => skill[1].failure);
       if (failedSkills.length === 0 && failedTypedSkills.length === 0) {
         ui.notifications.warn("No Skills to Increase");
@@ -525,27 +545,27 @@ export default class DeltaGreenActorSheet extends ActorSheet {
       failedTypedSkills.forEach(([skillName, skillData], value) => {
         if (value === 0 && failedSkillNames === "") {
           failedSkillNames += `${game.i18n.localize(
-            `DG.TypeSkills.${skillData.group.split(" ").join("")}`,
+            `DG.TypeSkills.${skillData.group.split(" ").join("")}`
           )} (${skillData.label})`;
         } else {
           failedSkillNames += `, ${game.i18n.localize(
-            `DG.TypeSkills.${skillData.group.split(" ").join("")}`,
+            `DG.TypeSkills.${skillData.group.split(" ").join("")}`
           )} (${skillData.label})`;
         }
       });
 
       const baseRollFormula = game.settings.get(
         "deltagreen",
-        "skillImprovementFormula",
+        "skillImprovementFormula"
       );
 
       htmlContent += `<div>`;
       htmlContent += `     <label>${game.i18n.localize(
-        "DG.Skills.ApplySkillImprovementsDialogLabel",
+        "DG.Skills.ApplySkillImprovementsDialogLabel"
       )} <b>+${baseRollFormula}%</b></label>`;
       htmlContent += `     <hr>`;
       htmlContent += `     <span> ${game.i18n.localize(
-        "DG.Skills.ApplySkillImprovementsDialogEffectsFollowing",
+        "DG.Skills.ApplySkillImprovementsDialogEffectsFollowing"
       )} <b>${failedSkillNames}</b> </span>`;
       htmlContent += `</div>`;
 
@@ -562,7 +582,7 @@ export default class DeltaGreenActorSheet extends ActorSheet {
               this._applySkillImprovements(
                 baseRollFormula,
                 failedSkills,
-                failedTypedSkills,
+                failedTypedSkills
               );
             },
           },
@@ -801,7 +821,7 @@ export default class DeltaGreenActorSheet extends ActorSheet {
             this._updateTypedSkill(
               targetSkill,
               newTypeSkillLabel,
-              newTypeSkillGroup,
+              newTypeSkillGroup
             );
           },
         },
@@ -917,17 +937,17 @@ export default class DeltaGreenActorSheet extends ActorSheet {
 
   async _showSpecialTrainingDialog(action, targetID) {
     const specialTraining = this.actor.system.specialTraining.find(
-      (training) => training.id === targetID,
+      (training) => training.id === targetID
     );
 
     // Define the option groups for our drop-down menu.
     const optionGroups = {
       stats: game.i18n.localize(
-        "DG.SpecialTraining.Dialog.DropDown.Statistics",
+        "DG.SpecialTraining.Dialog.DropDown.Statistics"
       ),
       skills: game.i18n.localize("DG.SpecialTraining.Dialog.DropDown.Skills"),
       typedSkills: game.i18n.localize(
-        "DG.SpecialTraining.Dialog.DropDown.CustomSkills",
+        "DG.SpecialTraining.Dialog.DropDown.CustomSkills"
       ),
     };
 
@@ -938,7 +958,7 @@ export default class DeltaGreenActorSheet extends ActorSheet {
         group: optionGroups.stats,
         label: game.i18n.localize(`DG.Attributes.${key}`),
         targetNumber: stat.value * 5,
-      }),
+      })
     );
 
     // Prepare simplified skill list
@@ -948,7 +968,7 @@ export default class DeltaGreenActorSheet extends ActorSheet {
         group: optionGroups.skills,
         label: skill.label,
         targetNumber: skill.proficiency,
-      }),
+      })
     );
 
     // Prepare simplified typed/custom skill list
@@ -958,7 +978,7 @@ export default class DeltaGreenActorSheet extends ActorSheet {
         group: optionGroups.typedSkills,
         label: `${skill.group} (${skill.label})`,
         targetNumber: skill.proficiency,
-      }),
+      })
     );
 
     // Prepare the Select element
@@ -978,11 +998,11 @@ export default class DeltaGreenActorSheet extends ActorSheet {
         statList,
         skillList,
         typedSkillList,
-      },
+      }
     );
 
     const buttonLabel = game.i18n.localize(
-      `DG.SpecialTraining.Dialog.${action}SpecialTraining`,
+      `DG.SpecialTraining.Dialog.${action}SpecialTraining`
     );
 
     // Prepare and render dialog with above template.
@@ -1003,13 +1023,13 @@ export default class DeltaGreenActorSheet extends ActorSheet {
             if (action === "Create")
               this._createSpecialTraining(
                 specialTrainingLabel,
-                specialTrainingAttribute,
+                specialTrainingAttribute
               );
             if (action === "Edit")
               this._editSpecialTraining(
                 specialTrainingLabel,
                 specialTrainingAttribute,
-                targetID,
+                targetID
               );
           },
         },
@@ -1019,7 +1039,7 @@ export default class DeltaGreenActorSheet extends ActorSheet {
 
   _createSpecialTraining(label, attribute) {
     const specialTrainingArray = foundry.utils.duplicate(
-      this.actor.system.specialTraining,
+      this.actor.system.specialTraining
     );
     specialTrainingArray.push({
       name: label,
@@ -1031,10 +1051,10 @@ export default class DeltaGreenActorSheet extends ActorSheet {
 
   _editSpecialTraining(label, attribute, id) {
     const specialTrainingArray = foundry.utils.duplicate(
-      this.actor.system.specialTraining,
+      this.actor.system.specialTraining
     );
     const specialTraining = specialTrainingArray.find(
-      (training) => training.id === id,
+      (training) => training.id === id
     );
     specialTraining.name = label;
     specialTraining.attribute = attribute;
@@ -1060,7 +1080,7 @@ export default class DeltaGreenActorSheet extends ActorSheet {
       game.i18n.translations.DOCUMENT?.New || "DG.FallbackText.newItem",
       {
         type: game.i18n.localize(`TYPES.Item.${type}`),
-      },
+      }
     );
 
     // Prepare the item object.
@@ -1220,7 +1240,7 @@ export default class DeltaGreenActorSheet extends ActorSheet {
   async _applySkillImprovements(
     baseRollFormula,
     failedSkills,
-    failedTypedSkills,
+    failedTypedSkills
   ) {
     const actorData = this.actor.system;
     const resultList = [];
@@ -1248,8 +1268,8 @@ export default class DeltaGreenActorSheet extends ActorSheet {
       // Put the results into a list.
       roll.terms[0].results.forEach((result) =>
         resultList.push(
-          baseRollFormula === "1d4-1" ? result.result - 1 : result.result,
-        ),
+          baseRollFormula === "1d4-1" ? result.result - 1 : result.result
+        )
       );
     }
 
@@ -1267,11 +1287,11 @@ export default class DeltaGreenActorSheet extends ActorSheet {
       // The if statement tells us whether to add a comma before the term or not.
       if (value === 0) {
         improvedSkillList += `${game.i18n.localize(
-          `DG.Skills.${skill}`,
+          `DG.Skills.${skill}`
         )}: <b>+${resultList[value] ?? 1}%</b>`;
       } else {
         improvedSkillList += `, ${game.i18n.localize(
-          `DG.Skills.${skill}`,
+          `DG.Skills.${skill}`
         )}: <b>+${resultList[value] ?? 1}%</b>`;
       }
     });
@@ -1287,13 +1307,13 @@ export default class DeltaGreenActorSheet extends ActorSheet {
       // The if statement tells us whether to add a comma before the term or not.
       if (value === 0 && improvedSkillList === "") {
         improvedSkillList += `${game.i18n.localize(
-          `DG.TypeSkills.${skillData.group.split(" ").join("")}`,
+          `DG.TypeSkills.${skillData.group.split(" ").join("")}`
         )} (${skillData.label}): <b>+${
           resultList[value + failedSkills.length] ?? 1
         }%</b>`;
       } else {
         improvedSkillList += `, ${game.i18n.localize(
-          `DG.TypeSkills.${skillData.group.split(" ").join("")}`,
+          `DG.TypeSkills.${skillData.group.split(" ").join("")}`
         )} (${skillData.label}): <b>+${
           resultList[value + failedSkills.length] ?? 1
         }%</b>`;
@@ -1318,7 +1338,7 @@ export default class DeltaGreenActorSheet extends ActorSheet {
       }),
       content: html,
       flavor: `${game.i18n.localize(
-        "DG.Skills.ApplySkillImprovementsChatFlavor",
+        "DG.Skills.ApplySkillImprovementsChatFlavor"
       )} <b>+${baseRollFormula}%</b>:`,
       type: baseRollFormula === "1" ? 0 : 5, // 0 = CHAT_MESSAGE_TYPES.OTHER, 5 = CHAT_MESSAGE_TYPES.ROLL
       rolls: baseRollFormula === "1" ? [] : [roll], // If adding flat +1, there is no roll.
