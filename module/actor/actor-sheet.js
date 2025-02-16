@@ -79,16 +79,28 @@ export default class DeltaGreenActorSheet extends ActorSheet {
         skill.sortLabel = skill.label;
       }
 
-      sortedSkills.push(skill);
+      if (
+        !(
+          (this.actor.type == "npc" || this.actor.type == "unnatural") &&
+          this.actor.system.showUntrainedSkills == true &&
+          skill.proficiency < 1
+        )
+      ) {
+        sortedSkills.push(skill);
+      }
     }
-
-    //console.log(sortedSkills);
 
     sortedSkills.sort(function (a, b) {
       return a.sortLabel.localeCompare(b.sortLabel, game.i18n.lang);
     });
 
-    this.actor.system.sortedSkills = sortedSkills;
+    if (game.settings.get("deltagreen", "sortSkills")) {
+      let columnSortedSkills = this.reorderForColumnSorting(sortedSkills, 3);
+
+      this.actor.system.sortedSkills = columnSortedSkills;
+    } else {
+      this.actor.system.sortedSkills = sortedSkills;
+    }
 
     // Prepare a simplified version of the special training for display on sheet.
     if (this.actor.type !== "vehicle") {

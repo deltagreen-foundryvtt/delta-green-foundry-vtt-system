@@ -8,9 +8,10 @@
 <div class="grid-2col">
 
   {{#each actor.system.sortedCustomSkills as |skill|}}
+  
     {{#if_eq type "typeSkill"}}
-      {{log skill}}
-      <div class="item flexrow flex-group-center flex-thin-border">
+
+      <div class="item flexrow flex-group-left flex-thin-border">
         <div class="flexrow">
           <label class="{{if_gt skill.proficiency 0 'rollable' 'not-rollable'}} skill-label" data-key="{{skill.key}}" data-rolltype="skill" data-roll="d100" data-target="{{skill.proficiency}}" data-label="{{skill.label}}" 
               {{#if skill.proficiency}}title="{{localize 'DG.Tooltip.SkillLabel'}}"{{/if}}
@@ -29,19 +30,24 @@
           <a class="item-control typed-skill-delete" title="Delete Skill"><i class="fas fa-trash" data-typedskill="{{skill.key}}" ></i></a>
         </div>
       </div>
+
     {{/if_eq}}
 
     {{#if_eq type "training"}}
-    <div class="item flexrow flex-group-center flex-thin-border special-training-box">
-      <label class="{{if_gt skill.targetNumber 0 'rollable' 'not-rollable'}}" data-key="{{skill.key}}" data-name="{{skill.name}}" data-rolltype="special-training">
-        {{skill.name}} ({{skill.attribute}}, {{skill.targetNumber}}%)
-        <i class="fas fa-dice"></i>
-      </label>
-      <div class="item-controls skill-and-training-controls">
-          <a class="item-control special-training-action" data-action="Edit" data-id="{{skill.id}}" title="Edit Training"><i class="fas fa-edit"></i></a>
-          <a class="item-control special-training-delete" title="Delete Training" data-id="{{skill.id}}" ><i class="fas fa-trash"></i></a>
+
+    <div class="item flexrow flex-group-left flex-thin-border special-training-box">
+      <div class="flexrow">
+        <label class="{{if_gt skill.targetNumber 0 'rollable' 'not-rollable'}}" data-key="{{skill.key}}" data-name="{{skill.name}}" data-rolltype="special-training">
+          {{skill.name}} ({{skill.attribute}}, {{skill.targetNumber}}%)
+          <i class="fas fa-dice"></i>
+        </label>
+        <div class="item-controls skill-and-training-controls">
+            <a class="item-control special-training-action" data-action="Edit" data-id="{{skill.id}}" title="Edit Training"><i class="fas fa-edit"></i></a>
+            <a class="item-control special-training-delete" title="Delete Training" data-id="{{skill.id}}" ><i class="fas fa-trash"></i></a>
+        </div>
       </div>
     </div>
+
     {{/if_eq}}
 
   {{/each}}

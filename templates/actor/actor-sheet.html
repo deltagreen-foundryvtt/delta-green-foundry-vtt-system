@@ -96,9 +96,9 @@
             <span>{{localize "DG.Sheet.BlockHeaders.SkillsAndTraining"}}</span>                                                    
           </div>
           
-          <div class="grid grid-3col {{#if sortSkillsSetting}}grid-13row{{/if}}">
+          <div class="grid grid-3col">
             {{#each actor.system.sortedSkills as |skill key|}}
-              <div class="flexrow flex-group-center flex-thin-border">
+              <div class="flexrow flex-group-left flex-thin-border">
                 <label class="{{if_gt skill.proficiency 0 'rollable' 'not-rollable'}} skill-label" data-key="{{skill.key}}" data-rolltype="skill" for="system.skills.{{skill.key}}.value" 
                     {{#if skill.proficiency}}title="{{localize 'DG.Tooltip.SkillLabel'}}"{{/if}}
                     {{#unless skill.proficiency}}title="{{localize 'DG.Tooltip.CannotRollSkillLabel'}}"{{/unless}}
