@@ -7,39 +7,42 @@
 </div>
 <div class="grid-2col">
 
-  {{#each actor.system.typedSkills as |skill key|}}
-    <div class="item flexrow flex-group-center flex-thin-border">
-      <div class="flexrow">
-        <label class="{{if_gt skill.proficiency 0 'rollable' 'not-rollable'}} skill-label" data-key="{{key}}" data-rolltype="skill" data-roll="d100" data-target="{{skill.proficiency}}" data-label="{{skill.label}}" 
-            {{#if skill.proficiency}}title="{{localize 'DG.Tooltip.SkillLabel'}}"{{/if}}
-            {{#unless skill.proficiency}}title="{{localize 'DG.Tooltip.CannotRollSkillLabel'}}"{{/unless}} 
-          >
-          {{skill.group}} ({{skill.label}})
-          <i class="fas fa-dice"></i>
-        </label>
-        <input class="percentile-skill-input" type="text" name="system.typedSkills.{{key}}.proficiency" value="{{skill.proficiency}}" data-dtype="Number"/>
-        {{#if_eq ../actorType "agent"}}
-          <input class="checkbox-skill-input" type="checkbox" name="system.typedSkills.{{key}}.failure" {{checked skill.failure}} data-dtype="Boolean" {{#if skill.cannotBeImprovedByFailure}} disabled {{/if}} />
-        {{/if_eq}}
+  {{#each actor.system.sortedCustomSkills as |skill|}}
+    {{#if_eq type "typeSkill"}}
+      {{log skill}}
+      <div class="item flexrow flex-group-center flex-thin-border">
+        <div class="flexrow">
+          <label class="{{if_gt skill.proficiency 0 'rollable' 'not-rollable'}} skill-label" data-key="{{skill.key}}" data-rolltype="skill" data-roll="d100" data-target="{{skill.proficiency}}" data-label="{{skill.label}}" 
+              {{#if skill.proficiency}}title="{{localize 'DG.Tooltip.SkillLabel'}}"{{/if}}
+              {{#unless skill.proficiency}}title="{{localize 'DG.Tooltip.CannotRollSkillLabel'}}"{{/unless}} 
+            >
+            {{skill.group}} ({{skill.label}})
+            <i class="fas fa-dice"></i>
+          </label>
+          <input class="percentile-skill-input" type="text" name="system.typedSkills.{{skill.key}}.proficiency" value="{{skill.proficiency}}" data-dtype="Number"/>
+          {{#if_eq ../actorType "agent"}}
+            <input class="checkbox-skill-input" type="checkbox" name="system.typedSkills.{{skill.key}}.failure" {{checked skill.failure}} data-dtype="Boolean" {{#if skill.cannotBeImprovedByFailure}} disabled {{/if}} />
+          {{/if_eq}}
+        </div>
+        <div class="item-controls skill-and-training-controls">
+          <a class="item-control typed-skill-edit" title="Edit Skill"><i class="fas fa-edit" data-typedskill="{{skill.key}}" ></i></a>
+          <a class="item-control typed-skill-delete" title="Delete Skill"><i class="fas fa-trash" data-typedskill="{{skill.key}}" ></i></a>
+        </div>
       </div>
-      <div class="item-controls skill-and-training-controls">
-        <a class="item-control typed-skill-edit" title="Edit Skill"><i class="fas fa-edit" data-typedskill="{{key}}" ></i></a>
-        <a class="item-control typed-skill-delete" title="Delete Skill"><i class="fas fa-trash" data-typedskill="{{key}}" ></i></a>
-      </div>
-    </div>
-  {{/each}}
+    {{/if_eq}}
 
-  {{#each specialTraining as |training|}}
+    {{#if_eq type "training"}}
     <div class="item flexrow flex-group-center flex-thin-border special-training-box">
-      <label class="{{if_gt training.targetNumber 0 'rollable' 'not-rollable'}}" data-key="{{training.key}}" data-name="{{training.name}}" data-rolltype="special-training">
-        {{training.name}} ({{training.attribute}}, {{training.targetNumber}}%)
+      <label class="{{if_gt skill.targetNumber 0 'rollable' 'not-rollable'}}" data-key="{{skill.key}}" data-name="{{skill.name}}" data-rolltype="special-training">
+        {{skill.name}} ({{skill.attribute}}, {{skill.targetNumber}}%)
         <i class="fas fa-dice"></i>
       </label>
       <div class="item-controls skill-and-training-controls">
-          <a class="item-control special-training-action" data-action="Edit" data-id="{{training.id}}" title="Edit Training"><i class="fas fa-edit"></i></a>
-          <a class="item-control special-training-delete" title="Delete Training" data-id="{{training.id}}" ><i class="fas fa-trash"></i></a>
+          <a class="item-control special-training-action" data-action="Edit" data-id="{{skill.id}}" title="Edit Training"><i class="fas fa-edit"></i></a>
+          <a class="item-control special-training-delete" title="Delete Training" data-id="{{skill.id}}" ><i class="fas fa-trash"></i></a>
       </div>
     </div>
-  {{/each}}
+    {{/if_eq}}
 
+  {{/each}}
 </div>

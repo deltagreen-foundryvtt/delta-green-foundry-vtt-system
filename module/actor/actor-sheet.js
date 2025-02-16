@@ -129,6 +129,47 @@ export default class DeltaGreenActorSheet extends ActorSheet {
       data.specialTraining = specialTraining;
     }
 
+    // try to make a combined array of both typed skills and special trainings, so that it can be sorted neatly on the sheet
+    let sortedCustomSkills = [];
+
+    for (const [key, skill] of Object.entries(this.actor.system.typedSkills)) {
+      skill.type = "typeSkill";
+      skill.key = key;
+      skill.sortLabel = skill.group + "." + skill.label;
+
+      skill.sortLabel = skill.sortLabel.toUpperCase();
+
+      if (skill.sortLabel === "" || skill.sortLabel === `DG.Skills.${key}`) {
+        skill.sortLabel = skill.label;
+      }
+
+      sortedCustomSkills.push(skill);
+    }
+
+    for (var i = 0; i < data.specialTraining.length; i++) {
+      let training = data.specialTraining[i];
+
+      training.type = "training";
+      training.sortLabel = training.name.toUpperCase();
+
+      sortedCustomSkills.push(training);
+    }
+
+    sortedCustomSkills.sort(function (a, b) {
+      return a.sortLabel.localeCompare(b.sortLabel, game.i18n.lang);
+    });
+
+    if (game.settings.get("deltagreen", "sortSkills")) {
+      let columnSortedSkills = this.reorderForColumnSorting(
+        sortedCustomSkills,
+        2
+      );
+
+      this.actor.system.sortedCustomSkills = columnSortedSkills;
+    } else {
+      this.actor.system.sortedCustomSkills = sortedCustomSkills;
+    }
+
     switch (this.actor.type) {
       case "agent":
         data.enrichedDescription = await TextEditor.enrichHTML(
@@ -153,6 +194,21 @@ export default class DeltaGreenActorSheet extends ActorSheet {
     }
 
     return data;
+  }
+
+  reorderForColumnSorting(arr, numCols) {
+    let numRows = Math.ceil(arr.length / numCols);
+    let reordered = new Array(arr.length);
+
+    for (let i = 0; i < arr.length; i++) {
+      let row = i % numRows;
+      let col = Math.floor(i / numRows);
+      let newIndex = row * numCols + col;
+
+      reordered[newIndex] = arr[i];
+    }
+
+    return reordered;
   }
 
   // some handlers may wish to avoid leading players to think they should be seeking out magic
