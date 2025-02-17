@@ -78,7 +78,7 @@ export default class DeltaGreenActorSheet extends ActorSheet {
         skill.sortLabel = game.i18n.localize(`DG.Skills.${key}`);
 
         if (skill.sortLabel === "" || skill.sortLabel === `DG.Skills.${key}`) {
-          skill.sortLabel = skill.label;
+          skill.sortLabel = skill.key;
         }
 
         // if the actor is an NPC or Unnatural, and they have 'hide untrained skills' active,
@@ -161,7 +161,7 @@ export default class DeltaGreenActorSheet extends ActorSheet {
         skill.actorType = this.actor.type;
 
         if (skill.sortLabel === "" || skill.sortLabel === `DG.Skills.${key}`) {
-          skill.sortLabel = skill.label;
+          skill.sortLabel = skill.key;
         }
 
         sortedCustomSkills.push(skill);
