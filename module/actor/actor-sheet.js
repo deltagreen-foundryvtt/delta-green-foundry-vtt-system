@@ -157,8 +157,8 @@ export default class DeltaGreenActorSheet extends ActorSheet {
         skill.type = "typeSkill";
         skill.key = key;
         skill.sortLabel = skill.group + "." + skill.label;
-
         skill.sortLabel = skill.sortLabel.toUpperCase();
+        skill.actorType = this.actor.type;
 
         if (skill.sortLabel === "" || skill.sortLabel === `DG.Skills.${key}`) {
           skill.sortLabel = skill.label;
@@ -172,6 +172,7 @@ export default class DeltaGreenActorSheet extends ActorSheet {
 
         training.type = "training";
         training.sortLabel = training.name.toUpperCase();
+        training.actorType = this.actor.type;
 
         sortedCustomSkills.push(training);
       }
