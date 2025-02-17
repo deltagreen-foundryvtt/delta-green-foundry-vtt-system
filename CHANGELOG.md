@@ -1,16 +1,24 @@
 ## Release/Patch Notes
 
-### Version 1.4.10 - 2025-01-16 (FOUNDRY V12+ COMPATIBLE ONLY)
+### Version 1.4.11 - 2025-02-16 (FOUNDRY V12 COMPATIBLE ONLY)
+
+- Enhancement [GitHub #153] - Have added some enhancements to the default Foundry UI to make it feel more Delta Green themed. Have left journal entries alone for now.
+- Fix [GitHub #172] - Skills are now sorted according the locale/language selected by the GM for the world.
+- Fix [GitHub #129] - Type/Custom Skills and Special Trainings are now sorted rather than being laid out as they are added.
+- Fix [GitHub #118] - The Unnatural sheet's skills and training section should sort better now in column sort mode.
+- Enhancement - Some layout improvements to the Agent and NPC sheets. Particularly related to column sorting of skills.
+
+### Version 1.4.10 - 2025-01-16 (FOUNDRY V12 COMPATIBLE ONLY)
 
 - Further French Language Fixes/Improvements by Hrunh, and updated contributor list.
 - Thanks to ryotai-rpg for fixing up the Japanese localization.
 
-### Version 1.4.9 - 2024-12-08 (FOUNDRY V12+ COMPATIBLE ONLY)
+### Version 1.4.9 - 2024-12-08 (FOUNDRY V12 COMPATIBLE ONLY)
 
 - Fix/Enhancement [GitHub #161] - Hrunh has updated/fixed some of the French (FR) localization.
 - Enhancement [GitHub #160] - Baixian-main has added a Chinese (CN) localization.
 
-### Version 1.4.8 - 2024-10-05 (FOUNDRY V12+ COMPATIBLE ONLY)
+### Version 1.4.8 - 2024-10-05 (FOUNDRY V12 COMPATIBLE ONLY)
 
 - Fix [GitHub #147] - Vehicle Actor sheet broken from last set of changes, should open again.
 - Fix - Thanks to Iozanoje for fixing issue with Operation Code Name Generator macro.
@@ -18,7 +26,7 @@
 - Fix [GitHub #148] - Fixed CSS issue with Ritual item sheet. May need to revisit rich text entry boxes on item sheets in general.
 - Fix [GitHub #141] - Added SAN loss for learning a ritual to item sheet
 
-### Version 1.4.7 - 2024-08-04 (FOUNDRY V12+ COMPATIBLE ONLY)
+### Version 1.4.7 - 2024-08-04 (FOUNDRY V12 COMPATIBLE ONLY)
 
 - Enhancement [GitHub #131] - The items sheet is now re-orderable by drag drop. Or, you can click the sort button by each item section, and set it to order them alphabetically. The easiest way to drag is to click on the name of the item, although most of the non-rollable part of the item row works as well.
 - Enhancement - As part of #131, to make dragging easier, and to provide a more intuitive user interface, all rollable values now have a clickable dice icon by them to indicate they trigger a roll.
