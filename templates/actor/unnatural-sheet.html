@@ -95,7 +95,7 @@
         {{#each actor.system.sortedSkills as |skill key|}}
           
           {{#if (hideSkillBasedOnProficiencyAndUserChoice ../actor.system.showUntrainedSkills skill.proficiency)}}
-          <div class="flexrow flex-group-center flex-thin-border">
+          <div class="flexrow flex-group-left flex-thin-border">
             <label class="{{if_gt skill.proficiency 0 'rollable' 'not-rollable'}} skill-label" data-rolltype="skill" data-roll="d100" data-key="{{skill.key}}" for="system.skills.{{skill.key}}.value" 
                 {{#if skill.proficiency}}title="{{localize 'DG.Tooltip.SkillLabel'}}"{{/if}}
                 {{#unless skill.proficiency}}title="{{localize 'DG.Tooltip.CannotRollSkillLabel'}}"{{/unless}}
