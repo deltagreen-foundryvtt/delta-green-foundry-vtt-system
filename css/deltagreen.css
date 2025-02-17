@@ -525,6 +525,7 @@ input.percentile-skill-input {
   margin-left: 5px;
   height: unset;
   align-self: center;
+  text-align: center !important;
 }
 
 input.checkbox-skill-input {
