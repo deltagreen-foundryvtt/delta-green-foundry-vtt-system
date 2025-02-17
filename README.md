@@ -88,6 +88,7 @@ The roll tables added to generate operation code names comes from Reddit user /u
 - Spanish Translation submitted by [CthulhuRol](https://github.com/CthulhuRol)
 - Catalonian Translation submitted by [trombonecot](https://github.com/trombonecot)
 - French Translation submitted by [Hrunh](https://github.com/Hrunh)
+- Japanese Translation submitted by [ryotai-trpg](https://github.com/ryotai-trpg)
 
 ## Fonts (Some in use, others that I would like to use at some point)
 

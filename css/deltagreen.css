@@ -457,7 +457,7 @@ explicitly define a number of rows, rather than columns. */
 }
 
 .deltagreen .skill-and-training-controls {
-  flex: 0 0 80px;
+  flex: 0 0 35px;
 }
 
 .deltagreen .action-pill {
@@ -525,6 +525,7 @@ input.percentile-skill-input {
   margin-left: 5px;
   height: unset;
   align-self: center;
+  text-align: center !important;
 }
 
 input.checkbox-skill-input {

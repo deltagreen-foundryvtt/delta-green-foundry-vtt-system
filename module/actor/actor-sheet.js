@@ -70,26 +70,43 @@ export default class DeltaGreenActorSheet extends ActorSheet {
     // Make it easy for the sheet handlebars to understand how to sort the skills.
     data.sortSkillsSetting = game.settings.get("deltagreen", "sortSkills");
 
-    let sortedSkills = [];
-    for (const [key, skill] of Object.entries(this.actor.system.skills)) {
-      skill.key = key;
-      skill.sortLabel = game.i18n.localize(`DG.Skills.${key}`);
+    if (this.actor.type !== "vehicle") {
+      // fill an array that is sorted based on the appropriate localized entry
+      let sortedSkills = [];
+      for (const [key, skill] of Object.entries(this.actor.system.skills)) {
+        skill.key = key;
+        skill.sortLabel = game.i18n.localize(`DG.Skills.${key}`);
 
-      if (skill.sortLabel === "" || skill.sortLabel === `DG.Skills.${key}`) {
-        skill.sortLabel = skill.label;
+        if (skill.sortLabel === "" || skill.sortLabel === `DG.Skills.${key}`) {
+          skill.sortLabel = skill.label;
+        }
+
+        // if the actor is an NPC or Unnatural, and they have 'hide untrained skills' active,
+        // it will break the sorting logic, so we have to skip over these
+        if (
+          !(
+            (this.actor.type == "npc" || this.actor.type == "unnatural") &&
+            this.actor.system.showUntrainedSkills == true &&
+            skill.proficiency < 1
+          )
+        ) {
+          sortedSkills.push(skill);
+        }
       }
 
-      sortedSkills.push(skill);
+      sortedSkills.sort(function (a, b) {
+        return a.sortLabel.localeCompare(b.sortLabel, game.i18n.lang);
+      });
+
+      // if sorting by columns, re-arrange the array to be columns first, then rows
+      if (game.settings.get("deltagreen", "sortSkills")) {
+        let columnSortedSkills = this.reorderForColumnSorting(sortedSkills, 3);
+
+        this.actor.system.sortedSkills = columnSortedSkills;
+      } else {
+        this.actor.system.sortedSkills = sortedSkills;
+      }
     }
-
-    //console.log(sortedSkills);
-
-    sortedSkills.sort(function (a, b) {
-      return a.sortLabel.localeCompare(b.sortLabel, game.i18n.lang);
-    });
-
-    this.actor.system.sortedSkills = sortedSkills;
-
     // Prepare a simplified version of the special training for display on sheet.
     if (this.actor.type !== "vehicle") {
       const specialTraining = this.actor.system.specialTraining.map(
@@ -129,6 +146,53 @@ export default class DeltaGreenActorSheet extends ActorSheet {
       data.specialTraining = specialTraining;
     }
 
+    // try to make a combined array of both typed skills and special trainings,
+    // so that it can be sorted together neatly on the sheet
+    if (this.actor.type !== "vehicle") {
+      let sortedCustomSkills = [];
+
+      for (const [key, skill] of Object.entries(
+        this.actor.system.typedSkills
+      )) {
+        skill.type = "typeSkill";
+        skill.key = key;
+        skill.sortLabel = skill.group + "." + skill.label;
+        skill.sortLabel = skill.sortLabel.toUpperCase();
+        skill.actorType = this.actor.type;
+
+        if (skill.sortLabel === "" || skill.sortLabel === `DG.Skills.${key}`) {
+          skill.sortLabel = skill.label;
+        }
+
+        sortedCustomSkills.push(skill);
+      }
+
+      for (var i = 0; i < data.specialTraining.length; i++) {
+        let training = data.specialTraining[i];
+
+        training.type = "training";
+        training.sortLabel = training.name.toUpperCase();
+        training.actorType = this.actor.type;
+
+        sortedCustomSkills.push(training);
+      }
+
+      sortedCustomSkills.sort(function (a, b) {
+        return a.sortLabel.localeCompare(b.sortLabel, game.i18n.lang);
+      });
+
+      if (game.settings.get("deltagreen", "sortSkills")) {
+        let columnSortedSkills = this.reorderForColumnSorting(
+          sortedCustomSkills,
+          2
+        );
+
+        this.actor.system.sortedCustomSkills = columnSortedSkills;
+      } else {
+        this.actor.system.sortedCustomSkills = sortedCustomSkills;
+      }
+    }
+
     switch (this.actor.type) {
       case "agent":
         data.enrichedDescription = await TextEditor.enrichHTML(
@@ -153,6 +217,21 @@ export default class DeltaGreenActorSheet extends ActorSheet {
     }
 
     return data;
+  }
+
+  reorderForColumnSorting(arr, numCols) {
+    let numRows = Math.ceil(arr.length / numCols);
+    let reordered = new Array(arr.length);
+
+    for (let i = 0; i < arr.length; i++) {
+      let row = i % numRows;
+      let col = Math.floor(i / numRows);
+      let newIndex = row * numCols + col;
+
+      reordered[newIndex] = arr[i];
+    }
+
+    return reordered;
   }
 
   // some handlers may wish to avoid leading players to think they should be seeking out magic
