@@ -220,15 +220,34 @@ export default class DeltaGreenActorSheet extends ActorSheet {
   }
 
   reorderForColumnSorting(arr, numCols) {
-    let numRows = Math.ceil(arr.length / numCols);
+    let numRows = Math.ceil(arr.length / numCols); // Compute required rows
     let reordered = new Array(arr.length);
 
-    for (let i = 0; i < arr.length; i++) {
-      let row = i % numRows;
-      let col = Math.floor(i / numRows);
-      let newIndex = row * numCols + col;
+    // Determine how many elements each column gets
+    let baseRowCount = Math.floor(arr.length / numCols); // Minimum rows per column
+    let extraColumns = arr.length % numCols; // Some columns get an extra row
 
-      reordered[newIndex] = arr[i];
+    let colHeights = new Array(numCols).fill(baseRowCount);
+    for (let i = 0; i < extraColumns; i++) {
+      colHeights[i]++; // Give extra elements to the first N columns
+    }
+
+    let index = 0; // move through alphabetical array, keeping track of what we've resorted already
+
+    for (let col = 0; col < numCols; col++) {
+      // need to check if this is a column that has more rows than the others or not
+      let rowCount = colHeights[col];
+
+      // loop down the column, filling out it's values from the alphabetical array
+      for (let row = 0; row < rowCount; row++) {
+        // calculate the new position for this value by column
+        let newIndex = numCols * row + col;
+
+        if (newIndex < arr.length) {
+          reordered[newIndex] = arr[index];
+          index++;
+        }
+      }
     }
 
     return reordered;
