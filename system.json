@@ -77,6 +77,12 @@
       "name": "中文",
       "path": "lang/cn.json",
       "flags": {}
+    },
+    {
+      "lang": "pl",
+      "name": "polski",
+      "path": "lang/pl.json",
+      "flags": {}
     }
   ],
   "packs": [
