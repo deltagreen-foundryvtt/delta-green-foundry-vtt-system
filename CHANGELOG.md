@@ -1,5 +1,9 @@
 ## Release/Patch Notes
 
+### Version 1.4.12 - 2025-02-22 (FOUNDRY V12 COMPATIBLE ONLY)
+
+- Fix [GitHub #175] - Bug in column based sorting logic implemented in last update, hopefully fixed now. Also fixed the missed scrollbar color on the Agent's sheet.
+
 ### Version 1.4.11 - 2025-02-16 (FOUNDRY V12 COMPATIBLE ONLY)
 
 - Enhancement [GitHub #153] - Have added some enhancements to the default Foundry UI to make it feel more Delta Green themed. Have left journal entries alone for now.
