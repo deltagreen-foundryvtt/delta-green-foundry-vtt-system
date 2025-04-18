@@ -163,11 +163,11 @@
   "DG.Tooltip.Exhaustion": "Un agent qui travaille trop longtemps, qui fait face à un danger extrême ou des blessures sans repos devient épuisé",
 
   "DG.Gear.Expense.NA": "N/A ou Aucun",
-  "DG.Gear.Expense.Incidental": "Courant",
+  "DG.Gear.Expense.Incidental": "Courante",
   "DG.Gear.Expense.Standard": "Standard",
-  "DG.Gear.Expense.Unusual": "Inhabituel",
-  "DG.Gear.Expense.Major": "Important",
-  "DG.Gear.Expense.Extreme": "Extrême",
+  "DG.Gear.Expense.Unusual": "Importante",
+  "DG.Gear.Expense.Major": "Substantielle",
+  "DG.Gear.Expense.Extreme": "Considérable",
 
   "DG.ItemWindow.Bonds.Description": "Description/développements",
   "DG.ItemWindow.Bonds.ScoreTooltip": "Un score plus élevé représente une relation plus forte entre l'Agent et l'Attache",
