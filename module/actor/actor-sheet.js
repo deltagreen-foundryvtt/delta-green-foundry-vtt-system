@@ -75,7 +75,12 @@ export default class DeltaGreenActorSheet extends ActorSheet {
       let sortedSkills = [];
       for (const [key, skill] of Object.entries(this.actor.system.skills)) {
         skill.key = key;
-        skill.sortLabel = game.i18n.localize(`DG.Skills.${key}`);
+
+        if (game.i18n.lang === "ja") {
+          skill.sortLabel = game.i18n.localize(`DG.Skills.ruby.${key}`);
+        } else {
+          skill.sortLabel = game.i18n.localize(`DG.Skills.${key}`);
+        }
 
         if (skill.sortLabel === "" || skill.sortLabel === `DG.Skills.${key}`) {
           skill.sortLabel = skill.key;
