@@ -1,5 +1,11 @@
 ## Release/Patch Notes
 
+### Version 1.4.13 - 2025-04-20 (FOUNDRY V12 COMPATIBLE ONLY)
+
+- Thanks to [delgar89](https://github.com/delgar89) for updating the Polish translation to match what is being sold in Poland at the moment.
+- Thanks to [Hrunh](https://github.com/Hrunh) for updating the French translation to add some fixes.
+- Thanks to [ryotai-trpg](https://github.com/ryotai-trpg) for creating a fix for sorting by column for the Japanese localization.
+
 ### Version 1.4.12 - 2025-02-22 (FOUNDRY V12 COMPATIBLE ONLY)
 
 - Fix [GitHub #175] - Bug in column based sorting logic implemented in last update, hopefully fixed now. Also fixed the missed scrollbar color on the Agent's sheet.
