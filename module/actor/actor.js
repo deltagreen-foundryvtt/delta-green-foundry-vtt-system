@@ -311,6 +311,8 @@ export default class DeltaGreenActor extends Actor {
         data.prototypeToken,
         {
           actorLink: true, // this will make the 'Link Actor Data' option for a token is checked by default. So changes to the token sheet will reflect to the actor sheet.
+          sight: { enabled: true },
+          disposition: 1 // friendly, this is a dangerous assumption to make in the agency
         },
         { overwrite: false }
       );
