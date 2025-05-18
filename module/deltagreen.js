@@ -182,3 +182,13 @@ Hooks.on("createActor", async (actor, options, userId) => {
     console.log(ex);
   }
 });
+
+Hooks.on("renderGamePause", function (_, html, options) {
+  if (options.cssClass !== "paused") return;
+
+  try {
+    let gamePausedOverrideText = game.i18n.translations.DG.MissionPaused;
+    html.querySelector("figcaption").textContent = gamePausedOverrideText;
+    html.querySelector("img").classList.remove("fa-spin"); // I don't like the logo spinning personally
+  } catch {}
+});
