@@ -816,20 +816,22 @@ div.motivation-editor-container div.editor {
   min-height: 100% !important;
 }
 
-.editor-host .tox .tox-editor-container {
-  background: none !important;
-}
-
-.deltagreen .tox-editor-header {
-  background: none !important;
-}
-
-.deltagreen .tox .tox-edit-area {
-  padding: 0 8px;
+.deltagreen .editor-host {
+  align-items: stretch;
 }
 
 .deltagreen .editor-host .editor {
-  min-height: 50px;
+  min-height: 150px;
+  height: 100% !important;
+}
+
+.deltagreen .editor .editor-container {
+  height: 100% !important;
+}
+
+/* I think all the stuff below is now obsolete
+.editor-host .tox .tox-editor-container {
+  background: none !important;
 }
 
 .deltagreen .editor-host .tox {
@@ -847,6 +849,15 @@ div.motivation-editor-container div.editor {
   min-height: 20px;
   height: 300px;
 }
+
+.deltagreen .tox-editor-header {
+  background: none !important;
+}
+
+.deltagreen .tox .tox-edit-area {
+  padding: 0 8px;
+}
+*/
 
 /*
   Item Sheet Common CSS

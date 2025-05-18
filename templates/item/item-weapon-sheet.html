@@ -111,16 +111,17 @@
 
     {{!-- Sheet Tab Navigation --}}
     <nav class="sheet-tabs tabs" data-group="primary">
-        <a class="item" data-tab="description">{{localize 'DG.ItemWindow.Weapons.Description'}}</a>
-        
+        <a class="item" data-tab="description">{{localize 'DG.ItemWindow.Weapons.Description'}}</a>        
     </nav>
 
     {{!-- Sheet Body --}}
     <section class="sheet-body" style="max-height: 25%;">
 
         {{!-- Description Tab --}}
-        <div class="tab" data-group="primary" data-tab="description">
-            {{editor enrichedDescription target="system.description" button=true owner=owner editable=editable}}
+        <div class="tab" data-group="primary" data-tab="description">          
+          <div class="editor-host">
+            {{editor enrichedDescription target="system.description" engine="prosemirror" button=true owner=owner editable=editable}}
+          </div>
         </div>
     </section>
 </form>

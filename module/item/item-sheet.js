@@ -41,16 +41,18 @@ export default class DeltaGreenItemSheet extends foundry.appv1.sheets
   async getData() {
     const data = super.getData();
 
-    data.enrichedDescription = await TextEditor.enrichHTML(
-      this.object.system.description,
-      { async: true }
-    );
-
-    if (data.item.type === "tome" || data.item.type === "ritual") {
-      data.enrichedHandlerNotes = await TextEditor.enrichHTML(
-        this.object.system.handlerNotes,
+    data.enrichedDescription =
+      await foundry.applications.ux.TextEditor.implementation.enrichHTML(
+        this.object.system.description,
         { async: true }
       );
+
+    if (data.item.type === "tome" || data.item.type === "ritual") {
+      data.enrichedHandlerNotes =
+        await foundry.applications.ux.TextEditor.implementation.enrichHTML(
+          this.object.system.handlerNotes,
+          { async: true }
+        );
     }
 
     return data;
