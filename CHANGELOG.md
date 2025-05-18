@@ -1,5 +1,12 @@
 ## Release/Patch Notes
 
+### Version 1.5.0 - 2025-05-17 (FOUNDRY V13 COMPATIBLE ONLY)
+
+- Fix/Enhancement [GitHub #186] - A bunch of adjustments to try to better work in Foundry v13. Some of these changes break compatibility with v12.
+- Thanks to Achoobert for tweaking how the default actor vision and disposition are.
+- Thanks to hknmtt for updating the Portuguese (BR) translation with some fixes.
+- Thanks to vonv for updating the French translation with some fixes.
+
 ### Version 1.4.13 - 2025-04-20 (FOUNDRY V12 COMPATIBLE ONLY)
 
 - Thanks to [delgar89](https://github.com/delgar89) for updating the Polish translation to match what is being sold in Poland at the moment.
