@@ -71,7 +71,7 @@
 
         {{!-- Description Tab --}}
         <div class="tab top-div-border" data-group="primary" data-tab="description">
-            {{editor enrichedDescription target="system.description" button=true owner=owner editable=editable}}
+            {{editor enrichedDescription target="system.description" engine="prosemirror" button=true owner=owner editable=editable}}
         </div>
 
         {{!-- Handler Notes Tab --}}
@@ -101,7 +101,7 @@
             <span class="resource-label">{{localize 'DG.ItemWindow.Tome.HandlerNotes'}}:</span>
         
             <div class="tab top-div-border">
-                {{editor enrichedHandlerNotes target="system.handlerNotes" button=true owner=owner editable=editable}}
+                {{editor enrichedHandlerNotes target="system.handlerNotes" engine="prosemirror" button=true owner=owner editable=editable}}
             </div>            
         </div>   
         {{/if}}      

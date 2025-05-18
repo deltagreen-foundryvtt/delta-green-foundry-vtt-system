@@ -17,9 +17,9 @@
   ],
   "version": "1.3.5",
   "compatibility": {
-    "minimum": "12",
-    "verified": "12",
-    "maximum": "12"
+    "minimum": "13",
+    "verified": "13",
+    "maximum": "13"
   },
   "esmodules": ["module/deltagreen.js"],
   "styles": ["css/deltagreen.css", "css/dialogue.css"],

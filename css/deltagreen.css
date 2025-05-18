@@ -84,10 +84,6 @@ form.program-style {
   background: rgba(138, 136, 133, 0.3);
 }
 
-#pause img {
-  content: url(../assets/img/DG_Pause_Icon.webp);
-}
-
 .old-paper-background {
   background: url("../assets/img/StainedPlainPaper10.webp") !important;
 }
@@ -820,20 +816,22 @@ div.motivation-editor-container div.editor {
   min-height: 100% !important;
 }
 
-.editor-host .tox .tox-editor-container {
-  background: none !important;
-}
-
-.deltagreen .tox-editor-header {
-  background: none !important;
-}
-
-.deltagreen .tox .tox-edit-area {
-  padding: 0 8px;
+.deltagreen .editor-host {
+  align-items: stretch;
 }
 
 .deltagreen .editor-host .editor {
-  min-height: 50px;
+  min-height: 150px;
+  height: 100% !important;
+}
+
+.deltagreen .editor .editor-container {
+  height: 100% !important;
+}
+
+/* I think all the stuff below is now obsolete
+.editor-host .tox .tox-editor-container {
+  background: none !important;
 }
 
 .deltagreen .editor-host .tox {
@@ -851,6 +849,15 @@ div.motivation-editor-container div.editor {
   min-height: 20px;
   height: 300px;
 }
+
+.deltagreen .tox-editor-header {
+  background: none !important;
+}
+
+.deltagreen .tox .tox-edit-area {
+  padding: 0 8px;
+}
+*/
 
 /*
   Item Sheet Common CSS
@@ -1184,7 +1191,9 @@ input.item-sheet-short-input {
 }
 
 /*
-:root {
+  Custom UI Styling Elements
+*/
+:root :not(.no-theme) {
   --color-shadow-primary: #374e13;
   --color-shadow-highlight: #406539;
   --color-border-highlight: #406539;
@@ -1193,9 +1202,12 @@ input.item-sheet-short-input {
   --color-text-dark-header: #406539;
   scrollbar-color: var(--color-text-dark-header) #111;
 }
-*/
 
-#interface * {
+#pause img {
+  content: url(../assets/img/DG_Pause_Icon.webp);
+}
+
+#interface:not(.no-theme) * {
   --color-shadow-primary: #215112 !important;
   --color-shadow-highlight: #215112 !important;
   --color-border-highlight: #215112 !important;
@@ -1205,10 +1217,19 @@ input.item-sheet-short-input {
   scrollbar-color: var(--color-text-dark-header) #111 !important;
 }
 
+/* The logo is defunct as of v13 */
 #logo {
   content: url("../assets/img/Delta_Green_Logo.webp");
   width: 90px;
   height: auto;
   padding-top: 10px;
   padding-bottom: 10px;
+}
+
+body:not(.no-theme) #interface:not(.theme-light) .ui-control {
+  border: 2px solid #215112;
+}
+
+body:not(.no-theme) #interface:not(.theme-light) #action-bar .slot.full:hover {
+  border: 2px solid #215112;
 }

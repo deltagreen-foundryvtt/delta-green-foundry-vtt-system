@@ -4,7 +4,7 @@
  * @return {Promise}
  */
 export default async function preloadHandlebarsTemplates() {
-  return loadTemplates([
+  return foundry.applications.handlebars.loadTemplates([
     "systems/deltagreen/templates/actor/actor-sheet.html",
     "systems/deltagreen/templates/actor/limited-sheet.html",
     "systems/deltagreen/templates/actor/unnatural-sheet.html",
