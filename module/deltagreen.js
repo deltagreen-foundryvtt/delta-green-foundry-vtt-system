@@ -188,6 +188,11 @@ Hooks.on("renderGamePause", function (_, html, options) {
 
   try {
     let gamePausedOverrideText = game.i18n.translations.DG.MissionPaused;
+
+    if (typeof gamePausedOverrideText == "undefined") {
+      return;
+    }
+
     html.querySelector("figcaption").textContent = gamePausedOverrideText;
     html.querySelector("img").classList.remove("fa-spin"); // I don't like the logo spinning personally
   } catch {}
