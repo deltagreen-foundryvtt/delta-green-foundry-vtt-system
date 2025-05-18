@@ -47,12 +47,26 @@ Hooks.once("init", async () => {
   CONFIG.Item.documentClass = DeltaGreenItem;
 
   // Register sheet application classes
-  Actors.unregisterSheet("core", ActorSheet);
-  Items.unregisterSheet("core", ItemSheet);
-  Actors.registerSheet("deltagreen", DeltaGreenActorSheet, {
-    makeDefault: true,
-  });
-  Items.registerSheet("deltagreen", DeltaGreenItemSheet, { makeDefault: true });
+  foundry.documents.collections.Actors.unregisterSheet(
+    "core",
+    foundry.appv1.sheets.ActorSheet
+  );
+  foundry.documents.collections.Items.unregisterSheet(
+    "core",
+    foundry.appv1.sheets.ItemSheet
+  );
+  foundry.documents.collections.Actors.registerSheet(
+    "deltagreen",
+    DeltaGreenActorSheet,
+    {
+      makeDefault: true,
+    }
+  );
+  foundry.documents.collections.Items.registerSheet(
+    "deltagreen",
+    DeltaGreenItemSheet,
+    { makeDefault: true }
+  );
 
   // Preload Handlebars Templates
   preloadHandlebarsTemplates();
@@ -98,16 +112,32 @@ Hooks.on("preCreateItem", (item) => {
 });
 
 // Hook into the render call for the Actors Directory to add an extra button
-Hooks.on("renderActorDirectory", (app, html) => {
-  let importButton = $(
-    '<button><i class="fas fa-file-import"></i> Delta Green Stat Block Parser</button>',
-  );
-  html.find(".directory-footer").append(importButton);
+Hooks.on("renderActorDirectory", (app, html, data) => {
+  if (!game.user.isGM) {
+    return;
+  }
 
-  // Handle button clicks
-  importButton.click((ev) => {
-    ParseDeltaGreenStatBlock();
-  });
+  if (html.querySelector("#statParserButton")) {
+    return;
+  }
+
+  const button = document.createElement("button");
+  button.id = "statParserButton";
+
+  const icon = document.createElement("i");
+
+  icon.classList.add("fas", "fa-file-import");
+
+  button.appendChild(icon);
+  button.append("Delta Green Stat Block Parser");
+
+  html.querySelector(".directory-footer").appendChild(button);
+
+  if (button) {
+    button.addEventListener("click", function (event) {
+      ParseDeltaGreenStatBlock();
+    });
+  }
 });
 
 /**

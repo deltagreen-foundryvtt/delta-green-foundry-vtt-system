@@ -9,7 +9,8 @@ import {
  * Extend the basic ActorSheet with some very simple modifications
  * @extends {ActorSheet}
  */
-export default class DeltaGreenActorSheet extends ActorSheet {
+export default class DeltaGreenActorSheet extends foundry.appv1.sheets
+  .ActorSheet {
   /** @override */
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
@@ -200,23 +201,26 @@ export default class DeltaGreenActorSheet extends ActorSheet {
 
     switch (this.actor.type) {
       case "agent":
-        data.enrichedDescription = await TextEditor.enrichHTML(
-          this.object.system.physicalDescription,
-          { async: true }
-        );
+        data.enrichedDescription =
+          await foundry.applications.ux.TextEditor.implementation.enrichHTML(
+            this.object.system.physicalDescription,
+            { async: true }
+          );
         break;
       case "vehicle":
-        data.enrichedDescription = await TextEditor.enrichHTML(
-          this.object.system.description,
-          { async: true }
-        );
+        data.enrichedDescription =
+          await foundry.applications.ux.TextEditor.implementation.enrichHTML(
+            this.object.system.description,
+            { async: true }
+          );
         break;
       case "npc":
       case "unnatural":
-        data.enrichedDescription = await TextEditor.enrichHTML(
-          this.object.system.notes,
-          { async: true }
-        );
+        data.enrichedDescription =
+          await foundry.applications.ux.TextEditor.implementation.enrichHTML(
+            this.object.system.notes,
+            { async: true }
+          );
         break;
       default:
     }

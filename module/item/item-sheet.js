@@ -9,7 +9,8 @@ import {
  * Extend the basic ItemSheet with some very simple modifications
  * @extends {ItemSheet}
  */
-export default class DeltaGreenItemSheet extends ItemSheet {
+export default class DeltaGreenItemSheet extends foundry.appv1.sheets
+  .ItemSheet {
   /** @override */
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
@@ -42,13 +43,13 @@ export default class DeltaGreenItemSheet extends ItemSheet {
 
     data.enrichedDescription = await TextEditor.enrichHTML(
       this.object.system.description,
-      { async: true },
+      { async: true }
     );
 
     if (data.item.type === "tome" || data.item.type === "ritual") {
       data.enrichedHandlerNotes = await TextEditor.enrichHTML(
         this.object.system.handlerNotes,
-        { async: true },
+        { async: true }
       );
     }
 

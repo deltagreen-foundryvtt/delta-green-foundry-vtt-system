@@ -49,7 +49,7 @@ export default class DeltaGreenActor extends Actor {
 
     actorData.system.health.protection = protection;
 
-    console.log(actor);
+    //console.log(actor);
   }
 
   _prepareNpcData(actor) {
@@ -120,7 +120,7 @@ export default class DeltaGreenActor extends Actor {
 
     system.health.protection = protection;
 
-    console.log(actor);
+    //console.log(actor);
   }
 
   /**
@@ -148,7 +148,7 @@ export default class DeltaGreenActor extends Actor {
 
     system.health.protection = protection;
 
-    console.log(actor);
+    //console.log(actor);
   }
 
   /**
@@ -300,7 +300,7 @@ export default class DeltaGreenActor extends Actor {
         -1 * Math.abs(system.physical.exhaustedPenalty);
     }
 
-    console.log(agent);
+    //console.log(agent);
   }
 
   /** @override */
