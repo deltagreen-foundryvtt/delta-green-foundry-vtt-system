@@ -5,7 +5,7 @@
   "DG.Luck": "Chance",
 
   "DG.FallbackText.ProfessionAndOrRank": "PROFESSION (RANG LE CAS ÉCHÉANT)",
-  "DG.FallbackText.newItem": "Nouveau {type}",
+  "DG.FallbackText.newItem": "Nouveau/el/elle {type}",
 
   "DG.Skills.accounting": "Comptabilité",
   "DG.Skills.alertness": "Vigilance",
@@ -29,7 +29,7 @@
   "DG.Skills.humint": "ROHUM",
   "DG.Skills.law": "Droit",
   "DG.Skills.medicine": "Médecine",
-  "DG.Skills.melee_weapons": "Armes de mélée",
+  "DG.Skills.melee_weapons": "Armes de mêlée",
   "DG.Skills.navigate": "Orientation",
   "DG.Skills.occult": "Occultisme",
   "DG.Skills.persuade": "Persuasion",
@@ -73,7 +73,7 @@
   "DG.SpecialTraining.Dialog.DropDown.Statistics": "Statistiques",
   "DG.SpecialTraining.Dialog.EditSpecialTraining": "Éditer l'Entraînement Spécial",
   "DG.SpecialTraining.Dialog.NameLabel": "Nom",
-  "DG.SpecialTraining.Dialog.SkillLabel": "SCompétence ou Statistique",
+  "DG.SpecialTraining.Dialog.SkillLabel": "Compétence ou Statistique",
   "DG.SpecialTraining.Dialog.Title": "Créer/Éditer un Entraînement Spécial",
 
   "DG.Attributes.HP": "PV",
@@ -89,7 +89,7 @@
   "DG.Navigation.Skills": "Compétences",
   "DG.Navigation.Physical": "Statistiques",
   "DG.Navigation.Mental": "Psychologie",
-  "DG.Navigation.Gear": "Equipement",
+  "DG.Navigation.Gear": "Équipement",
   "DG.Navigation.CV": "Biographie",
   "DG.Navigation.Contacts": "Attaches",
 
@@ -119,7 +119,7 @@
   "DG.Generic.AddButtonLabel": "Ajouter",
 
   "DG.Mental.BreakingPoint": "Seuil de Rupture: ",
-  "DG.Mental.Reset": "Réinitialiser",
+  "DG.Mental.Reset": "Réinit.",
   "DG.Mental.SanityLossIncidentsLabel": "Perte de SAN n'ayant pas entrainé la folie",
   "DG.Mental.Violence": "Violence",
   "DG.Mental.Helplessness": "Impuissance",
@@ -130,7 +130,7 @@
 
   "DG.Gear.Weapons": "ARMES",
   "DG.Gear.Armor": "ARMURE ET MATÉRIEL",
-  "DG.Gear.OtherGear": "AUTRES EQUIPEMENTS",
+  "DG.Gear.OtherGear": "AUTRES ÉQUIPEMENTS",
   "DG.Gear.Name": "Nom",
   "DG.Gear.DamageOrLethality": "Dégâts/Létalité",
   "DG.Gear.ArmorPiercing": "Perforant",
@@ -249,10 +249,10 @@
   "DG.Sheet.BlockHeaders.PersonalInfoCV": "DÉTAILS PERSONNELS ET NOTES",
   "DG.Sheet.BlockHeaders.BondsRelationshipsContacts": "ATTACHES",
 
-  "DG.UnnaturalSheet.HideUntrainedSkillsLabel": "Cacher les compétences inconnues",
+  "DG.UnnaturalSheet.HideUntrainedSkillsLabel": "Cacher compétences inconnues",
   "DG.UnnaturalSheet.NotesLabel": "Notes",
   "DG.UnnaturalSheet.ShortDescriptionFallbackText": "Description de créature ou du type de créature",
-  "DG.UnnaturalSheet.ShowUntrainedSkillsLabel": "Voir les compétences inconnues",
+  "DG.UnnaturalSheet.ShowUntrainedSkillsLabel": "Voir compétences inconnues",
   "DG.UnnaturalSheet.Tabs.NotesTabLabel": "Compétences & Notes",
   "DG.UnnaturalSheet.Tabs.ItemsTabLabel": "Attaques & Capacités",
   "DG.NPCSheet.BreakPointAbbreviation": "SR",
