@@ -13,16 +13,8 @@ const { ActorSheetV2 } = foundry.applications.sheets;
 export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
   /** @override */
   static DEFAULT_OPTIONS = /** @type {const} */ ({
-    classes: ["deltagreen", "sheet", "actor"],
-    template: "systems/deltagreen/templates/actor/actor-sheet.html",
+    css: ["actor"],
     position: { width: 750, height: 770 },
-    tabs: [
-      {
-        navSelector: ".sheet-tabs",
-        contentSelector: ".sheet-body",
-        initial: "skills",
-      },
-    ],
   });
 
   static TABS = /** @type {const} */ ({
@@ -30,13 +22,13 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
       initial: "skills",
       labelPrefix: "DG.Navigation",
       tabs: [
-        { id: "skills" },
-        { id: "physical" },
-        { id: "motivations" },
-        { id: "gear" },
-        { id: "bio" },
-        { id: "bonds" },
-        { id: "about" },
+        { id: "skills", label: "Skills" },
+        { id: "physical", label: "Physical" },
+        { id: "motivations", label: "Mental" },
+        { id: "gear", label: "Gear" },
+        { id: "bio", label: "CV" },
+        { id: "bonds", label: "Contacts" },
+        { id: "about", icon: "fas fa-question-circle", label: "" },
       ],
     },
   });
@@ -44,6 +36,9 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
   static PARTS = /** @type {const} */ ({
     main: {
       template: `systems/${DG.ID}/templates/actor/actor-sheet.html`,
+    },
+    tabs: {
+      template: `templates/generic/tab-navigation.hbs`, // From FoundryVTT
     },
   });
 
@@ -73,19 +68,6 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
     }
 
     return "systems/deltagreen/templates/actor/limited-sheet.html";
-  }
-
-  /** @inheritdoc */
-  async _prepareContext(options) {
-    const context = await super._prepareContext(options);
-
-    // // Prepare tabs
-    // context.tabs = {};
-    // Object.keys(DeltaGreenActorSheet.TABS).forEach((tabGroup) => {
-    //   context.tabs[tabGroup] = this._prepareTabs(tabGroup);
-    // });
-
-    return context;
   }
 
   /** @override */

@@ -56,13 +56,13 @@
 
 /* Character Sheet Style Options */
 
-form.outlaw-style,
-form.cowboy-style {
+.window-content.outlaw-style,
+.window-content.cowboy-style {
   background: url("../assets/img/StainedPlainPaper10b.webp") !important;
   background-size: 100% !important;
 }
 
-form.program-style {
+.window-content.program-style {
   background: url("../assets/img/StainedPlainPaper10a.webp") !important;
   background-size: 100% !important;
 }
@@ -76,11 +76,11 @@ form.program-style {
   font-family: "PublicSans", sans-serif !important;
 }
 
-.outlaw-style .cowboy-style .tabs .item {
+.outlaw-style .cowboy-style .tabs [data-action="tab"] {
   background: rgba(173, 151, 101, 0.3);
 }
 
-.program-style .tabs .item {
+.program-style .tabs [data-action="tab"] {
   background: rgba(138, 136, 133, 0.3);
 }
 
@@ -369,7 +369,7 @@ explicitly define a number of rows, rather than columns. */
   padding-bottom: 0px !important;
 }
 
-.deltagreen .tabs .item {
+.deltagreen .tabs [data-action="tab"] {
   font-weight: bold;
   vertical-align: middle !important;
   line-height: inherit;
@@ -382,7 +382,7 @@ explicitly define a number of rows, rather than columns. */
   /*background: rgba(173, 151, 101, 0.3);*/
 }
 
-.deltagreen .tabs .item.active {
+.deltagreen .tabs [data-action="tab"].active {
   text-shadow: none;
   font-style: italic;
   border: #000;
@@ -390,12 +390,12 @@ explicitly define a number of rows, rather than columns. */
   border-style: solid;
 }
 
-.deltagreen .program-style .tabs .item.active {
+.deltagreen .program-style .tabs [data-action="tab"].active {
   background-color: #000000;
   color: #ffffff;
 }
 
-.deltagreen .cowboy-style .tabs .item.active {
+.deltagreen .cowboy-style .tabs [data-action="tab"].active {
   background-color: rgba(156, 115, 18, 0.3);
   color: #000000;
 }

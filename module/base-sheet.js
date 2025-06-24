@@ -14,6 +14,14 @@ const DGSheetMixin = (Base) => {
     /** @inheritdoc */
     static TEMPLATE_PATH = /** @type {const} */ (`systems/${DG.ID}/templates`);
 
+    static get THEME() {
+      return game.settings.get(DG.ID, "characterSheetStyle");
+    }
+
+    get THEME() {
+      return this.constructor.THEME;
+    }
+
     /** @inheritdoc */
     async _prepareContext(options) {
       const context = await super._prepareContext(options);
@@ -23,6 +31,16 @@ const DGSheetMixin = (Base) => {
       context[docName] = this.document;
 
       return context;
+    }
+    /** @inheritdoc */
+
+    async _onFirstRender(context, options) {
+      await super._onFirstRender(context, options);
+
+      const html = this.element;
+      html
+        .querySelector(".window-content")
+        .classList.add(`${this.THEME}-style`);
     }
 
     /** @inheritdoc */

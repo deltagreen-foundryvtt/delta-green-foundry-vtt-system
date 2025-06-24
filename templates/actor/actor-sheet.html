@@ -1,4 +1,4 @@
-<form class="{{cssClass}} {{getCharacterSheetStyle}} flexcol" autocomplete="off">
+<form autocomplete="off">
 
     {{!-- Sheet Header --}}
     <header class="sheet-header">
@@ -75,17 +75,6 @@
         </div>
       </div>
     </header>
-
-    {{!-- Sheet Tab Navigation --}}
-    <nav class="sheet-tabs tabs" data-group="primary">
-        <a class="item" data-tab="skills">{{localize 'DG.Navigation.Skills'}}</a>
-        <a class="item" data-tab="physical">{{localize 'DG.Navigation.Physical'}}</a>
-        <a class="item" data-tab="motivations">{{localize 'DG.Navigation.Mental'}}</a>
-        <a class="item" data-tab="gear">{{localize 'DG.Navigation.Gear'}}</a>
-        <a class="item" data-tab="bio">{{localize 'DG.Navigation.CV'}}</a>
-        <a class="item" data-tab="bonds">{{localize 'DG.Navigation.Contacts'}}</a> 
-        <a class="item fas fa-question-circle" data-tab="about"></a>
-    </nav>
 
     {{!-- Sheet Body --}}
     <section class="sheet-body">
