@@ -55,6 +55,9 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
     motivations: {
       template: `${this.TEMPLATE_PATH}/actor/parts/motivations-tab.html`,
     },
+    gear: {
+      template: `${this.TEMPLATE_PATH}/actor/parts/gear-tab.html`,
+    },
   });
 
   /* -------------------------------------------- */
