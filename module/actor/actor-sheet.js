@@ -1101,6 +1101,7 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
     }).outerHTML;
 
     // Prepare the template to feed to Dialog.
+    const { renderTemplate } = foundry.applications.handlebars;
     const content = await renderTemplate(
       "systems/deltagreen/templates/dialog/special-training.html",
       {
@@ -1503,6 +1504,7 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
     // If alt key is held down, we will delete the original document.
     if (event.altKey) {
       // This is from Foundry. It will get the item data from the event.
+      const TextEditor = foundry.applications.ux.TextEditor.implementation;
       const dragData = TextEditor.getDragEventData(event);
       // Make sure that we are dragging an item, otherwise this doesn't make sense.
       if (dragData.type === "Item") {
