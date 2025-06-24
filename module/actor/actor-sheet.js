@@ -40,6 +40,12 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
     tabs: {
       template: `templates/generic/tab-navigation.hbs`, // From FoundryVTT
     },
+    skills: {
+      template: `${this.TEMPLATE_PATH}/actor/parts/skills-tab.html`,
+      templates: [
+        `${this.TEMPLATE_PATH}/actor/partials/custom-skills-partial.html`,
+      ],
+    },
   });
 
   /* -------------------------------------------- */

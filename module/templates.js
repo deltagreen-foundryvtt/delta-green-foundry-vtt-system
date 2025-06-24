@@ -5,7 +5,6 @@
  */
 export default async function preloadHandlebarsTemplates() {
   return foundry.applications.handlebars.loadTemplates([
-    "systems/deltagreen/templates/actor/actor-sheet.html",
     "systems/deltagreen/templates/actor/limited-sheet.html",
     "systems/deltagreen/templates/actor/unnatural-sheet.html",
     "systems/deltagreen/templates/actor/npc-sheet.html",
