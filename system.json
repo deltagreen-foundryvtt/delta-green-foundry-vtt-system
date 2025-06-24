@@ -23,7 +23,7 @@
   },
   "flags": {
     "hotReload": {
-      "extensions": ["css", "hbs", "json"],
+      "extensions": ["css", "html", "json"],
       "paths": ["css", "templates", "lang"]
     }
   },
