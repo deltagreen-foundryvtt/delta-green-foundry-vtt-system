@@ -1,4 +1,10 @@
 {
-  "recommendations": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode"],
+  // eslint, prettier, djlint, editorconfig
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "monosans.djlint",
+    "EditorConfig.EditorConfig"
+  ],
   "unwantedRecommendations": []
 }

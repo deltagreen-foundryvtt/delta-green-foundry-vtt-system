@@ -1,0 +1,8 @@
+{
+  "profile": "handlebars",
+  "format_attribute_template_tags": true,
+  "max_line_length": "100",
+  "max_blank_lines": 1,
+  "use_gitignore": true,
+  "custom_blocks": "unless,if,else,if_eq,if_not_eq"
+}

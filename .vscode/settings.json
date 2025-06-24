@@ -1,5 +1,13 @@
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
-  "cSpell.words": ["deltagreen", "Hypergeometry"]
+  "cSpell.words": ["deltagreen", "Hypergeometry"],
+
+  "files.associations": {
+    "*.html": "handlebars"
+  },
+
+  "[handlebars]": {
+    "editor.defaultFormatter": "monosans.djlint"
+  }
 }
