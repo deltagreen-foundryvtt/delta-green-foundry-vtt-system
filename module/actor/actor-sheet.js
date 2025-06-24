@@ -1,32 +1,51 @@
 import DG from "../config.js";
+import DGSheetMixin from "../base-sheet.js";
 import {
   DGPercentileRoll,
   DGLethalityRoll,
   DGDamageRoll,
   DGSanityDamageRoll,
 } from "../roll/roll.js";
-/**
- * Extend the basic ActorSheet with some very simple modifications
- * @extends {ActorSheet}
- */
-export default class DeltaGreenActorSheet extends foundry.appv1.sheets
-  .ActorSheet {
+
+const { ActorSheetV2 } = foundry.applications.sheets;
+
+/** * @extends {ActorSheetV2} */
+export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
   /** @override */
-  static get defaultOptions() {
-    return foundry.utils.mergeObject(super.defaultOptions, {
-      classes: ["deltagreen", "sheet", "actor"],
-      template: "systems/deltagreen/templates/actor/actor-sheet.html",
-      width: 750,
-      height: 770,
+  static DEFAULT_OPTIONS = /** @type {const} */ ({
+    classes: ["deltagreen", "sheet", "actor"],
+    template: "systems/deltagreen/templates/actor/actor-sheet.html",
+    position: { width: 750, height: 770 },
+    tabs: [
+      {
+        navSelector: ".sheet-tabs",
+        contentSelector: ".sheet-body",
+        initial: "skills",
+      },
+    ],
+  });
+
+  static TABS = /** @type {const} */ ({
+    primary: {
+      initial: "skills",
+      labelPrefix: "DG.Navigation",
       tabs: [
-        {
-          navSelector: ".sheet-tabs",
-          contentSelector: ".sheet-body",
-          initial: "skills",
-        },
+        { id: "skills" },
+        { id: "physical" },
+        { id: "motivations" },
+        { id: "gear" },
+        { id: "bio" },
+        { id: "bonds" },
+        { id: "about" },
       ],
-    });
-  }
+    },
+  });
+
+  static PARTS = /** @type {const} */ ({
+    main: {
+      template: `systems/${DG.ID}/templates/actor/actor-sheet.html`,
+    },
+  });
 
   /* -------------------------------------------- */
 
@@ -38,7 +57,6 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
           return "systems/deltagreen/templates/actor/limited-sheet.html";
         }
 
-        // return `systems/deltagreen/templates/actor/${this.actor.data.type}-sheet.html`;
         return `systems/deltagreen/templates/actor/actor-sheet.html`;
       }
       if (this.actor.type === "unnatural") {
@@ -55,6 +73,19 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
     }
 
     return "systems/deltagreen/templates/actor/limited-sheet.html";
+  }
+
+  /** @inheritdoc */
+  async _prepareContext(options) {
+    const context = await super._prepareContext(options);
+
+    // // Prepare tabs
+    // context.tabs = {};
+    // Object.keys(DeltaGreenActorSheet.TABS).forEach((tabGroup) => {
+    //   context.tabs[tabGroup] = this._prepareTabs(tabGroup);
+    // });
+
+    return context;
   }
 
   /** @override */
