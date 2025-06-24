@@ -46,6 +46,12 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
         `${this.TEMPLATE_PATH}/actor/partials/custom-skills-partial.html`,
       ],
     },
+    physical: {
+      template: `${this.TEMPLATE_PATH}/actor/parts/physical-tab.html`,
+      templates: [
+        `${this.TEMPLATE_PATH}/actor/partials/attributes-grid-partial.html`,
+      ],
+    },
   });
 
   /* -------------------------------------------- */
