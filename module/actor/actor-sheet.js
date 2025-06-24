@@ -65,7 +65,7 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
     this._prepareCharacterItems(data);
 
     data.showHyperGeometrySection = this.shouldShowHyperGeometrySection(
-      this.actor
+      this.actor,
     );
 
     // Make it easy for the sheet handlebars to understand how to sort the skills.
@@ -73,7 +73,7 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
 
     if (this.actor.type !== "vehicle") {
       // fill an array that is sorted based on the appropriate localized entry
-      let sortedSkills = [];
+      const sortedSkills = [];
       for (const [key, skill] of Object.entries(this.actor.system.skills)) {
         skill.key = key;
 
@@ -91,8 +91,8 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
         // it will break the sorting logic, so we have to skip over these
         if (
           !(
-            (this.actor.type == "npc" || this.actor.type == "unnatural") &&
-            this.actor.system.showUntrainedSkills == true &&
+            (this.actor.type === "npc" || this.actor.type === "unnatural") &&
+            this.actor.system.showUntrainedSkills &&
             skill.proficiency < 1
           )
         ) {
@@ -106,7 +106,10 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
 
       // if sorting by columns, re-arrange the array to be columns first, then rows
       if (game.settings.get("deltagreen", "sortSkills")) {
-        let columnSortedSkills = this.reorderForColumnSorting(sortedSkills, 3);
+        const columnSortedSkills = this.reorderForColumnSorting(
+          sortedSkills,
+          3,
+        );
 
         this.actor.system.sortedSkills = columnSortedSkills;
       } else {
@@ -126,8 +129,7 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
           switch (true) {
             // Stats
             case DG.statistics.includes(training.attribute):
-              simplifiedTraining.attribute =
-                training.attribute.toUpperCase() + "x5";
+              simplifiedTraining.attribute = `${training.attribute.toUpperCase()}x5`;
               simplifiedTraining.targetNumber =
                 this.actor.system.statistics[training.attribute].x5;
               break;
@@ -147,7 +149,7 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
               break;
           }
           return simplifiedTraining;
-        }
+        },
       );
       data.specialTraining = specialTraining;
     }
@@ -155,14 +157,14 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
     // try to make a combined array of both typed skills and special trainings,
     // so that it can be sorted together neatly on the sheet
     if (this.actor.type !== "vehicle") {
-      let sortedCustomSkills = [];
+      const sortedCustomSkills = [];
 
       for (const [key, skill] of Object.entries(
-        this.actor.system.typedSkills
+        this.actor.system.typedSkills,
       )) {
         skill.type = "typeSkill";
         skill.key = key;
-        skill.sortLabel = skill.group + "." + skill.label;
+        skill.sortLabel = `${skill.group}.${skill.label}`;
         skill.sortLabel = skill.sortLabel.toUpperCase();
         skill.actorType = this.actor.type;
 
@@ -173,8 +175,8 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
         sortedCustomSkills.push(skill);
       }
 
-      for (var i = 0; i < data.specialTraining.length; i++) {
-        let training = data.specialTraining[i];
+      for (let i = 0; i < data.specialTraining.length; i++) {
+        const training = data.specialTraining[i];
 
         training.type = "training";
         training.sortLabel = training.name.toUpperCase();
@@ -188,9 +190,9 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
       });
 
       if (game.settings.get("deltagreen", "sortSkills")) {
-        let columnSortedSkills = this.reorderForColumnSorting(
+        const columnSortedSkills = this.reorderForColumnSorting(
           sortedCustomSkills,
-          2
+          2,
         );
 
         this.actor.system.sortedCustomSkills = columnSortedSkills;
@@ -204,14 +206,14 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
         data.enrichedDescription =
           await foundry.applications.ux.TextEditor.implementation.enrichHTML(
             this.object.system.physicalDescription,
-            { async: true }
+            { async: true },
           );
         break;
       case "vehicle":
         data.enrichedDescription =
           await foundry.applications.ux.TextEditor.implementation.enrichHTML(
             this.object.system.description,
-            { async: true }
+            { async: true },
           );
         break;
       case "npc":
@@ -219,7 +221,7 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
         data.enrichedDescription =
           await foundry.applications.ux.TextEditor.implementation.enrichHTML(
             this.object.system.notes,
-            { async: true }
+            { async: true },
           );
         break;
       default:
@@ -229,32 +231,32 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
   }
 
   reorderForColumnSorting(arr, numCols) {
-    let numRows = Math.ceil(arr.length / numCols); // Compute required rows
-    let reordered = new Array(arr.length);
+    const numRows = Math.ceil(arr.length / numCols); // Compute required rows
+    const reordered = new Array(arr.length);
 
     // Determine how many elements each column gets
-    let baseRowCount = Math.floor(arr.length / numCols); // Minimum rows per column
-    let extraColumns = arr.length % numCols; // Some columns get an extra row
+    const baseRowCount = Math.floor(arr.length / numCols); // Minimum rows per column
+    const extraColumns = arr.length % numCols; // Some columns get an extra row
 
-    let colHeights = new Array(numCols).fill(baseRowCount);
+    const colHeights = new Array(numCols).fill(baseRowCount);
     for (let i = 0; i < extraColumns; i++) {
-      colHeights[i]++; // Give extra elements to the first N columns
+      colHeights[i] += 1; // Give extra elements to the first N columns
     }
 
     let index = 0; // move through alphabetical array, keeping track of what we've resorted already
 
     for (let col = 0; col < numCols; col++) {
       // need to check if this is a column that has more rows than the others or not
-      let rowCount = colHeights[col];
+      const rowCount = colHeights[col];
 
       // loop down the column, filling out it's values from the alphabetical array
       for (let row = 0; row < rowCount; row++) {
         // calculate the new position for this value by column
-        let newIndex = numCols * row + col;
+        const newIndex = numCols * row + col;
 
         if (newIndex < arr.length) {
           reordered[newIndex] = arr[index];
-          index++;
+          index += 1;
         }
       }
     }
@@ -274,7 +276,7 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
     if (
       game.settings.get(
         "deltagreen",
-        "alwaysShowHypergeometrySectionForPlayers"
+        "alwaysShowHypergeometrySectionForPlayers",
       )
     ) {
       return true;
@@ -289,6 +291,7 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
 
     return false;
   }
+
   /**
    * Organize and classify Items for Character sheets.
    *
@@ -327,8 +330,8 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
 
     if (actorData.system.settings.sorting.armorSortAlphabetical) {
       armor.sort(function (a, b) {
-        let x = a.name.toLowerCase();
-        let y = b.name.toLowerCase();
+        const x = a.name.toLowerCase();
+        const y = b.name.toLowerCase();
         if (x < y) {
           return -1;
         }
@@ -345,8 +348,8 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
 
     if (actorData.system.settings.sorting.weaponSortAlphabetical) {
       weapons.sort(function (a, b) {
-        let x = a.name.toLowerCase();
-        let y = b.name.toLowerCase();
+        const x = a.name.toLowerCase();
+        const y = b.name.toLowerCase();
         if (x < y) {
           return -1;
         }
@@ -363,8 +366,8 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
 
     if (actorData.system.settings.sorting.gearSortAlphabetical) {
       gear.sort(function (a, b) {
-        let x = a.name.toLowerCase();
-        let y = b.name.toLowerCase();
+        const x = a.name.toLowerCase();
+        const y = b.name.toLowerCase();
         if (x < y) {
           return -1;
         }
@@ -381,8 +384,8 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
 
     if (actorData.system.settings.sorting.tomeSortAlphabetical) {
       tomes.sort(function (a, b) {
-        let x = a.name.toLowerCase();
-        let y = b.name.toLowerCase();
+        const x = a.name.toLowerCase();
+        const y = b.name.toLowerCase();
         if (x < y) {
           return -1;
         }
@@ -399,8 +402,8 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
 
     if (actorData.system.settings.sorting.ritualSortAlphabetical) {
       rituals.sort(function (a, b) {
-        let x = a.name.toLowerCase();
-        let y = b.name.toLowerCase();
+        const x = a.name.toLowerCase();
+        const y = b.name.toLowerCase();
         if (x < y) {
           return -1;
         }
@@ -434,7 +437,7 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
       label2 = game.i18n.translations.DG.Luck;
     } catch {
       console.error(
-        "Missing translation key for either DG.RollLuck or DG.Luck key."
+        "Missing translation key for either DG.RollLuck or DG.Luck key.",
       );
     }
 
@@ -499,7 +502,7 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
           },
         ],
       },
-      owner
+      owner,
     ).create();
   }
 
@@ -541,7 +544,7 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
     html.find(".toggle-untrained").click(() =>
       this.actor.update({
         "system.showUntrainedSkills": !this.actor.system.showUntrainedSkills,
-      })
+      }),
     );
 
     // Macro for toggling an item's equipped state
@@ -591,7 +594,7 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
       this._showNewEditTypeSkillDialog(
         targetskill,
         existingLabel,
-        existingGroup
+        existingGroup,
       );
     });
 
@@ -615,11 +618,11 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
       event.preventDefault();
       const targetID = event.currentTarget.getAttribute("data-id");
       const specialTrainingArray = foundry.utils.duplicate(
-        this.actor.system.specialTraining
+        this.actor.system.specialTraining,
       );
       // Get the index of the training to be deleted
       const index = specialTrainingArray.findIndex(
-        (training) => training.id === targetID
+        (training) => training.id === targetID,
       );
 
       specialTrainingArray.splice(index, 1);
@@ -630,10 +633,10 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
       event.preventDefault();
 
       const failedSkills = Object.entries(this.actor.system.skills).filter(
-        (skill) => skill[1].failure
+        (skill) => skill[1].failure,
       );
       const failedTypedSkills = Object.entries(
-        this.actor.system.typedSkills
+        this.actor.system.typedSkills,
       ).filter((skill) => skill[1].failure);
       if (failedSkills.length === 0 && failedTypedSkills.length === 0) {
         ui.notifications.warn("No Skills to Increase");
@@ -652,27 +655,27 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
       failedTypedSkills.forEach(([skillName, skillData], value) => {
         if (value === 0 && failedSkillNames === "") {
           failedSkillNames += `${game.i18n.localize(
-            `DG.TypeSkills.${skillData.group.split(" ").join("")}`
+            `DG.TypeSkills.${skillData.group.split(" ").join("")}`,
           )} (${skillData.label})`;
         } else {
           failedSkillNames += `, ${game.i18n.localize(
-            `DG.TypeSkills.${skillData.group.split(" ").join("")}`
+            `DG.TypeSkills.${skillData.group.split(" ").join("")}`,
           )} (${skillData.label})`;
         }
       });
 
       const baseRollFormula = game.settings.get(
         "deltagreen",
-        "skillImprovementFormula"
+        "skillImprovementFormula",
       );
 
       htmlContent += `<div>`;
       htmlContent += `     <label>${game.i18n.localize(
-        "DG.Skills.ApplySkillImprovementsDialogLabel"
+        "DG.Skills.ApplySkillImprovementsDialogLabel",
       )} <b>+${baseRollFormula}%</b></label>`;
       htmlContent += `     <hr>`;
       htmlContent += `     <span> ${game.i18n.localize(
-        "DG.Skills.ApplySkillImprovementsDialogEffectsFollowing"
+        "DG.Skills.ApplySkillImprovementsDialogEffectsFollowing",
       )} <b>${failedSkillNames}</b> </span>`;
       htmlContent += `</div>`;
 
@@ -689,7 +692,7 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
               this._applySkillImprovements(
                 baseRollFormula,
                 failedSkills,
-                failedTypedSkills
+                failedTypedSkills,
               );
             },
           },
@@ -928,7 +931,7 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
             this._updateTypedSkill(
               targetSkill,
               newTypeSkillLabel,
-              newTypeSkillGroup
+              newTypeSkillGroup,
             );
           },
         },
@@ -1044,17 +1047,17 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
 
   async _showSpecialTrainingDialog(action, targetID) {
     const specialTraining = this.actor.system.specialTraining.find(
-      (training) => training.id === targetID
+      (training) => training.id === targetID,
     );
 
     // Define the option groups for our drop-down menu.
     const optionGroups = {
       stats: game.i18n.localize(
-        "DG.SpecialTraining.Dialog.DropDown.Statistics"
+        "DG.SpecialTraining.Dialog.DropDown.Statistics",
       ),
       skills: game.i18n.localize("DG.SpecialTraining.Dialog.DropDown.Skills"),
       typedSkills: game.i18n.localize(
-        "DG.SpecialTraining.Dialog.DropDown.CustomSkills"
+        "DG.SpecialTraining.Dialog.DropDown.CustomSkills",
       ),
     };
 
@@ -1065,7 +1068,7 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
         group: optionGroups.stats,
         label: game.i18n.localize(`DG.Attributes.${key}`),
         targetNumber: stat.value * 5,
-      })
+      }),
     );
 
     // Prepare simplified skill list
@@ -1075,7 +1078,7 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
         group: optionGroups.skills,
         label: game.i18n.localize(`DG.Skills.${key}`),
         targetNumber: skill.proficiency,
-      })
+      }),
     );
 
     // Prepare simplified typed/custom skill list
@@ -1087,7 +1090,7 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
           game.i18n.localize(`DG.TypeSkills.${skill.group}`) +
           ` (${skill.label})`,
         targetNumber: skill.proficiency,
-      })
+      }),
     );
 
     // Prepare the Select element
@@ -1107,11 +1110,11 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
         statList,
         skillList,
         typedSkillList,
-      }
+      },
     );
 
     const buttonLabel = game.i18n.localize(
-      `DG.SpecialTraining.Dialog.${action}SpecialTraining`
+      `DG.SpecialTraining.Dialog.${action}SpecialTraining`,
     );
 
     // Prepare and render dialog with above template.
@@ -1132,13 +1135,13 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
             if (action === "Create")
               this._createSpecialTraining(
                 specialTrainingLabel,
-                specialTrainingAttribute
+                specialTrainingAttribute,
               );
             if (action === "Edit")
               this._editSpecialTraining(
                 specialTrainingLabel,
                 specialTrainingAttribute,
-                targetID
+                targetID,
               );
           },
         },
@@ -1148,7 +1151,7 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
 
   _createSpecialTraining(label, attribute) {
     const specialTrainingArray = foundry.utils.duplicate(
-      this.actor.system.specialTraining
+      this.actor.system.specialTraining,
     );
     specialTrainingArray.push({
       name: label,
@@ -1160,10 +1163,10 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
 
   _editSpecialTraining(label, attribute, id) {
     const specialTrainingArray = foundry.utils.duplicate(
-      this.actor.system.specialTraining
+      this.actor.system.specialTraining,
     );
     const specialTraining = specialTrainingArray.find(
-      (training) => training.id === id
+      (training) => training.id === id,
     );
     specialTraining.name = label;
     specialTraining.attribute = attribute;
@@ -1189,7 +1192,7 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
       game.i18n.translations.DOCUMENT?.New || "DG.FallbackText.newItem",
       {
         type: game.i18n.localize(`TYPES.Item.${type}`),
-      }
+      },
     );
 
     // Prepare the item object.
@@ -1349,7 +1352,7 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
   async _applySkillImprovements(
     baseRollFormula,
     failedSkills,
-    failedTypedSkills
+    failedTypedSkills,
   ) {
     const actorData = this.actor.system;
     const resultList = [];
@@ -1377,8 +1380,8 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
       // Put the results into a list.
       roll.terms[0].results.forEach((result) =>
         resultList.push(
-          baseRollFormula === "1d4-1" ? result.result - 1 : result.result
-        )
+          baseRollFormula === "1d4-1" ? result.result - 1 : result.result,
+        ),
       );
     }
 
@@ -1396,11 +1399,11 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
       // The if statement tells us whether to add a comma before the term or not.
       if (value === 0) {
         improvedSkillList += `${game.i18n.localize(
-          `DG.Skills.${skill}`
+          `DG.Skills.${skill}`,
         )}: <b>+${resultList[value] ?? 1}%</b>`;
       } else {
         improvedSkillList += `, ${game.i18n.localize(
-          `DG.Skills.${skill}`
+          `DG.Skills.${skill}`,
         )}: <b>+${resultList[value] ?? 1}%</b>`;
       }
     });
@@ -1416,13 +1419,13 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
       // The if statement tells us whether to add a comma before the term or not.
       if (value === 0 && improvedSkillList === "") {
         improvedSkillList += `${game.i18n.localize(
-          `DG.TypeSkills.${skillData.group.split(" ").join("")}`
+          `DG.TypeSkills.${skillData.group.split(" ").join("")}`,
         )} (${skillData.label}): <b>+${
           resultList[value + failedSkills.length] ?? 1
         }%</b>`;
       } else {
         improvedSkillList += `, ${game.i18n.localize(
-          `DG.TypeSkills.${skillData.group.split(" ").join("")}`
+          `DG.TypeSkills.${skillData.group.split(" ").join("")}`,
         )} (${skillData.label}): <b>+${
           resultList[value + failedSkills.length] ?? 1
         }%</b>`;
@@ -1447,7 +1450,7 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
       }),
       content: html,
       flavor: `${game.i18n.localize(
-        "DG.Skills.ApplySkillImprovementsChatFlavor"
+        "DG.Skills.ApplySkillImprovementsChatFlavor",
       )} <b>+${baseRollFormula}%</b>:`,
       type: baseRollFormula === "1" ? 0 : 5, // 0 = CHAT_MESSAGE_TYPES.OTHER, 5 = CHAT_MESSAGE_TYPES.ROLL
       rolls: baseRollFormula === "1" ? [] : [roll], // If adding flat +1, there is no roll.
