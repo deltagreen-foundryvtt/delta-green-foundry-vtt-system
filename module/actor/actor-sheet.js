@@ -9,7 +9,7 @@ import {
 
 const { ActorSheetV2 } = foundry.applications.sheets;
 
-/** * @extends {ActorSheetV2} */
+/** @extends {DGSheetMixin(ActorSheetV2)} */
 export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
   /** @override */
   static DEFAULT_OPTIONS = /** @type {const} */ ({
@@ -34,8 +34,8 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
   });
 
   static PARTS = /** @type {const} */ ({
-    main: {
-      template: `systems/${DG.ID}/templates/actor/actor-sheet.html`,
+    header: {
+      template: `${this.TEMPLATE_PATH}/actor/parts/header.html`,
     },
     tabs: {
       template: `templates/generic/tab-navigation.hbs`, // From FoundryVTT
