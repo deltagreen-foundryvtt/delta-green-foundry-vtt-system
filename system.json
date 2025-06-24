@@ -21,6 +21,12 @@
     "verified": "13",
     "maximum": "13"
   },
+  "flags": {
+    "hotReload": {
+      "extensions": ["css", "hbs", "json"],
+      "paths": ["css", "templates", "lang"]
+    }
+  },
   "esmodules": ["module/deltagreen.js"],
   "styles": ["css/deltagreen.css", "css/dialogue.css"],
   "languages": [
