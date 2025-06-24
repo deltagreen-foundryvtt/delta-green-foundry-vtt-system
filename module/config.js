@@ -5,7 +5,9 @@
  * change.
  */
 
-const DG = {
+const DG = /** @type {const} */ ({
+  ID: "deltagreen",
+
   // All the base skills
   skills: [
     "accounting",
@@ -50,6 +52,6 @@ const DG = {
 
   // All the base rollable stats.
   statistics: ["str", "con", "dex", "int", "pow", "cha"],
-};
+});
 
 export default DG;
