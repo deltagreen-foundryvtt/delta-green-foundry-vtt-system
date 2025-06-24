@@ -1,4 +1,5 @@
 // Import Modules
+import DG from "./config.js";
 import DeltaGreenActor from "./actor/actor.js";
 import DeltaGreenActorSheet from "./actor/actor-sheet.js";
 import DeltaGreenItem from "./item/item.js";
@@ -16,6 +17,8 @@ import {
   rollSkillTestAndDamageForOwnedItem,
 } from "./other/macro-functions.js";
 import { handleInlineActions } from "./other/inline.js";
+
+const { Actors, Items } = foundry.documents.collections;
 
 Hooks.once("init", async () => {
   game.deltagreen = {
@@ -48,26 +51,16 @@ Hooks.once("init", async () => {
   CONFIG.Item.documentClass = DeltaGreenItem;
 
   // Register sheet application classes
-  foundry.documents.collections.Actors.unregisterSheet(
-    "core",
-    foundry.appv1.sheets.ActorSheet
-  );
-  foundry.documents.collections.Items.unregisterSheet(
-    "core",
-    foundry.appv1.sheets.ItemSheet
-  );
-  foundry.documents.collections.Actors.registerSheet(
-    "deltagreen",
-    DeltaGreenActorSheet,
-    {
-      makeDefault: true,
-    }
-  );
-  foundry.documents.collections.Items.registerSheet(
-    "deltagreen",
-    DeltaGreenItemSheet,
-    { makeDefault: true }
-  );
+  Actors.unregisterSheet("core", foundry.appv1.sheets.ActorSheet);
+  Items.unregisterSheet("core", foundry.appv1.sheets.ItemSheet);
+  Actors.registerSheet(DG.ID, DeltaGreenActorSheet, {
+    makeDefault: true,
+    themes: null,
+  });
+  Items.registerSheet(DG.ID, DeltaGreenItemSheet, {
+    makeDefault: true,
+    themes: null,
+  });
 
   // Preload Handlebars Templates
   preloadHandlebarsTemplates();
@@ -78,6 +71,8 @@ Hooks.once("init", async () => {
 
 Hooks.once("ready", async () => {
   // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
+  // TODO: Fix eslint issue on next line
+  // eslint-disable-next-line consistent-return
   Hooks.on("hotbarDrop", (bar, data, slot) => {
     // note - if we don't limit this logic to just items, we'll break re-ording macros on the bar
     if (data.type === "Item") {
@@ -188,15 +183,17 @@ Hooks.on("renderGamePause", function (_, html, options) {
   if (options.cssClass !== "paused") return;
 
   try {
-    let gamePausedOverrideText = game.i18n.translations.DG.MissionPaused;
+    const gamePausedOverrideText = game.i18n.translations.DG.MissionPaused;
 
-    if (typeof gamePausedOverrideText == "undefined") {
+    if (typeof gamePausedOverrideText === "undefined") {
       return;
     }
 
     html.querySelector("figcaption").textContent = gamePausedOverrideText;
     html.querySelector("img").classList.remove("fa-spin"); // I don't like the logo spinning personally
-  } catch {}
+  } catch {
+    // noop
+  }
 });
 
 Hooks.on("renderChatLog", async (app, element, context, options) => {
