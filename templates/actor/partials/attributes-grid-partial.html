@@ -3,7 +3,7 @@
         <div class="flex-group-center flex-mid-border">
         <div class="">
             <div class="physical-stats-outer-grid-3col">
-            <label class="rollable resource-label" data-rolltype="stat" data-key="{{key}}" title="{{localize 'DG.Tooltip.x5AttributeLabel'}}" for="system.statistics.{{key}}.value">{{localize (concat 'DG.Attributes.' key)}}</i></label>
+            <label class="rollable resource-label" data-rolltype="stat" data-key="{{key}}" title="{{localize (concat 'DG.Attributes.desc.' key)}}" for="system.statistics.{{key}}.value">{{localize (concat 'DG.Attributes.' key)}}</i></label>
             <input type="text" name="system.statistics.{{key}}.value" value="{{statistic.value}}" data-dtype="Number"/>
             <span  class="rollable" data-rolltype="stat" data-key="{{key}}" title="{{localize 'DG.Tooltip.x5AttributeLabel'}}">({{numberFormat statistic.x5 decimals=0 sign=false}}% <i class="fas fa-dice"></i>)</span>
             </div >

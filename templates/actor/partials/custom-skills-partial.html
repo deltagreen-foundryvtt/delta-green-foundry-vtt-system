@@ -13,11 +13,13 @@
 
       <div class="item flexrow flex-group-left flex-thin-border">
         <div class="flexrow">
+          <label title="{{localize (concat 'DG.TypeSkills.desc.' skill.group)}}">
+            {{localize (concat 'DG.TypeSkills.' skill.group)}} ({{skill.label}})
+          </label>
           <label class="{{if_gt skill.proficiency 0 'rollable' 'not-rollable'}} skill-label" data-key="{{skill.key}}" data-rolltype="skill" data-roll="d100" data-target="{{skill.proficiency}}" data-label="{{skill.label}}" 
               {{#if skill.proficiency}}title="{{localize 'DG.Tooltip.SkillLabel'}}"{{/if}}
               {{#unless skill.proficiency}}title="{{localize 'DG.Tooltip.CannotRollSkillLabel'}}"{{/unless}} 
             >
-            {{skill.group}} ({{skill.label}})
             <i class="fas fa-dice"></i>
           </label>
           <input class="percentile-skill-input" type="text" name="system.typedSkills.{{skill.key}}.proficiency" value="{{skill.proficiency}}" data-dtype="Number"/>
@@ -37,8 +39,22 @@
 
     <div class="item flexrow flex-group-left flex-thin-border special-training-box">
       <div class="flexrow">
+        {{#if_not_eq (localize (concat 'DG.Attributes.' skill.key)) (concat "DG.Attributes." skill.key)}}
+        <label title="{{localize (concat 'DG.Attributes.desc.' skill.key)}}">
+          {{skill.name}} ({{localize (concat 'DG.Attributes.' skill.key)}}, {{skill.targetNumber}}%)
+        </label>
+        {{else}}
+          {{#if_not_eq (localize (concat 'DG.Skills.' skill.key)) (concat "DG.Skills." skill.key)}}
+            <label title="{{localize (concat 'DG.Skills.desc.' skill.key)}}">
+              {{skill.name}} ({{localize (concat 'DG.Skills.' skill.key)}}, {{skill.targetNumber}}%)
+            </label>
+          {{else}}
+            <label>
+              {{skill.name}} ({{skill.attribute}}, {{skill.targetNumber}}%)
+            </label>
+          {{/if_not_eq}}
+        {{/if_not_eq}}
         <label class="{{if_gt skill.targetNumber 0 'rollable' 'not-rollable'}}" data-key="{{skill.key}}" data-name="{{skill.name}}" data-rolltype="special-training">
-          {{skill.name}} ({{skill.attribute}}, {{skill.targetNumber}}%)
           <i class="fas fa-dice"></i>
         </label>
         <div class="item-controls skill-and-training-controls">
