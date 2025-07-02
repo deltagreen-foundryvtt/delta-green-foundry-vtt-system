@@ -319,23 +319,22 @@ export class DGPercentileRoll extends DGRoll {
 
     let resultString = "";
     let styleOverride = "";
-    if (this.isCritical) {
-      resultString = `${game.i18n.localize("DG.Roll.Critical")} `;
-    }
 
     if (this.isSuccess) {
-      resultString += `${game.i18n.localize("DG.Roll.Success")}`;
-
       if (this.isCritical) {
-        resultString = `${resultString.toUpperCase()}!`;
+        resultString = `${game.i18n.localize("DG.Roll.CriticalSuccess")}`;
+        resultString = `${resultString.toUpperCase()}`;
         styleOverride = "color: green";
+      } else {
+        resultString = `${game.i18n.localize("DG.Roll.Success")}`;
       }
     } else {
-      resultString += `${game.i18n.localize("DG.Roll.Failure")}`;
-
       if (this.isCritical) {
-        resultString = `${resultString.toUpperCase()}!`;
+        resultString = `${game.i18n.localize("DG.Roll.CriticalFailure")}`;
+        resultString = `${resultString.toUpperCase()}`;
         styleOverride = "color: red";
+      } else {
+        resultString = `${game.i18n.localize("DG.Roll.Failure")}`;
       }
     }
 
