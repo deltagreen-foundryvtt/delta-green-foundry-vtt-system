@@ -131,6 +131,16 @@
   "DG.Attributes.pow": "POW",
   "DG.Attributes.cha": "CHA",
 
+  "DG.Attributes.desc.HP": "HP",
+  "DG.Attributes.desc.WP": "WP",
+  "DG.Attributes.desc.SAN": "SAN",
+  "DG.Attributes.desc.str": "STR",
+  "DG.Attributes.desc.con": "CON",
+  "DG.Attributes.desc.dex": "DEX",
+  "DG.Attributes.desc.int": "INT",
+  "DG.Attributes.desc.pow": "POW",
+  "DG.Attributes.desc.cha": "CHA",
+  
   "DG.Navigation.Skills": "Skills",
   "DG.Navigation.Physical": "Statistics",
   "DG.Navigation.Mental": "Psychological",
@@ -198,11 +208,8 @@
   "DG.Bonds.Score": "Score",
   "DG.Bonds.NewBond": "New Bond",
 
-  "DG.Tooltip.HP": "Hit points, a character becomes unconsious at 2 HP, and dies at 0 HP.",
   "DG.Tooltip.MaximumHP": "Maximum health is the average of STR + CON, rounded UP.",
-  "DG.Tooltip.WP": "Willpower Points are mental fuel. Agents require Willpower Points to keep going despite exhaustion or mentally taxing situations.  See page 47 of the Agent's Handbook for more detail.",
   "DG.Tooltip.MaximumWP": "Maximum WP is equal to POW.",
-  "DG.Tooltip.SanityLabel": "Click to roll a SAN test...",
   "DG.Tooltip.CurrentSanityPartOne": "Current sanity, current breaking point is ",
   "DG.Tooltip.CurrentSanityPartTwo": ", click the SAN label above to roll a sanity check.",
   "DG.Tooltip.MaximumSanity": "Maximum sanity is equal to 99 - the Unnatural skill.",

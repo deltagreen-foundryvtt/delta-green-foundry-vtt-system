@@ -59,7 +59,6 @@
   "DG.Skills.SkillGroup": "技能组别",
   "DG.Skills.SkillName": "技能名称",
 
-
   "DG.TypeSkills.Art": "艺术",
   "DG.TypeSkills.Craft": "工艺",
   "DG.TypeSkills.ForeignLanguage": "外语",
@@ -154,11 +153,11 @@
   "DG.Bonds.Score": "关系值",
   "DG.Bonds.NewBond": "新关系",
 
-  "DG.Tooltip.HP": "体力，体力降到2点时，你的特工会陷入昏迷。体力降到0点时，你的特工会死亡。",
+  "DG.Attributes.desc.HP": "体力，体力降到2点时，你的特工会陷入昏迷。体力降到0点时，你的特工会死亡。",
   "DG.Tooltip.MaximumHP": "体力等于力量加上体质，除以二并向上取整。",
-  "DG.Tooltip.WP": "毅力(WP)：毅力代表精神耐受度。特工需要毅力来克服疲劳或精神消耗的情况。（详见47页的毅力一节）",
+  "DG.Attributes.desc.WP": "毅力(WP)：毅力代表精神耐受度。特工需要毅力来克服疲劳或精神消耗的情况。（详见47页的毅力一节）",
   "DG.Tooltip.MaximumWP": "最大毅力等于意志。",
-  "DG.Tooltip.SanityLabel": "点击进行理智检定",
+  "DG.Attributes.desc.SAN": "点击进行理智检定",
   "DG.Tooltip.CurrentSanityPartOne": "当前理智, 当前崩溃点是 ",
   "DG.Tooltip.CurrentSanityPartTwo": ", 点击上方的SAN标签进行理智检定。",
   "DG.Tooltip.MaximumSanity": "最大理智等于99减去非自然知识技能.",
@@ -237,7 +236,6 @@
 
   "DG.RollMode": "掷骰模式",
   "DG.Bonds.Relationship": "关系",
-
 
   "DG.Sheet.BlockHeaders.Attributes": "属性",
   "DG.Sheet.BlockHeaders.Statistics": "统计",
