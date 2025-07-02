@@ -102,11 +102,13 @@
           
           {{#if (hideSkillBasedOnProficiencyAndUserChoice ../actor.system.showUntrainedSkills skill.proficiency)}}
           <div class="flexrow flex-group-left flex-thin-border">
+            <label title="{{localize (concat 'DG.Skills.desc.' skill.key)}}">
+              {{localizeWithFallback (concat "DG.Skills." skill.key) skill.label }}
+				    </label>
             <label class="{{if_gt skill.proficiency 0 'rollable' 'not-rollable'}} skill-label" data-rolltype="skill" data-key="{{skill.key}}" for="system.skills.{{skill.key}}.value" 
                 {{#if skill.proficiency}}title="{{localize 'DG.Tooltip.SkillLabel'}}"{{/if}}
                 {{#unless skill.proficiency}}title="{{localize 'DG.Tooltip.CannotRollSkillLabel'}}"{{/unless}}
-              >
-              {{localizeWithFallback (concat "DG.Skills." skill.key) skill.label }}
+            >
               <i class="fas fa-dice"></i>
             </label>
             <input class="percentile-skill-input" type="text" name="system.skills.{{skill.key}}.proficiency" value="{{skill.proficiency}}" data-dtype="Number" {{#if skill.isCalculatedValue}} disabled {{/if}}/>
