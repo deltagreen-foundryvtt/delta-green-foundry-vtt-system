@@ -175,6 +175,7 @@
   "DG.Generic.AddButtonLabel": "Add",
 
   "DG.Mental.BreakingPoint": "Breaking Point: ",
+  "DG.Mental.desc.BreakingPoint": "The Breaking Point is the exact point of SAN at which your Agent has been worn down enough by trauma to develop a new, long-term mental disorder. If SAN reaches that point or below, subtract your Agent’s POW from the new SAN. That’s your Agent’s new Breaking Point.",
   "DG.Mental.Reset": "Reset",
   "DG.Mental.SanityLossIncidentsLabel": "Incidents of SAN Loss Without Going Insane",
   "DG.Mental.Violence": "Violence",

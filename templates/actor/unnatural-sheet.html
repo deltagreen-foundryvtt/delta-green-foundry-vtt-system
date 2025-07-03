@@ -31,7 +31,7 @@
 
         {{!-- WP --}}
         <div class="resource-outer-grid-1col">
-            <label for="system.wp.value" class="resource-label">{{localize 'DG.Attributes.WP' }}</label>
+            <label for="system.wp.value" class="resource-label" title="{{localize 'DG.Attributes.desc.WP'}}">{{localize 'DG.Attributes.WP' }}</label>
             <div class="resource-inner-grid-3col">
               <input type="text" name="system.wp.value" value="{{actor.system.wp.value}}" data-dtype="Number"/>
               <span> / </span>
@@ -41,7 +41,7 @@
 
         {{!-- Sanity Damage --}}
         <div class="resource-outer-grid-1col">
-          <label class="resource-label rollable" data-rolltype="sanity-damage">{{localize 'DG.Attributes.SAN'}} <i class="fas fa-dice"></i></label>
+          <label class="resource-label rollable" data-rolltype="sanity-damage" title="{{localize 'DG.Attributes.desc.SAN'}}">{{localize 'DG.Attributes.SAN'}} <i class="fas fa-dice"></i></label>
           <div class="resource-inner-grid-3col">
             <input type="text" name="system.sanity.successLoss" value="{{actor.system.sanity.successLoss}}" />
             <span> / </span>
