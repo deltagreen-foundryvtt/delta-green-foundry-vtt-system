@@ -22,7 +22,7 @@
           
           {{!-- HP --}}
           <div class="resource-outer-grid-1col">
-              <label for="actor.system.health.value" class="resource-label" title="{{localize 'DG.Attributes.desc.HP'}}">{{localize 'DG.Attributes.HP' }} (<span>{{actor.system.health.protection}} <i class="fas fa-shield-alt"></i></span>)</label>
+              <label for="actor.system.health.value" class="resource-label" title="{{localize 'DG.Attributes.Tooltip.HP'}}">{{localize 'DG.Attributes.HP' }} (<span>{{actor.system.health.protection}} <i class="fas fa-shield-alt"></i></span>)</label>
               <div class="resource-inner-grid-3col">
                 <input type="text" name="system.health.value" value="{{actor.system.health.value}}" data-dtype="Number"/>
                 <span> / </span>
@@ -35,7 +35,7 @@
 
           {{!-- WP --}}
           <div class="resource-outer-grid-1col">
-              <label for="system.wp.value" class="resource-label" title="{{localize 'DG.Attributes.desc.WP'}}">{{localize 'DG.Attributes.WP' }}</label>
+              <label for="system.wp.value" class="resource-label" title="{{localize 'DG.Attributes.Tooltip.WP'}}">{{localize 'DG.Attributes.WP' }}</label>
               <div class="resource-inner-grid-3col">
                 <input type="text" name="system.wp.value" value="{{actor.system.wp.value}}" data-dtype="Number"/>
                 <span> / </span>
@@ -49,7 +49,7 @@
           {{!-- Sanity --}}
           <div class="resource-outer-grid-1col">
               <label for="system.san.value" class="resource-label rollable"
-                data-rolltype="sanity" title="{{localize 'DG.Attributes.desc.SAN'}}"
+                data-rolltype="sanity" title="{{localize 'DG.Attributes.Tooltip.SAN'}}"
               >{{localize 'DG.Attributes.SAN' }} <i class="fas fa-dice"></i></label>
               <div class="resource-inner-grid-3col">
 
@@ -99,7 +99,7 @@
           <div class="grid grid-3col">
             {{#each actor.system.sortedSkills as |skill key|}}
               <div class="flexrow flex-group-left flex-thin-border">
-				        <label title="{{localize (concat 'DG.Skills.desc.' skill.key)}}">
+				        <label title="{{localize (concat 'DG.Skills.Tooltip.' skill.key)}}">
                   {{localizeWithFallback (concat "DG.Skills." skill.key) skill.label }}
 				        </label>
 				        <label class="{{if_gt skill.proficiency 0 'rollable' 'not-rollable'}} skill-label" data-key="{{skill.key}}" data-rolltype="skill" for="system.skills.{{skill.key}}.value" 
@@ -192,7 +192,7 @@
           </div>
           <div class="">
               <div class="breaking-point-grid-3col">
-                <label class="bolded-label" title="{{localize 'DG.Mental.desc.BreakingPoint'}}">{{localize 'DG.Mental.BreakingPoint'}}</label>
+                <label class="bolded-label" title="{{localize 'DG.Mental.Tooltip.BreakingPoint'}}">{{localize 'DG.Mental.BreakingPoint'}}</label>
                 <input class="centered-input-value" title="{{localize 'DG.Tooltip.BreakPoint'}}" type="text" name="system.sanity.currentBreakingPoint" value="{{actor.system.sanity.currentBreakingPoint}}" data-dtype="Number"/>
                 <a class="btn-tiny btn-reset-breaking-point" title="{{localize 'DG.Tooltip.BreakPointReset'}}">{{localize 'DG.Mental.Reset'}}</a>
               </div>
