@@ -388,7 +388,8 @@ export class DGPercentileRoll extends DGRoll {
       localizedKey = game.i18n.localize(`DG.Attributes.${this.key}`);
     }
     if (skillKeys.includes(this.key)) {
-      target = actorData.skills[this.key].proficiency;
+      // use calculated target proficiency (effects and etc like aim + 20%)
+      target = actorData.skills[this.key].targetProficiency || actorData.skills[this.key].proficiency;
       localizedKey = game.i18n.localize(`DG.Skills.${this.key}`);
     }
     if (typedSkillKeys.includes(this.key)) {

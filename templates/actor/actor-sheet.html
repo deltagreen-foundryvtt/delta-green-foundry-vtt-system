@@ -99,7 +99,7 @@
           <div class="grid grid-3col">
             {{#each actor.system.sortedSkills as |skill key|}}
               <div class="flexrow flex-group-left flex-thin-border">
-                <label class="{{if_gt skill.proficiency 0 'rollable' 'not-rollable'}} skill-label" data-key="{{skill.key}}" data-rolltype="skill" for="system.skills.{{skill.key}}.value" 
+                <label class="{{if_gt skill.targetProficiency 0 'rollable' 'not-rollable'}} skill-label" data-key="{{skill.key}}" data-rolltype="skill" for="system.skills.{{skill.key}}.value"
                     {{#if skill.proficiency}}title="{{localize 'DG.Tooltip.SkillLabel'}}"{{/if}}
                     {{#unless skill.proficiency}}title="{{localize 'DG.Tooltip.CannotRollSkillLabel'}}"{{/unless}}
                   >
@@ -126,7 +126,7 @@
                 {{/if_eq}}
 
                 {{#if_not_eq skill.key 'ritual' }}
-                  <input class="percentile-skill-input" type="text" name="system.skills.{{skill.key}}.proficiency" value="{{skill.proficiency}}" data-dtype="Number" {{#if skill.isCalculatedValue}} disabled {{/if}}/>
+                  <input class="percentile-skill-input {{#if_not_eq skill.proficiency skill.targetProficiency}}targetProficiencyModification{{/if_not_eq}}" type="text" name="system.skills.{{skill.key}}.proficiency" value="{{skill.proficiency}}" data-dtype="Number" title="{{skill.targetProficiency}}" {{#if skill.isCalculatedValue}} disabled {{/if}}/>
                   <input class="checkbox-skill-input" type="checkbox" name="system.skills.{{skill.key}}.failure" {{checked skill.failure}} data-dtype="Boolean" {{#if skill.cannotBeImprovedByFailure}} disabled {{/if}} 
                     title="{{localize 'DG.Tooltip.SkillFailCheckbox'}}"
                     />
