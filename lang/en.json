@@ -391,4 +391,7 @@
   "DG.Settings.hypergeometry.hint": "Always show Hypergeometry item section for players, even if they don't have any items of that type.",
   "DG.Settings.landscapes.name": "Show Impossible Landscapes Content",
   "DG.Settings.landscapes.hint": "Show Impossible Landscapes-specific fields from character sheets."
+
+  "DG.Messages.Skillsmark.Marked": "This skill is marked",
+  "DG.Messages.Skillsmark.Tooltip": "See p. 29 Agent's Handbook"
 }

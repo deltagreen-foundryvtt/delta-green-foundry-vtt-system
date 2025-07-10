@@ -309,5 +309,8 @@
   "DG.ItemWindow.Ritual.ActivationTime": "激活耗时",
   "DG.ItemWindow.Ritual.ActivationCosts": "激活代价",
   "DG.ItemWindow.Ritual.StudyTime": "学习时长",
-  "DG.ItemWindow.Ritual.LearnedSanityDamage": "学习造成的理智损失"
+  "DG.ItemWindow.Ritual.LearnedSanityDamage": "学习造成的理智损失",
+
+  "DG.Messages.Skillsmark.Marked": "此技能被标记",
+  "DG.Messages.Skillsmark.Tooltip": "参见第 29 页《代理人手册》"
 }

@@ -352,5 +352,8 @@
   "DG.Skills.ruby.swim": "すいえい",
   "DG.Skills.ruby.unarmed_combat": "としゅかくとう",
   "DG.Skills.ruby.unnatural": "ひしぜん",
-  "DG.Skills.ruby.flight": "ひこう"
+  "DG.Skills.ruby.flight": "ひこう",
+
+  "DG.Messages.Skillsmark.Marked": "このスキルはマークされています",
+  "DG.Messages.Skillsmark.Tooltip": "エージェントハンドブック29ページ参照"
 }

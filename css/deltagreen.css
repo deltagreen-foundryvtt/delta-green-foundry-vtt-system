@@ -1236,3 +1236,35 @@ body:not(.no-theme) #interface:not(.theme-light) #action-bar .slot.full:hover {
 .target-proficiency-mod {
   color: #247c14;
 }
+
+.rollback-section {
+  order: 99;
+  display: flex;
+  margin-top: 5px;
+  align-items: center;
+  justify-content: center;
+
+  > i {
+    margin: 5px;
+  }
+}
+
+[data-action="rollback-skill-failure-state"] {
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
+  min-height: unset;
+  width: 20px;
+  height: 20px;
+  margin-left: 5px;
+  font-size: 12px;
+}
+
+[data-tooltip] {
+  position: relative;
+  cursor: pointer;
+}
+
+.strike {
+  text-decoration: line-through;
+}

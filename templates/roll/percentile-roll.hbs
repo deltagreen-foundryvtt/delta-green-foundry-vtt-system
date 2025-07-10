@@ -1,0 +1,30 @@
+<div class="dice-roll">
+  <div class="dice-result">
+    <div style="{{styleOverride}}" class="dice-formula">{{resultString}}</div>
+    <div class="dice-tooltip">
+      <section class="tooltip-part">
+        <div class="dice">
+          <header class="part-header flexrow">
+            <span class="part-formula">{{formula}}</span>
+            <span class="part-total">{{total}}</span>
+          </header>
+          <ol class="dice-rolls">
+            <li class="roll die {{formula}}">{{total}}</li>
+          </ol>
+        </div>
+      </section>
+    </div>
+    <h4 class="dice-total">{{total}}</h4>
+  </div>
+
+  {{#if failureMark}}
+    <div class="rollback-section">
+      <label>{{localize 'DG.Messages.Skillsmark.Marked'}}</label>
+      <i class="fa fa-book" aria-hidden="true" data-tooltip="<p>{{localize 'DG.Messages.Skillsmark.Tooltip'}}</p>"></i>
+      <button type="button" data-action="rollback-skill-failure-state">
+        <i class="fa fa-undo" aria-hidden="true"></i>
+      </button>
+    </div>
+  {{/if}}
+
+</div>

@@ -77,12 +77,13 @@ export class DGPercentileRoll extends DGRoll {
     super("1D100", {}, options);
 
     // Set roll info for Skill, Stat, Typed Skill, and non-custom Weapon Percentile rolls.
-    const { target, localizedKey } = this.getRollInfoFromKey(
+    const { target, localizedKey, skillPath } = this.getRollInfoFromKey(
       this.key,
       this.actor.system,
     );
     this.target = target;
     this.localizedKey = localizedKey;
+    this.skillPath = skillPath;
 
     // Set roll info for other Percentile rolls
     switch (this.type) {
@@ -272,50 +273,7 @@ export class DGPercentileRoll extends DGRoll {
       this.options.rollMode = "blindroll";
     }
 
-    let label = `${game.i18n.localize("DG.Roll.Rolling")} <b>${
-      this.localizedKey
-    }</b><br> ${game.i18n.localize("DG.Roll.Target")} ${this.effectiveTarget}%`;
-    // "Inhuman" stat being rolled. See function for details.
-    if (this.isInhuman) {
-      label = `${game.i18n.localize("DG.Roll.Rolling")} <b>${
-        this.localizedKey
-      } [${game.i18n
-        .localize("DG.Roll.Inhuman")
-        .toUpperCase()}]</b> ${game.i18n.localize("DG.Roll.Target")} ${
-        this.effectiveTarget
-      }`;
-    }
-
-    let isExhausted = false;
-    let exhaustedCheckPenalty = -20;
-
-    try {
-      // I suspect (but am not entirely certain) that being tired doesn't make you less lucky)
-      if (this.type !== "luck") {
-        isExhausted = this.actor.system.physical.exhausted;
-        exhaustedCheckPenalty = this.actor.system.physical.exhaustedPenalty;
-        exhaustedCheckPenalty = -1 * Math.abs(exhaustedCheckPenalty);
-      }
-    } catch {
-      isExhausted = false;
-      exhaustedCheckPenalty = -20;
-    }
-
-    if (this.modifier || isExhausted) {
-      label += ` (${this.target}%`;
-
-      if (this.modifier) {
-        label += `${DGUtils.formatStringWithLeadingPlus(this.modifier)}%`;
-      }
-
-      if (isExhausted) {
-        label += `${DGUtils.formatStringWithLeadingPlus(
-          exhaustedCheckPenalty,
-        )}%`;
-      }
-
-      label += `)`;
-    }
+    let label = this.createLabel();
 
     let resultString = "";
     let styleOverride = "";
@@ -338,31 +296,36 @@ export class DGPercentileRoll extends DGRoll {
       }
     }
 
-    let html = "";
-    html += `<div class="dice-roll">`;
-    html += `     <div class="dice-result">`;
-    html += `     <div style="${styleOverride}" class="dice-formula">${resultString}</div>`;
-    html += `     <div class="dice-tooltip">`;
-    html += `          <section class="tooltip-part">`;
-    html += `               <div class="dice">`;
-    html += `                    <header class="part-header flexrow">`;
-    html += `                         <span class="part-formula">`;
-    html += `                              ${this.formula}`;
-    html += `                         </span>`;
-    html += `                         <span class="part-total">`;
-    html += `                              ${this.total}`;
-    html += `                         </span>`;
-    html += `                    </header>`;
-    html += `                    <ol class="dice-rolls">`;
-    html += `                         <li class="roll die ${this.formula}">${this.total}</li>`;
-    html += `                    </ol>`;
-    html += `               </div>`;
-    html += `          </section>`;
-    html += `     </div>`;
-    html += `     <h4 class="dice-total">${this.total}</h4>`;
-    html += `</div>`;
+    let failureMark = !this.isSuccess && this.skillPath
+      && !DGUtils.getValueByPath(this.actor, this.skillPath).failure;
 
-    return this.toMessage({ content: html, flavor: label });
+    const html = await renderTemplate(
+      "systems/deltagreen/templates/roll/percentile-roll.hbs",
+      {
+        styleOverride,
+        resultString,
+        formula: this.formula,
+        total: this.total,
+        failureMark
+      });
+
+    //TODO: add setting for it?
+    if (failureMark) {
+      let keyForUpdate = `${this.skillPath}.failure`;
+
+      //TODO: auto-update actor or post icon with manual apply
+      await this.actor.update({
+        [keyForUpdate]: true
+      })
+
+      return this.toMessage({ flags: { deltagreen: {
+        rollbacks: {
+          [keyForUpdate]: false
+        }
+      } }, content: html, flavor: label });
+    } else {
+      return this.toMessage({ content: html, flavor: label });
+    }
   }
 
   /**
@@ -382,6 +345,7 @@ export class DGPercentileRoll extends DGRoll {
 
     let target = null;
     let localizedKey = null;
+    let skillPath = null;//for optimization failure checks
     if (statKeys.includes(this.key)) {
       target = actorData.statistics[this.key].x5;
       localizedKey = game.i18n.localize(`DG.Attributes.${this.key}`);
@@ -390,17 +354,76 @@ export class DGPercentileRoll extends DGRoll {
       // use calculated target proficiency (effects and etc like aim + 20%)
       target = actorData.skills[this.key].targetProficiency || actorData.skills[this.key].proficiency;
       localizedKey = game.i18n.localize(`DG.Skills.${this.key}`);
+      skillPath = `system.skills.${this.key}`;
     }
     if (typedSkillKeys.includes(this.key)) {
       const skill = actorData.typedSkills[this.key];
       target = skill.proficiency;
       localizedKey = `${skill.group} (${skill.label})`;
+      skillPath = `system.typedSkills.${this.key}`;
     }
     if (this.key === "ritual") {
       target = actorData.sanity.ritual;
       localizedKey = game.i18n.localize(`DG.Skills.ritual`);
     }
-    return { target, localizedKey };
+    return { target, localizedKey, skillPath };
+  }
+
+  /**
+   * Create label based on result of roll
+   *
+   * todo: do we want make isInhuman more similar to base label?
+   *
+   * @returns {string}
+   */
+  createLabel() {
+    let startOfLabel = game.i18n.localize("DG.Roll.Rolling")
+      + ` <b>${this.localizedKey}`
+    let endOfLabel =`${game.i18n.localize("DG.Roll.Target")} ${this.effectiveTarget}`
+
+    let label = this.isInhuman
+      // "Inhuman" stat being rolled. See function for details.
+      ? `${startOfLabel} [${game.i18n.localize("DG.Roll.Inhuman").toUpperCase()}]</b> ${endOfLabel}`
+      : `${startOfLabel}</b><br> ${endOfLabel}%`;
+
+    let {isExhausted, exhaustedCheckPenalty} = this.exhausted
+
+    if (this.modifier || isExhausted) {
+      label += ` (${this.target}%`;
+
+      if (this.modifier) {
+        label += `${DGUtils.formatStringWithLeadingPlus(this.modifier)}%`;
+      }
+
+      if (isExhausted) {
+        label += `${DGUtils.formatStringWithLeadingPlus(
+          exhaustedCheckPenalty,
+        )}%`;
+      }
+
+      label += `)`;
+    }
+
+    return label;
+  }
+
+  get exhausted() {
+    let isExhausted = false;
+    let exhaustedCheckPenalty = -20;
+
+    try {
+      // I suspect (but am not entirely certain) that being tired doesn't make you less lucky)
+      if (this.type !== "luck") {
+        isExhausted = this.actor.system.physical.exhausted;
+        exhaustedCheckPenalty = this.actor.system.physical.exhaustedPenalty;
+        exhaustedCheckPenalty = -1 * Math.abs(exhaustedCheckPenalty);
+      }
+    } catch {
+      isExhausted = false;
+      exhaustedCheckPenalty = -20;
+    }
+
+    return {isExhausted, exhaustedCheckPenalty};
   }
 
   /**
@@ -481,20 +504,7 @@ export class DGPercentileRoll extends DGRoll {
   get effectiveTarget() {
     let target = 1;
 
-    let isExhausted = false;
-    let exhaustedCheckPenalty = -20;
-
-    try {
-      // I suspect (but am not entirely certain) that being tired doesn't make you less lucky)
-      if (this.type !== "luck") {
-        isExhausted = this.actor.system.physical.exhausted;
-        exhaustedCheckPenalty = this.actor.system.physical.exhaustedPenalty;
-        exhaustedCheckPenalty = -1 * Math.abs(exhaustedCheckPenalty);
-      }
-    } catch {
-      isExhausted = false;
-      exhaustedCheckPenalty = -20;
-    }
+    let {isExhausted, exhaustedCheckPenalty} = this.exhausted
 
     if (!this.target || Number.isNaN(this.target)) {
       return null;

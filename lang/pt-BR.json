@@ -311,5 +311,8 @@
   "DG.ItemWindow.Ritual.ActivationTime": "Tempo de Ativação",
   "DG.ItemWindow.Ritual.ActivationCosts": "Custos de Ativação",
   "DG.ItemWindow.Ritual.StudyTime": "Tempo de Estudo",
-  "DG.ItemWindow.Ritual.LearnedSanityDamage": "Dano de SAN ao Aprender"
+  "DG.ItemWindow.Ritual.LearnedSanityDamage": "Dano de SAN ao Aprender",
+
+  "DG.Messages.Skillsmark.Marked": "Esta perícia é marcada",
+  "DG.Messages.Skillsmark.Tooltip": "Veja pág. 29 do Manual do Agente"
 }

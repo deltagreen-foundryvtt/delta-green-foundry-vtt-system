@@ -33,4 +33,15 @@ export default class DGUtils {
   static formatStringWithLeadingPlus(number) {
     return number > 0 ? `+${number}` : number.toString();
   }
+
+  static htmlClosest(element, selectors) {
+    if (element instanceof Element) {
+      return element.closest(selectors);
+    }
+    return null
+  }
+
+  static getValueByPath(obj, path) {
+    return path.split('.').reduce((acc, key) => acc?.[key], obj);
+  }
 }
