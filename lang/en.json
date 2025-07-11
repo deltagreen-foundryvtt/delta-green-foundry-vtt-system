@@ -83,7 +83,7 @@
   "DG.Skills.Tooltip.swim": "Swim - See p. 35 Agent's Handbook",
   "DG.Skills.Tooltip.unarmed_combat": "Unarmed Combat - See p. 35 Agent's Handbook",
   "DG.Skills.Tooltip.unnatural": "Unnatural - See p. 35 Agent's Handbook",
-  
+
   "DG.Skills.AddTypedOrCustomSkill": "Add Typed/Custom Skill",
   "DG.Skills.AddSkill": "Add Skill",
   "DG.Skills.Apply": "Apply",
@@ -112,7 +112,7 @@
   "DG.TypeSkills.Tooltip.Pilot": "Pilot - See p. 34 Agent's Handbook",
   "DG.TypeSkills.Tooltip.Science": "Science - See p. 34 Agent's Handbook",
   "DG.TypeSkills.Tooltip.Other": "Other",
-  
+
   "DG.SpecialTraining.Dialog.CreateSpecialTraining": "Add Special Training",
   "DG.SpecialTraining.Dialog.DropDown.CustomSkills": "Custom/Typed Skills",
   "DG.SpecialTraining.Dialog.DropDown.Skills": "Skills",
@@ -141,7 +141,7 @@
   "DG.Attributes.Tooltip.int": "Intelligence - see p. 19 Agent's Handbook",
   "DG.Attributes.Tooltip.pow": "Power - see p. 19 Agent's Handbook",
   "DG.Attributes.Tooltip.cha": "Charisma - see p. 19 Agent's Handbook",
-  
+
   "DG.Navigation.Skills": "Skills",
   "DG.Navigation.Physical": "Statistics",
   "DG.Navigation.Mental": "Psychological",
@@ -370,5 +370,25 @@
   "DG.ItemWindow.Ritual.StudyTime": "Study Time",
   "DG.ItemWindow.Ritual.LearnedSanityDamage": "Learn SAN Damage",
 
-  "DG.MissionPaused": "Mission Paused"
+  "DG.MissionPaused": "Mission Paused",
+
+  "DG.Settings.charactersheet.name": "Character Sheet Style",
+  "DG.Settings.charactersheet.hint": "Choose how actor sheets should be styled. 'Program' is a more modern government style, where 'Cowboy/Outlaw' is an older, grittier looking typewriter style.",
+  "DG.Settings.charactersheet.cowboys": "The Cowboys",
+  "DG.Settings.charactersheet.outlaws": "The Outlaws",
+  "DG.Settings.charactersheet.program": "The Program",
+  "DG.Settings.sortskills.name": "Sort Skills By Column?",
+  "DG.Settings.sortskills.hint": "Checked sorts by column. Unchecked sorts by row.",
+  "DG.Settings.sanityprivate.name": "Keep Sanity Private",
+  "DG.Settings.sanityprivate.hint": "Hide sanity from players on both character sheet and rolls.",
+  "DG.Settings.improvementroll.name": "Default Skill Improvement Roll",
+  "DG.Settings.improvementroll.hint": " Default 1d4. There have been multiple errata on this, choose which fits best for the pace of your game.",
+  "DG.Settings.improvementroll.1": "Flat +1",
+  "DG.Settings.improvementroll.2": "+1D3%",
+  "DG.Settings.improvementroll.3": "+1D4%",
+  "DG.Settings.improvementroll.4": "+1D4-1%",
+  "DG.Settings.hypergeometry.name": "Always Show Hypergeometry Section for Players",
+  "DG.Settings.hypergeometry.hint": "Always show Hypergeometry item section for players, even if they don't have any items of that type.",
+  "DG.Settings.landscapes.name": "Show Impossible Landscapes Content",
+  "DG.Settings.landscapes.hint": "Show Impossible Landscapes-specific fields from character sheets."
 }
