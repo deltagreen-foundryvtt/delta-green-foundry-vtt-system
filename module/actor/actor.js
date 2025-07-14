@@ -215,6 +215,9 @@ export default class DeltaGreenActor extends Actor {
       } else {
         skill.isCalculatedValue = false;
       }
+
+      // Add field for calculation
+      skill.targetProficiency = skill.proficiency;
     }
 
     system.wp.max = system.statistics.pow.value;
