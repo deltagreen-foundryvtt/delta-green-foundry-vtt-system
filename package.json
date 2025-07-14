@@ -4,7 +4,8 @@
   "description": "This is a fan made but now officially supported rules implementation (system) for [Foundry Virtual Tabletop](https://foundryvtt.com/) system for Delta Green: The RPG, based on the _Agent's Handbook_ rule set from Arc Dream Publishing (_**not** the Call of Cthulu rules_).",
   "main": "deltagreen.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "npx eslint .",
+    "format:check": "prettier --check ."
   },
   "repository": {
     "type": "git",
