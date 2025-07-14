@@ -1234,6 +1234,6 @@ body:not(.no-theme) #interface:not(.theme-light) #action-bar .slot.full:hover {
   border: 2px solid #215112;
 }
 
-.targetProficiencyModification {
+.target-proficiency-mod {
   color: #247c14;
 }
