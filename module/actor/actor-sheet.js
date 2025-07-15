@@ -176,7 +176,6 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
       for (var i = 0; i < data.specialTraining.length; i++) {
         let training = data.specialTraining[i];
 
-        // training.attribute = game.i18n.localize(`DG.Skills.${training.key}`);
         training.type = "training";
         training.sortLabel = training.name.toUpperCase();
         training.actorType = this.actor.type;

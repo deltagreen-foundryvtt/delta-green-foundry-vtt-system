@@ -21,7 +21,7 @@
         
         {{!-- HP --}}
         <div class="resource-outer-grid-1col">
-            <label for="actor.system.health.value" class="resource-label" title="{{localize 'DG.Attributes.Tooltip.HP'}}">{{localize 'DG.Attributes.HP'}} (<span>{{actor.system.health.protection}} <i class="fas fa-shield-alt"></i></span>)</label>
+            <label for="actor.system.health.value" class="resource-label" data-tooltip="{{localize 'DG.Attributes.Tooltip.HP'}}">{{localize 'DG.Attributes.HP'}} (<span>{{actor.system.health.protection}} <i class="fas fa-shield-alt"></i></span>)</label>
             <div class="resource-inner-grid-3col">
               <input type="text" name="system.health.value" value="{{actor.system.health.value}}" data-dtype="Number"/>
               <span> / </span>
@@ -34,7 +34,7 @@
 
         {{!-- WP --}}
         <div class="resource-outer-grid-1col">
-            <label for="system.wp.value" class="resource-label" title="{{localize 'DG.Attributes.Tooltip.WP'}}">{{localize 'DG.Attributes.WP' }}</label>
+            <label for="system.wp.value" class="resource-label" data-tooltip="{{localize 'DG.Attributes.Tooltip.WP'}}">{{localize 'DG.Attributes.WP' }}</label>
             <div class="resource-inner-grid-3col">
               <input type="text" name="system.wp.value" value="{{actor.system.wp.value}}" data-dtype="Number"/>
               <span> / </span>
@@ -48,7 +48,7 @@
         {{!-- Sanity --}}
         <div class="resource-outer-grid-1col">
             <label for="system.wp.value" class="resource-label rollable"
-              data-rolltype="sanity" title="{{localize 'DG.Attributes.Tooltip.SAN'}}"
+              data-rolltype="sanity" data-tooltip="{{localize 'DG.Attributes.Tooltip.SAN'}}"
             >{{localize 'DG.Attributes.SAN' }} <i class="fas fa-dice"></i></label>
             <div class="resource-inner-grid-3col">
               <input type="text" name="system.sanity.value" value="{{actor.system.sanity.value}}" data-dtype="Number" title="{{localize 'DG.Tooltip.CurrentSanityPartOne'}}{{actor.system.sanity.currentBreakingPoint}}{{localize 'DG.Tooltip.CurrentSanityPartTwo'}}" />
@@ -102,12 +102,12 @@
           
           {{#if (hideSkillBasedOnProficiencyAndUserChoice ../actor.system.showUntrainedSkills skill.proficiency)}}
           <div class="flexrow flex-group-left flex-thin-border">
-            <label title="{{localize (concat 'DG.Skills.Tooltip.' skill.key)}}">
+            <label data-tooltip="{{localize (concat 'DG.Skills.Tooltip.' skill.key)}}">
               {{localizeWithFallback (concat "DG.Skills." skill.key) skill.label }}
 				    </label>
             <label class="{{if_gt skill.proficiency 0 'rollable' 'not-rollable'}} skill-label" data-rolltype="skill" data-key="{{skill.key}}" for="system.skills.{{skill.key}}.value" 
-                {{#if skill.proficiency}}title="{{localize 'DG.Tooltip.SkillLabel'}}"{{/if}}
-                {{#unless skill.proficiency}}title="{{localize 'DG.Tooltip.CannotRollSkillLabel'}}"{{/unless}}
+                {{#if skill.proficiency}}data-tooltip="{{localize 'DG.Tooltip.SkillLabel'}}"{{/if}}
+                {{#unless skill.proficiency}}data-tooltip="{{localize 'DG.Tooltip.CannotRollSkillLabel'}}"{{/unless}}
             >
               <i class="fas fa-dice"></i>
             </label>
