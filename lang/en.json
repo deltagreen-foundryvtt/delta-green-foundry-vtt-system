@@ -149,6 +149,9 @@
   "DG.Navigation.CV": "Personal",
   "DG.Navigation.Contacts": "Bonds",
 
+  "DG.About.Changelog": "CHANGELOG (ONLINE)",
+  "DG.About.Copyright": "Published by Arc Dream Publishing by arrangement with the Delta Green Partnership. The intellectual property known as Delta Green is a trademark and copyright owned by the Delta Green Partnership, who has licensed its use here.",
+  "DG.About.License": "The contents of this system are licensed per the terms of the included <a href=\"systems/deltagreen/LICENSE.txt\">license</a> file, excepting those elements that are components of the Delta Green intellectual property.",
   "DG.About.OnlineHelp": "System Documentation on (ONLINE)",
   "DG.About.OnlineHelpTooltip": "Launch browser with online GitHub help.",
   "DG.About.OnlineBugTracker": "Questions, Bug Reports or Feature Requests (ONLINE)",
