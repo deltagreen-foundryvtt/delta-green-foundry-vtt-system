@@ -62,6 +62,9 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
       template: `${this.TEMPLATE_PATH}/actor/parts/bio-tab.html`,
       templates: [`${this.TEMPLATE_PATH}/actor/partials/cv-partial.html`],
     },
+    bonds: {
+      template: `${this.TEMPLATE_PATH}/actor/parts/bonds-tab.html`,
+    },
   });
 
   /* -------------------------------------------- */
