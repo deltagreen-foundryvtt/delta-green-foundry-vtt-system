@@ -86,7 +86,7 @@
     }
   ],
   "packFolders": [{
-      "name": "Delta Green | system",
+      "name": "Delta Green",
       "sorting": "a",
       "color": "#556b2f",
       "packs": ["firearms","armor","hand-to-hand-weapons","agent-pregens","operation-code-name-generator-tables","operation-code-name-generator-macro"]
