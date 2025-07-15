@@ -1,7 +1,7 @@
 <header class="sheet-header">
     <div class="header-fields">
         {{!-- Name, Profession, Portrait --}}
-        <div class="flexrow">
+        <div class="header-top flexrow">
             <img class="profile-img"
                  src="{{actor.img}}"
                  data-edit="img"
@@ -36,7 +36,8 @@
                     {{localize 'DG.Attributes.HP' }} (<span>{{actor.system.health.protection}} <i class="fas fa-shield-alt"></i></span>)
                 </label>
                 <div class="resource-inner-grid-3col">
-                    <input type="text"
+                    <input class="centered"
+                           type="text"
                            name="system.health.value"
                            value="{{actor.system.health.value}}"
                            data-dtype="Number" />
@@ -55,7 +56,8 @@
                     {{localize 'DG.Attributes.WP' }}
                 </label>
                 <div class="resource-inner-grid-3col">
-                    <input type="text"
+                    <input class="centered"
+                           type="text"
                            name="system.wp.value"
                            value="{{actor.system.wp.value}}"
                            data-dtype="Number" />
@@ -84,13 +86,14 @@
                         </div>
                     {{/if}}
                     {{#unless (keepSanityPrivate)}}
-                        <input class="{{#if actor.system.sanity.breakingPointHit }}
+                        <input class="centered
+                                      {{#if actor.system.sanity.breakingPointHit }}
                                           breaking-point-hit{{/if }}"
                                type="text"
                                name="system.sanity.value"
                                value="{{actor.system.sanity.value }}"
                                data-dtype="Number"
-                               data-tooltip="{{localize 'DG.Tooltip.CurrentSanityPartOne' }}{{actor.system.sanity.currentBreakingPoint }}{{localize 'DG.Tooltip.CurrentSanityPartTwo'}}" />
+                               data-tooltip="{{localize 'DG.Tooltip.CurrentSanityPartOne' }}{{actor.system.sanity.currentBreakingPoint }}{{localize 'DG.Tooltip.CurrentSanityPartTwo' }}" />
                         <span>/</span>
                         <div class="max-resource-value"
                              data-tooltip="{{localize 'DG.Tooltip.MaximumSanity'}}">

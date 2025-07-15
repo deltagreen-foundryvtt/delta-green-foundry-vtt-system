@@ -58,13 +58,9 @@
         </div>
         <div>
             <label class="bolded-label">{{localize 'DG.Physical.Wounds'}}</label>
-            <!--<input class="fill-remaining-space"
-       type="text"
-       name="system.physical.wounds"
-       value="{{system.physical.wounds}}"
-       data-dtype="String" /> -->
+
             <!-- This seems to save values, but not retrieve them... -->
-            <textarea class="wounds" rows="10" cols="10" name="system.physical.wounds">{{actor.system.physical.wounds}}</textarea>
+            <textarea class="wounds" name="system.physical.wounds">{{actor.system.physical.wounds}}</textarea>
         </div>
     </div>
 </div>

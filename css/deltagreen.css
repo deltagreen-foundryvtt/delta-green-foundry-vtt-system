@@ -40,18 +40,9 @@
 
 /* Global styles */
 
-/* Hacky overrides of outer Foundry stuff */
-
-/* Override default foundry CSS to remove padding, so that our background image can take up the whole window */
 .deltagreen section.window-content {
-  padding: 0 !important;
   scrollbar-color: #215112 #111 !important;
-}
-
-/* Override the default Foundry CSS to add the padding we removed from the outer window back in */
-.deltagreen section.window-content form.locked,
-.deltagreen section.window-content form.editable {
-  padding: 6px 6px 6px 6px !important;
+  padding: 0.5rem;
 }
 
 /* Character Sheet Style Options */
@@ -307,15 +298,13 @@ explicitly define a number of rows, rather than columns. */
 }
 
 .deltagreen .sheet-header .profile-img {
+  height: 100px;
+  flex: 0 0 100px;
   -webkit-box-flex: 0;
   -ms-flex: 0 0 100px;
-  flex: 0 0 100px;
-  height: 100px;
-  margin-right: 5px;
-}
 
-.profile-img {
-  margin-bottom: 5px;
+  border: 1px solid black;
+  margin-right: 5px;
 }
 
 .deltagreen .sheet-header .header-fields {
@@ -326,21 +315,17 @@ explicitly define a number of rows, rather than columns. */
 
 .deltagreen .sheet-header h1.charname {
   height: 55px;
+  font-family: inherit;
+  font-size: 2rem;
   padding: 0px;
   border-bottom: 0;
+  margin-bottom: 0;
 }
 
 .deltagreen .sheet-header h1.charname input {
   width: 100%;
   height: 100%;
   margin: 0;
-}
-
-.deltagreen .sheet-body,
-.deltagreen .sheet-body .tab,
-.deltagreen .sheet-body .tab .editor {
-  height: 100% !important;
-  flex: auto;
 }
 
 .deltagreen .resource-label {
@@ -351,18 +336,9 @@ explicitly define a number of rows, rather than columns. */
   border-bottom: transparent !important;
   border-top: transparent !important;
 }
-
-.deltagreen section.sheet-body {
-  border: #000 !important;
-  border-width: 2px !important;
-  border-style: solid !important;
-  border-radius: 3px 3px 3px 3px;
-
-  padding: 5px;
-}
-
 .deltagreen .tabs {
   height: auto;
+  line-height: 2;
   text-align: center;
   vertical-align: middle;
   margin-bottom: 0px !important;
@@ -388,6 +364,17 @@ explicitly define a number of rows, rather than columns. */
   border: #000;
   border-width: 2px 2px 0px 2px;
   border-style: solid;
+}
+
+.deltagreen .tab {
+  height: 100%;
+
+  border-color: #000;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 3px;
+
+  padding: 5px;
 }
 
 .deltagreen .program-style .tabs [data-action="tab"].active {
@@ -531,10 +518,20 @@ input.checkbox-skill-input {
   align-self: center;
 }
 
+.deltagreen .sheet-header .header-top {
+  margin-bottom: 5px;
+}
+
+.deltagreen .sheet-header .charname input {
+  /* font-family: "SpecialElite", sans-serif; */
+}
+
 .deltagreen .sheet-header h2.profession {
-  border-bottom: 0px;
+  font-family: inherit;
+  font-size: 1.5rem;
+  border-bottom: 0;
   margin-top: 5px;
-  margin-right: 0px;
+  margin-bottom: 0;
 }
 
 .deltagreen .sheet-header h2.profession input {
@@ -586,7 +583,7 @@ div span.bio-grid-label {
   padding-bottom: 10px;
 }
 
-.centered-input-value {
+.centered {
   text-align: center !important;
 }
 
@@ -642,6 +639,7 @@ div span.bio-grid-label {
 
 .resource .labeled-resource-checkbox {
   vertical-align: middle;
+  margin-bottom: 0;
 }
 
 .resource .first-aid-label {
@@ -670,15 +668,16 @@ div .exhausted-section {
 
 .exhausted-section input[type="number"] {
   width: 75px;
+
+  color: rgb(139, 0, 0);
   text-align: center;
+
+  background-color: rgba(0, 0, 0, 0.05);
+
   border: 1px solid rgb(122, 121, 113);
   border-radius: 3px;
-  height: 100%;
   margin-left: 10px;
   margin-bottom: 5px;
-  min-height: 25px;
-  color: rgb(139, 0, 0);
-  background-color: rgba(0, 0, 0, 0.05);
 }
 
 .resource .exhaustion-label {
@@ -705,6 +704,8 @@ div .exhausted-section {
 
 textarea.wounds {
   resize: none;
+  height: 100px;
+  width: 100%;
 }
 
 .resource-inner-grid-3col {
@@ -820,7 +821,6 @@ div.motivation-editor-container div.editor {
 }
 
 .deltagreen .editor-host .editor {
-  min-height: 150px;
   height: 100% !important;
 }
 
