@@ -1,101 +1,104 @@
 <header class="sheet-header">
-  <div class="header-fields">
-    {{!-- Name, Profession, Portrait --}}
-    <div class="flexrow">
-      <img class="profile-img"
-           src="{{actor.img}}"
-           data-edit="img"
-           data-tooltip="{{actor.name}}"
-           height="150"
-           width="100" />
-      <div>
-        <div class="">
-          <h1 class="charname">
-            <input name="name"
-                   type="text"
-                   value="{{actor.name}}"
-                   data-tooltip="{{localize 'DG.AgentNameFieldTooltip' }}" />
-          </h1>
-        </div>
-        <div class="profession">
-          <h2 class="profession">
-            <input name="system.biography.profession"
-                   type="text"
-                   value="{{actor.system.biography.profession}}"
-                   placeholder="{{localize 'DG.FallbackText.ProfessionAndOrRank'}}" />
-          </h2>
-        </div>
-      </div>
-    </div>
-    <div class="resources grid grid-3col">
-      {{!-- HP --}}
-      <div class="resource-outer-grid-1col">
-        <label for="actor.system.health.value"
-               class="resource-label"
-               data-tooltip="{{localize 'DG.Attributes.Tooltip.HP'}}">
-          {{localize 'DG.Attributes.HP' }} (<span>{{actor.system.health.protection}} <i class="fas fa-shield-alt"></i></span>)
-        </label>
-        <div class="resource-inner-grid-3col">
-          <input type="text"
-                 name="system.health.value"
-                 value="{{actor.system.health.value}}"
-                 data-dtype="Number" />
-          <span>/</span>
-          <div class="max-resource-value"
-               data-tooltip="{{localize 'DG.Tooltip.MaximumHP'}}">
-            <div>{{numberFormat actor.system.health.max decimals=0 sign=false}}</div>
-          </div>
-        </div>
-      </div>
-      {{!-- WP --}}
-      <div class="resource-outer-grid-1col">
-        <label for="system.wp.value"
-               class="resource-label"
-               data-tooltip="{{localize 'DG.Attributes.Tooltip.WP'}}">{{localize 'DG.Attributes.WP' }}</label>
-        <div class="resource-inner-grid-3col">
-          <input type="text"
-                 name="system.wp.value"
-                 value="{{actor.system.wp.value}}"
-                 data-dtype="Number" />
-          <span>/</span>
-          <div class="max-resource-value"
-               data-tooltip="{{localize 'DG.Tooltip.MaximumWP'}}">
-            <div>{{numberFormat actor.system.wp.max decimals=0 sign=false}}</div>
-          </div>
-        </div>
-      </div>
-      {{!-- Sanity --}}
-      <div class="resource-outer-grid-1col">
-        <label for="system.san.value"
-               class="resource-label rollable"
-               data-rolltype="sanity"
-               data-tooltip="{{localize 'DG.Attributes.Tooltip.SAN'}}">
-          {{localize 'DG.Attributes.SAN' }} <i class="fas fa-dice"></i>
-        </label>
-        <div class="resource-inner-grid-3col">
-          {{#if (keepSanityPrivate) }}
-            <input type="text" value="??" disabled data-tooltip="" />
-            <span>/</span>
-            <div class="max-resource-value"
-                 data-tooltip="{{localize 'DG.Tooltip.MaximumSanity'}}">
-              <div>{{numberFormat actor.system.sanity.max decimals=0 sign=false}}</div>
+    <div class="header-fields">
+        {{!-- Name, Profession, Portrait --}}
+        <div class="flexrow">
+            <img class="profile-img"
+                 src="{{actor.img}}"
+                 data-edit="img"
+                 data-tooltip="{{actor.name}}"
+                 height="150"
+                 width="100" />
+            <div>
+                <div class="">
+                    <h1 class="charname">
+                        <input name="name"
+                               type="text"
+                               value="{{actor.name}}"
+                               data-tooltip="{{localize 'DG.AgentNameFieldTooltip' }}" />
+                    </h1>
+                </div>
+                <div class="profession">
+                    <h2 class="profession">
+                        <input name="system.biography.profession"
+                               type="text"
+                               value="{{actor.system.biography.profession}}"
+                               placeholder="{{localize 'DG.FallbackText.ProfessionAndOrRank'}}" />
+                    </h2>
+                </div>
             </div>
-          {{/if}}
-          {{#unless (keepSanityPrivate)}}
-          <input class="{{#if actor.system.sanity.breakingPointHit }}breaking-point-hit{{/if }}"
-                 type="text"
-                 name="system.sanity.value"
-                 value="{{actor.system.sanity.value }}"
-                 data-dtype="Number"
-                 data-tooltip="{{localize 'DG.Tooltip.CurrentSanityPartOne' }}{{actor.system.sanity.currentBreakingPoint}}{{localize 'DG.Tooltip.CurrentSanityPartTwo'}}" />
-          <span>/</span>
-          <div class="max-resource-value"
-               data-tooltip="{{localize 'DG.Tooltip.MaximumSanity'}}">
-            <div>{{numberFormat actor.system.sanity.max decimals=0 sign=false}}</div>
-          </div>
-        {{/unless}}
-      </div>
+        </div>
+        <div class="resources grid grid-3col">
+            {{!-- HP --}}
+            <div class="resource-outer-grid-1col">
+                <label for="actor.system.health.value"
+                       class="resource-label"
+                       data-tooltip="{{localize 'DG.Attributes.Tooltip.HP'}}">
+                    {{localize 'DG.Attributes.HP' }} (<span>{{actor.system.health.protection}} <i class="fas fa-shield-alt"></i></span>)
+                </label>
+                <div class="resource-inner-grid-3col">
+                    <input type="text"
+                           name="system.health.value"
+                           value="{{actor.system.health.value}}"
+                           data-dtype="Number" />
+                    <span>/</span>
+                    <div class="max-resource-value"
+                         data-tooltip="{{localize 'DG.Tooltip.MaximumHP'}}">
+                        <div>{{numberFormat actor.system.health.max decimals=0 sign=false}}</div>
+                    </div>
+                </div>
+            </div>
+            {{!-- WP --}}
+            <div class="resource-outer-grid-1col">
+                <label for="system.wp.value"
+                       class="resource-label"
+                       data-tooltip="{{localize 'DG.Attributes.Tooltip.WP'}}">
+                    {{localize 'DG.Attributes.WP' }}
+                </label>
+                <div class="resource-inner-grid-3col">
+                    <input type="text"
+                           name="system.wp.value"
+                           value="{{actor.system.wp.value}}"
+                           data-dtype="Number" />
+                    <span>/</span>
+                    <div class="max-resource-value"
+                         data-tooltip="{{localize 'DG.Tooltip.MaximumWP'}}">
+                        <div>{{numberFormat actor.system.wp.max decimals=0 sign=false}}</div>
+                    </div>
+                </div>
+            </div>
+            {{!-- Sanity --}}
+            <div class="resource-outer-grid-1col">
+                <label for="system.san.value"
+                       class="resource-label rollable"
+                       data-rolltype="sanity"
+                       data-tooltip="{{localize 'DG.Attributes.Tooltip.SAN'}}">
+                    {{localize 'DG.Attributes.SAN' }} <i class="fas fa-dice"></i>
+                </label>
+                <div class="resource-inner-grid-3col">
+                    {{#if (keepSanityPrivate) }}
+                        <input type="text" value="??" disabled data-tooltip="" />
+                        <span>/</span>
+                        <div class="max-resource-value"
+                             data-tooltip="{{localize 'DG.Tooltip.MaximumSanity'}}">
+                            <div>{{numberFormat actor.system.sanity.max decimals=0 sign=false}}</div>
+                        </div>
+                    {{/if}}
+                    {{#unless (keepSanityPrivate)}}
+                        <input class="{{#if actor.system.sanity.breakingPointHit }}
+                                          breaking-point-hit{{/if }}"
+                               type="text"
+                               name="system.sanity.value"
+                               value="{{actor.system.sanity.value }}"
+                               data-dtype="Number"
+                               data-tooltip="{{localize 'DG.Tooltip.CurrentSanityPartOne' }}{{actor.system.sanity.currentBreakingPoint }}{{localize 'DG.Tooltip.CurrentSanityPartTwo'}}" />
+                        <span>/</span>
+                        <div class="max-resource-value"
+                             data-tooltip="{{localize 'DG.Tooltip.MaximumSanity'}}">
+                            <div>{{numberFormat actor.system.sanity.max decimals=0 sign=false}}</div>
+                        </div>
+                    {{/unless}}
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
 </header>
