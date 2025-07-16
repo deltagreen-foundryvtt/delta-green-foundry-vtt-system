@@ -66,7 +66,7 @@
   "DG.TypeSkills.Pilot": "Pilotage",
   "DG.TypeSkills.Science": "Science",
   "DG.TypeSkills.Other": "Autre",
-  
+
   "DG.SpecialTraining.Dialog.CreateSpecialTraining": "Ajouter un Entraînement Spécial",
   "DG.SpecialTraining.Dialog.DropDown.CustomSkills": "Compétences Personnalisées/Typées",
   "DG.SpecialTraining.Dialog.DropDown.Skills": "Compétences",
@@ -153,11 +153,11 @@
   "DG.Bonds.Score": "Score",
   "DG.Bonds.NewBond": "Nouvelle Attache",
 
-  "DG.Tooltip.HP": "Points de vie, un personnage devient inconscient à 2PV et meurt à 0PV",
+  "DG.Attributes.Tooltip.HP": "Points de vie, un personnage devient inconscient à 2PV et meurt à 0PV",
   "DG.Tooltip.MaximumHP": "La Santé maximum est la moyenne de FOR+CON, arrondi au supérieur",
-  "DG.Tooltip.WP": "Les Points de Volonté (VOL) sont le carburant psychologique. Les Agents ont besoin de Points de Volonté pour continuer à travailler malgré l'épuisement ou les situations mentalement éprouvantes.  Voir la page 47 du Manuel de l'agent pour plus de détails",
+  "DG.Attributes.Tooltip.WP": "Les Points de Volonté (VOL) sont le carburant psychologique. Les Agents ont besoin de Points de Volonté pour continuer à travailler malgré l'épuisement ou les situations mentalement éprouvantes.  Voir la page 47 du Manuel de l'agent pour plus de détails",
   "DG.Tooltip.MaximumWP": "La Volonté maximum est égale au POUVOIR",
-  "DG.Tooltip.SanityLabel": "Cliquer pour effectuer un jet de Santé Mentale",
+  "DG.Attributes.Tooltip.SAN": "Cliquer pour effectuer un jet de Santé Mentale",
   "DG.Tooltip.CurrentSanityPartOne": "Santé Mentale actuelle, le seuil de rupture actuel est ",
   "DG.Tooltip.CurrentSanityPartTwo": ", cliquez sur SAN ci-dessus pour effectuer un jet de santé mentale",
   "DG.Tooltip.MaximumSanity": "La Santé Mentale maximum est égale à 99 moins la compétence Paranaturel",

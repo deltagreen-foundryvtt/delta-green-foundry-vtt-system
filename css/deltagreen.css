@@ -345,7 +345,6 @@ explicitly define a number of rows, rather than columns. */
 
 .deltagreen .resource-label {
   font-weight: bold;
-  text-transform: uppercase;
 }
 
 .sheet nav.sheet-tabs {

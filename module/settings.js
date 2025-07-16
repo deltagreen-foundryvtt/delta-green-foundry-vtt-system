@@ -1,16 +1,16 @@
 export default function registerSystemSettings() {
   game.settings.register("deltagreen", "characterSheetStyle", {
-    name: "Character Sheet Style",
-    hint: "Choose how actor sheets should be styled. 'Program' is a more modern government style, where 'Cowboy/Outlaw' is an older, grittier looking typewriter style.",
+    name: game.i18n.localize("DG.Settings.charactersheet.name"),
+    hint: game.i18n.localize("DG.Settings.charactersheet.hint"),
     scope: "world", // This specifies a world-stored setting
     config: true, // This specifies that the setting appears in the configuration view
     requiresReload: true,
     type: String,
     choices: {
       // If choices are defined, the resulting setting will be a select menu
-      cowboy: "The Cowboys",
-      outlaw: "The Outlaws",
-      program: "The Program",
+      cowboy: game.i18n.localize("DG.Settings.charactersheet.cowboys"),
+      outlaw: game.i18n.localize("DG.Settings.charactersheet.outlaws"),
+      program: game.i18n.localize("DG.Settings.charactersheet.program"),
     },
     default: "program", // The default value for the setting
     onChange: (value) => {
@@ -20,8 +20,8 @@ export default function registerSystemSettings() {
   });
 
   game.settings.register("deltagreen", "sortSkills", {
-    name: "Sort Skills By Column?",
-    hint: "Checked sorts by column. Unchecked sorts by row.",
+    name: game.i18n.localize("DG.Settings.sortskills.name"),
+    hint: game.i18n.localize("DG.Settings.sortskills.hint"),
     scope: "client",
     config: true,
     requiresReload: true,
@@ -30,8 +30,8 @@ export default function registerSystemSettings() {
   });
 
   game.settings.register("deltagreen", "keepSanityPrivate", {
-    name: "Keep Sanity Private",
-    hint: "Hide sanity from players on both character sheet and rolls.",
+    name: game.i18n.localize("DG.Settings.sanityprivate.name"),
+    hint: game.i18n.localize("DG.Settings.sanityprivate.hint"),
     scope: "world",
     config: true,
     requiresReload: true,
@@ -40,17 +40,17 @@ export default function registerSystemSettings() {
   });
 
   game.settings.register("deltagreen", "skillImprovementFormula", {
-    name: "Default Skill Improvement Roll",
-    hint: " Default 1d4. There have been multiple errata on this, choose which fits best for the pace of your game.",
+    name: game.i18n.localize("DG.Settings.improvementroll.name"),
+    hint: game.i18n.localize("DG.Settings.improvementroll.hint"),
     scope: "world", // This specifies a world-stored setting
     config: true, // This specifies that the setting appears in the configuration view
     type: String,
     choices: {
       // If choices are defined, the resulting setting will be a select menu
-      1: "Flat +1",
-      "1d3": "+1D3%",
-      "1d4": "+1D4%",
-      "1d4-1": "+1D4-1%",
+      1: game.i18n.localize("DG.Settings.improvementroll.1"),
+      "1d3": game.i18n.localize("DG.Settings.improvementroll.2"),
+      "1d4": game.i18n.localize("DG.Settings.improvementroll.3"),
+      "1d4-1": game.i18n.localize("DG.Settings.improvementroll.4"),
     },
     default: "1d4", // The default value for the setting, per the most recent errata.
     onChange: (value) => {
@@ -63,8 +63,8 @@ export default function registerSystemSettings() {
     "deltagreen",
     "alwaysShowHypergeometrySectionForPlayers",
     {
-      name: "Always Show Hypergeometry Section for Players",
-      hint: "Always show Hypergeometry item section for players, even if they don't have any items of that type.",
+      name: game.i18n.localize("DG.Settings.hypergeometry.name"),
+      hint: game.i18n.localize("DG.Settings.hypergeometry.hint"),
       scope: "world",
       config: true,
       requiresReload: true,
@@ -74,8 +74,8 @@ export default function registerSystemSettings() {
   );
 
   game.settings.register("deltagreen", "showImpossibleLandscapesContent", {
-    name: "Show Impossible Landscapes Content",
-    hint: "Show Impossible Landscapes-specific fields from character sheets.",
+    name: game.i18n.localize("DG.Settings.landscapes.name"),
+    hint: game.i18n.localize("DG.Settings.landscapes.hint"),
     scope: "world",
     config: true,
     requiresReload: true,

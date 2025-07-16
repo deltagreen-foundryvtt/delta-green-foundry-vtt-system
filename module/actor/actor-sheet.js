@@ -808,11 +808,11 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
     htmlContent += `     <select name="new-type-skill-group" />`;
 
     if (currentGroup === game.i18n.translations.DG?.TypeSkills?.Art ?? "Art") {
-      htmlContent += `          <option selected>${
+      htmlContent += `          <option value="Art" selected>${
         game.i18n.translations.DG?.TypeSkills?.Art ?? "Art"
       }</option>`;
     } else {
-      htmlContent += `          <option>${
+      htmlContent += `          <option value="Art">${
         game.i18n.translations.DG?.TypeSkills?.Art ?? "Art"
       }</option>`;
     }
@@ -821,11 +821,11 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
       currentGroup === game.i18n.translations.DG?.TypeSkills?.Craft ??
       "Craft"
     ) {
-      htmlContent += `          <option selected>${
+      htmlContent += `          <option value="Craft" selected>${
         game.i18n.translations.DG?.TypeSkills?.Craft ?? "Craft"
       }</option>`;
     } else {
-      htmlContent += `          <option>${
+      htmlContent += `          <option value="Craft">${
         game.i18n.translations.DG?.TypeSkills?.Craft ?? "Craft"
       }</option>`;
     }
@@ -834,12 +834,12 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
       currentGroup === game.i18n.translations.DG?.TypeSkills?.ForeignLanguage ??
       "Foreign Language"
     ) {
-      htmlContent += `          <option selected>${
+      htmlContent += `          <option value="ForeignLanguage" selected>${
         game.i18n.translations.DG?.TypeSkills?.ForeignLanguage ??
         "Foreign Language"
       }</option>`;
     } else {
-      htmlContent += `          <option>${
+      htmlContent += `          <option value="ForeignLanguage">${
         game.i18n.translations.DG?.TypeSkills?.ForeignLanguage ??
         "Foreign Language"
       }</option>`;
@@ -849,12 +849,12 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
       currentGroup === game.i18n.translations.DG?.TypeSkills?.MilitaryScience ??
       "Military Science"
     ) {
-      htmlContent += `          <option selected>${
+      htmlContent += `          <option value="MilitaryScience" selected>${
         game.i18n.translations.DG?.TypeSkills?.MilitaryScience ??
         "Military Science"
       }</option>`;
     } else {
-      htmlContent += `          <option>${
+      htmlContent += `          <option value="MilitaryScience">${
         game.i18n.translations.DG?.TypeSkills?.MilitaryScience ??
         "Military Science"
       }</option>`;
@@ -864,11 +864,11 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
       currentGroup === game.i18n.translations.DG?.TypeSkills?.Pilot ??
       "Pilot"
     ) {
-      htmlContent += `          <option selected>${
+      htmlContent += `          <option value="Pilot" selected>${
         game.i18n.translations.DG?.TypeSkills?.Pilot ?? "Pilot"
       }</option>`;
     } else {
-      htmlContent += `          <option>${
+      htmlContent += `          <option value="Pilot">${
         game.i18n.translations.DG?.TypeSkills?.Pilot ?? "Pilot"
       }</option>`;
     }
@@ -877,11 +877,11 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
       currentGroup === game.i18n.translations.DG?.TypeSkills?.Science ??
       "Science"
     ) {
-      htmlContent += `          <option selected>${
+      htmlContent += `          <option value="Science" selected>${
         game.i18n.translations.DG?.TypeSkills?.Science ?? "Science"
       }</option>`;
     } else {
-      htmlContent += `          <option>${
+      htmlContent += `          <option value="Science">${
         game.i18n.translations.DG?.TypeSkills?.Science ?? "Science"
       }</option>`;
     }
@@ -890,11 +890,11 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
       currentGroup === game.i18n.translations.DG?.TypeSkills?.Other ??
       "Other"
     ) {
-      htmlContent += `          <option selected>${
+      htmlContent += `          <option value="Other" selected>${
         game.i18n.translations.DG?.TypeSkills?.Other ?? "Other"
       }</option>`;
     } else {
-      htmlContent += `          <option>${
+      htmlContent += `          <option value="Other">${
         game.i18n.translations.DG?.TypeSkills?.Other ?? "Other"
       }</option>`;
     }
@@ -944,27 +944,27 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
       game.i18n.translations.DG?.Skills?.SkillGroup ?? "Skill Group"
     }:</label>`;
     htmlContent += `     <select name="new-type-skill-group" />`;
-    htmlContent += `          <option>${
+    htmlContent += `          <option value="Art">${
       game.i18n.translations.DG?.TypeSkills?.Art ?? "Art"
     }</option>`;
-    htmlContent += `          <option>${
+    htmlContent += `          <option value="Craft">${
       game.i18n.translations.DG?.TypeSkills?.Craft ?? "Craft"
     }</option>`;
-    htmlContent += `          <option>${
+    htmlContent += `          <option value="ForeignLanguage">${
       game.i18n.translations.DG?.TypeSkills?.ForeignLanguage ??
       "Foreign Language"
     }</option>`;
-    htmlContent += `          <option>${
+    htmlContent += `          <option value="MilitaryScience">${
       game.i18n.translations.DG?.TypeSkills?.MilitaryScience ??
       "Military Science"
     }</option>`;
-    htmlContent += `          <option>${
+    htmlContent += `          <option value="Pilot">${
       game.i18n.translations.DG?.TypeSkills?.Pilot ?? "Pilot"
     }</option>`;
-    htmlContent += `          <option>${
+    htmlContent += `          <option value="Science">${
       game.i18n.translations.DG?.TypeSkills?.Science ?? "Science"
     }</option>`;
-    htmlContent += `          <option>${
+    htmlContent += `          <option value="Other">${
       game.i18n.translations.DG?.TypeSkills?.Other ?? "Other"
     }</option>`;
     htmlContent += `     </select>`;
@@ -1073,7 +1073,7 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
       ([key, skill]) => ({
         value: key,
         group: optionGroups.skills,
-        label: skill.label,
+        label: game.i18n.localize(`DG.Skills.${key}`),
         targetNumber: skill.proficiency,
       })
     );
@@ -1083,7 +1083,9 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
       ([key, skill]) => ({
         value: key,
         group: optionGroups.typedSkills,
-        label: `${skill.group} (${skill.label})`,
+        label:
+          game.i18n.localize(`DG.TypeSkills.${skill.group}`) +
+          ` (${skill.label})`,
         targetNumber: skill.proficiency,
       })
     );
