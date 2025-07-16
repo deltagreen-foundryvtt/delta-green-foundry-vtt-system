@@ -101,15 +101,15 @@
                 {{#if_eq item.type 'motivation' }}
 
                     <li class="item flexrow" data-item-id="{{item.id}}">
-                        <h4 class="item-name"
-                            {{#if item.system.crossedOut }}
-                            style="text-decoration: line-through"
-                            {{/if }}>
+                        <span class="item-name"
+                              {{#if item.system.crossedOut }}
+                              style="text-decoration: line-through"
+                              {{/if }}>
                             {{item.name}}
-                        </h4>
+                        </span>
 
                         {{#if item.system.crossedOut }}
-                            <h4 class="item-name">{{item.system.disorder}}</h4>
+                            <span class="item-name">{{item.system.disorder}}</span>
                         {{/if}}
 
                         <div class="item-controls">

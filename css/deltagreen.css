@@ -43,6 +43,7 @@
 .deltagreen section.window-content {
   scrollbar-color: #215112 #111 !important;
   padding: 0.5rem;
+  color: black;
 }
 
 /* Character Sheet Style Options */
@@ -350,6 +351,7 @@ explicitly define a number of rows, rather than columns. */
 
 .deltagreen .tabs [data-action="tab"] {
   font-weight: bold;
+  color: inherit;
   vertical-align: middle !important;
   line-height: inherit;
   padding: 5px 10px 0px 10px;
@@ -358,7 +360,6 @@ explicitly define a number of rows, rather than columns. */
   border: gray;
   border-width: 1px 1px 0px 1px;
   border-style: solid;
-  /*background: rgba(173, 151, 101, 0.3);*/
 }
 
 .deltagreen .tabs [data-action="tab"].active {
@@ -433,9 +434,12 @@ explicitly define a number of rows, rather than columns. */
 }
 
 .deltagreen .items-list .item-name {
-  margin: 0;
   display: flex;
   align-content: center;
+
+  word-wrap: break-word;
+
+  margin: 0;
 }
 
 .deltagreen .items-list .item-controls {

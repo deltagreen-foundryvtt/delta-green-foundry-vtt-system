@@ -46,7 +46,7 @@
                              width="24"
                              height="24" />
                         <span>
-                            <h4 style="word-wrap: break-word; display: inline;" class="item-name">{{item.name}}</h4>
+                            <span style="display: inline;" class="item-name">{{item.name}}</span>
                             <span class="rollable"
                                   data-action="roll"
                                   data-iid="{{item._id}}"
@@ -170,7 +170,7 @@
                         <img src="{{item.img}}" title="{{item.name}}" width="24" height="24" />
                     </div>
 
-                    <h4 style="word-wrap: break-word;" class="item-name">{{item.name}}</h4>
+                    <span class="item-name">{{item.name}}</span>
 
                     <span class="centered-item-property">{{item.system.protection}}</span>
 
@@ -246,7 +246,7 @@
                         <img src="{{item.img}}" title="{{item.name}}" width="24" height="24" />
                     </div>
 
-                    <h4 style="word-wrap: break-word; min-width: 55%;" class="item-name">{{item.name}}</h4>
+                    <span style="min-width: 55%;" class="item-name">{{item.name}}</span>
 
                     <a class="centered-item-property"
                        data-action="toggleEquipped"
@@ -323,7 +323,7 @@
                             <img src="{{item.img}}" title="{{item.name}}" width="24" height="24" />
                         </div>
 
-                        <h4 style="word-wrap: break-word; min-width: 55%;" class="item-name">
+                        <span style="min-width: 55%;" class="item-name">
                             {{#if item.system.revealed }}
                                 {{item.name}}
                             {{else}}
@@ -332,7 +332,7 @@
                                     ({{item.name}})
                                 {{/if}}
                             {{/if}}
-                        </h4>
+                        </span>
 
                         <div class="item-controls">
                             <a class="item-control"
@@ -407,7 +407,7 @@
                             <img src="{{item.img}}" title="{{item.name}}" width="24" height="24" />
                         </div>
 
-                        <h4 style="word-wrap: break-word; min-width: 55%;" class="item-name">
+                        <span style="min-width: 55%;" class="item-name">
                             {{#if item.system.revealed }}
                                 {{item.name}}
                             {{else}}
@@ -416,7 +416,7 @@
                                     ({{item.name}})
                                 {{/if}}
                             {{/if}}
-                        </h4>
+                        </span>
 
                         <div class="item-controls">
                             <a class="item-control"
