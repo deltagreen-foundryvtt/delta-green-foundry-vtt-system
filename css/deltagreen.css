@@ -304,6 +304,8 @@ explicitly define a number of rows, rather than columns. */
   -webkit-box-flex: 0;
   -ms-flex: 0 0 100px;
 
+  cursor: var(--cursor-pointer); /* Variable name from Foundry */
+
   border: 1px solid black;
   margin-right: 5px;
 }
