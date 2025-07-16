@@ -1,68 +1,95 @@
 <div class="item-controls skill-util-buttons">
   <a class="item-control typed-skill-add action-pill"><i class="fas fa-plus"></i>{{localize 'DG.Skills.AddTypedOrCustomSkill'}}</a>
-  <a class="item-control special-training-action action-pill" data-action="Create"><i class="fas fa-plus"></i>{{localize 'DG.SpecialTraining.Dialog.CreateSpecialTraining'}}</a> 
-  {{#if_eq actorType "agent"}}
+  <a class="item-control special-training-action action-pill"
+     data-action="Create"><i class="fas fa-plus"></i>{{localize 'DG.SpecialTraining.Dialog.CreateSpecialTraining'}}</a>
+  {{#if_eq actorType "agent" }}
     <a class="item-control apply-skill-improvements action-pill">{{localize 'DG.Skills.ApplySkillImprovements'}}<i class="fas fa-dice"></i></a>
   {{/if_eq}}
 </div>
 <div class="grid-2col">
 
-  {{#each actor.system.sortedCustomSkills as |skill|}}
-  
-    {{#if_eq type "typeSkill"}}
+  {{#each actor.system.sortedCustomSkills as |skill| }}
+    {{#if_eq type "typeSkill" }}
 
       <div class="item flexrow flex-group-left flex-thin-border">
         <div class="flexrow">
           <label data-tooltip="{{localize (concat 'DG.TypeSkills.Tooltip.' skill.group)}}">
             {{localize (concat 'DG.TypeSkills.' skill.group)}} ({{skill.label}})
           </label>
-          <label class="{{if_gt skill.proficiency 0 'rollable' 'not-rollable'}} skill-label" data-key="{{skill.key}}" data-rolltype="skill" data-roll="d100" data-target="{{skill.proficiency}}" data-label="{{skill.label}}" 
-              {{#if skill.proficiency}}data-tooltip="{{localize 'DG.Tooltip.SkillLabel'}}"{{/if}}
-              {{#unless skill.proficiency}}data-tooltip="{{localize 'DG.Tooltip.CannotRollSkillLabel'}}"{{/unless}} 
-            >
+          <label class="{{if_gt skill.proficiency 0 'rollable' 'not-rollable'}} skill-label"
+                 data-action="roll"
+                 data-key="{{skill.key}}"
+                 data-rolltype="skill"
+                 data-roll="d100"
+                 data-target="{{skill.proficiency}}"
+                 data-label="{{skill.label}}"
+                 {{#if skill.proficiency }}
+                 data-tooltip="{{localize 'DG.Tooltip.SkillLabel' }}"
+                 {{/if }}
+                 {{#unless skill.proficiency }}
+                 data-tooltip="{{localize 'DG.Tooltip.CannotRollSkillLabel' }}"
+                 {{/unless}}>
             <i class="fas fa-dice"></i>
           </label>
-          <input class="percentile-skill-input" type="text" name="system.typedSkills.{{skill.key}}.proficiency" value="{{skill.proficiency}}" data-dtype="Number"/>
-          {{#if_eq skill.actorType "agent"}}
-            <input class="checkbox-skill-input" type="checkbox" name="system.typedSkills.{{skill.key}}.failure" {{checked skill.failure}} data-dtype="Boolean" {{#if skill.cannotBeImprovedByFailure}} disabled {{/if}} />
+          <input class="percentile-skill-input"
+                 type="text"
+                 name="system.typedSkills.{{skill.key}}.proficiency"
+                 value="{{skill.proficiency}}"
+                 data-dtype="Number" />
+          {{#if_eq skill.actorType "agent" }}
+            <input class="checkbox-skill-input"
+                   type="checkbox"
+                   name="system.typedSkills.{{skill.key}}.failure"
+                   {{checked skill.failure}}
+                   data-dtype="Boolean"
+                   {{#if skill.cannotBeImprovedByFailure }}
+                   disabled
+                   {{/if }} />
           {{/if_eq}}
         </div>
         <div class="item-controls skill-and-training-controls">
-          <a class="item-control typed-skill-edit" title="Edit Skill"><i class="fas fa-edit" data-typedskill="{{skill.key}}" ></i></a>
-          <a class="item-control typed-skill-delete" title="Delete Skill"><i class="fas fa-trash" data-typedskill="{{skill.key}}" ></i></a>
+          <a class="item-control typed-skill-edit" title="Edit Skill"><i class="fas fa-edit" data-typedskill="{{skill.key}}"></i></a>
+          <a class="item-control typed-skill-delete" title="Delete Skill"><i class="fas fa-trash" data-typedskill="{{skill.key}}"></i></a>
         </div>
       </div>
 
     {{/if_eq}}
 
-    {{#if_eq type "training"}}
+    {{#if_eq type "training" }}
 
-    <div class="item flexrow flex-group-left flex-thin-border special-training-box">
-      <div class="flexrow">
-        {{#if_not_eq (localize (concat 'DG.Attributes.' skill.key)) (concat "DG.Attributes." skill.key)}}
-        <label data-tooltip="{{localize (concat 'DG.Attributes.Tooltip.' skill.key)}}">
-          {{skill.name}} ({{localize (concat 'DG.Attributes.' skill.key)}}, {{skill.targetNumber}}%)
-        </label>
-        {{else}}
-          {{#if_not_eq (localize (concat 'DG.Skills.' skill.key)) (concat "DG.Skills." skill.key)}}
-            <label data-tooltip="{{localize (concat 'DG.Skills.Tooltip.' skill.key)}}">
-              {{skill.name}} ({{localize (concat 'DG.Skills.' skill.key)}}, {{skill.targetNumber}}%)
+      <div class="item flexrow flex-group-left flex-thin-border special-training-box">
+        <div class="flexrow">
+          {{#if_not_eq (localize (concat 'DG.Attributes.' skill.key)) (concat "DG.Attributes." skill.key) }}
+            <label data-tooltip="{{localize (concat 'DG.Attributes.Tooltip.' skill.key)}}">
+              {{skill.name}} ({{localize (concat 'DG.Attributes.' skill.key)}}, {{skill.targetNumber}}%)
             </label>
           {{else}}
-            <label>
-              {{skill.name}} ({{skill.attribute}}, {{skill.targetNumber}}%)
-            </label>
+            {{#if_not_eq (localize (concat 'DG.Skills.' skill.key)) (concat "DG.Skills." skill.key) }}
+              <label data-tooltip="{{localize (concat 'DG.Skills.Tooltip.' skill.key)}}">
+                {{skill.name}} ({{localize (concat 'DG.Skills.' skill.key)}}, {{skill.targetNumber}}%)
+              </label>
+            {{else}}
+              <label>{{skill.name}} ({{skill.attribute}}, {{skill.targetNumber}}%)</label>
+            {{/if_not_eq}}
           {{/if_not_eq}}
-        {{/if_not_eq}}
-        <label class="{{if_gt skill.targetNumber 0 'rollable' 'not-rollable'}}" data-key="{{skill.key}}" data-name="{{skill.name}}" data-rolltype="special-training">
-          <i class="fas fa-dice"></i>
-        </label>
-        <div class="item-controls skill-and-training-controls">
-            <a class="item-control special-training-action" data-action="Edit" data-id="{{skill.id}}" title="Edit Training"><i class="fas fa-edit"></i></a>
-            <a class="item-control special-training-delete" title="Delete Training" data-id="{{skill.id}}" ><i class="fas fa-trash"></i></a>
+          <label class="{{if_gt skill.targetNumber 0 'rollable' 'not-rollable'}}"
+                 data-action="roll"
+                 data-key="{{skill.key}}"
+                 data-name="{{skill.name}}"
+                 data-rolltype="special-training">
+            <i class="fas fa-dice"></i>
+          </label>
+          <div class="item-controls skill-and-training-controls">
+            <a class="item-control special-training-action"
+               data-action="Edit"
+               data-id="{{skill.id}}"
+               title="Edit Training"><i class="fas fa-edit"></i></a>
+            <a class="item-control special-training-delete"
+               title="Delete Training"
+               data-id="{{skill.id}}"><i class="fas fa-trash"></i></a>
+          </div>
         </div>
       </div>
-    </div>
 
     {{/if_eq}}
 

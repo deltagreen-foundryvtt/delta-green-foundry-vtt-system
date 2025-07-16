@@ -46,6 +46,7 @@
                         <span>
                             <h4 style="word-wrap: break-word; display: inline;" class="item-name">{{item.name}}</h4>
                             <span class="rollable"
+                                  data-action="roll"
                                   data-iid="{{item._id}}"
                                   data-rolltype="weapon"
                                   data-key="{{item.system.skill}}"
@@ -73,7 +74,10 @@
                         {{/if}}
 
                         {{#unless item.system.isLethal}}
-                            <span class="rollable" data-rolltype="damage" data-iid="{{item._id}}">
+                            <span class="rollable"
+                                  data-action="roll"
+                                  data-rolltype="damage"
+                                  data-iid="{{item._id}}">
                                 {{toUpperCase item.system.damage}}
                                 {{#if_eq item.system.skill 'unarmed_combat' }}
                                     {{actor.system.statistics.str.meleeDamageBonusFormula}}
@@ -87,6 +91,7 @@
 
                         {{#if item.system.isLethal }}
                             <span class="rollable"
+                                  data-action="roll"
                                   data-rolltype="lethality"
                                   data-iid="{{item._id}}"
                                   title="{{localize 'DG.ItemWindow.Weapons.LethalityTooltip'}}">
@@ -347,10 +352,18 @@
         <div>
 
             <div class="horizontal-bar-section-divider">
-                <span>{{localize 'DG.Gear.Rituals'}} <a class="rollable"
-    data-key="ritual"
-    data-rolltype="skill"
-    title="Ritual activation"><i class="fa-solid fa-dice" data-gear-type="ritual"></i></a></span>
+                <span>
+                    {{localize 'DG.Gear.Rituals'}}
+                    <a class="rollable"
+                       data-action="roll"
+                       data-key="ritual"
+                       data-rolltype="skill"
+                       title="Ritual activation">
+                        <i class="fa-solid fa-dice" data-gear-type="ritual">
+
+                        </i>
+                    </a>
+                </span>
             </div>
 
             <ol class="items-list">

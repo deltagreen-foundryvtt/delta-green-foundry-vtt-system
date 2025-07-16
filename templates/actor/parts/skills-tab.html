@@ -8,6 +8,7 @@
         {{#each actor.system.sortedSkills as |skill key| }}
             <div class="flexrow flex-group-left flex-thin-border">
                 <label class="{{if_gt skill.targetProficiency 0 'rollable' 'not-rollable'}} skill-label"
+                       data-action="roll"
                        data-key="{{skill.key}}"
                        data-rolltype="skill"
                        for="system.skills.{{skill.key}}.value"

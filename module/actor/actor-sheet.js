@@ -17,6 +17,7 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
     position: { width: 750, height: 770 },
     actions: {
       itemAction: DeltaGreenActorSheet._onItemAction,
+      roll: DeltaGreenActorSheet._onRoll,
     },
   });
 
@@ -589,7 +590,6 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
     if (!this.options.editable) return;
 
     // Rollable abilities - bind to everything with the 'Rollable' class
-    html.find(".rollable").click(this._onRoll.bind(this));
     html.find(".rollable").contextmenu(this._onRoll.bind(this)); // this is for right-click, which triggers the roll modifier dialogue for most rolls
 
     html.find(".toggle-untrained").click(() =>
@@ -1269,16 +1269,10 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
    * @async
    * @private
    */
-  async _onRoll(event) {
-    event.preventDefault();
-    const element = event.currentTarget;
-    const { dataset } = element;
+  static async _onRoll(event, target) {
+    if (target.classList.contains("not-rollable") || event.which === 3) return;
 
-    if (event && event.which === 2) {
-      // probably don't want rolls to trigger from a middle mouse click so just kill it here
-      return;
-    }
-
+    const { dataset } = target;
     const item = this.actor.items.get(dataset.iid);
     const rollOptions = {
       rollType: dataset.rolltype,
