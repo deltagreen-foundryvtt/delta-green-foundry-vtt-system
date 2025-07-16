@@ -19,6 +19,7 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
       itemAction: DeltaGreenActorSheet._onItemAction,
       roll: DeltaGreenActorSheet._onRoll,
       resetBreakingPoint: DeltaGreenActorSheet._resetBreakingPoint,
+      typedSkillAction: DeltaGreenActorSheet._onTypedSkillAction,
     },
   });
 
@@ -583,6 +584,23 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
     }
   }
 
+  static _onTypedSkillAction(event, target) {
+    const { actionType, typedskill } = target.dataset;
+    switch (actionType) {
+      case "create":
+        this._showNewTypeSkillDialog();
+        break;
+      case "edit":
+        this._showNewEditTypeSkillDialog(typedskill);
+        break;
+      case "delete":
+        this.actor.update({ [`system.typedSkills.-=${typedskill}`]: null });
+        break;
+      default:
+        break;
+    }
+  }
+
   /** @override */
   activateListeners(html) {
     super.activateListeners(html);
@@ -613,37 +631,6 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
         li.addEventListener("dragstart", handler, false);
       });
     }
-
-    html.find(".typed-skill-add").click((event) => {
-      event.preventDefault();
-
-      // const targetskill = event.target.getAttribute("data-typeskill");
-
-      this._showNewTypeSkillDialog();
-    });
-
-    html.find(".typed-skill-edit").click((event) => {
-      event.preventDefault();
-      const targetskill = event.target.getAttribute("data-typedskill");
-      const existingLabel = this.actor.system.typedSkills[targetskill].label;
-      const existingGroup = this.actor.system.typedSkills[targetskill].group;
-
-      // this.actor.update({[`data.typedSkills.${targetskill}.label`]: 'test'});
-
-      this._showNewEditTypeSkillDialog(
-        targetskill,
-        existingLabel,
-        existingGroup,
-      );
-    });
-
-    html.find(".typed-skill-delete").click((event) => {
-      event.preventDefault();
-      const targetskill = event.target.getAttribute("data-typedskill");
-
-      // many bothans died to bring us this information on how to delete a property on an entity
-      this.actor.update({ [`system.typedSkills.-=${targetskill}`]: null });
-    });
 
     html.find(".special-training-action").click((event) => {
       event.preventDefault();
@@ -852,8 +839,12 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
     item.update({ "system.isLethal": !isLethal });
   }
 
-  _showNewEditTypeSkillDialog(targetSkill, currentLabel, currentGroup) {
+  _showNewEditTypeSkillDialog(targetSkill) {
     // TO DO: BUILD DIALOG TO CAPTURE UPDATED DATA
+
+    const { typedSkills } = this.actor.system;
+    const currentLabel = typedSkills[targetSkill].label;
+    const currentGroup = typedSkills[targetSkill].group;
 
     let htmlContent = `<div>`;
     htmlContent += `     <label>${

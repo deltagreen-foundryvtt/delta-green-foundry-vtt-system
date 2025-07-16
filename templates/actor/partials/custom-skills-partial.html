@@ -1,7 +1,16 @@
 <div class="item-controls skill-util-buttons">
-  <a class="item-control typed-skill-add action-pill"><i class="fas fa-plus"></i>{{localize 'DG.Skills.AddTypedOrCustomSkill'}}</a>
+  <a class="item-control typed-skill-add action-pill"
+     data-action="typedSkillAction"
+     data-action-type="create">
+    <i class="fas fa-plus"></i>
+    {{localize 'DG.Skills.AddTypedOrCustomSkill'}}
+  </a>
+
   <a class="item-control special-training-action action-pill"
-     data-action="Create"><i class="fas fa-plus"></i>{{localize 'DG.SpecialTraining.Dialog.CreateSpecialTraining'}}</a>
+     data-action="Create">
+    <i class="fas fa-plus"></i>
+    {{localize 'DG.SpecialTraining.Dialog.CreateSpecialTraining'}}
+  </a>
   {{#if_eq actorType "agent" }}
     <a class="item-control apply-skill-improvements action-pill">{{localize 'DG.Skills.ApplySkillImprovements'}}<i class="fas fa-dice"></i></a>
   {{/if_eq}}
@@ -28,7 +37,7 @@
                  {{/if }}
                  {{#unless skill.proficiency }}
                  data-tooltip="{{localize 'DG.Tooltip.CannotRollSkillLabel' }}"
-                 {{/unless}}>
+                 {{/unless }}>
             <i class="fas fa-dice"></i>
           </label>
           <input class="percentile-skill-input"
@@ -48,8 +57,16 @@
           {{/if_eq}}
         </div>
         <div class="item-controls skill-and-training-controls">
-          <a class="item-control typed-skill-edit" title="Edit Skill"><i class="fas fa-edit" data-typedskill="{{skill.key}}"></i></a>
-          <a class="item-control typed-skill-delete" title="Delete Skill"><i class="fas fa-trash" data-typedskill="{{skill.key}}"></i></a>
+          <a class="item-control"
+             data-action="typedSkillAction"
+             data-action-type="edit"
+             data-typedskill="{{skill.key}}"
+             title="Edit Skill"><i class="fas fa-edit"></i></a>
+          <a class="item-control"
+             data-action="typedSkillAction"
+             data-action-type="delete"
+             data-typedskill="{{skill.key}}"
+             title="Delete Skill"><i class="fas fa-trash"></i></a>
         </div>
       </div>
 
