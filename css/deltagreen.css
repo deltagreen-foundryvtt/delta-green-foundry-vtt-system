@@ -43,7 +43,11 @@
 .deltagreen section.window-content {
   scrollbar-color: #215112 #111 !important;
   padding: 0.5rem;
-  color: black;
+  color: black; /* Override for when in Foundry's dark mode */
+
+  input[type="checkbox"]:checked::before {
+    color: black; /* Override for when in Foundry's dark mode */
+  }
 }
 
 /* Character Sheet Style Options */
