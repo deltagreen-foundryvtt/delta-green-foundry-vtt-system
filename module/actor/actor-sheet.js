@@ -780,14 +780,10 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
       // Pass the correct information to the _onRoll function.
       DeltaGreenActorSheet._onRoll.call(this, event, target);
     });
-  }
 
-  /** @override */
-  activateListeners(html) {
-    // Drag events for macros.
     if (this.actor.isOwner) {
       const handler = (ev) => this._onDragStart(ev);
-      html.find("li.item").each((i, li) => {
+      element.querySelectorAll("li.item").forEach((li) => {
         if (li.classList.contains("inventory-header")) return;
         li.setAttribute("draggable", true);
         li.addEventListener("dragstart", handler, false);
