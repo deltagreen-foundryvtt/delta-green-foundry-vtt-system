@@ -502,12 +502,6 @@ span.max-attribute-value-label {
   margin: 2px;
 }
 
-.typed-skill-flexrow {
-  display: flex;
-  flex-direction: row;
-  margin: 1px;
-}
-
 input.percentile-skill-input {
   flex: 0 0 40px;
   margin: 0 5px;
@@ -1099,6 +1093,10 @@ input.item-sheet-short-input {
 
 .skill-util-buttons {
   margin: 5px;
+
+  .typed-skill-add {
+    margin-right: 5px;
+  }
 }
 
 a[data-action="applySkillImprovements"] {
