@@ -13,7 +13,10 @@
     {{localize 'DG.SpecialTraining.Dialog.CreateSpecialTraining'}}
   </a>
   {{#if_eq actorType "agent" }}
-    <a class="item-control apply-skill-improvements action-pill">{{localize 'DG.Skills.ApplySkillImprovements'}}<i class="fas fa-dice"></i></a>
+    <a class="item-control action-pill" data-action="applySkillImprovements">
+      {{localize 'DG.Skills.ApplySkillImprovements'}}
+      <i class="fas fa-dice"></i>
+    </a>
   {{/if_eq}}
 </div>
 <div class="grid-2col">

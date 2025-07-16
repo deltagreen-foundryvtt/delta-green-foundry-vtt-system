@@ -21,6 +21,7 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
       resetBreakingPoint: DeltaGreenActorSheet._resetBreakingPoint,
       typedSkillAction: DeltaGreenActorSheet._onTypedSkillAction,
       specialTrainingAction: DeltaGreenActorSheet._onSpecialTrainingAction,
+      applySkillImprovements: DeltaGreenActorSheet._applySkillImprovements,
     },
   });
 
@@ -626,6 +627,75 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
     }
   }
 
+  static _applySkillImprovements(event, target) {
+    const failedSkills = Object.entries(this.actor.system.skills).filter(
+      (skill) => skill[1].failure,
+    );
+    const failedTypedSkills = Object.entries(
+      this.actor.system.typedSkills,
+    ).filter((skill) => skill[1].failure);
+    if (failedSkills.length === 0 && failedTypedSkills.length === 0) {
+      ui.notifications.warn("No Skills to Increase");
+      return;
+    }
+
+    let htmlContent = "";
+    let failedSkillNames = "";
+    failedSkills.forEach(([skill], value) => {
+      if (value === 0) {
+        failedSkillNames += game.i18n.localize(`DG.Skills.${skill}`);
+      } else {
+        failedSkillNames += `, ${game.i18n.localize(`DG.Skills.${skill}`)}`;
+      }
+    });
+    failedTypedSkills.forEach(([skillName, skillData], value) => {
+      if (value === 0 && failedSkillNames === "") {
+        failedSkillNames += `${game.i18n.localize(
+          `DG.TypeSkills.${skillData.group.split(" ").join("")}`,
+        )} (${skillData.label})`;
+      } else {
+        failedSkillNames += `, ${game.i18n.localize(
+          `DG.TypeSkills.${skillData.group.split(" ").join("")}`,
+        )} (${skillData.label})`;
+      }
+    });
+
+    const baseRollFormula = game.settings.get(
+      "deltagreen",
+      "skillImprovementFormula",
+    );
+
+    htmlContent += `<div>`;
+    htmlContent += `     <label>${game.i18n.localize(
+      "DG.Skills.ApplySkillImprovementsDialogLabel",
+    )} <b>+${baseRollFormula}%</b></label>`;
+    htmlContent += `     <hr>`;
+    htmlContent += `     <span> ${game.i18n.localize(
+      "DG.Skills.ApplySkillImprovementsDialogEffectsFollowing",
+    )} <b>${failedSkillNames}</b> </span>`;
+    htmlContent += `</div>`;
+
+    new Dialog({
+      content: htmlContent,
+      title:
+        game.i18n.translations.DG?.Skills?.ApplySkillImprovements ??
+        "Apply Skill Improvements",
+      default: "add",
+      buttons: {
+        apply: {
+          label: game.i18n.translations.DG?.Skills?.Apply ?? "Apply",
+          callback: (btn) => {
+            this._applySkillImprovements(
+              baseRollFormula,
+              failedSkills,
+              failedTypedSkills,
+            );
+          },
+        },
+      },
+    }).render(true);
+  }
+
   /** @override */
   activateListeners(html) {
     super.activateListeners(html);
@@ -656,77 +726,6 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
         li.addEventListener("dragstart", handler, false);
       });
     }
-
-    html.find(".apply-skill-improvements").click((event) => {
-      event.preventDefault();
-
-      const failedSkills = Object.entries(this.actor.system.skills).filter(
-        (skill) => skill[1].failure,
-      );
-      const failedTypedSkills = Object.entries(
-        this.actor.system.typedSkills,
-      ).filter((skill) => skill[1].failure);
-      if (failedSkills.length === 0 && failedTypedSkills.length === 0) {
-        ui.notifications.warn("No Skills to Increase");
-        return;
-      }
-
-      let htmlContent = "";
-      let failedSkillNames = "";
-      failedSkills.forEach(([skill], value) => {
-        if (value === 0) {
-          failedSkillNames += game.i18n.localize(`DG.Skills.${skill}`);
-        } else {
-          failedSkillNames += `, ${game.i18n.localize(`DG.Skills.${skill}`)}`;
-        }
-      });
-      failedTypedSkills.forEach(([skillName, skillData], value) => {
-        if (value === 0 && failedSkillNames === "") {
-          failedSkillNames += `${game.i18n.localize(
-            `DG.TypeSkills.${skillData.group.split(" ").join("")}`,
-          )} (${skillData.label})`;
-        } else {
-          failedSkillNames += `, ${game.i18n.localize(
-            `DG.TypeSkills.${skillData.group.split(" ").join("")}`,
-          )} (${skillData.label})`;
-        }
-      });
-
-      const baseRollFormula = game.settings.get(
-        "deltagreen",
-        "skillImprovementFormula",
-      );
-
-      htmlContent += `<div>`;
-      htmlContent += `     <label>${game.i18n.localize(
-        "DG.Skills.ApplySkillImprovementsDialogLabel",
-      )} <b>+${baseRollFormula}%</b></label>`;
-      htmlContent += `     <hr>`;
-      htmlContent += `     <span> ${game.i18n.localize(
-        "DG.Skills.ApplySkillImprovementsDialogEffectsFollowing",
-      )} <b>${failedSkillNames}</b> </span>`;
-      htmlContent += `</div>`;
-
-      new Dialog({
-        content: htmlContent,
-        title:
-          game.i18n.translations.DG?.Skills?.ApplySkillImprovements ??
-          "Apply Skill Improvements",
-        default: "add",
-        buttons: {
-          apply: {
-            label: game.i18n.translations.DG?.Skills?.Apply ?? "Apply",
-            callback: (btn) => {
-              this._applySkillImprovements(
-                baseRollFormula,
-                failedSkills,
-                failedTypedSkills,
-              );
-            },
-          },
-        },
-      }).render(true);
-    });
 
     // Browse Weapon Compendiums
     html.find(".weapon-browse").click((ev) => {

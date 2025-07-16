@@ -1097,7 +1097,7 @@ input.item-sheet-short-input {
   margin: 5px;
 }
 
-.apply-skill-improvements {
+a[data-action="applySkillImprovements"] {
   float: right;
 }
 
