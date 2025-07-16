@@ -20,6 +20,7 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
       roll: DeltaGreenActorSheet._onRoll,
       resetBreakingPoint: DeltaGreenActorSheet._resetBreakingPoint,
       typedSkillAction: DeltaGreenActorSheet._onTypedSkillAction,
+      specialTrainingAction: DeltaGreenActorSheet._onSpecialTrainingAction,
     },
   });
 
@@ -601,6 +602,30 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
     }
   }
 
+  static _onSpecialTrainingAction(event, target) {
+    const { actionType, id } = target.dataset;
+    switch (actionType) {
+      case "delete":
+        {
+          const specialTrainingArray = foundry.utils.duplicate(
+            this.actor.system.specialTraining,
+          );
+
+          // Get the index of the training to be deleted
+          const index = specialTrainingArray.findIndex(
+            (training) => training.id === id,
+          );
+
+          specialTrainingArray.splice(index, 1);
+          this.actor.update({ "system.specialTraining": specialTrainingArray });
+        }
+        break;
+      default:
+        this._showSpecialTrainingDialog(actionType, id);
+        break;
+    }
+  }
+
   /** @override */
   activateListeners(html) {
     super.activateListeners(html);
@@ -631,29 +656,6 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
         li.addEventListener("dragstart", handler, false);
       });
     }
-
-    html.find(".special-training-action").click((event) => {
-      event.preventDefault();
-      const action = event.currentTarget.getAttribute("data-action");
-      const targetID = event.currentTarget.getAttribute("data-id");
-      this._showSpecialTrainingDialog(action, targetID);
-    });
-
-    // Handle deletion of Special Training
-    html.find(".special-training-delete").click((event) => {
-      event.preventDefault();
-      const targetID = event.currentTarget.getAttribute("data-id");
-      const specialTrainingArray = foundry.utils.duplicate(
-        this.actor.system.specialTraining,
-      );
-      // Get the index of the training to be deleted
-      const index = specialTrainingArray.findIndex(
-        (training) => training.id === targetID,
-      );
-
-      specialTrainingArray.splice(index, 1);
-      this.actor.update({ "system.specialTraining": specialTrainingArray });
-    });
 
     html.find(".apply-skill-improvements").click((event) => {
       event.preventDefault();
@@ -1175,12 +1177,12 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
             const specialTrainingAttribute = btn
               .find("[name='special-training-skill']")
               .val();
-            if (action === "Create")
+            if (action === "create")
               this._createSpecialTraining(
                 specialTrainingLabel,
                 specialTrainingAttribute,
               );
-            if (action === "Edit")
+            if (action === "edit")
               this._editSpecialTraining(
                 specialTrainingLabel,
                 specialTrainingAttribute,
