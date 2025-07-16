@@ -1149,7 +1149,7 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
     );
 
     const buttonLabel = game.i18n.localize(
-      `DG.SpecialTraining.Dialog.${action}SpecialTraining`,
+      `DG.SpecialTraining.Dialog.${action.capitalize()}SpecialTraining`,
     );
 
     // Prepare and render dialog with above template.
