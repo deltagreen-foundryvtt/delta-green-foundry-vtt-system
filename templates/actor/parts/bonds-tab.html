@@ -10,7 +10,7 @@
             <li class="item flexrow item-header">
 
                 <div class="item-icon">
-                    <a class="clear-all-bond-damage-checks"
+                    <a data-action="clearBondDamage"
                        title="{{localizeWithFallback 'DG.Generic.ClearAll' 'Clear All'}}"><i class="fas fa-arrow-rotate-left"></i></a>
                 </div>
                 <div class="item-image"></div>
@@ -33,11 +33,10 @@
                 {{#if_eq item.type "bond" }}
 
                     <li class="item flexrow" data-item-id="{{item.id}}">
-                        <input class="bond-has-been-damaged-agent-sheet-checkbox"
-                               type="checkbox"
-                               {{checked item.system.hasBeenDamagedSinceLastHomeScene}}
-                               data-dtype="Boolean"
-                               title="Check if bond has been damaged since last home scene." />
+                        <input type="checkbox"
+                               data-action="toggleBondDamage"
+                               title="Check if bond has been damaged since last home scene."
+                               {{checked item.system.hasBeenDamagedSinceLastHomeScene}} />
                         <div class="item-image">
                             <img src="{{item.img}}" title="{{item.name}}" width="24" height="24" />
                         </div>

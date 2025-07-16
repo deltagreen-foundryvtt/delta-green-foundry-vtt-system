@@ -24,6 +24,8 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
       applySkillImprovements: DeltaGreenActorSheet._applySkillImprovements,
       browsePack: DeltaGreenActorSheet._browsePack,
       toggleLethality: DeltaGreenActorSheet._toggleLethality,
+      toggleBondDamage: DeltaGreenActorSheet._toggleBondDamage,
+      clearBondDamage: DeltaGreenActorSheet._clearBondDamage,
     },
   });
 
@@ -733,6 +735,22 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
     }
   }
 
+  static _toggleBondDamage(event, target) {
+    const li = target.closest(".item");
+    const item = this.actor.items.get(li.dataset.itemId);
+    const value = target.checked;
+
+    item.update({ "system.hasBeenDamagedSinceLastHomeScene": value });
+  }
+
+  static _clearBondDamage() {
+    for (const i of this.actor.itemTypes.bond) {
+      // eslint-disable-next-line no-continue
+      if (!i.system.hasBeenDamagedSinceLastHomeScene) continue;
+      i.update({ "system.hasBeenDamagedSinceLastHomeScene": false });
+    }
+  }
+
   /** @override */
   activateListeners(html) {
     super.activateListeners(html);
@@ -763,19 +781,6 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
         li.addEventListener("dragstart", handler, false);
       });
     }
-
-    // let user check off the 'bond damaged' checkbox right from the sheet
-    html.find(".bond-has-been-damaged-agent-sheet-checkbox").click((ev) => {
-      const el = $(ev.currentTarget).parents(".item");
-      const item = this.actor.items.get(el.data("item-id"));
-      const value = ev.target.checked;
-
-      item.update({ "system.hasBeenDamagedSinceLastHomeScene": value });
-    });
-
-    html.find(".clear-all-bond-damage-checks").click((ev) => {
-      this._updateBondsRemoveAllDamagedCheckmarks();
-    });
 
     // item sorting toggles
     html.find(".toggle-item-sorting-style").click((event) => {
@@ -822,15 +827,6 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
     const updatedData = foundry.utils.duplicate(systemData);
     updatedData.sanity.currentBreakingPoint = newBreakingPoint;
     this.actor.update({ system: updatedData });
-  }
-
-  // trigger an update on all bonds that have had their damaged flag checked off
-  async _updateBondsRemoveAllDamagedCheckmarks() {
-    for (const i of this.actor.items) {
-      if (i.type === "bond" && i.system.hasBeenDamagedSinceLastHomeScene) {
-        await i.update({ "system.hasBeenDamagedSinceLastHomeScene": false });
-      }
-    }
   }
 
   static _toggleLethality(event, target) {
