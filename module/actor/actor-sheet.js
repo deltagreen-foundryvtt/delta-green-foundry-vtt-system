@@ -22,6 +22,7 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
       typedSkillAction: DeltaGreenActorSheet._onTypedSkillAction,
       specialTrainingAction: DeltaGreenActorSheet._onSpecialTrainingAction,
       applySkillImprovements: DeltaGreenActorSheet._applySkillImprovements,
+      browsePack: DeltaGreenActorSheet._browsePack,
     },
   });
 
@@ -696,6 +697,41 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
     }).render(true);
   }
 
+  static _browsePack(event, target) {
+    const { packType } = target.dataset;
+    switch (packType) {
+      case "weapon": {
+        new Dialog({
+          title: "Select Compendium",
+          buttons: {
+            firearms: {
+              icon: '<i class="fas fa-crosshairs"></i>',
+              callback: () =>
+                game.packs
+                  .find((k) => k.collection === "deltagreen.firearms")
+                  .render(true),
+            },
+            melee: {
+              icon: '<i class="far fa-hand-rock"></i>',
+              callback: () =>
+                game.packs
+                  .find(
+                    (k) => k.collection === "deltagreen.hand-to-hand-weapons",
+                  )
+                  .render(true),
+            },
+          },
+        }).render(true);
+        break;
+      }
+      default:
+        game.packs
+          .find((k) => k.collection === `deltagreen.${packType}`)
+          .render(true);
+        break;
+    }
+  }
+
   /** @override */
   activateListeners(html) {
     super.activateListeners(html);
@@ -726,39 +762,6 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
         li.addEventListener("dragstart", handler, false);
       });
     }
-
-    // Browse Weapon Compendiums
-    html.find(".weapon-browse").click((ev) => {
-      const dialog = new Dialog({
-        title: "Select Compendium",
-        buttons: {
-          firearms: {
-            icon: '<i class="fas fa-crosshairs"></i>',
-            callback: () =>
-              game.packs
-                .find((k) => k.collection === "deltagreen.firearms")
-                .render(true),
-          },
-          melee: {
-            icon: '<i class="far fa-hand-rock"></i>',
-            callback: () =>
-              game.packs
-                .find((k) => k.collection === "deltagreen.hand-to-hand-weapons")
-                .render(true),
-          },
-        },
-      });
-
-      dialog.render(true);
-    });
-
-    html.find(".armor-browse").click((ev) => {
-      game.packs.find((k) => k.collection === "deltagreen.armor").render(true);
-    });
-
-    html.find(".gear-browse").click((ev) => {
-      // game.packs.find(k=>k.collection==="deltagreen.firearms").render(true);
-    });
 
     html.find(".toggle-lethality").click((event) => {
       this._toggleLethality(event);

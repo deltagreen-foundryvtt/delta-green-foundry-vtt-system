@@ -23,7 +23,7 @@
 
                 <span>
                     {{localize 'DG.Gear.Name'}}
-                    <a><i class="weapon-browse fas fa-search"></i></a>
+                    <a data-action="browsePack" data-pack-type="weapon"><i class="fas fa-search"></i></a>
                 </span>
                 <span class="centered-item-property">{{localize 'DG.Gear.DamageOrLethality'}}</span>
                 <span class="centered-item-property">{{localize 'DG.Gear.ArmorPiercing'}}</span>
@@ -145,7 +145,7 @@
                     {{/if}}
                 </div>
                 <div class="item-name">
-                    <span>{{localize 'DG.Gear.Name'}} <a><i class="armor-browse fas fa-search"></i></a></span>
+                    <span>{{localize 'DG.Gear.Name'}} <a data-action="browsePack" data-pack-type="armor"><i class="fas fa-search"></i></a></span>
                 </div>
                 <span class="centered-item-property">{{localize 'DG.Gear.ArmorRating'}}</span>
                 <span class="centered-item-property">{{localize 'DG.Gear.Equipped'}}</span>
