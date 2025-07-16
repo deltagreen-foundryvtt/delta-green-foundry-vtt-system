@@ -13,11 +13,13 @@
             <li class="item flexrow item-header">
                 <div class="item-image">
                     {{#if actor.system.settings.sorting.weaponSortAlphabetical }}
-                        <a><i class="toggle-item-sorting-style fa-solid fa-solid fa-arrow-down-a-z"
-   data-gear-type="weapon"></i></a>
+                        <a data-action="toggleItemSortMode" data-gear-type="weapon">
+                            <i class="fa-solid fa-arrow-down-a-z"></i>
+                        </a>
                     {{else}}
-                        <a><i class="toggle-item-sorting-style fa-solid fa-arrow-down-short-wide"
-   data-gear-type="weapon"></i></a>
+                        <a data-action="toggleItemSortMode" data-gear-type="weapon">
+                            <i class="fa-solid fa-arrow-down-short-wide"></i>
+                        </a>
                     {{/if}}
                 </div>
 
@@ -136,14 +138,12 @@
 
                 <div class="item-image">
                     {{#if actor.system.settings.sorting.armorSortAlphabetical }}
-                        <a>
-                            <i class="toggle-item-sorting-style fa-solid fa-solid fa-arrow-down-a-z"
-                               data-gear-type="armor"></i>
+                        <a data-action="toggleItemSortMode" data-gear-type="armor">
+                            <i class="fa-solid fa-arrow-down-a-z"></i>
                         </a>
                     {{else}}
-                        <a>
-                            <i class="toggle-item-sorting-style fa-solid fa-arrow-down-short-wide"
-                               data-gear-type="armor"></i>
+                        <a data-action="toggleItemSortMode" data-gear-type="armor">
+                            <i class="fa-solid fa-arrow-down-short-wide"></i>
                         </a>
                     {{/if}}
                 </div>
@@ -214,11 +214,13 @@
             <li class="item flexrow item-header">
                 <div class="item-image">
                     {{#if actor.system.settings.sorting.gearSortAlphabetical }}
-                        <a><i class="toggle-item-sorting-style fa-solid fa-solid fa-arrow-down-a-z"
-   data-gear-type="gear"></i></a>
+                        <a data-action="toggleItemSortMode" data-gear-type="gear">
+                            <i class="fa-solid fa-arrow-down-a-z"></i>
+                        </a>
                     {{else}}
-                        <a><i class="toggle-item-sorting-style fa-solid fa-arrow-down-short-wide"
-   data-gear-type="gear"></i></a>
+                        <a data-action="toggleItemSortMode" data-gear-type="gear">
+                            <i class="fa-solid fa-arrow-down-short-wide"></i>
+                        </a>
                     {{/if}}
                 </div>
 
@@ -284,15 +286,13 @@
 
                     <div class="item-image">
                         {{#if actor.system.settings.sorting.tomeSortAlphabetical }}
-                            <a>
-                                <i class="toggle-item-sorting-style fa-solid fa-solid fa-arrow-down-a-z"
-                                   data-gear-type="tome">
+                            <a data-action="toggleItemSortMode" data-gear-type="tome">
+                                <i class="fa-solid fa-arrow-down-a-z">
                                 </i>
                             </a>
                         {{else}}
-                            <a>
-                                <i class="toggle-item-sorting-style fa-solid fa-arrow-down-short-wide"
-                                   data-gear-type="tome">
+                            <a data-action="toggleItemSortMode" data-gear-type="tome">
+                                <i class="fa-solid fa-arrow-down-short-wide">
                                 </i>
                             </a>
                         {{/if}}
@@ -362,9 +362,7 @@
                        data-key="ritual"
                        data-rolltype="skill"
                        title="Ritual activation">
-                        <i class="fa-solid fa-dice" data-gear-type="ritual">
-
-                        </i>
+                        <i class="fa-solid fa-dice"></i>
                     </a>
                 </span>
             </div>
@@ -375,14 +373,12 @@
 
                     <div class="item-image">
                         {{#if actor.system.settings.sorting.ritualSortAlphabetical }}
-                            <a>
-                                <i class="toggle-item-sorting-style fa-solid fa-solid fa-arrow-down-a-z"
-                                   data-gear-type="ritual"></i>
+                            <a data-action="toggleItemSortMode" data-gear-type="ritual">
+                                <i class="fa-solid fa-arrow-down-a-z"></i>
                             </a>
                         {{else}}
-                            <a>
-                                <i class="toggle-item-sorting-style fa-solid fa-arrow-down-short-wide"
-                                   data-gear-type="ritual"></i>
+                            <a data-action="toggleItemSortMode" data-gear-type="ritual">
+                                <i class="fa-solid fa-arrow-down-short-wide"></i>
                             </a>
                         {{/if}}
                     </div>

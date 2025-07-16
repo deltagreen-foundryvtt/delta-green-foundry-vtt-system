@@ -26,6 +26,7 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
       toggleLethality: DeltaGreenActorSheet._toggleLethality,
       toggleBondDamage: DeltaGreenActorSheet._toggleBondDamage,
       clearBondDamage: DeltaGreenActorSheet._clearBondDamage,
+      toggleItemSortMode: DeltaGreenActorSheet._toggleItemSortMode,
     },
   });
 
@@ -751,6 +752,16 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
     }
   }
 
+  static _toggleItemSortMode(event, target) {
+    const itemType = target.dataset.gearType;
+    const propString = `${itemType}SortAlphabetical`;
+    const targetProp = `system.settings.sorting.${propString}`;
+    const currentValue = foundry.utils.getProperty(this.actor, targetProp);
+    this.actor.update({
+      [targetProp]: !currentValue,
+    });
+  }
+
   /** @override */
   activateListeners(html) {
     super.activateListeners(html);
@@ -781,40 +792,6 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
         li.addEventListener("dragstart", handler, false);
       });
     }
-
-    // item sorting toggles
-    html.find(".toggle-item-sorting-style").click((event) => {
-      event.preventDefault();
-
-      const itemType = event.currentTarget.getAttribute("data-gear-type");
-
-      if (itemType === "weapon") {
-        this.actor.update({
-          "system.settings.sorting.weaponSortAlphabetical":
-            !this.actor.system.settings.sorting.weaponSortAlphabetical,
-        });
-      } else if (itemType === "armor") {
-        this.actor.update({
-          "system.settings.sorting.armorSortAlphabetical":
-            !this.actor.system.settings.sorting.armorSortAlphabetical,
-        });
-      } else if (itemType === "gear") {
-        this.actor.update({
-          "system.settings.sorting.gearSortAlphabetical":
-            !this.actor.system.settings.sorting.gearSortAlphabetical,
-        });
-      } else if (itemType === "tome") {
-        this.actor.update({
-          "system.settings.sorting.tomeSortAlphabetical":
-            !this.actor.system.settings.sorting.tomeSortAlphabetical,
-        });
-      } else if (itemType === "ritual") {
-        this.actor.update({
-          "system.settings.sorting.ritualSortAlphabetical":
-            !this.actor.system.settings.sorting.ritualSortAlphabetical,
-        });
-      }
-    });
   }
 
   /** Resets the actor's current breaking point based on their sanity and POW statistics. */
