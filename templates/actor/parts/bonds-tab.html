@@ -18,9 +18,14 @@
                 <div class="item-name">{{localize 'DG.Bonds.Relationship'}}</div>
                 <div class="item-name">{{localize 'DG.Bonds.Score'}}</div>
                 <div class="item-controls">
-                    <a class="item-control item-create action-pill"
-                       title="Create item"
-                       data-type="bond"><i class="fas fa-plus"></i> {{localize 'DG.Generic.AddButtonLabel'}}</a>
+                    <a class="item-control action-pill"
+                       data-action="itemAction"
+                       data-action-type="create"
+                       data-item-type="bond"
+                       title="Create item">
+                        <i class="fas fa-plus"></i>
+                        {{localize 'DG.Generic.AddButtonLabel'}}
+                    </a>
                 </div>
             </li>
 
@@ -40,8 +45,18 @@
                         <span>{{item.system.relationship}}</span>
                         <span>{{item.system.score}}</span>
                         <div class="item-controls">
-                            <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
-                            <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+                            <a class="item-control"
+                               data-action="itemAction"
+                               data-action-type="edit"
+                               title="Edit Item">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a class="item-control"
+                               data-action="itemAction"
+                               data-action-type="delete"
+                               title="Delete Item">
+                                <i class="fas fa-trash"></i>
+                            </a>
                         </div>
                     </li>
 

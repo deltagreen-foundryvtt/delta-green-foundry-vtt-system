@@ -1246,7 +1246,7 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
       // itemData.system.expense = "Standard";
     } else if (type === "bond") {
       // try to default bonds for an agent to their current CHA
-      itemData.system.score = this.object.system.statistics.cha.value; // Can vary, but at character creation starting bond score is usually agent's charisma
+      itemData.system.score = this.actor.system.statistics.cha.value; // Can vary, but at character creation starting bond score is usually agent's charisma
       // itemData.img = "icons/svg/mystery-man.svg"
     }
 
