@@ -769,17 +769,20 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
     this.actor.update({ [targetProp]: !currentVal });
   }
 
+  async _onRender(context, options) {
+    await super._onRender(context, options);
+    const { element } = this;
+    element.addEventListener("contextmenu", (event) => {
+      const target = event.target.closest("[data-action='roll']");
+      if (!target) return;
+
+      // Pass the correct information to the _onRoll function.
+      DeltaGreenActorSheet._onRoll.call(this, event, target);
+    });
+  }
+
   /** @override */
   activateListeners(html) {
-    super.activateListeners(html);
-
-    // Everything below here is only needed if the sheet is editable
-    if (!this.options.editable) return;
-
-    // Rollable abilities - bind to everything with the 'Rollable' class
-    html.find(".rollable").contextmenu(this._onRoll.bind(this)); // this is for right-click, which triggers the roll modifier dialogue for most rolls
-
-    // Macro for toggling an item's equipped state
     html
       .find(".equipped-item")
       .mousedown(this._onEquippedStatusChange.bind(this));
@@ -1236,7 +1239,7 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
    * @private
    */
   static async _onRoll(event, target) {
-    if (target.classList.contains("not-rollable") || event.which === 3) return;
+    if (target.classList.contains("not-rollable") || event.which === 2) return;
 
     const { dataset } = target;
     const item = this.actor.items.get(dataset.iid);
