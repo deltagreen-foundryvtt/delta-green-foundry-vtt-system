@@ -59,16 +59,19 @@
                     <span class="centered-item-property">
                         {{#if item.system.lethality }}
                             {{#if item.system.isLethal }}
-                                <a class="item-control toggle-lethality dg-red"
+                                <a class="item-control dg-red"
+                                   data-action="toggleLethality"
+                                   data-item-id="{{item._id}}"
+                                   data-is-lethal
                                    title="Toggle Lethality (Current Lethality: {{item.system.lethality}}%)">
-                                    <i class="fas fa-skull-crossbones"
-                                       item-id="{{item._id}}"
-                                       is-lethal="true"></i>
+                                    <i class="fas fa-skull-crossbones"></i>
                                 </a>
                             {{else}}
-                                <a class="item-control toggle-lethality"
+                                <a class="item-control"
+                                   data-action="toggleLethality"
+                                   data-item-id="{{item._id}}"
                                    title="Toggle Lethality (Currently No Lethality)">
-                                    <i class="fas fa-user-injured" item-id="{{item._id}}" is-lethal="false"></i>
+                                    <i class="fas fa-user-injured"></i>
                                 </a>
                             {{/if}}
                         {{/if}}

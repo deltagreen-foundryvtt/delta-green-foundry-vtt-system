@@ -23,6 +23,7 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
       specialTrainingAction: DeltaGreenActorSheet._onSpecialTrainingAction,
       applySkillImprovements: DeltaGreenActorSheet._applySkillImprovements,
       browsePack: DeltaGreenActorSheet._browsePack,
+      toggleLethality: DeltaGreenActorSheet._toggleLethality,
     },
   });
 
@@ -763,10 +764,6 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
       });
     }
 
-    html.find(".toggle-lethality").click((event) => {
-      this._toggleLethality(event);
-    });
-
     // let user check off the 'bond damaged' checkbox right from the sheet
     html.find(".bond-has-been-damaged-agent-sheet-checkbox").click((ev) => {
       const el = $(ev.currentTarget).parents(".item");
@@ -836,10 +833,10 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
     }
   }
 
-  _toggleLethality(event) {
-    const itemId = event.target.getAttribute("item-id");
-    const isLethal = event.target.getAttribute("is-lethal") === "true";
-    const item = this.actor.items.find((i) => i.id === itemId);
+  static _toggleLethality(event, target) {
+    const { itemId } = target.dataset;
+    const isLethal = target.dataset.isLethal?.length === 0;
+    const item = this.actor.items.get(itemId);
     item.update({ "system.isLethal": !isLethal });
   }
 
