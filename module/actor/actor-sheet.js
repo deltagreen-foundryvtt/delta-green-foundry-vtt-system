@@ -27,6 +27,7 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
       toggleBondDamage: DeltaGreenActorSheet._toggleBondDamage,
       clearBondDamage: DeltaGreenActorSheet._clearBondDamage,
       toggleItemSortMode: DeltaGreenActorSheet._toggleItemSortMode,
+      toggleShowUntrained: DeltaGreenActorSheet._toggleShowUntrained,
     },
   });
 
@@ -762,6 +763,12 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
     });
   }
 
+  static toggleShowUntrained() {
+    const targetProp = "system.showUntrainedSkills";
+    const currentVal = foundry.utils.getProperty(this.actor, targetProp);
+    this.actor.update({ [targetProp]: !currentVal });
+  }
+
   /** @override */
   activateListeners(html) {
     super.activateListeners(html);
@@ -771,12 +778,6 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
 
     // Rollable abilities - bind to everything with the 'Rollable' class
     html.find(".rollable").contextmenu(this._onRoll.bind(this)); // this is for right-click, which triggers the roll modifier dialogue for most rolls
-
-    html.find(".toggle-untrained").click(() =>
-      this.actor.update({
-        "system.showUntrainedSkills": !this.actor.system.showUntrainedSkills,
-      }),
-    );
 
     // Macro for toggling an item's equipped state
     html
