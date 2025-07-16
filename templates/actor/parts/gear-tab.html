@@ -174,15 +174,16 @@
 
                     <span class="centered-item-property">{{item.system.protection}}</span>
 
-                    <span class="equipped-item centered-item-property"
-                          data-id="{{item._id}}"
-                          title="{{localize 'DG.Tooltip.ToggleEquippedState'}}">
+                    <a class="centered-item-property"
+                       data-action="toggleEquipped"
+                       data-id="{{item._id}}"
+                       title="{{localize 'DG.Tooltip.ToggleEquippedState'}}">
                         {{#if item.system.equipped }}
-                            <span class="fas fa-check"></span>
+                            <i class="fas fa-check"></i>
                         {{else}}
-                            <span class="fas fa-times"></span>
+                            <i class="fas fa-times"></i>
                         {{/if}}
-                    </span>
+                    </a>
 
                     <div class="item-controls">
                         <a class="item-control"
@@ -247,15 +248,16 @@
 
                     <h4 style="word-wrap: break-word; min-width: 55%;" class="item-name">{{item.name}}</h4>
 
-                    <span class="equipped-item centered-item-property"
-                          data-id="{{item._id}}"
-                          title="{{localize 'DG.Tooltip.ToggleEquippedState'}}">
+                    <a class="centered-item-property"
+                       data-action="toggleEquipped"
+                       data-id="{{item._id}}"
+                       title="{{localize 'DG.Tooltip.ToggleEquippedState'}}">
                         {{#if item.system.equipped }}
-                            <span class="fas fa-check"></span>
+                            <i class="fas fa-check"></i>
                         {{else}}
-                            <span class="fas fa-times"></span>
+                            <i class="fas fa-times"></i>
                         {{/if}}
-                    </span>
+                    </a>
 
                     <div class="item-controls">
                         <a class="item-control"

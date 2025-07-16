@@ -28,6 +28,7 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
       clearBondDamage: DeltaGreenActorSheet._clearBondDamage,
       toggleItemSortMode: DeltaGreenActorSheet._toggleItemSortMode,
       toggleShowUntrained: DeltaGreenActorSheet._toggleShowUntrained,
+      toggleEquipped: DeltaGreenActorSheet._toggleEquipped,
     },
   });
 
@@ -783,10 +784,6 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
 
   /** @override */
   activateListeners(html) {
-    html
-      .find(".equipped-item")
-      .mousedown(this._onEquippedStatusChange.bind(this));
-
     // Drag events for macros.
     if (this.actor.isOwner) {
       const handler = (ev) => this._onDragStart(ev);
@@ -1339,20 +1336,14 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
     this.actor.update({ system: updatedData });
   }
 
-  _onEquippedStatusChange(event) {
+  static _toggleEquipped(event, target) {
     event.preventDefault();
-    const element = event.currentTarget;
-    const { dataset } = element;
+    const { id } = target.dataset;
+    const item = this.actor.items.get(id);
 
-    try {
-      // const item = this.actor.getOwnedItem(dataset.id);
-      const item = this.actor.items.get(dataset.id);
-      let isEquipped = item.system.equipped;
-      isEquipped = !isEquipped;
-      item.update({ system: { equipped: isEquipped } });
-    } catch (ex) {
-      console.log(ex);
-    }
+    const targetProp = "system.equipped";
+    const currentVal = foundry.utils.getProperty(item, targetProp);
+    item.update({ [targetProp]: !currentVal });
   }
 
   // For any skills a user has checked off as failed, roll the improvement and update the agent's skills to their new values
