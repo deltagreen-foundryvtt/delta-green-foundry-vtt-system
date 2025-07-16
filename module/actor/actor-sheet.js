@@ -15,6 +15,9 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
   static DEFAULT_OPTIONS = /** @type {const} */ ({
     css: ["actor"],
     position: { width: 750, height: 770 },
+    actions: {
+      itemAction: DeltaGreenActorSheet._onItemAction,
+    },
   });
 
   static TABS = /** @type {const} */ ({
@@ -147,7 +150,7 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
         }
       }
 
-      sortedSkills.sort(function (a, b) {
+      sortedSkills.sort((a, b) => {
         return a.sortLabel.localeCompare(b.sortLabel, game.i18n.lang);
       });
 
@@ -555,34 +558,35 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
 
   /* -------------------------------------------- */
 
+  static _onItemAction(event, target) {
+    const li = target.closest(".item");
+    const { itemId } = li.dataset;
+    const { actionType, itemType } = target.dataset;
+
+    switch (actionType) {
+      case "create":
+        this._onItemCreate(itemType);
+        break;
+      case "edit": {
+        const item = this.actor.items.get(itemId);
+        item.sheet.render(true);
+        break;
+      }
+      case "delete": {
+        this.actor.deleteEmbeddedDocuments("Item", [itemId]);
+        break;
+      }
+      default:
+        break;
+    }
+  }
+
   /** @override */
   activateListeners(html) {
     super.activateListeners(html);
 
     // Everything below here is only needed if the sheet is editable
     if (!this.options.editable) return;
-
-    // Add Inventory Item
-    html.find(".item-create").click(this._onItemCreate.bind(this));
-
-    // Update Inventory Item
-    html.find(".item-edit").click((ev) => {
-      const li = $(ev.currentTarget).parents(".item");
-      // const item = this.actor.getOwnedItem(li.data("itemId"));
-      const item = this.actor.items.get(li.data("itemId"));
-      item.sheet.render(true);
-    });
-
-    // Delete Inventory Item
-    html.find(".item-delete").click((ev) => {
-      const li = $(ev.currentTarget).parents(".item");
-
-      // this.actor.deleteOwnedItem(li.data("itemId"));
-      const options = {};
-      this.actor.deleteEmbeddedDocuments("Item", [li.data("itemId")], options);
-
-      li.slideUp(200, () => this.render(false));
-    });
 
     // Rollable abilities - bind to everything with the 'Rollable' class
     html.find(".rollable").click(this._onRoll.bind(this));
@@ -1223,19 +1227,11 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
 
   /**
    * Handle creating a new Owned Item for the actor using initial data defined in the HTML dataset
-   * @param {Event} event   The originating click event
+   * @param {String} type   The originating click event
    * @private
    */
-  _onItemCreate(event) {
-    event.preventDefault();
-
-    const header = event.currentTarget;
-
-    // Get the type of item to create.
-    const { type } = header.dataset;
-
+  _onItemCreate(type) {
     // Initialize a default name.
-    // const name = `New ${type.capitalize()}`;
     const name = game.i18n.format(
       game.i18n.translations.DOCUMENT?.New || "DG.FallbackText.newItem",
       {

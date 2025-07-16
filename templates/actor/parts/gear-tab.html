@@ -28,9 +28,11 @@
                 <span class="centered-item-property">{{localize 'DG.Gear.DamageOrLethality'}}</span>
                 <span class="centered-item-property">{{localize 'DG.Gear.ArmorPiercing'}}</span>
                 <div class="item-controls">
-                    <a class="item-control item-create action-pill"
+                    <a class="item-control action-pill"
+                       data-action="itemAction"
+                       data-action-type="create"
                        title="Create item"
-                       data-type="weapon"><i class="fas fa-plus"></i> {{localize 'DG.Generic.AddButtonLabel'}}</a>
+                       data-item-type="weapon"><i class="fas fa-plus"></i> {{localize 'DG.Generic.AddButtonLabel'}}</a>
                 </div>
             </li>
 
@@ -98,10 +100,16 @@
                     <span class="centered-item-property">{{item.system.armorPiercing}}</span>
 
                     <div class="item-controls">
-                        <a class="item-control item-edit" title="Edit Item">
+                        <a class="item-control"
+                           data-action="itemAction"
+                           data-action-type="edit"
+                           title="Edit Item">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <a class="item-control item-delete" title="Delete Item">
+                        <a class="item-control"
+                           data-action="itemAction"
+                           data-action-type="delete"
+                           title="Delete Item">
                             <i class="fas fa-trash"></i>
                         </a>
                     </div>
@@ -137,9 +145,11 @@
                 <span class="centered-item-property">{{localize 'DG.Gear.ArmorRating'}}</span>
                 <span class="centered-item-property">{{localize 'DG.Gear.Equipped'}}</span>
                 <div class="item-controls">
-                    <a class="item-control item-create action-pill"
+                    <a class="item-control action-pill"
+                       data-action="itemAction"
+                       data-action-type="create"
                        title="Create item"
-                       data-type="armor"><i class="fas fa-plus"></i> {{localize 'DG.Generic.AddButtonLabel'}}</a>
+                       data-item-type="armor"><i class="fas fa-plus"></i> {{localize 'DG.Generic.AddButtonLabel'}}</a>
                 </div>
 
             </li>
@@ -167,10 +177,16 @@
                     </span>
 
                     <div class="item-controls">
-                        <a class="item-control item-edit" title="Edit Item">
+                        <a class="item-control"
+                           data-action="itemAction"
+                           data-action-type="edit"
+                           title="Edit Item">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <a class="item-control item-delete" title="Delete Item">
+                        <a class="item-control"
+                           data-action="itemAction"
+                           data-action-type="delete"
+                           title="Delete Item">
                             <i class="fas fa-trash"></i>
                         </a>
                     </div>
@@ -203,9 +219,11 @@
                 <span class="centered-item-property">{{localize 'DG.Gear.Equipped'}}</span>
 
                 <div class="item-controls">
-                    <a class="item-control item-create action-pill"
+                    <a class="item-control action-pill"
+                       data-action="itemAction"
+                       data-action-type="create"
                        title="Create item"
-                       data-type="gear">
+                       data-item-type="gear">
                         <i class="fas fa-plus"></i> {{localize 'DG.Generic.AddButtonLabel'}}
                     </a>
                 </div>
@@ -230,8 +248,14 @@
                     </span>
 
                     <div class="item-controls">
-                        <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
-                        <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+                        <a class="item-control"
+                           data-action="itemAction"
+                           data-action-type="edit"
+                           title="Edit Item"><i class="fas fa-edit"></i></a>
+                        <a class="item-control"
+                           data-action="itemAction"
+                           data-action-type="delete"
+                           title="Delete Item"><i class="fas fa-trash"></i></a>
                     </div>
                 </li>
             {{/each}}
@@ -269,9 +293,11 @@
                     <div style="min-width: 55%;" class="item-name">{{localize 'DG.Tomes.Name'}}</div>
 
                     <div class="item-controls">
-                        <a class="item-control item-create action-pill"
+                        <a class="item-control action-pill"
+                           data-action="itemAction"
+                           data-action-type="create"
                            title="Create item"
-                           data-type="tome">
+                           data-item-type="tome">
                             <i class="fas fa-plus"></i>
                             {{localize 'DG.Generic.AddButtonLabel'}}
                         </a>
@@ -299,8 +325,14 @@
                         </h4>
 
                         <div class="item-controls">
-                            <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
-                            <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+                            <a class="item-control"
+                               data-action="itemAction"
+                               data-action-type="edit"
+                               title="Edit Item"><i class="fas fa-edit"></i></a>
+                            <a class="item-control"
+                               data-action="itemAction"
+                               data-action-type="delete"
+                               title="Delete Item"><i class="fas fa-trash"></i></a>
                         </div>
 
                     </li>
@@ -342,9 +374,11 @@
                     <div style="min-width: 55%;" class="item-name">{{localize 'DG.Ritual.Name'}}</div>
 
                     <div class="item-controls">
-                        <a class="item-control item-create action-pill"
+                        <a class="item-control action-pill"
+                           data-action="itemAction"
+                           data-action-type="create"
                            title="Create item"
-                           data-type="ritual">
+                           data-item-type="ritual">
                             <i class="fas fa-plus"></i> {{localize 'DG.Generic.AddButtonLabel'}}
                         </a>
                     </div>
@@ -371,8 +405,14 @@
                         </h4>
 
                         <div class="item-controls">
-                            <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
-                            <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+                            <a class="item-control"
+                               data-action="itemAction"
+                               data-action-type="edit"
+                               title="Edit Item"><i class="fas fa-edit"></i></a>
+                            <a class="item-control"
+                               data-action="itemAction"
+                               data-action-type="delete"
+                               title="Delete Item"><i class="fas fa-trash"></i></a>
                         </div>
 
                     </li>
