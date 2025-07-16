@@ -419,11 +419,13 @@ explicitly define a number of rows, rather than columns. */
   margin-right: 5px;
 }
 
-.deltagreen .items-list .item .item-icon {
+.deltagreen .items-list .item .item-bond-damage {
   -webkit-box-flex: 0;
   -ms-flex: 0 0 24px;
   flex: 0 0 24px;
-  margin-left: 6px;
+  margin: 0;
+  align-self: center;
+  justify-self: center;
 }
 
 .deltagreen .items-list .item img {

@@ -9,7 +9,7 @@
         <ol class="items-list">
             <li class="item flexrow item-header">
 
-                <div class="item-icon">
+                <div class="item-bond-damage">
                     <a data-action="clearBondDamage"
                        title="{{localizeWithFallback 'DG.Generic.ClearAll' 'Clear All'}}"><i class="fas fa-arrow-rotate-left"></i></a>
                 </div>
@@ -33,7 +33,8 @@
                 {{#if_eq item.type "bond" }}
 
                     <li class="item flexrow" data-item-id="{{item.id}}">
-                        <input type="checkbox"
+                        <input class="item-bond-damage"
+                               type="checkbox"
                                data-action="toggleBondDamage"
                                title="Check if bond has been damaged since last home scene."
                                {{checked item.system.hasBeenDamagedSinceLastHomeScene}} />
