@@ -16,19 +16,22 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
     css: ["actor"],
     position: { width: 750, height: 770 },
     actions: {
+      // Skill/Item actions.
       itemAction: DeltaGreenActorSheet._onItemAction,
-      roll: DeltaGreenActorSheet._onRoll,
-      resetBreakingPoint: DeltaGreenActorSheet._resetBreakingPoint,
       typedSkillAction: DeltaGreenActorSheet._onTypedSkillAction,
       specialTrainingAction: DeltaGreenActorSheet._onSpecialTrainingAction,
-      applySkillImprovements: DeltaGreenActorSheet._applySkillImprovements,
-      browsePack: DeltaGreenActorSheet._browsePack,
-      toggleLethality: DeltaGreenActorSheet._toggleLethality,
-      toggleBondDamage: DeltaGreenActorSheet._toggleBondDamage,
+      roll: DeltaGreenActorSheet._onRoll,
+      // Toggles/resets.
       clearBondDamage: DeltaGreenActorSheet._clearBondDamage,
+      toggleBondDamage: DeltaGreenActorSheet._toggleBondDamage,
+      toggleEquipped: DeltaGreenActorSheet._toggleEquipped,
       toggleItemSortMode: DeltaGreenActorSheet._toggleItemSortMode,
       toggleShowUntrained: DeltaGreenActorSheet._toggleShowUntrained,
-      toggleEquipped: DeltaGreenActorSheet._toggleEquipped,
+      toggleLethality: DeltaGreenActorSheet._toggleLethality,
+      resetBreakingPoint: DeltaGreenActorSheet._resetBreakingPoint,
+      // Other actions.
+      applySkillImprovements: DeltaGreenActorSheet._applySkillImprovements,
+      browsePack: DeltaGreenActorSheet._browsePack,
     },
   });
 
