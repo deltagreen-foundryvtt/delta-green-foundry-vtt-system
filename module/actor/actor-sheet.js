@@ -21,6 +21,7 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
       typedSkillAction: DeltaGreenActorSheet._onTypedSkillAction,
       specialTrainingAction: DeltaGreenActorSheet._onSpecialTrainingAction,
       roll: DeltaGreenActorSheet._onRoll,
+      rollLuck: DeltaGreenActorSheet._onRollLuck,
       // Toggles/resets.
       clearBondDamage: DeltaGreenActorSheet._clearBondDamage,
       toggleBondDamage: DeltaGreenActorSheet._toggleBondDamage,
@@ -502,40 +503,23 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
     actor.tomes = tomes;
   }
 
-  // Can add extra buttons to form header here if necessary
-  _getHeaderButtons() {
-    let buttons = super._getHeaderButtons();
-    let label = "Roll Luck";
-    let label2 = "Luck";
-
-    try {
-      label = game.i18n.translations.DG.RollLuck;
-      label2 = game.i18n.translations.DG.Luck;
-    } catch {
-      console.error(
-        "Missing translation key for either DG.RollLuck or DG.Luck key.",
-      );
-    }
-
-    buttons = [
-      {
-        label,
-        class: "test-extra-icon",
-        icon: "fas fa-dice",
-        onclick: (ev) => this.luckRollOnClick(ev, this.actor, label2),
-      },
-    ].concat(buttons);
-
-    return buttons;
+  /** @override - Add buttons to the header controls. */
+  _getHeaderControls() {
+    const controls = super._getHeaderControls();
+    controls.push({
+      action: "rollLuck",
+      label: "DG.RollLuck",
+      icon: "fas fa-dice",
+    });
+    return controls;
   }
 
   // This only exists to give a chance to activate the modifier dialogue if desired
   // Cannot seem to trigger the event on a right-click, so unfortunately only applies to a shift-click currently.
-  async luckRollOnClick(event) {
-    if (event && event.which === 2) {
-      // probably don't want rolls to trigger from a middle mouse click so just kill it here
-      return;
-    }
+  static async _onRollLuck(event) {
+    // probably don't want rolls to trigger from a middle mouse click so just kill it here
+    if (event.which === 2) return;
+
     const rollOptions = {
       rollType: "luck",
       key: "luck",
@@ -784,16 +768,38 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
     this.actor.update({ [targetProp]: !currentVal });
   }
 
+  /**
+   * Listens for right click events on the actor sheet and executes a regular roll,
+   * or luck roll, depending on the action.
+   *
+   * @returns {void}
+   */
+  _setRightClickListeners() {
+    const { element } = this;
+    element.addEventListener("contextmenu", (event) => {
+      event.preventDefault();
+      const target = event.target.closest(
+        "[data-action='roll'],[data-action='rollLuck']",
+      );
+      if (!target) return;
+
+      // Call _onRollLuck if luckRoll is the dispatched action.
+      if (target.dataset.action === "rollLuck") {
+        DeltaGreenActorSheet._onRollLuck.call(this, event, target);
+        return;
+      }
+
+      // Otherwise, call _onRoll function.
+      DeltaGreenActorSheet._onRoll.call(this, event, target);
+    });
+  }
+
+  /** @override */
   async _onRender(context, options) {
     await super._onRender(context, options);
     const { element } = this;
-    element.addEventListener("contextmenu", (event) => {
-      const target = event.target.closest("[data-action='roll']");
-      if (!target) return;
 
-      // Pass the correct information to the _onRoll function.
-      DeltaGreenActorSheet._onRoll.call(this, event, target);
-    });
+    this._setRightClickListeners();
 
     if (this.actor.isOwner) {
       const handler = (ev) => this._onDragStart(ev);
@@ -817,6 +823,7 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
     this.actor.update({ system: updatedData });
   }
 
+  /** Toggles lethality */
   static _toggleLethality(event, target) {
     const { itemId } = target.dataset;
     const isLethal = target.dataset.isLethal?.length === 0;
