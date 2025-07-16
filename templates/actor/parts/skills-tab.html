@@ -1,4 +1,4 @@
-<div class="tab skills sheet-body {{tabs.skills.cssClass}}"
+<div class="tab skills {{tabs.skills.cssClass}}"
      data-group="primary"
      data-tab="skills">
     <div class="horizontal-bar-section-divider">
@@ -65,10 +65,10 @@
                                   {{#if_not_eq skill.proficiency skill.targetProficiency }}
                                       target-proficiency-mod{{/if_not_eq }}"
                            type="text"
-                           name="system.skills.{{skill.key}}.proficiency"
-                           value="{{skill.proficiency}}"
+                           name="system.skills.{{skill.key }}.proficiency"
+                           value="{{skill.proficiency }}"
                            data-dtype="Number"
-                           data-tooltip="{{skill.targetProficiency}}"
+                           data-tooltip="{{skill.targetProficiency }}"
                            {{#if skill.isCalculatedValue }}
                            disabled
                            {{/if }} />

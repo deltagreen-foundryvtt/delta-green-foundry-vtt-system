@@ -45,28 +45,34 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
       templates: [
         `${this.TEMPLATE_PATH}/actor/partials/custom-skills-partial.html`,
       ],
+      scrollable: [""],
     },
     physical: {
       template: `${this.TEMPLATE_PATH}/actor/parts/physical-tab.html`,
       templates: [
         `${this.TEMPLATE_PATH}/actor/partials/attributes-grid-partial.html`,
       ],
+      scrollable: [""],
     },
     motivations: {
       template: `${this.TEMPLATE_PATH}/actor/parts/motivations-tab.html`,
     },
     gear: {
       template: `${this.TEMPLATE_PATH}/actor/parts/gear-tab.html`,
+      scrollable: [""],
     },
     bio: {
       template: `${this.TEMPLATE_PATH}/actor/parts/bio-tab.html`,
       templates: [`${this.TEMPLATE_PATH}/actor/partials/cv-partial.html`],
+      scrollable: [""],
     },
     bonds: {
       template: `${this.TEMPLATE_PATH}/actor/parts/bonds-tab.html`,
+      scrollable: [""],
     },
     about: {
       template: `${this.TEMPLATE_PATH}/actor/parts/about-tab.html`,
+      scrollable: [""],
     },
   });
 
@@ -99,18 +105,18 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
   }
 
   /** @override */
-  async getData() {
-    const data = super.getData();
+  async _prepareContext(options) {
+    const context = await super._prepareContext(options);
 
     // Prepare items.
-    this._prepareCharacterItems(data);
+    this._prepareCharacterItems(context);
 
-    data.showHyperGeometrySection = this.shouldShowHyperGeometrySection(
+    context.showHyperGeometrySection = this.shouldShowHyperGeometrySection(
       this.actor,
     );
 
     // Make it easy for the sheet handlebars to understand how to sort the skills.
-    data.sortSkillsSetting = game.settings.get("deltagreen", "sortSkills");
+    context.sortSkillsSetting = game.settings.get("deltagreen", "sortSkills");
 
     if (this.actor.type !== "vehicle") {
       // fill an array that is sorted based on the appropriate localized entry
@@ -192,7 +198,7 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
           return simplifiedTraining;
         },
       );
-      data.specialTraining = specialTraining;
+      context.specialTraining = specialTraining;
     }
 
     // try to make a combined array of both typed skills and special trainings,
@@ -216,8 +222,8 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
         sortedCustomSkills.push(skill);
       }
 
-      for (let i = 0; i < data.specialTraining.length; i++) {
-        const training = data.specialTraining[i];
+      for (let i = 0; i < context.specialTraining.length; i++) {
+        const training = context.specialTraining[i];
 
         training.type = "training";
         training.sortLabel = training.name.toUpperCase();
@@ -244,31 +250,31 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
 
     switch (this.actor.type) {
       case "agent":
-        data.enrichedDescription =
+        context.enrichedDescription =
           await foundry.applications.ux.TextEditor.implementation.enrichHTML(
-            this.object.system.physicalDescription,
+            this.actor.system.physicalDescription,
             { async: true },
           );
         break;
       case "vehicle":
-        data.enrichedDescription =
+        context.enrichedDescription =
           await foundry.applications.ux.TextEditor.implementation.enrichHTML(
-            this.object.system.description,
+            this.actor.system.description,
             { async: true },
           );
         break;
       case "npc":
       case "unnatural":
-        data.enrichedDescription =
+        context.enrichedDescription =
           await foundry.applications.ux.TextEditor.implementation.enrichHTML(
-            this.object.system.notes,
+            this.actor.system.notes,
             { async: true },
           );
         break;
       default:
     }
 
-    return data;
+    return context;
   }
 
   reorderForColumnSorting(arr, numCols) {
@@ -340,8 +346,8 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
    *
    * @return {undefined}
    */
-  _prepareCharacterItems(sheetData) {
-    const actorData = sheetData.actor;
+  _prepareCharacterItems() {
+    const { actor } = this;
 
     // Initialize containers.
     const armor = [];
@@ -352,7 +358,7 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
 
     // Iterate through items, allocating to containers
     // let totalWeight = 0;
-    for (const i of sheetData.items) {
+    for (const i of actor.items) {
       // Append to armor.
       if (i.type === "armor") {
         armor.push(i);
@@ -369,8 +375,8 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
       }
     }
 
-    if (actorData.system.settings.sorting.armorSortAlphabetical) {
-      armor.sort(function (a, b) {
+    if (actor.system.settings.sorting.armorSortAlphabetical) {
+      armor.sort((a, b) => {
         const x = a.name.toLowerCase();
         const y = b.name.toLowerCase();
         if (x < y) {
@@ -382,13 +388,13 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
         return 0;
       });
     } else {
-      armor.sort(function (a, b) {
+      armor.sort((a, b) => {
         return a.sort - b.sort;
       });
     }
 
-    if (actorData.system.settings.sorting.weaponSortAlphabetical) {
-      weapons.sort(function (a, b) {
+    if (actor.system.settings.sorting.weaponSortAlphabetical) {
+      weapons.sort((a, b) => {
         const x = a.name.toLowerCase();
         const y = b.name.toLowerCase();
         if (x < y) {
@@ -400,13 +406,13 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
         return 0;
       });
     } else {
-      weapons.sort(function (a, b) {
+      weapons.sort((a, b) => {
         return a.sort - b.sort;
       });
     }
 
-    if (actorData.system.settings.sorting.gearSortAlphabetical) {
-      gear.sort(function (a, b) {
+    if (actor.system.settings.sorting.gearSortAlphabetical) {
+      gear.sort((a, b) => {
         const x = a.name.toLowerCase();
         const y = b.name.toLowerCase();
         if (x < y) {
@@ -418,13 +424,13 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
         return 0;
       });
     } else {
-      gear.sort(function (a, b) {
+      gear.sort((a, b) => {
         return a.sort - b.sort;
       });
     }
 
-    if (actorData.system.settings.sorting.tomeSortAlphabetical) {
-      tomes.sort(function (a, b) {
+    if (actor.system.settings.sorting.tomeSortAlphabetical) {
+      tomes.sort((a, b) => {
         const x = a.name.toLowerCase();
         const y = b.name.toLowerCase();
         if (x < y) {
@@ -436,13 +442,13 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
         return 0;
       });
     } else {
-      tomes.sort(function (a, b) {
+      tomes.sort((a, b) => {
         return a.sort - b.sort;
       });
     }
 
-    if (actorData.system.settings.sorting.ritualSortAlphabetical) {
-      rituals.sort(function (a, b) {
+    if (actor.system.settings.sorting.ritualSortAlphabetical) {
+      rituals.sort((a, b) => {
         const x = a.name.toLowerCase();
         const y = b.name.toLowerCase();
         if (x < y) {
@@ -454,17 +460,17 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
         return 0;
       });
     } else {
-      rituals.sort(function (a, b) {
+      rituals.sort((a, b) => {
         return a.sort - b.sort;
       });
     }
 
     // Assign and return
-    actorData.armor = armor;
-    actorData.weapons = weapons;
-    actorData.gear = gear;
-    actorData.rituals = rituals;
-    actorData.tomes = tomes;
+    actor.armor = armor;
+    actor.weapons = weapons;
+    actor.gear = gear;
+    actor.rituals = rituals;
+    actor.tomes = tomes;
   }
 
   // Can add extra buttons to form header here if necessary

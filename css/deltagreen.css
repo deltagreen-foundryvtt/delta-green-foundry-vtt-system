@@ -240,6 +240,7 @@ explicitly define a number of rows, rather than columns. */
   -ms-flex-pack: start;
   justify-content: flex-start;
   text-align: left;
+  padding: 0;
 }
 
 .flex-group-right {
@@ -368,6 +369,7 @@ explicitly define a number of rows, rather than columns. */
 
 .deltagreen .tab {
   height: 100%;
+  overflow-y: auto;
 
   border-color: #000;
   border-width: 2px;
@@ -504,18 +506,16 @@ span.max-attribute-value-label {
 
 input.percentile-skill-input {
   flex: 0 0 40px;
-  margin-right: 5px;
-  margin-left: 5px;
-  height: unset;
+  margin: 0 5px;
+  height: 1.2rem;
   align-self: center;
-  text-align: center !important;
+  text-align: center;
 }
 
 input.checkbox-skill-input {
-  /*flex: 0 0 10px;*/
-  width: 15px;
-  height: 15px;
-  align-self: center;
+  flex: 0 0 20px;
+  line-height: 10px;
+  width: 1px;
 }
 
 .deltagreen .sheet-header .header-top {
