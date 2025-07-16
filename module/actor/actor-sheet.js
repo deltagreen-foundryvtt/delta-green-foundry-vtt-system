@@ -267,13 +267,24 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
     }
 
     switch (this.actor.type) {
-      case "agent":
-        context.enrichedDescription =
+      case "agent": {
+        const enrichedDescription =
           await foundry.applications.ux.TextEditor.implementation.enrichHTML(
             this.actor.system.physicalDescription,
-            { async: true },
+            {
+              rollData: this.document.getRollData(),
+              relativeTo: this.document,
+            },
           );
+        const { HTMLProseMirrorElement } = foundry.applications.elements;
+        context.descriptionField = HTMLProseMirrorElement.create({
+          name: "system.physicalDescription",
+          value: this.actor.system.physicalDescription,
+          enriched: enrichedDescription,
+          toggled: true,
+        }).outerHTML;
         break;
+      }
       case "vehicle":
         context.enrichedDescription =
           await foundry.applications.ux.TextEditor.implementation.enrichHTML(

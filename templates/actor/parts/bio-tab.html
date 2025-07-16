@@ -98,7 +98,5 @@
         <span>{{localize "DG.Sheet.BlockHeaders.PhysicalDescriptionNotes"}}</span>
     </div>
 
-    <div class="editor-host">
-        {{editor enrichedDescription target="system.physicalDescription" engine="prosemirror" button=true owner=owner editable=editable}}
-    </div>
+    <div class="editor-host">{{{descriptionField}}}</div>
 </div>
