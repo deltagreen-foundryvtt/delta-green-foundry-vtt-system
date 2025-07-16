@@ -18,6 +18,7 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
     actions: {
       itemAction: DeltaGreenActorSheet._onItemAction,
       roll: DeltaGreenActorSheet._onRoll,
+      resetBreakingPoint: DeltaGreenActorSheet._resetBreakingPoint,
     },
   });
 
@@ -613,19 +614,6 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
       });
     }
 
-    // Custom Sheet Macros
-    html.find(".btn-reset-breaking-point").click((event) => {
-      event.preventDefault();
-      let currentBreakingPoint = 0;
-
-      currentBreakingPoint =
-        this.actor.system.sanity.value - this.actor.system.statistics.pow.value;
-
-      const updatedData = foundry.utils.duplicate(this.actor.system);
-      updatedData.sanity.currentBreakingPoint = currentBreakingPoint;
-      this.actor.update({ system: updatedData });
-    });
-
     html.find(".typed-skill-add").click((event) => {
       event.preventDefault();
 
@@ -834,6 +822,18 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
         });
       }
     });
+  }
+
+  /** Resets the actor's current breaking point based on their sanity and POW statistics. */
+  static _resetBreakingPoint() {
+    const systemData = this.actor.system;
+
+    const newBreakingPoint =
+      systemData.sanity.value - systemData.statistics.pow.value;
+
+    const updatedData = foundry.utils.duplicate(systemData);
+    updatedData.sanity.currentBreakingPoint = newBreakingPoint;
+    this.actor.update({ system: updatedData });
   }
 
   // trigger an update on all bonds that have had their damaged flag checked off
