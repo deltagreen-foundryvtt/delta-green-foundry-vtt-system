@@ -33,25 +33,19 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
   /** @override */
   get template() {
     if (this.actor !== null) {
-      if (this.actor.type === "agent") {
-        if (!game.user.isGM && this.actor.limited) {
-          return "systems/deltagreen/templates/actor/limited-sheet.html";
-        }
-
-        // return `systems/deltagreen/templates/actor/${this.actor.data.type}-sheet.html`;
-        return `systems/deltagreen/templates/actor/actor-sheet.html`;
+      const actorIsLimited = !game.user.isGM && this.actor.limited;
+      switch (this.actor.type) {
+        case "agent":
+          return actorIsLimited ? "systems/deltagreen/templates/actor/limited-sheet.html" : "systems/deltagreen/templates/actor/actor-sheet.html";
+        case "unnatural":
+          return `systems/deltagreen/templates/actor/unnatural-sheet.html`; // No limited sheet
+        case "npc":
+          return actorIsLimited ? "systems/deltagreen/templates/actor/npc-limited-sheet.html" : "systems/deltagreen/templates/actor/npc-sheet.html";
+        case "vehicle":
+          return `systems/deltagreen/templates/actor/vehicle-sheet.html`; // No limited sheet
+        default:
+          return "systems/deltagreen/templates/actor/actor-sheet.html"; // No limited sheet
       }
-      if (this.actor.type === "unnatural") {
-        return `systems/deltagreen/templates/actor/unnatural-sheet.html`;
-      }
-      if (this.actor.type === "npc") {
-        return `systems/deltagreen/templates/actor/npc-sheet.html`;
-      }
-      if (this.actor.type === "vehicle") {
-        return `systems/deltagreen/templates/actor/vehicle-sheet.html`;
-      }
-
-      return "systems/deltagreen/templates/actor/limited-sheet.html";
     }
 
     return "systems/deltagreen/templates/actor/limited-sheet.html";
