@@ -202,8 +202,8 @@ Hooks.on("renderGamePause", function (_, html, options) {
 
 Hooks.on("renderChatLog", async (app, element, context, options) => {
   element.addEventListener("click", (event) => {
-    let btnWithAction = DGUtils.htmlClosest(event.target, "button[data-action]");
-    let message = DGUtils.htmlClosest(event.target, "li[data-message-id]");
+    const btnWithAction = DGUtils.htmlClosest(event.target, "button[data-action]");
+    const message = DGUtils.htmlClosest(event.target, "li[data-message-id]");
 
     if (btnWithAction && message && message?.dataset?.messageId) {
       handleInlineActions(btnWithAction, message?.dataset?.messageId);
