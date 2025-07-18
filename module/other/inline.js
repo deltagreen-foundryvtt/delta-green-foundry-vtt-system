@@ -2,9 +2,7 @@ export async function handleInlineActions(btnWithAction, messageId) {
   let action = btnWithAction.dataset?.action;
   let message = game.messages.get(messageId);
   let actor = message?.speakerActor;
-  if (!action || !message || !actor) {
-    return;
-  }
+  if (!actor) return;
 
   if (action === 'rollback-skill-failure-state') {
     const rollbackFlag =message.getFlag("deltagreen", "rollbacks");
