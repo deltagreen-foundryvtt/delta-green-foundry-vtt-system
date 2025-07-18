@@ -378,16 +378,16 @@ export class DGPercentileRoll extends DGRoll {
    * @returns {string}
    */
   createLabel() {
-    let startOfLabel = game.i18n.localize("DG.Roll.Rolling")
+    const startOfLabel = game.i18n.localize("DG.Roll.Rolling")
       + ` <b>${this.localizedKey}`
-    let endOfLabel =`${game.i18n.localize("DG.Roll.Target")} ${this.effectiveTarget}`
+    const endOfLabel =`${game.i18n.localize("DG.Roll.Target")} ${this.effectiveTarget}`
 
-    let label = this.isInhuman
+    const label = this.isInhuman
       // "Inhuman" stat being rolled. See function for details.
       ? `${startOfLabel} [${game.i18n.localize("DG.Roll.Inhuman").toUpperCase()}]</b> ${endOfLabel}`
       : `${startOfLabel}</b><br> ${endOfLabel}%`;
 
-    let {isExhausted, exhaustedCheckPenalty} = this.exhausted
+    const {isExhausted, exhaustedCheckPenalty} = this.exhausted
 
     if (this.modifier || isExhausted) {
       label += ` (${this.target}%`;
