@@ -40,8 +40,4 @@ export default class DGUtils {
     }
     return null
   }
-
-  static getValueByPath(obj, path) {
-    return path.split('.').reduce((acc, key) => acc?.[key], obj);
-  }
 }
