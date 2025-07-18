@@ -312,7 +312,7 @@ export class DGPercentileRoll extends DGRoll {
 
     //TODO: add setting for it?
     if (failureMark) {
-      let keyForUpdate = `${this.skillPath}.failure`;
+      const keyForUpdate = `${this.skillPath}.failure`;
 
       //TODO: auto-update actor or post icon with manual apply
       await this.actor.update({
