@@ -297,7 +297,7 @@ export class DGPercentileRoll extends DGRoll {
     }
 
     const failureMark = !this.isSuccess && this.skillPath
-      && !DGUtils.getValueByPath(this.actor, this.skillPath).failure;
+      && !foundry.utils.getProperty(this.actor, `${this.skillPath}.failure`);
 
     const { renderTemplate } = foundry.applications.handlebars;
     const html = await renderTemplate(
