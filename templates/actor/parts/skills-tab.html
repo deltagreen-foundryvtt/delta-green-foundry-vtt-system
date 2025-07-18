@@ -12,12 +12,7 @@
                        data-key="{{skill.key}}"
                        data-rolltype="skill"
                        for="system.skills.{{skill.key}}.value"
-                       {{#if skill.proficiency }}
-                       title="{{localize 'DG.Tooltip.SkillLabel' }}"
-                       {{/if }}
-                       {{#unless skill.proficiency }}
-                       title="{{localize 'DG.Tooltip.CannotRollSkillLabel' }}"
-                       {{/unless }}>
+                       data-tooltip="{{concat (localize (concat 'DG.Skills.Tooltip.' skill.key)) '<br><br>' (localize (ifThen skill.proficiency 'DG.Tooltip.SkillLabel' 'DG.Tooltip.CannotRollSkillLabel')) }}">
                     {{localizeWithFallback (concat "DG.Skills." skill.key) skill.label }}
                     <i class="fas fa-dice"></i>
                 </label>
