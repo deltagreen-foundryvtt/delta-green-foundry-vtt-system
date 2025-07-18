@@ -15,7 +15,6 @@ import {
   rollSkillMacro,
   rollSkillTestAndDamageForOwnedItem,
 } from "./other/macro-functions.js";
-import DGUtils from "./other/utility-functions.js";
 import { handleInlineActions } from "./other/inline.js";
 
 Hooks.once("init", async () => {
@@ -202,8 +201,8 @@ Hooks.on("renderGamePause", function (_, html, options) {
 
 Hooks.on("renderChatLog", async (app, element, context, options) => {
   element.addEventListener("click", (event) => {
-    const btnWithAction = DGUtils.htmlClosest(event.target, "button[data-action]");
-    const message = DGUtils.htmlClosest(event.target, "li[data-message-id]");
+    const btnWithAction = event.target.closest("button[data-action]");
+    const message = event.target.closest("li[data-message-id]")
 
     const { messageId } = message?.dataset || {}
     if (btnWithAction && messageId) {

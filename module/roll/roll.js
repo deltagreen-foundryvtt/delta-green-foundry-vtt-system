@@ -409,8 +409,8 @@ export class DGPercentileRoll extends DGRoll {
   }
 
   get exhausted() {
-    const isExhausted = false;
-    const exhaustedCheckPenalty = -20;
+    let isExhausted = false;
+    let exhaustedCheckPenalty = -20;
 
     try {
       // I suspect (but am not entirely certain) that being tired doesn't make you less lucky)
