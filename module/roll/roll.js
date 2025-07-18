@@ -345,7 +345,7 @@ export class DGPercentileRoll extends DGRoll {
 
     let target = null;
     let localizedKey = null;
-    let skillPath = null;//for optimization failure checks
+    let skillPath = null; // For optimization of failure checks
     if (statKeys.includes(this.key)) {
       target = actorData.statistics[this.key].x5;
       localizedKey = game.i18n.localize(`DG.Attributes.${this.key}`);
