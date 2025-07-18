@@ -296,7 +296,7 @@ export class DGPercentileRoll extends DGRoll {
       }
     }
 
-    let failureMark = !this.isSuccess && this.skillPath
+    const failureMark = !this.isSuccess && this.skillPath
       && !DGUtils.getValueByPath(this.actor, this.skillPath).failure;
 
     const html = await renderTemplate(
