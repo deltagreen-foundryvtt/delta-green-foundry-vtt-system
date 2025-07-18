@@ -382,7 +382,7 @@ export class DGPercentileRoll extends DGRoll {
       + ` <b>${this.localizedKey}`
     const endOfLabel =`${game.i18n.localize("DG.Roll.Target")} ${this.effectiveTarget}`
 
-    const label = this.isInhuman
+    let label = this.isInhuman
       // "Inhuman" stat being rolled. See function for details.
       ? `${startOfLabel} [${game.i18n.localize("DG.Roll.Inhuman").toUpperCase()}]</b> ${endOfLabel}`
       : `${startOfLabel}</b><br> ${endOfLabel}%`;
