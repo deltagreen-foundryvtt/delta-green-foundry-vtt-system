@@ -5,8 +5,8 @@ export async function handleInlineActions(btnWithAction, messageId) {
   if (!actor) return;
 
   if (action === 'rollback-skill-failure-state') {
-    const rollbackFlag =message.getFlag("deltagreen", "rollbacks");
-    await actor.update(rollbackFlag);
+    const rollbackFlag = message.getFlag("deltagreen", "rollbacks");
+    await actor.update(foundry.utils.deepClone(rollbackFlag));
 
     toggleAllSkillFailures(rollbackFlag)
 
