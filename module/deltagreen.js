@@ -205,8 +205,9 @@ Hooks.on("renderChatLog", async (app, element, context, options) => {
     const btnWithAction = DGUtils.htmlClosest(event.target, "button[data-action]");
     const message = DGUtils.htmlClosest(event.target, "li[data-message-id]");
 
-    if (btnWithAction && message && message?.dataset?.messageId) {
-      handleInlineActions(btnWithAction, message?.dataset?.messageId);
+    const { messageId } = message?.dataset || {}
+    if (btnWithAction && messageId) {
+      handleInlineActions(btnWithAction, messageId);
     }
   });
 });
