@@ -10,10 +10,10 @@ export async function handleInlineActions(btnWithAction, messageId) {
 
     toggleAllSkillFailures(rollbackFlag)
 
-    let label = btnWithAction
+    const label = btnWithAction
       .closest(".rollback-section")
       ?.querySelector("label");
-    let oldHtml = label.outerHTML;
+    const oldHtml = label.outerHTML;
     label.classList.toggle('strike');
 
     message.update({
