@@ -43,13 +43,13 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
           templateName = actorIsLimited ? "limited-sheet.html" : "actor-sheet.html";
           break;
         case "unnatural":
-          templateName = `unnatural-sheet.html`; // No limited sheet
+          templateName = "unnatural-sheet.html"; // No limited sheet
           break;
         case "npc":
           templateName = actorIsLimited ? "npc-limited-sheet.html" : "npc-sheet.html";
           break;
         case "vehicle":
-          templateName = `vehicle-sheet.html`; // No limited sheet
+          templateName = "vehicle-sheet.html"; // No limited sheet
           break;
         default:
           templateName = "actor-sheet.html"; // No limited sheet
