@@ -311,6 +311,109 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
     return context;
   }
 
+  /** @override */
+  async _onRender(context, options) {
+    await super._onRender(context, options);
+    const { element } = this;
+
+    this._setRightClickListeners();
+
+    if (this.actor.isOwner) {
+      const handler = (ev) => this._onDragStart(ev);
+      element.querySelectorAll("li.item").forEach((li) => {
+        if (li.classList.contains("inventory-header")) return;
+        li.setAttribute("draggable", true);
+        li.addEventListener("dragstart", handler, false);
+      });
+    }
+  }
+
+  /** @override - Add buttons to the header controls. */
+  _getHeaderControls() {
+    const controls = super._getHeaderControls();
+    controls.push({
+      action: "rollLuck",
+      label: "DG.RollLuck",
+      icon: "fas fa-dice",
+    });
+    return controls;
+  }
+
+  /** @override */
+  _onDragStart(event) {
+    // Most of this is the standard Foundry implementation of _onDragStart
+    const li = event.currentTarget;
+    if (event.target.classList.contains("content-link")) return;
+
+    // Create drag data
+    let dragData;
+
+    // Owned Items
+    if (li.dataset.itemId) {
+      const item = this.actor.items.get(li.dataset.itemId);
+      dragData = item.toDragData();
+    }
+
+    // Active Effect
+    if (li.dataset.effectId) {
+      const effect = this.actor.effects.get(li.dataset.effectId);
+      dragData = effect.toDragData();
+    }
+
+    if (!dragData) return;
+
+    // this is custom, grab item data for creating item macros on the hotbar
+    if (li.dataset.itemId) {
+      const item = this.actor.items.get(li.dataset.itemId);
+      dragData.itemData = item;
+    }
+
+    // Set data transfer
+    event.dataTransfer.setData("text/plain", JSON.stringify(dragData));
+  }
+
+  /** @override */
+  async _onDrop(event) {
+    super._onDrop(event);
+    // If alt key is held down, we will delete the original document.
+    if (event.altKey) {
+      // This is from Foundry. It will get the item data from the event.
+      const TextEditor = foundry.applications.ux.TextEditor.implementation;
+      const dragData = TextEditor.getDragEventData(event);
+      // Make sure that we are dragging an item, otherwise this doesn't make sense.
+      if (dragData.type === "Item") {
+        const item = fromUuidSync(dragData.uuid);
+        await item.delete();
+      }
+    }
+  }
+
+  /**
+   * Listens for right click events on the actor sheet and executes a regular roll,
+   * or luck roll, depending on the action.
+   *
+   * @returns {void}
+   */
+  _setRightClickListeners() {
+    const { element } = this;
+    element.addEventListener("contextmenu", (event) => {
+      event.preventDefault();
+      const target = event.target.closest(
+        "[data-action='roll'],[data-action='rollLuck']",
+      );
+      if (!target) return;
+
+      // Call _onRollLuck if luckRoll is the dispatched action.
+      if (target.dataset.action === "rollLuck") {
+        DeltaGreenActorSheet._onRollLuck.call(this, event, target);
+        return;
+      }
+
+      // Otherwise, call _onRoll function.
+      DeltaGreenActorSheet._onRoll.call(this, event, target);
+    });
+  }
+
   reorderForColumnSorting(arr, numCols) {
     const numRows = Math.ceil(arr.length / numCols); // Compute required rows
     const reordered = new Array(arr.length);
@@ -505,17 +608,6 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
     actor.gear = gear;
     actor.rituals = rituals;
     actor.tomes = tomes;
-  }
-
-  /** @override - Add buttons to the header controls. */
-  _getHeaderControls() {
-    const controls = super._getHeaderControls();
-    controls.push({
-      action: "rollLuck",
-      label: "DG.RollLuck",
-      icon: "fas fa-dice",
-    });
-    return controls;
   }
 
   // This only exists to give a chance to activate the modifier dialogue if desired
@@ -770,49 +862,6 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
     const targetProp = "system.showUntrainedSkills";
     const currentVal = foundry.utils.getProperty(this.actor, targetProp);
     this.actor.update({ [targetProp]: !currentVal });
-  }
-
-  /**
-   * Listens for right click events on the actor sheet and executes a regular roll,
-   * or luck roll, depending on the action.
-   *
-   * @returns {void}
-   */
-  _setRightClickListeners() {
-    const { element } = this;
-    element.addEventListener("contextmenu", (event) => {
-      event.preventDefault();
-      const target = event.target.closest(
-        "[data-action='roll'],[data-action='rollLuck']",
-      );
-      if (!target) return;
-
-      // Call _onRollLuck if luckRoll is the dispatched action.
-      if (target.dataset.action === "rollLuck") {
-        DeltaGreenActorSheet._onRollLuck.call(this, event, target);
-        return;
-      }
-
-      // Otherwise, call _onRoll function.
-      DeltaGreenActorSheet._onRoll.call(this, event, target);
-    });
-  }
-
-  /** @override */
-  async _onRender(context, options) {
-    await super._onRender(context, options);
-    const { element } = this;
-
-    this._setRightClickListeners();
-
-    if (this.actor.isOwner) {
-      const handler = (ev) => this._onDragStart(ev);
-      element.querySelectorAll("li.item").forEach((li) => {
-        if (li.classList.contains("inventory-header")) return;
-        li.setAttribute("draggable", true);
-        li.addEventListener("dragstart", handler, false);
-      });
-    }
   }
 
   /** Resets the actor's current breaking point based on their sanity and POW statistics. */
@@ -1124,9 +1173,9 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
       ([key, skill]) => ({
         value: key,
         group: optionGroups.typedSkills,
-        label:
-          game.i18n.localize(`DG.TypeSkills.${skill.group}`) +
-          ` (${skill.label})`,
+        label: `${game.i18n.localize(`DG.TypeSkills.${skill.group}`)} (${
+          skill.label
+        })`,
         targetNumber: skill.proficiency,
       }),
     );
@@ -1481,55 +1530,6 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
 
     // If no roll, create a chat message directly.
     return ChatMessage.create(chatData, {});
-  }
-
-  /** @override */
-  _onDragStart(event) {
-    // Most of this is the standard Foundry implementation of _onDragStart
-    const li = event.currentTarget;
-    if (event.target.classList.contains("content-link")) return;
-
-    // Create drag data
-    let dragData;
-
-    // Owned Items
-    if (li.dataset.itemId) {
-      const item = this.actor.items.get(li.dataset.itemId);
-      dragData = item.toDragData();
-    }
-
-    // Active Effect
-    if (li.dataset.effectId) {
-      const effect = this.actor.effects.get(li.dataset.effectId);
-      dragData = effect.toDragData();
-    }
-
-    if (!dragData) return;
-
-    // this is custom, grab item data for creating item macros on the hotbar
-    if (li.dataset.itemId) {
-      const item = this.actor.items.get(li.dataset.itemId);
-      dragData.itemData = item;
-    }
-
-    // Set data transfer
-    event.dataTransfer.setData("text/plain", JSON.stringify(dragData));
-  }
-
-  /** @override */
-  async _onDrop(event) {
-    super._onDrop(event);
-    // If alt key is held down, we will delete the original document.
-    if (event.altKey) {
-      // This is from Foundry. It will get the item data from the event.
-      const TextEditor = foundry.applications.ux.TextEditor.implementation;
-      const dragData = TextEditor.getDragEventData(event);
-      // Make sure that we are dragging an item, otherwise this doesn't make sense.
-      if (dragData.type === "Item") {
-        const item = fromUuidSync(dragData.uuid);
-        await item.delete();
-      }
-    }
   }
 
   activateEditor(target, editorOptions, initialContent) {
