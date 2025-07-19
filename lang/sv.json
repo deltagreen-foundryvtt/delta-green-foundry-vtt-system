@@ -311,5 +311,8 @@
   "DG.ItemWindow.Ritual.ActivationTime": "Aktiveringstid",
   "DG.ItemWindow.Ritual.ActivationCosts": "Aktiveringskostnader",
   "DG.ItemWindow.Ritual.StudyTime": "Studietid",
-  "DG.ItemWindow.Ritual.LearnedSanityDamage": "Learn SAN Damage"
+  "DG.ItemWindow.Ritual.LearnedSanityDamage": "Learn SAN Damage",
+
+  "DG.Messages.Skillsmark.Marked": "Denna färdighet är markerad",
+  "DG.Messages.Skillsmark.Tooltip": "Se s. 29 Agenthandbok"
 }

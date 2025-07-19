@@ -313,5 +313,8 @@
   "DG.ItemWindow.Ritual.ActivationTime": "Temp d'Activation",
   "DG.ItemWindow.Ritual.ActivationCosts": "Coût d'Activation",
   "DG.ItemWindow.Ritual.StudyTime": "Temps d'étude",
-  "DG.ItemWindow.Ritual.LearnedSanityDamage": "Dégâts SAN Étude"
+  "DG.ItemWindow.Ritual.LearnedSanityDamage": "Dégâts SAN Étude",
+
+  "DG.Messages.Skillsmark.Marked": "Cette compétence est marquée.",
+  "DG.Messages.Skillsmark.Tooltip": "Voir p. 29 du Manuel de l'agent."
 }

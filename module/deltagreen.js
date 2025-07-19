@@ -15,6 +15,7 @@ import {
   rollSkillMacro,
   rollSkillTestAndDamageForOwnedItem,
 } from "./other/macro-functions.js";
+import { handleInlineActions } from "./other/inline.js";
 
 Hooks.once("init", async () => {
   game.deltagreen = {
@@ -196,4 +197,16 @@ Hooks.on("renderGamePause", function (_, html, options) {
     html.querySelector("figcaption").textContent = gamePausedOverrideText;
     html.querySelector("img").classList.remove("fa-spin"); // I don't like the logo spinning personally
   } catch {}
+});
+
+Hooks.on("renderChatLog", async (app, element, context, options) => {
+  element.addEventListener("click", (event) => {
+    const btnWithAction = event.target.closest("button[data-action]");
+    const message = event.target.closest("li[data-message-id]")
+
+    const { messageId } = message?.dataset || {}
+    if (btnWithAction && messageId) {
+      handleInlineActions(btnWithAction, messageId);
+    }
+  });
 });

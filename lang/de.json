@@ -289,5 +289,8 @@
   "DG.ItemWindow.Ritual.ActivationTime": "Activation Time",
   "DG.ItemWindow.Ritual.ActivationCosts": "Activation Costs",
   "DG.ItemWindow.Ritual.StudyTime": "Study Time",
-  "DG.ItemWindow.Ritual.LearnedSanityDamage": "Learn SAN Damage"
+  "DG.ItemWindow.Ritual.LearnedSanityDamage": "Learn SAN Damage",
+
+  "DG.Messages.Skillsmark.Marked": "Diese Fähigkeit ist gekennzeichnet.",
+  "DG.Messages.Skillsmark.Tooltip": "Siehe S. 29 des Agentenhandbuchs"
 }
