@@ -52,6 +52,13 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
     },
   });
 
+  static TABS_NPC = /** @type {const} */ ([
+    "skills",
+    "physical",
+    "gear",
+    "about",
+  ]);
+
   static PARTS = /** @type {const} */ ({
     header: {
       template: `${this.TEMPLATE_PATH}/actor/parts/header.html`,
@@ -125,6 +132,51 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
     }
 
     return `${templatePath}/${templateName}`;
+  }
+
+  /** @override */
+  _configureRenderOptions(options) {
+    super._configureRenderOptions(options);
+    switch (this.actor.type) {
+      case "agent":
+        break;
+      case "unnatural":
+        break;
+      case "npc":
+        options.parts = ["header", "tabs", ...this.constructor.TABS_NPC];
+        break;
+      case "vehicle":
+        break;
+      default:
+        break;
+    }
+  }
+
+  /** @override - Manipulate which tabs are rendered. */
+  _prepareTabs(group) {
+    const tabs = super._prepareTabs(group);
+
+    /**
+     * @function
+     * @name filterTabs
+     * @param {string[]} tabIds - List of tab IDs to keep. All other tabs will be removed.
+     * @description Remove all tabs from the `tabs` object except those with IDs in `tabIds`.
+     */
+    const filterTabs = (tabIds) => {
+      Object.values(tabs)
+        .filter((tab) => !tabIds.includes(tab.id))
+        .forEach(({ id }) => delete tabs[id]);
+    };
+
+    switch (this.actor.type) {
+      case "npc":
+        filterTabs(this.constructor.TABS_NPC);
+        break;
+      default:
+        break;
+    }
+
+    return tabs;
   }
 
   /** @override */
