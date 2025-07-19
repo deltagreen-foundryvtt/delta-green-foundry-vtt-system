@@ -32,23 +32,32 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
 
   /** @override */
   get template() {
+    const templatePath = "systems/deltagreen/templates/actor";
+    let templateName = "limited-sheet.html";
+    
     if (this.actor !== null) {
       const actorIsLimited = !game.user.isGM && this.actor.limited;
+
       switch (this.actor.type) {
         case "agent":
-          return actorIsLimited ? "systems/deltagreen/templates/actor/limited-sheet.html" : "systems/deltagreen/templates/actor/actor-sheet.html";
+          templateName = actorIsLimited ? "limited-sheet.html" : "actor-sheet.html";
+          break;
         case "unnatural":
-          return `systems/deltagreen/templates/actor/unnatural-sheet.html`; // No limited sheet
+          templateName = `unnatural-sheet.html`; // No limited sheet
+          break;
         case "npc":
-          return actorIsLimited ? "systems/deltagreen/templates/actor/npc-limited-sheet.html" : "systems/deltagreen/templates/actor/npc-sheet.html";
+          templateName = actorIsLimited ? "npc-limited-sheet.html" : "npc-sheet.html";
+          break;
         case "vehicle":
-          return `systems/deltagreen/templates/actor/vehicle-sheet.html`; // No limited sheet
+          templateName = `vehicle-sheet.html`; // No limited sheet
+          break;
         default:
-          return "systems/deltagreen/templates/actor/actor-sheet.html"; // No limited sheet
+          templateName = "actor-sheet.html"; // No limited sheet
+          break;
       }
     }
 
-    return "systems/deltagreen/templates/actor/limited-sheet.html";
+    return `${templatePath}/${templateName}`;
   }
 
   /** @override */
