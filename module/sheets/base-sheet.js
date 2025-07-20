@@ -1,4 +1,4 @@
-import DG from "./config.js";
+import DG from "../config.js";
 
 const HbsAppMixin = foundry.applications.api.HandlebarsApplicationMixin;
 
