@@ -5,11 +5,9 @@ export default class DGVehicleSheet extends DGActorSheet {
   /** @override */
   static TABS = /** @type {const} */ ({
     primary: {
-      initial: "skills",
+      initial: "gear",
       labelPrefix: "DG.Navigation",
       tabs: [
-        { id: "skills", label: "Skills" },
-        { id: "physical", label: "Physical" },
         { id: "gear", label: "Gear" },
         { id: "about", icon: "fas fa-question-circle", label: "" },
       ],
@@ -18,32 +16,16 @@ export default class DGVehicleSheet extends DGActorSheet {
 
   /** @override */
   static PARTS = /** @type {const} */ ({
-    header: {
-      template: `${this.TEMPLATE_PATH}/actor/parts/header.html`,
+    main: {
+      template: `${this.TEMPLATE_PATH}/vehicle-sheet.html`,
     },
-    tabs: {
-      template: `templates/generic/tab-navigation.hbs`, // From FoundryVTT
-    },
-    skills: {
-      template: `${this.TEMPLATE_PATH}/actor/parts/skills-tab.html`,
-      templates: [
-        `${this.TEMPLATE_PATH}/actor/partials/custom-skills-partial.html`,
-      ],
-      scrollable: [""],
-    },
-    physical: {
-      template: `${this.TEMPLATE_PATH}/actor/parts/physical-tab.html`,
-      templates: [
-        `${this.TEMPLATE_PATH}/actor/partials/attributes-grid-partial.html`,
-      ],
-      scrollable: [""],
-    },
+    tabs: super.PARTS.tabs,
     gear: {
-      template: `${this.TEMPLATE_PATH}/actor/parts/gear-tab.html`,
+      template: `${this.TEMPLATE_PATH}/parts/gear-tab.html`,
       scrollable: [""],
     },
     about: {
-      template: `${this.TEMPLATE_PATH}/actor/parts/about-tab.html`,
+      template: `${this.TEMPLATE_PATH}/parts/about-tab.html`,
       scrollable: [""],
     },
   });
