@@ -1,5 +1,4 @@
-import DG from "../config.js";
-import DGActorSheet from "../sheets/base-actor-sheet.js";
+import DGActorSheet from "./base-actor-sheet.js";
 
 /** @extends {DGSheetMixin(ActorSheetV2)} */
 export default class DGAgentSheet extends DGActorSheet {
