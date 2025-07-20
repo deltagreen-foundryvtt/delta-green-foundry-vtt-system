@@ -79,42 +79,21 @@ export default class DGAgentSheet extends DGActorSheet {
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
 
-    switch (this.actor.type) {
-      case "agent": {
-        const enrichedDescription =
-          await foundry.applications.ux.TextEditor.implementation.enrichHTML(
-            this.actor.system.physicalDescription,
-            {
-              rollData: this.document.getRollData(),
-              relativeTo: this.document,
-            },
-          );
-        const { HTMLProseMirrorElement } = foundry.applications.elements;
-        context.descriptionField = HTMLProseMirrorElement.create({
-          name: "system.physicalDescription",
-          value: this.actor.system.physicalDescription,
-          enriched: enrichedDescription,
-          toggled: true,
-        }).outerHTML;
-        break;
-      }
-      case "vehicle":
-        context.enrichedDescription =
-          await foundry.applications.ux.TextEditor.implementation.enrichHTML(
-            this.actor.system.description,
-            { async: true },
-          );
-        break;
-      case "npc":
-      case "unnatural":
-        context.enrichedDescription =
-          await foundry.applications.ux.TextEditor.implementation.enrichHTML(
-            this.actor.system.notes,
-            { async: true },
-          );
-        break;
-      default:
-    }
+    const enrichedDescription =
+      await foundry.applications.ux.TextEditor.implementation.enrichHTML(
+        this.actor.system.physicalDescription,
+        {
+          rollData: this.document.getRollData(),
+          relativeTo: this.document,
+        },
+      );
+    const { HTMLProseMirrorElement } = foundry.applications.elements;
+    context.descriptionField = HTMLProseMirrorElement.create({
+      name: "system.physicalDescription",
+      value: this.actor.system.physicalDescription,
+      enriched: enrichedDescription,
+      toggled: true,
+    }).outerHTML;
 
     return context;
   }
