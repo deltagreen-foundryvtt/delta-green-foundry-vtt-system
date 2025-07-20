@@ -30,6 +30,14 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
     },
   });
 
+  static TEMPLATE_PATH = `${super.TEMPLATE_PATH}/actor`;
+
+  static PARTS = {
+    tabs: {
+      template: `templates/generic/tab-navigation.hbs`, // From FoundryVTT
+    },
+  };
+
   /** @override */
   async _prepareContext(options) {
     const context = await super._prepareContext(options);

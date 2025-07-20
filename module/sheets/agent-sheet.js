@@ -1,6 +1,6 @@
 import DGActorSheet from "./base-actor-sheet.js";
 
-/** @extends {DGSheetMixin(ActorSheetV2)} */
+/** @extends {DGActorSheet} */
 export default class DGAgentSheet extends DGActorSheet {
   /** @override */
   static DEFAULT_OPTIONS = /** @type {const} */ ({
@@ -32,43 +32,39 @@ export default class DGAgentSheet extends DGActorSheet {
 
   static PARTS = /** @type {const} */ ({
     header: {
-      template: `${this.TEMPLATE_PATH}/actor/parts/header.html`,
+      template: `${this.TEMPLATE_PATH}/parts/header.html`,
     },
-    tabs: {
-      template: `templates/generic/tab-navigation.hbs`, // From FoundryVTT
-    },
+    tabs: super.PARTS.tabs,
     skills: {
-      template: `${this.TEMPLATE_PATH}/actor/parts/skills-tab.html`,
-      templates: [
-        `${this.TEMPLATE_PATH}/actor/partials/custom-skills-partial.html`,
-      ],
+      template: `${this.TEMPLATE_PATH}/parts/skills-tab.html`,
+      templates: [`${this.TEMPLATE_PATH}/partials/custom-skills-partial.html`],
       scrollable: [""],
     },
     physical: {
-      template: `${this.TEMPLATE_PATH}/actor/parts/physical-tab.html`,
+      template: `${this.TEMPLATE_PATH}/parts/physical-tab.html`,
       templates: [
-        `${this.TEMPLATE_PATH}/actor/partials/attributes-grid-partial.html`,
+        `${this.TEMPLATE_PATH}/partials/attributes-grid-partial.html`,
       ],
       scrollable: [""],
     },
     motivations: {
-      template: `${this.TEMPLATE_PATH}/actor/parts/motivations-tab.html`,
+      template: `${this.TEMPLATE_PATH}/parts/motivations-tab.html`,
     },
     gear: {
-      template: `${this.TEMPLATE_PATH}/actor/parts/gear-tab.html`,
+      template: `${this.TEMPLATE_PATH}/parts/gear-tab.html`,
       scrollable: [""],
     },
     bio: {
-      template: `${this.TEMPLATE_PATH}/actor/parts/bio-tab.html`,
-      templates: [`${this.TEMPLATE_PATH}/actor/partials/cv-partial.html`],
+      template: `${this.TEMPLATE_PATH}/parts/bio-tab.html`,
+      templates: [`${this.TEMPLATE_PATH}/partials/cv-partial.html`],
       scrollable: [""],
     },
     bonds: {
-      template: `${this.TEMPLATE_PATH}/actor/parts/bonds-tab.html`,
+      template: `${this.TEMPLATE_PATH}/parts/bonds-tab.html`,
       scrollable: [""],
     },
     about: {
-      template: `${this.TEMPLATE_PATH}/actor/parts/about-tab.html`,
+      template: `${this.TEMPLATE_PATH}/parts/about-tab.html`,
       scrollable: [""],
     },
   });

@@ -1,6 +1,6 @@
 import DGActorSheet from "./base-actor-sheet.js";
 
-/** @extends {DGSheetMixin(ActorSheetV2)} */
+/** @extends {DGActorSheet} */
 export default class DGNPCSheet extends DGActorSheet {
   /** @override */
   static TABS = /** @type {const} */ ({
@@ -19,31 +19,27 @@ export default class DGNPCSheet extends DGActorSheet {
   /** @override */
   static PARTS = /** @type {const} */ ({
     header: {
-      template: `${this.TEMPLATE_PATH}/actor/parts/header.html`,
+      template: `${this.TEMPLATE_PATH}/parts/header.html`,
     },
-    tabs: {
-      template: `templates/generic/tab-navigation.hbs`, // From FoundryVTT
-    },
+    tabs: super.PARTS.tabs,
     skills: {
-      template: `${this.TEMPLATE_PATH}/actor/parts/skills-tab.html`,
-      templates: [
-        `${this.TEMPLATE_PATH}/actor/partials/custom-skills-partial.html`,
-      ],
+      template: `${this.TEMPLATE_PATH}/parts/skills-tab.html`,
+      templates: [`${this.TEMPLATE_PATH}/partials/custom-skills-partial.html`],
       scrollable: [""],
     },
     physical: {
-      template: `${this.TEMPLATE_PATH}/actor/parts/physical-tab.html`,
+      template: `${this.TEMPLATE_PATH}/parts/physical-tab.html`,
       templates: [
-        `${this.TEMPLATE_PATH}/actor/partials/attributes-grid-partial.html`,
+        `${this.TEMPLATE_PATH}/partials/attributes-grid-partial.html`,
       ],
       scrollable: [""],
     },
     gear: {
-      template: `${this.TEMPLATE_PATH}/actor/parts/gear-tab.html`,
+      template: `${this.TEMPLATE_PATH}/parts/gear-tab.html`,
       scrollable: [""],
     },
     about: {
-      template: `${this.TEMPLATE_PATH}/actor/parts/about-tab.html`,
+      template: `${this.TEMPLATE_PATH}/parts/about-tab.html`,
       scrollable: [""],
     },
   });
