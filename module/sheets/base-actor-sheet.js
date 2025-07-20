@@ -41,6 +41,7 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
       this.actor,
     );
 
+    if (this.actor.type === "vehicle") return context;
     // Make it easy for the sheet handlebars to understand how to sort the skills.
     context.sortSkillsSetting = game.settings.get("deltagreen", "sortSkills");
 
