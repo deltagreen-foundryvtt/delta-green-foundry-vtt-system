@@ -34,6 +34,13 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
 
+    // Prepare items.
+    this._prepareCharacterItems(context);
+
+    context.showHyperGeometrySection = this.shouldShowHyperGeometrySection(
+      this.actor,
+    );
+
     // Make it easy for the sheet handlebars to understand how to sort the skills.
     context.sortSkillsSetting = game.settings.get("deltagreen", "sortSkills");
 
@@ -237,6 +244,12 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
     }
   }
 
+  /** @override */
+  activateEditor(target, editorOptions, initialContent) {
+    editorOptions.content_css = "./systems/deltagreen/css/editor.css";
+    return super.activateEditor(target, editorOptions, initialContent);
+  }
+
   /**
    * Listens for right click events on the actor sheet and executes a regular roll,
    * or luck roll, depending on the action.
@@ -261,6 +274,168 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
       // Otherwise, call _onRoll function.
       DGActorSheet._onRoll.call(this, event, target);
     });
+  }
+
+  // some handlers may wish to avoid leading players to think they should be seeking out magic
+  // so control whether an actor sheet shows the hypergeometry (rituals and tomes) section
+  shouldShowHyperGeometrySection(actor) {
+    // always show for GM
+    if (game.user.isGM) {
+      return true;
+    }
+
+    // check system setting to see if it should always be shown
+    if (
+      game.settings.get(
+        "deltagreen",
+        "alwaysShowHypergeometrySectionForPlayers",
+      )
+    ) {
+      return true;
+    }
+
+    // otherwise only show if an actor has an item of that type added to their sheet.
+    for (const i of actor.items) {
+      if (i.type === "tome" || i.type === "ritual") {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  /**
+   * Organize and classify Items for Character sheets.
+   *
+   * @param {Object} actorData The actor to prepare.
+   *
+   * @return {undefined}
+   */
+  _prepareCharacterItems() {
+    const { actor } = this;
+
+    // Initialize containers.
+    const armor = [];
+    const weapons = [];
+    const gear = [];
+    const tomes = [];
+    const rituals = [];
+
+    // Iterate through items, allocating to containers
+    // let totalWeight = 0;
+    for (const i of actor.items) {
+      // Append to armor.
+      if (i.type === "armor") {
+        armor.push(i);
+      }
+      // Append to weapons.
+      else if (i.type === "weapon") {
+        weapons.push(i);
+      } else if (i.type === "gear") {
+        gear.push(i);
+      } else if (i.type === "tome") {
+        tomes.push(i);
+      } else if (i.type === "ritual") {
+        rituals.push(i);
+      }
+    }
+
+    if (actor.system.settings.sorting.armorSortAlphabetical) {
+      armor.sort((a, b) => {
+        const x = a.name.toLowerCase();
+        const y = b.name.toLowerCase();
+        if (x < y) {
+          return -1;
+        }
+        if (x > y) {
+          return 1;
+        }
+        return 0;
+      });
+    } else {
+      armor.sort((a, b) => {
+        return a.sort - b.sort;
+      });
+    }
+
+    if (actor.system.settings.sorting.weaponSortAlphabetical) {
+      weapons.sort((a, b) => {
+        const x = a.name.toLowerCase();
+        const y = b.name.toLowerCase();
+        if (x < y) {
+          return -1;
+        }
+        if (x > y) {
+          return 1;
+        }
+        return 0;
+      });
+    } else {
+      weapons.sort((a, b) => {
+        return a.sort - b.sort;
+      });
+    }
+
+    if (actor.system.settings.sorting.gearSortAlphabetical) {
+      gear.sort((a, b) => {
+        const x = a.name.toLowerCase();
+        const y = b.name.toLowerCase();
+        if (x < y) {
+          return -1;
+        }
+        if (x > y) {
+          return 1;
+        }
+        return 0;
+      });
+    } else {
+      gear.sort((a, b) => {
+        return a.sort - b.sort;
+      });
+    }
+
+    if (actor.system.settings.sorting.tomeSortAlphabetical) {
+      tomes.sort((a, b) => {
+        const x = a.name.toLowerCase();
+        const y = b.name.toLowerCase();
+        if (x < y) {
+          return -1;
+        }
+        if (x > y) {
+          return 1;
+        }
+        return 0;
+      });
+    } else {
+      tomes.sort((a, b) => {
+        return a.sort - b.sort;
+      });
+    }
+
+    if (actor.system.settings.sorting.ritualSortAlphabetical) {
+      rituals.sort((a, b) => {
+        const x = a.name.toLowerCase();
+        const y = b.name.toLowerCase();
+        if (x < y) {
+          return -1;
+        }
+        if (x > y) {
+          return 1;
+        }
+        return 0;
+      });
+    } else {
+      rituals.sort((a, b) => {
+        return a.sort - b.sort;
+      });
+    }
+
+    // Assign and return
+    actor.armor = armor;
+    actor.weapons = weapons;
+    actor.gear = gear;
+    actor.rituals = rituals;
+    actor.tomes = tomes;
   }
 
   reorderForColumnSorting(arr, numCols) {

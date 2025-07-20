@@ -30,13 +30,6 @@ export default class DGAgentSheet extends DGActorSheet {
     },
   });
 
-  static TABS_NPC = /** @type {const} */ ([
-    "skills",
-    "physical",
-    "gear",
-    "about",
-  ]);
-
   static PARTS = /** @type {const} */ ({
     header: {
       template: `${this.TEMPLATE_PATH}/actor/parts/header.html`,
@@ -86,13 +79,6 @@ export default class DGAgentSheet extends DGActorSheet {
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
 
-    // Prepare items.
-    this._prepareCharacterItems(context);
-
-    context.showHyperGeometrySection = this.shouldShowHyperGeometrySection(
-      this.actor,
-    );
-
     switch (this.actor.type) {
       case "agent": {
         const enrichedDescription =
@@ -131,193 +117,6 @@ export default class DGAgentSheet extends DGActorSheet {
     }
 
     return context;
-  }
-
-  // some handlers may wish to avoid leading players to think they should be seeking out magic
-  // so control whether an actor sheet shows the hypergeometry (rituals and tomes) section
-  shouldShowHyperGeometrySection(actor) {
-    // always show for GM
-    if (game.user.isGM) {
-      return true;
-    }
-
-    // check system setting to see if it should always be shown
-    if (
-      game.settings.get(
-        "deltagreen",
-        "alwaysShowHypergeometrySectionForPlayers",
-      )
-    ) {
-      return true;
-    }
-
-    // otherwise only show if an actor has an item of that type added to their sheet.
-    for (const i of actor.items) {
-      if (i.type === "tome" || i.type === "ritual") {
-        return true;
-      }
-    }
-
-    return false;
-  }
-
-  /**
-   * Organize and classify Items for Character sheets.
-   *
-   * @param {Object} actorData The actor to prepare.
-   *
-   * @return {undefined}
-   */
-  _prepareCharacterItems() {
-    const { actor } = this;
-
-    // Initialize containers.
-    const armor = [];
-    const weapons = [];
-    const gear = [];
-    const tomes = [];
-    const rituals = [];
-
-    // Iterate through items, allocating to containers
-    // let totalWeight = 0;
-    for (const i of actor.items) {
-      // Append to armor.
-      if (i.type === "armor") {
-        armor.push(i);
-      }
-      // Append to weapons.
-      else if (i.type === "weapon") {
-        weapons.push(i);
-      } else if (i.type === "gear") {
-        gear.push(i);
-      } else if (i.type === "tome") {
-        tomes.push(i);
-      } else if (i.type === "ritual") {
-        rituals.push(i);
-      }
-    }
-
-    if (actor.system.settings.sorting.armorSortAlphabetical) {
-      armor.sort((a, b) => {
-        const x = a.name.toLowerCase();
-        const y = b.name.toLowerCase();
-        if (x < y) {
-          return -1;
-        }
-        if (x > y) {
-          return 1;
-        }
-        return 0;
-      });
-    } else {
-      armor.sort((a, b) => {
-        return a.sort - b.sort;
-      });
-    }
-
-    if (actor.system.settings.sorting.weaponSortAlphabetical) {
-      weapons.sort((a, b) => {
-        const x = a.name.toLowerCase();
-        const y = b.name.toLowerCase();
-        if (x < y) {
-          return -1;
-        }
-        if (x > y) {
-          return 1;
-        }
-        return 0;
-      });
-    } else {
-      weapons.sort((a, b) => {
-        return a.sort - b.sort;
-      });
-    }
-
-    if (actor.system.settings.sorting.gearSortAlphabetical) {
-      gear.sort((a, b) => {
-        const x = a.name.toLowerCase();
-        const y = b.name.toLowerCase();
-        if (x < y) {
-          return -1;
-        }
-        if (x > y) {
-          return 1;
-        }
-        return 0;
-      });
-    } else {
-      gear.sort((a, b) => {
-        return a.sort - b.sort;
-      });
-    }
-
-    if (actor.system.settings.sorting.tomeSortAlphabetical) {
-      tomes.sort((a, b) => {
-        const x = a.name.toLowerCase();
-        const y = b.name.toLowerCase();
-        if (x < y) {
-          return -1;
-        }
-        if (x > y) {
-          return 1;
-        }
-        return 0;
-      });
-    } else {
-      tomes.sort((a, b) => {
-        return a.sort - b.sort;
-      });
-    }
-
-    if (actor.system.settings.sorting.ritualSortAlphabetical) {
-      rituals.sort((a, b) => {
-        const x = a.name.toLowerCase();
-        const y = b.name.toLowerCase();
-        if (x < y) {
-          return -1;
-        }
-        if (x > y) {
-          return 1;
-        }
-        return 0;
-      });
-    } else {
-      rituals.sort((a, b) => {
-        return a.sort - b.sort;
-      });
-    }
-
-    // Assign and return
-    actor.armor = armor;
-    actor.weapons = weapons;
-    actor.gear = gear;
-    actor.rituals = rituals;
-    actor.tomes = tomes;
-  }
-
-  activeEffectTest(sheet) {
-    console.log(sheet.actor.uuid);
-    const owner = sheet.actor;
-
-    const effect = ActiveEffect.create(
-      {
-        label: "Custom Effect",
-        tint: "#008000",
-        icon: "icons/svg/aura.svg",
-        origin: owner.uuid,
-        // duration: {"rounds": 1, "seconds": null, "startTime": null, "turns": null, "startRound": null, "startTurn": null},
-        disabled: false,
-        changes: [
-          {
-            key: "data.skills.firearms.proficiency", // "data.statistics.str.value", //"data.health.max",
-            mode: 2, // 0 = custom, 1 = multiply, 2 = add, 3 = upgrade, 4 = downgrade, 5 = override
-            value: -20,
-            priority: "20",
-          },
-        ],
-      },
-      owner,
-    ).create();
   }
 
   /* -------------------------------------------- */
@@ -552,10 +351,5 @@ export default class DGAgentSheet extends DGActorSheet {
 
     // If no roll, create a chat message directly.
     return ChatMessage.create(chatData, {});
-  }
-
-  activateEditor(target, editorOptions, initialContent) {
-    editorOptions.content_css = "./systems/deltagreen/css/editor.css";
-    return super.activateEditor(target, editorOptions, initialContent);
   }
 }
