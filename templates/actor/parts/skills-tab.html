@@ -1,9 +1,19 @@
 <div class="tab skills {{tabs.skills.cssClass}}"
      data-group="primary"
      data-tab="skills">
-    <div class="horizontal-bar-section-divider">
-        <span>{{localize "DG.Sheet.BlockHeaders.SkillsAndTraining"}}</span>
+    <div class="horizontal-bar-section-divider skills-header">
+        <span class="skills-header-title">{{localize "DG.Sheet.BlockHeaders.SkillsAndTraining"}}</span>
+        {{#if (ne actor.type "agent") }}
+            {{!-- Checkbox to hide/show skills that are at zero --}}
+            <a class="toggle-untrained" data-action="toggleShowUntrained">
+                {{localize (concat 'DG.UnnaturalSheet.' (ifThen actor.system.showUntrainedSkills 'Show' 'Hide') 'UntrainedSkillsLabel')}}
+                {{!-- djlint:off --}}
+                <i class="far fa-eye{{#if actor.system.showUntrainedSkills }}-slash{{/if }}"></i>
+                {{!-- djlint:on --}}
+            </a>
+        {{/if}}
     </div>
+
     <div class="grid grid-3col">
         {{#each actor.system.sortedSkills as |skill key| }}
             <div class="flexrow flex-group-left flex-thin-border">
@@ -16,73 +26,28 @@
                     {{localizeWithFallback (concat "DG.Skills." skill.key) skill.label }}
                     <i class="fas fa-dice"></i>
                 </label>
-                {{#if_eq skill.key 'ritual' }}
-                    {{#if (keepSanityPrivate) }}
-                        <input class="percentile-skill-input"
-                               type="text"
-                               name="system.skills.{{skill.key}}.proficiency"
-                               value="??"
-                               data-dtype="Number"
-                               {{#if skill.isCalculatedValue }}
-                               disabled
-                               {{/if }} />
-                        <input class="checkbox-skill-input"
-                               type="checkbox"
-                               name="system.skills.{{skill.key}}.failure"
-                               {{checked skill.failure}}
-                               data-dtype="Boolean"
-                               {{#if skill.cannotBeImprovedByFailure }}
-                               disabled
-                               {{/if }}
-                               title="{{localize 'DG.Tooltip.SkillFailCheckbox' }}" />
-                    {{/if}}
-                    {{#unless (keepSanityPrivate)}}
-                        <input class="percentile-skill-input"
-                               type="text"
-                               name="system.skills.{{skill.key}}.proficiency"
-                               value="{{skill.proficiency}}"
-                               data-dtype="Number"
-                               {{#if skill.isCalculatedValue }}
-                               disabled
-                               {{/if }} />
-                        <input class="checkbox-skill-input"
-                               type="checkbox"
-                               name="system.skills.{{skill.key}}.failure"
-                               {{checked skill.failure}}
-                               data-dtype="Boolean"
-                               {{#if skill.cannotBeImprovedByFailure }}
-                               disabled
-                               {{/if }}
-                               title="{{localize 'DG.Tooltip.SkillFailCheckbox' }}" />
-                    {{/unless}}
-                {{/if_eq}}
-                {{#if_not_eq skill.key 'ritual' }}
-                    <input class="percentile-skill-input
-                                  {{#if_not_eq skill.proficiency skill.targetProficiency }}
-                                      target-proficiency-mod{{/if_not_eq }}"
-                           type="text"
-                           name="system.skills.{{skill.key }}.proficiency"
-                           value="{{skill.proficiency }}"
-                           data-dtype="Number"
-                           data-tooltip="{{skill.targetProficiency }}"
-                           {{#if skill.isCalculatedValue }}
-                           disabled
-                           {{/if }} />
+
+                <input class="percentile-skill-input  {{!-- This use of helpers is a bit hacky and should be consolidated in _prepareContext --}}
+                              {{#if (and (ne skill.proficiency skill.targetProficiency) (eq ../actor.type "agent")) }}
+                                  target-proficiency-mod{{/if }}"
+                       type="text"
+                       name="system.skills.{{skill.key }}.proficiency"
+                       value="{{skill.proficiency }}"
+                       data-dtype="Number"
+                       data-tooltip="{{skill.targetProficiency }}"
+                       {{disabled skill.isCalculatedValue }} />
+                {{#if (eq ../actor.type "agent") }}
                     <input class="checkbox-skill-input"
                            type="checkbox"
                            name="system.skills.{{skill.key}}.failure"
+                           data-tooltip="{{localize 'DG.Tooltip.SkillFailCheckbox' }}"
                            {{checked skill.failure}}
-                           data-dtype="Boolean"
-                           {{#if skill.cannotBeImprovedByFailure }}
-                           disabled
-                           {{/if }}
-                           title="{{localize 'DG.Tooltip.SkillFailCheckbox' }}" />
-                {{/if_not_eq}}
+                           {{disabled skill.cannotBeImprovedByFailure }} />
+                {{/if}}
             </div>
         {{/each}}
     </div>
+
     {{!-- Custom Skills and Special Training --}}
-    <div>
-        {{> "systems/deltagreen/templates/actor/partials/custom-skills-partial.html" actorType="agent"}}
-    </div>
+    <div>{{> "systems/deltagreen/templates/actor/partials/custom-skills-partial.html" }}</div>
 </div>

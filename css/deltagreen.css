@@ -773,7 +773,7 @@ div.horizontal-bar-section-divider {
   border-radius: 3px 3px 3px 3px;
 }
 
-div.horizontal-bar-section-divider.contains-hide-button {
+div.horizontal-bar-section-divider.skills-header {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   justify-content: center;
@@ -789,7 +789,7 @@ div.horizontal-bar-section-divider.contains-hide-button {
   border-radius: 3px 3px 3px 3px;
 }
 
-.horizontal-bar-section-divider .contains-hide-button-title {
+.horizontal-bar-section-divider .skills-header-title {
   grid-column: 2;
 }
 
@@ -1268,11 +1268,6 @@ body:not(.no-theme) #interface:not(.theme-light) #action-bar .slot.full:hover {
   height: 20px;
   margin-left: 5px;
   font-size: 12px;
-}
-
-[data-tooltip] {
-  position: relative;
-  cursor: pointer;
 }
 
 .strike {
