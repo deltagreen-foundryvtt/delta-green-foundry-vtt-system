@@ -9,7 +9,6 @@ export default class DGNPCSheet extends DGActorSheet {
       labelPrefix: "DG.Navigation",
       tabs: [
         { id: "skills", label: "Skills" },
-        { id: "physical", label: "Physical" },
         { id: "gear", label: "Gear" },
         { id: "about", icon: "fas fa-question-circle", label: "" },
       ],
@@ -21,17 +20,13 @@ export default class DGNPCSheet extends DGActorSheet {
     header: {
       template: `${this.TEMPLATE_PATH}/parts/header.html`,
     },
+    physical: {
+      template: `${this.TEMPLATE_PATH}/partials/attributes-grid-partial.html`,
+    },
     tabs: super.PARTS.tabs,
     skills: {
       template: `${this.TEMPLATE_PATH}/parts/skills-tab.html`,
       templates: [`${this.TEMPLATE_PATH}/partials/custom-skills-partial.html`],
-      scrollable: [""],
-    },
-    physical: {
-      template: `${this.TEMPLATE_PATH}/parts/physical-tab.html`,
-      templates: [
-        `${this.TEMPLATE_PATH}/partials/attributes-grid-partial.html`,
-      ],
       scrollable: [""],
     },
     gear: {
@@ -49,6 +44,11 @@ export default class DGNPCSheet extends DGActorSheet {
   /** @override */
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
+
+    // Override physical attribute title.
+    context.physicalAttributesTitle = game.i18n.localize(
+      "DG.Sheet.BlockHeaders.Statistics",
+    );
 
     context.enrichedDescription =
       await foundry.applications.ux.TextEditor.implementation.enrichHTML(

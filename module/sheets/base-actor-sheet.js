@@ -173,6 +173,11 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
       this.actor.system.sortedCustomSkills = sortedCustomSkills;
     }
 
+    // Set title for Physical Attributes.
+    context.physicalAttributesTitle = game.i18n.localize(
+      "DG.Sheet.BlockHeaders.Attributes",
+    );
+
     return context;
   }
 
