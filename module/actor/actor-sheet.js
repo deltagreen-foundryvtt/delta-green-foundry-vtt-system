@@ -1,32 +1,99 @@
 import DG from "../config.js";
+import DGSheetMixin from "../base-sheet.js";
 import {
   DGPercentileRoll,
   DGLethalityRoll,
   DGDamageRoll,
   DGSanityDamageRoll,
 } from "../roll/roll.js";
-/**
- * Extend the basic ActorSheet with some very simple modifications
- * @extends {ActorSheet}
- */
-export default class DeltaGreenActorSheet extends foundry.appv1.sheets
-  .ActorSheet {
+
+const { ActorSheetV2 } = foundry.applications.sheets;
+
+/** @extends {DGSheetMixin(ActorSheetV2)} */
+export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
   /** @override */
-  static get defaultOptions() {
-    return foundry.utils.mergeObject(super.defaultOptions, {
-      classes: ["deltagreen", "sheet", "actor"],
-      template: "systems/deltagreen/templates/actor/actor-sheet.html",
-      width: 750,
-      height: 770,
+  static DEFAULT_OPTIONS = /** @type {const} */ ({
+    css: ["actor"],
+    position: { width: 750, height: 770 },
+    actions: {
+      // Skill/Item actions.
+      itemAction: DeltaGreenActorSheet._onItemAction,
+      typedSkillAction: DeltaGreenActorSheet._onTypedSkillAction,
+      specialTrainingAction: DeltaGreenActorSheet._onSpecialTrainingAction,
+      roll: DeltaGreenActorSheet._onRoll,
+      rollLuck: DeltaGreenActorSheet._onRollLuck,
+      // Toggles/resets.
+      clearBondDamage: DeltaGreenActorSheet._clearBondDamage,
+      toggleBondDamage: DeltaGreenActorSheet._toggleBondDamage,
+      toggleEquipped: DeltaGreenActorSheet._toggleEquipped,
+      toggleItemSortMode: DeltaGreenActorSheet._toggleItemSortMode,
+      toggleShowUntrained: DeltaGreenActorSheet._toggleShowUntrained,
+      toggleLethality: DeltaGreenActorSheet._toggleLethality,
+      resetBreakingPoint: DeltaGreenActorSheet._resetBreakingPoint,
+      // Other actions.
+      applySkillImprovements: DeltaGreenActorSheet._applySkillImprovements,
+      browsePack: DeltaGreenActorSheet._browsePack,
+    },
+  });
+
+  static TABS = /** @type {const} */ ({
+    primary: {
+      initial: "skills",
+      labelPrefix: "DG.Navigation",
       tabs: [
-        {
-          navSelector: ".sheet-tabs",
-          contentSelector: ".sheet-body",
-          initial: "skills",
-        },
+        { id: "skills", label: "Skills" },
+        { id: "physical", label: "Physical" },
+        { id: "motivations", label: "Mental" },
+        { id: "gear", label: "Gear" },
+        { id: "bio", label: "CV" },
+        { id: "bonds", label: "Contacts" },
+        { id: "about", icon: "fas fa-question-circle", label: "" },
       ],
-    });
-  }
+    },
+  });
+
+  static PARTS = /** @type {const} */ ({
+    header: {
+      template: `${this.TEMPLATE_PATH}/actor/parts/header.html`,
+    },
+    tabs: {
+      template: `templates/generic/tab-navigation.hbs`, // From FoundryVTT
+    },
+    skills: {
+      template: `${this.TEMPLATE_PATH}/actor/parts/skills-tab.html`,
+      templates: [
+        `${this.TEMPLATE_PATH}/actor/partials/custom-skills-partial.html`,
+      ],
+      scrollable: [""],
+    },
+    physical: {
+      template: `${this.TEMPLATE_PATH}/actor/parts/physical-tab.html`,
+      templates: [
+        `${this.TEMPLATE_PATH}/actor/partials/attributes-grid-partial.html`,
+      ],
+      scrollable: [""],
+    },
+    motivations: {
+      template: `${this.TEMPLATE_PATH}/actor/parts/motivations-tab.html`,
+    },
+    gear: {
+      template: `${this.TEMPLATE_PATH}/actor/parts/gear-tab.html`,
+      scrollable: [""],
+    },
+    bio: {
+      template: `${this.TEMPLATE_PATH}/actor/parts/bio-tab.html`,
+      templates: [`${this.TEMPLATE_PATH}/actor/partials/cv-partial.html`],
+      scrollable: [""],
+    },
+    bonds: {
+      template: `${this.TEMPLATE_PATH}/actor/parts/bonds-tab.html`,
+      scrollable: [""],
+    },
+    about: {
+      template: `${this.TEMPLATE_PATH}/actor/parts/about-tab.html`,
+      scrollable: [""],
+    },
+  });
 
   /* -------------------------------------------- */
 
@@ -61,22 +128,22 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
   }
 
   /** @override */
-  async getData() {
-    const data = super.getData();
+  async _prepareContext(options) {
+    const context = await super._prepareContext(options);
 
     // Prepare items.
-    this._prepareCharacterItems(data);
+    this._prepareCharacterItems(context);
 
-    data.showHyperGeometrySection = this.shouldShowHyperGeometrySection(
-      this.actor
+    context.showHyperGeometrySection = this.shouldShowHyperGeometrySection(
+      this.actor,
     );
 
     // Make it easy for the sheet handlebars to understand how to sort the skills.
-    data.sortSkillsSetting = game.settings.get("deltagreen", "sortSkills");
+    context.sortSkillsSetting = game.settings.get("deltagreen", "sortSkills");
 
     if (this.actor.type !== "vehicle") {
       // fill an array that is sorted based on the appropriate localized entry
-      let sortedSkills = [];
+      const sortedSkills = [];
       for (const [key, skill] of Object.entries(this.actor.system.skills)) {
         skill.key = key;
 
@@ -94,8 +161,8 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
         // it will break the sorting logic, so we have to skip over these
         if (
           !(
-            (this.actor.type == "npc" || this.actor.type == "unnatural") &&
-            this.actor.system.showUntrainedSkills == true &&
+            (this.actor.type === "npc" || this.actor.type === "unnatural") &&
+            this.actor.system.showUntrainedSkills &&
             skill.proficiency < 1
           )
         ) {
@@ -103,13 +170,16 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
         }
       }
 
-      sortedSkills.sort(function (a, b) {
+      sortedSkills.sort((a, b) => {
         return a.sortLabel.localeCompare(b.sortLabel, game.i18n.lang);
       });
 
       // if sorting by columns, re-arrange the array to be columns first, then rows
       if (game.settings.get("deltagreen", "sortSkills")) {
-        let columnSortedSkills = this.reorderForColumnSorting(sortedSkills, 3);
+        const columnSortedSkills = this.reorderForColumnSorting(
+          sortedSkills,
+          3,
+        );
 
         this.actor.system.sortedSkills = columnSortedSkills;
       } else {
@@ -129,8 +199,7 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
           switch (true) {
             // Stats
             case DG.statistics.includes(training.attribute):
-              simplifiedTraining.attribute =
-                training.attribute.toUpperCase() + "x5";
+              simplifiedTraining.attribute = `${training.attribute.toUpperCase()}x5`;
               simplifiedTraining.targetNumber =
                 this.actor.system.statistics[training.attribute].x5;
               break;
@@ -150,22 +219,22 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
               break;
           }
           return simplifiedTraining;
-        }
+        },
       );
-      data.specialTraining = specialTraining;
+      context.specialTraining = specialTraining;
     }
 
     // try to make a combined array of both typed skills and special trainings,
     // so that it can be sorted together neatly on the sheet
     if (this.actor.type !== "vehicle") {
-      let sortedCustomSkills = [];
+      const sortedCustomSkills = [];
 
       for (const [key, skill] of Object.entries(
-        this.actor.system.typedSkills
+        this.actor.system.typedSkills,
       )) {
         skill.type = "typeSkill";
         skill.key = key;
-        skill.sortLabel = skill.group + "." + skill.label;
+        skill.sortLabel = `${skill.group}.${skill.label}`;
         skill.sortLabel = skill.sortLabel.toUpperCase();
         skill.actorType = this.actor.type;
 
@@ -176,8 +245,8 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
         sortedCustomSkills.push(skill);
       }
 
-      for (var i = 0; i < data.specialTraining.length; i++) {
-        let training = data.specialTraining[i];
+      for (let i = 0; i < context.specialTraining.length; i++) {
+        const training = context.specialTraining[i];
 
         training.type = "training";
         training.sortLabel = training.name.toUpperCase();
@@ -191,9 +260,9 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
       });
 
       if (game.settings.get("deltagreen", "sortSkills")) {
-        let columnSortedSkills = this.reorderForColumnSorting(
+        const columnSortedSkills = this.reorderForColumnSorting(
           sortedCustomSkills,
-          2
+          2,
         );
 
         this.actor.system.sortedCustomSkills = columnSortedSkills;
@@ -203,61 +272,72 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
     }
 
     switch (this.actor.type) {
-      case "agent":
-        data.enrichedDescription =
+      case "agent": {
+        const enrichedDescription =
           await foundry.applications.ux.TextEditor.implementation.enrichHTML(
-            this.object.system.physicalDescription,
-            { async: true }
+            this.actor.system.physicalDescription,
+            {
+              rollData: this.document.getRollData(),
+              relativeTo: this.document,
+            },
           );
+        const { HTMLProseMirrorElement } = foundry.applications.elements;
+        context.descriptionField = HTMLProseMirrorElement.create({
+          name: "system.physicalDescription",
+          value: this.actor.system.physicalDescription,
+          enriched: enrichedDescription,
+          toggled: true,
+        }).outerHTML;
         break;
+      }
       case "vehicle":
-        data.enrichedDescription =
+        context.enrichedDescription =
           await foundry.applications.ux.TextEditor.implementation.enrichHTML(
-            this.object.system.description,
-            { async: true }
+            this.actor.system.description,
+            { async: true },
           );
         break;
       case "npc":
       case "unnatural":
-        data.enrichedDescription =
+        context.enrichedDescription =
           await foundry.applications.ux.TextEditor.implementation.enrichHTML(
-            this.object.system.notes,
-            { async: true }
+            this.actor.system.notes,
+            { async: true },
           );
         break;
       default:
     }
 
-    return data;
+    return context;
   }
 
   reorderForColumnSorting(arr, numCols) {
-    let numRows = Math.ceil(arr.length / numCols); // Compute required rows
-    let reordered = new Array(arr.length);
+    const numRows = Math.ceil(arr.length / numCols); // Compute required rows
+    const reordered = new Array(arr.length);
 
     // Determine how many elements each column gets
-    let baseRowCount = Math.floor(arr.length / numCols); // Minimum rows per column
-    let extraColumns = arr.length % numCols; // Some columns get an extra row
+    const baseRowCount = Math.floor(arr.length / numCols); // Minimum rows per column
+    const extraColumns = arr.length % numCols; // Some columns get an extra row
 
-    let colHeights = new Array(numCols).fill(baseRowCount);
+    const colHeights = new Array(numCols).fill(baseRowCount);
     for (let i = 0; i < extraColumns; i++) {
-      colHeights[i]++; // Give extra elements to the first N columns
+      colHeights[i] += 1; // Give extra elements to the first N columns
     }
 
     let index = 0; // move through alphabetical array, keeping track of what we've resorted already
 
     for (let col = 0; col < numCols; col++) {
       // need to check if this is a column that has more rows than the others or not
-      let rowCount = colHeights[col];
+      const rowCount = colHeights[col];
 
       // loop down the column, filling out it's values from the alphabetical array
       for (let row = 0; row < rowCount; row++) {
         // calculate the new position for this value by column
-        let newIndex = numCols * row + col;
+        const newIndex = numCols * row + col;
 
         if (newIndex < arr.length) {
           reordered[newIndex] = arr[index];
-          index++;
+          index += 1;
         }
       }
     }
@@ -277,7 +357,7 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
     if (
       game.settings.get(
         "deltagreen",
-        "alwaysShowHypergeometrySectionForPlayers"
+        "alwaysShowHypergeometrySectionForPlayers",
       )
     ) {
       return true;
@@ -292,6 +372,7 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
 
     return false;
   }
+
   /**
    * Organize and classify Items for Character sheets.
    *
@@ -299,8 +380,8 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
    *
    * @return {undefined}
    */
-  _prepareCharacterItems(sheetData) {
-    const actorData = sheetData.actor;
+  _prepareCharacterItems() {
+    const { actor } = this;
 
     // Initialize containers.
     const armor = [];
@@ -311,7 +392,7 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
 
     // Iterate through items, allocating to containers
     // let totalWeight = 0;
-    for (const i of sheetData.items) {
+    for (const i of actor.items) {
       // Append to armor.
       if (i.type === "armor") {
         armor.push(i);
@@ -328,10 +409,10 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
       }
     }
 
-    if (actorData.system.settings.sorting.armorSortAlphabetical) {
-      armor.sort(function (a, b) {
-        let x = a.name.toLowerCase();
-        let y = b.name.toLowerCase();
+    if (actor.system.settings.sorting.armorSortAlphabetical) {
+      armor.sort((a, b) => {
+        const x = a.name.toLowerCase();
+        const y = b.name.toLowerCase();
         if (x < y) {
           return -1;
         }
@@ -341,15 +422,15 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
         return 0;
       });
     } else {
-      armor.sort(function (a, b) {
+      armor.sort((a, b) => {
         return a.sort - b.sort;
       });
     }
 
-    if (actorData.system.settings.sorting.weaponSortAlphabetical) {
-      weapons.sort(function (a, b) {
-        let x = a.name.toLowerCase();
-        let y = b.name.toLowerCase();
+    if (actor.system.settings.sorting.weaponSortAlphabetical) {
+      weapons.sort((a, b) => {
+        const x = a.name.toLowerCase();
+        const y = b.name.toLowerCase();
         if (x < y) {
           return -1;
         }
@@ -359,15 +440,15 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
         return 0;
       });
     } else {
-      weapons.sort(function (a, b) {
+      weapons.sort((a, b) => {
         return a.sort - b.sort;
       });
     }
 
-    if (actorData.system.settings.sorting.gearSortAlphabetical) {
-      gear.sort(function (a, b) {
-        let x = a.name.toLowerCase();
-        let y = b.name.toLowerCase();
+    if (actor.system.settings.sorting.gearSortAlphabetical) {
+      gear.sort((a, b) => {
+        const x = a.name.toLowerCase();
+        const y = b.name.toLowerCase();
         if (x < y) {
           return -1;
         }
@@ -377,15 +458,15 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
         return 0;
       });
     } else {
-      gear.sort(function (a, b) {
+      gear.sort((a, b) => {
         return a.sort - b.sort;
       });
     }
 
-    if (actorData.system.settings.sorting.tomeSortAlphabetical) {
-      tomes.sort(function (a, b) {
-        let x = a.name.toLowerCase();
-        let y = b.name.toLowerCase();
+    if (actor.system.settings.sorting.tomeSortAlphabetical) {
+      tomes.sort((a, b) => {
+        const x = a.name.toLowerCase();
+        const y = b.name.toLowerCase();
         if (x < y) {
           return -1;
         }
@@ -395,15 +476,15 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
         return 0;
       });
     } else {
-      tomes.sort(function (a, b) {
+      tomes.sort((a, b) => {
         return a.sort - b.sort;
       });
     }
 
-    if (actorData.system.settings.sorting.ritualSortAlphabetical) {
-      rituals.sort(function (a, b) {
-        let x = a.name.toLowerCase();
-        let y = b.name.toLowerCase();
+    if (actor.system.settings.sorting.ritualSortAlphabetical) {
+      rituals.sort((a, b) => {
+        const x = a.name.toLowerCase();
+        const y = b.name.toLowerCase();
         if (x < y) {
           return -1;
         }
@@ -413,53 +494,36 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
         return 0;
       });
     } else {
-      rituals.sort(function (a, b) {
+      rituals.sort((a, b) => {
         return a.sort - b.sort;
       });
     }
 
     // Assign and return
-    actorData.armor = armor;
-    actorData.weapons = weapons;
-    actorData.gear = gear;
-    actorData.rituals = rituals;
-    actorData.tomes = tomes;
+    actor.armor = armor;
+    actor.weapons = weapons;
+    actor.gear = gear;
+    actor.rituals = rituals;
+    actor.tomes = tomes;
   }
 
-  // Can add extra buttons to form header here if necessary
-  _getHeaderButtons() {
-    let buttons = super._getHeaderButtons();
-    let label = "Roll Luck";
-    let label2 = "Luck";
-
-    try {
-      label = game.i18n.translations.DG.RollLuck;
-      label2 = game.i18n.translations.DG.Luck;
-    } catch {
-      console.error(
-        "Missing translation key for either DG.RollLuck or DG.Luck key."
-      );
-    }
-
-    buttons = [
-      {
-        label,
-        class: "test-extra-icon",
-        icon: "fas fa-dice",
-        onclick: (ev) => this.luckRollOnClick(ev, this.actor, label2),
-      },
-    ].concat(buttons);
-
-    return buttons;
+  /** @override - Add buttons to the header controls. */
+  _getHeaderControls() {
+    const controls = super._getHeaderControls();
+    controls.push({
+      action: "rollLuck",
+      label: "DG.RollLuck",
+      icon: "fas fa-dice",
+    });
+    return controls;
   }
 
   // This only exists to give a chance to activate the modifier dialogue if desired
   // Cannot seem to trigger the event on a right-click, so unfortunately only applies to a shift-click currently.
-  async luckRollOnClick(event) {
-    if (event && event.which === 2) {
-      // probably don't want rolls to trigger from a middle mouse click so just kill it here
-      return;
-    }
+  static async _onRollLuck(event) {
+    // probably don't want rolls to trigger from a middle mouse click so just kill it here
+    if (event.which === 2) return;
+
     const rollOptions = {
       rollType: "luck",
       key: "luck",
@@ -502,307 +566,281 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
           },
         ],
       },
-      owner
+      owner,
     ).create();
   }
 
   /* -------------------------------------------- */
 
-  /** @override */
-  activateListeners(html) {
-    super.activateListeners(html);
+  static _onItemAction(event, target) {
+    const li = target.closest(".item");
+    const { itemId } = li.dataset;
+    const { actionType, itemType } = target.dataset;
 
-    // Everything below here is only needed if the sheet is editable
-    if (!this.options.editable) return;
+    switch (actionType) {
+      case "create":
+        this._onItemCreate(itemType);
+        break;
+      case "edit": {
+        const item = this.actor.items.get(itemId);
+        item.sheet.render(true);
+        break;
+      }
+      case "delete": {
+        this.actor.deleteEmbeddedDocuments("Item", [itemId]);
+        break;
+      }
+      default:
+        break;
+    }
+  }
 
-    // Add Inventory Item
-    html.find(".item-create").click(this._onItemCreate.bind(this));
+  static _onTypedSkillAction(event, target) {
+    const { actionType, typedskill } = target.dataset;
+    switch (actionType) {
+      case "create":
+        this._showNewTypeSkillDialog();
+        break;
+      case "edit":
+        this._showNewEditTypeSkillDialog(typedskill);
+        break;
+      case "delete":
+        this.actor.update({ [`system.typedSkills.-=${typedskill}`]: null });
+        break;
+      default:
+        break;
+    }
+  }
 
-    // Update Inventory Item
-    html.find(".item-edit").click((ev) => {
-      const li = $(ev.currentTarget).parents(".item");
-      // const item = this.actor.getOwnedItem(li.data("itemId"));
-      const item = this.actor.items.get(li.data("itemId"));
-      item.sheet.render(true);
+  static _onSpecialTrainingAction(event, target) {
+    const { actionType, id } = target.dataset;
+    switch (actionType) {
+      case "delete":
+        {
+          const specialTrainingArray = foundry.utils.duplicate(
+            this.actor.system.specialTraining,
+          );
+
+          // Get the index of the training to be deleted
+          const index = specialTrainingArray.findIndex(
+            (training) => training.id === id,
+          );
+
+          specialTrainingArray.splice(index, 1);
+          this.actor.update({ "system.specialTraining": specialTrainingArray });
+        }
+        break;
+      default:
+        this._showSpecialTrainingDialog(actionType, id);
+        break;
+    }
+  }
+
+  static _applySkillImprovements(event, target) {
+    const failedSkills = Object.entries(this.actor.system.skills).filter(
+      (skill) => skill[1].failure,
+    );
+    const failedTypedSkills = Object.entries(
+      this.actor.system.typedSkills,
+    ).filter((skill) => skill[1].failure);
+    if (failedSkills.length === 0 && failedTypedSkills.length === 0) {
+      ui.notifications.warn("No Skills to Increase");
+      return;
+    }
+
+    let htmlContent = "";
+    let failedSkillNames = "";
+    failedSkills.forEach(([skill], value) => {
+      if (value === 0) {
+        failedSkillNames += game.i18n.localize(`DG.Skills.${skill}`);
+      } else {
+        failedSkillNames += `, ${game.i18n.localize(`DG.Skills.${skill}`)}`;
+      }
+    });
+    failedTypedSkills.forEach(([skillName, skillData], value) => {
+      if (value === 0 && failedSkillNames === "") {
+        failedSkillNames += `${game.i18n.localize(
+          `DG.TypeSkills.${skillData.group.split(" ").join("")}`,
+        )} (${skillData.label})`;
+      } else {
+        failedSkillNames += `, ${game.i18n.localize(
+          `DG.TypeSkills.${skillData.group.split(" ").join("")}`,
+        )} (${skillData.label})`;
+      }
     });
 
-    // Delete Inventory Item
-    html.find(".item-delete").click((ev) => {
-      const li = $(ev.currentTarget).parents(".item");
-
-      // this.actor.deleteOwnedItem(li.data("itemId"));
-      const options = {};
-      this.actor.deleteEmbeddedDocuments("Item", [li.data("itemId")], options);
-
-      li.slideUp(200, () => this.render(false));
-    });
-
-    // Rollable abilities - bind to everything with the 'Rollable' class
-    html.find(".rollable").click(this._onRoll.bind(this));
-    html.find(".rollable").contextmenu(this._onRoll.bind(this)); // this is for right-click, which triggers the roll modifier dialogue for most rolls
-
-    html.find(".toggle-untrained").click(() =>
-      this.actor.update({
-        "system.showUntrainedSkills": !this.actor.system.showUntrainedSkills,
-      })
+    const baseRollFormula = game.settings.get(
+      "deltagreen",
+      "skillImprovementFormula",
     );
 
-    // Macro for toggling an item's equipped state
-    html
-      .find(".equipped-item")
-      .mousedown(this._onEquippedStatusChange.bind(this));
+    htmlContent += `<div>`;
+    htmlContent += `     <label>${game.i18n.localize(
+      "DG.Skills.ApplySkillImprovementsDialogLabel",
+    )} <b>+${baseRollFormula}%</b></label>`;
+    htmlContent += `     <hr>`;
+    htmlContent += `     <span> ${game.i18n.localize(
+      "DG.Skills.ApplySkillImprovementsDialogEffectsFollowing",
+    )} <b>${failedSkillNames}</b> </span>`;
+    htmlContent += `</div>`;
 
-    // Drag events for macros.
+    new Dialog({
+      content: htmlContent,
+      title:
+        game.i18n.translations.DG?.Skills?.ApplySkillImprovements ??
+        "Apply Skill Improvements",
+      default: "add",
+      buttons: {
+        apply: {
+          label: game.i18n.translations.DG?.Skills?.Apply ?? "Apply",
+          callback: (btn) => {
+            this._applySkillImprovements(
+              baseRollFormula,
+              failedSkills,
+              failedTypedSkills,
+            );
+          },
+        },
+      },
+    }).render(true);
+  }
+
+  static _browsePack(event, target) {
+    const { packType } = target.dataset;
+    switch (packType) {
+      case "weapon": {
+        new Dialog({
+          title: "Select Compendium",
+          buttons: {
+            firearms: {
+              icon: '<i class="fas fa-crosshairs"></i>',
+              callback: () =>
+                game.packs
+                  .find((k) => k.collection === "deltagreen.firearms")
+                  .render(true),
+            },
+            melee: {
+              icon: '<i class="far fa-hand-rock"></i>',
+              callback: () =>
+                game.packs
+                  .find(
+                    (k) => k.collection === "deltagreen.hand-to-hand-weapons",
+                  )
+                  .render(true),
+            },
+          },
+        }).render(true);
+        break;
+      }
+      default:
+        game.packs
+          .find((k) => k.collection === `deltagreen.${packType}`)
+          .render(true);
+        break;
+    }
+  }
+
+  static _toggleBondDamage(event, target) {
+    const li = target.closest(".item");
+    const item = this.actor.items.get(li.dataset.itemId);
+    const value = target.checked;
+
+    item.update({ "system.hasBeenDamagedSinceLastHomeScene": value });
+  }
+
+  static _clearBondDamage() {
+    for (const i of this.actor.itemTypes.bond) {
+      // eslint-disable-next-line no-continue
+      if (!i.system.hasBeenDamagedSinceLastHomeScene) continue;
+      i.update({ "system.hasBeenDamagedSinceLastHomeScene": false });
+    }
+  }
+
+  static _toggleItemSortMode(event, target) {
+    const itemType = target.dataset.gearType;
+    const propString = `${itemType}SortAlphabetical`;
+    const targetProp = `system.settings.sorting.${propString}`;
+    const currentValue = foundry.utils.getProperty(this.actor, targetProp);
+    this.actor.update({
+      [targetProp]: !currentValue,
+    });
+  }
+
+  static toggleShowUntrained() {
+    const targetProp = "system.showUntrainedSkills";
+    const currentVal = foundry.utils.getProperty(this.actor, targetProp);
+    this.actor.update({ [targetProp]: !currentVal });
+  }
+
+  /**
+   * Listens for right click events on the actor sheet and executes a regular roll,
+   * or luck roll, depending on the action.
+   *
+   * @returns {void}
+   */
+  _setRightClickListeners() {
+    const { element } = this;
+    element.addEventListener("contextmenu", (event) => {
+      event.preventDefault();
+      const target = event.target.closest(
+        "[data-action='roll'],[data-action='rollLuck']",
+      );
+      if (!target) return;
+
+      // Call _onRollLuck if luckRoll is the dispatched action.
+      if (target.dataset.action === "rollLuck") {
+        DeltaGreenActorSheet._onRollLuck.call(this, event, target);
+        return;
+      }
+
+      // Otherwise, call _onRoll function.
+      DeltaGreenActorSheet._onRoll.call(this, event, target);
+    });
+  }
+
+  /** @override */
+  async _onRender(context, options) {
+    await super._onRender(context, options);
+    const { element } = this;
+
+    this._setRightClickListeners();
+
     if (this.actor.isOwner) {
       const handler = (ev) => this._onDragStart(ev);
-      html.find("li.item").each((i, li) => {
+      element.querySelectorAll("li.item").forEach((li) => {
         if (li.classList.contains("inventory-header")) return;
         li.setAttribute("draggable", true);
         li.addEventListener("dragstart", handler, false);
       });
     }
-
-    // Custom Sheet Macros
-    html.find(".btn-reset-breaking-point").click((event) => {
-      event.preventDefault();
-      let currentBreakingPoint = 0;
-
-      currentBreakingPoint =
-        this.actor.system.sanity.value - this.actor.system.statistics.pow.value;
-
-      const updatedData = foundry.utils.duplicate(this.actor.system);
-      updatedData.sanity.currentBreakingPoint = currentBreakingPoint;
-      this.actor.update({ system: updatedData });
-    });
-
-    html.find(".typed-skill-add").click((event) => {
-      event.preventDefault();
-
-      // const targetskill = event.target.getAttribute("data-typeskill");
-
-      this._showNewTypeSkillDialog();
-    });
-
-    html.find(".typed-skill-edit").click((event) => {
-      event.preventDefault();
-      const targetskill = event.target.getAttribute("data-typedskill");
-      const existingLabel = this.actor.system.typedSkills[targetskill].label;
-      const existingGroup = this.actor.system.typedSkills[targetskill].group;
-
-      // this.actor.update({[`data.typedSkills.${targetskill}.label`]: 'test'});
-
-      this._showNewEditTypeSkillDialog(
-        targetskill,
-        existingLabel,
-        existingGroup
-      );
-    });
-
-    html.find(".typed-skill-delete").click((event) => {
-      event.preventDefault();
-      const targetskill = event.target.getAttribute("data-typedskill");
-
-      // many bothans died to bring us this information on how to delete a property on an entity
-      this.actor.update({ [`system.typedSkills.-=${targetskill}`]: null });
-    });
-
-    html.find(".special-training-action").click((event) => {
-      event.preventDefault();
-      const action = event.currentTarget.getAttribute("data-action");
-      const targetID = event.currentTarget.getAttribute("data-id");
-      this._showSpecialTrainingDialog(action, targetID);
-    });
-
-    // Handle deletion of Special Training
-    html.find(".special-training-delete").click((event) => {
-      event.preventDefault();
-      const targetID = event.currentTarget.getAttribute("data-id");
-      const specialTrainingArray = foundry.utils.duplicate(
-        this.actor.system.specialTraining
-      );
-      // Get the index of the training to be deleted
-      const index = specialTrainingArray.findIndex(
-        (training) => training.id === targetID
-      );
-
-      specialTrainingArray.splice(index, 1);
-      this.actor.update({ "system.specialTraining": specialTrainingArray });
-    });
-
-    html.find(".apply-skill-improvements").click((event) => {
-      event.preventDefault();
-
-      const failedSkills = Object.entries(this.actor.system.skills).filter(
-        (skill) => skill[1].failure
-      );
-      const failedTypedSkills = Object.entries(
-        this.actor.system.typedSkills
-      ).filter((skill) => skill[1].failure);
-      if (failedSkills.length === 0 && failedTypedSkills.length === 0) {
-        ui.notifications.warn("No Skills to Increase");
-        return;
-      }
-
-      let htmlContent = "";
-      let failedSkillNames = "";
-      failedSkills.forEach(([skill], value) => {
-        if (value === 0) {
-          failedSkillNames += game.i18n.localize(`DG.Skills.${skill}`);
-        } else {
-          failedSkillNames += `, ${game.i18n.localize(`DG.Skills.${skill}`)}`;
-        }
-      });
-      failedTypedSkills.forEach(([skillName, skillData], value) => {
-        if (value === 0 && failedSkillNames === "") {
-          failedSkillNames += `${game.i18n.localize(
-            `DG.TypeSkills.${skillData.group.split(" ").join("")}`
-          )} (${skillData.label})`;
-        } else {
-          failedSkillNames += `, ${game.i18n.localize(
-            `DG.TypeSkills.${skillData.group.split(" ").join("")}`
-          )} (${skillData.label})`;
-        }
-      });
-
-      const baseRollFormula = game.settings.get(
-        "deltagreen",
-        "skillImprovementFormula"
-      );
-
-      htmlContent += `<div>`;
-      htmlContent += `     <label>${game.i18n.localize(
-        "DG.Skills.ApplySkillImprovementsDialogLabel"
-      )} <b>+${baseRollFormula}%</b></label>`;
-      htmlContent += `     <hr>`;
-      htmlContent += `     <span> ${game.i18n.localize(
-        "DG.Skills.ApplySkillImprovementsDialogEffectsFollowing"
-      )} <b>${failedSkillNames}</b> </span>`;
-      htmlContent += `</div>`;
-
-      new Dialog({
-        content: htmlContent,
-        title:
-          game.i18n.translations.DG?.Skills?.ApplySkillImprovements ??
-          "Apply Skill Improvements",
-        default: "add",
-        buttons: {
-          apply: {
-            label: game.i18n.translations.DG?.Skills?.Apply ?? "Apply",
-            callback: (btn) => {
-              this._applySkillImprovements(
-                baseRollFormula,
-                failedSkills,
-                failedTypedSkills
-              );
-            },
-          },
-        },
-      }).render(true);
-    });
-
-    // Browse Weapon Compendiums
-    html.find(".weapon-browse").click((ev) => {
-      const dialog = new Dialog({
-        title: "Select Compendium",
-        buttons: {
-          firearms: {
-            icon: '<i class="fas fa-crosshairs"></i>',
-            callback: () =>
-              game.packs
-                .find((k) => k.collection === "deltagreen.firearms")
-                .render(true),
-          },
-          melee: {
-            icon: '<i class="far fa-hand-rock"></i>',
-            callback: () =>
-              game.packs
-                .find((k) => k.collection === "deltagreen.hand-to-hand-weapons")
-                .render(true),
-          },
-        },
-      });
-
-      dialog.render(true);
-    });
-
-    html.find(".armor-browse").click((ev) => {
-      game.packs.find((k) => k.collection === "deltagreen.armor").render(true);
-    });
-
-    html.find(".gear-browse").click((ev) => {
-      // game.packs.find(k=>k.collection==="deltagreen.firearms").render(true);
-    });
-
-    html.find(".toggle-lethality").click((event) => {
-      this._toggleLethality(event);
-    });
-
-    // let user check off the 'bond damaged' checkbox right from the sheet
-    html.find(".bond-has-been-damaged-agent-sheet-checkbox").click((ev) => {
-      const el = $(ev.currentTarget).parents(".item");
-      const item = this.actor.items.get(el.data("item-id"));
-      const value = ev.target.checked;
-
-      item.update({ "system.hasBeenDamagedSinceLastHomeScene": value });
-    });
-
-    html.find(".clear-all-bond-damage-checks").click((ev) => {
-      this._updateBondsRemoveAllDamagedCheckmarks();
-    });
-
-    // item sorting toggles
-    html.find(".toggle-item-sorting-style").click((event) => {
-      event.preventDefault();
-
-      const itemType = event.currentTarget.getAttribute("data-gear-type");
-
-      if (itemType === "weapon") {
-        this.actor.update({
-          "system.settings.sorting.weaponSortAlphabetical":
-            !this.actor.system.settings.sorting.weaponSortAlphabetical,
-        });
-      } else if (itemType === "armor") {
-        this.actor.update({
-          "system.settings.sorting.armorSortAlphabetical":
-            !this.actor.system.settings.sorting.armorSortAlphabetical,
-        });
-      } else if (itemType === "gear") {
-        this.actor.update({
-          "system.settings.sorting.gearSortAlphabetical":
-            !this.actor.system.settings.sorting.gearSortAlphabetical,
-        });
-      } else if (itemType === "tome") {
-        this.actor.update({
-          "system.settings.sorting.tomeSortAlphabetical":
-            !this.actor.system.settings.sorting.tomeSortAlphabetical,
-        });
-      } else if (itemType === "ritual") {
-        this.actor.update({
-          "system.settings.sorting.ritualSortAlphabetical":
-            !this.actor.system.settings.sorting.ritualSortAlphabetical,
-        });
-      }
-    });
   }
 
-  // trigger an update on all bonds that have had their damaged flag checked off
-  async _updateBondsRemoveAllDamagedCheckmarks() {
-    for (const i of this.actor.items) {
-      if (i.type === "bond" && i.system.hasBeenDamagedSinceLastHomeScene) {
-        await i.update({ "system.hasBeenDamagedSinceLastHomeScene": false });
-      }
-    }
+  /** Resets the actor's current breaking point based on their sanity and POW statistics. */
+  static _resetBreakingPoint() {
+    const systemData = this.actor.system;
+
+    const newBreakingPoint =
+      systemData.sanity.value - systemData.statistics.pow.value;
+
+    const updatedData = foundry.utils.duplicate(systemData);
+    updatedData.sanity.currentBreakingPoint = newBreakingPoint;
+    this.actor.update({ system: updatedData });
   }
 
-  _toggleLethality(event) {
-    const itemId = event.target.getAttribute("item-id");
-    const isLethal = event.target.getAttribute("is-lethal") === "true";
-    const item = this.actor.items.find((i) => i.id === itemId);
+  /** Toggles lethality */
+  static _toggleLethality(event, target) {
+    const { itemId } = target.dataset;
+    const isLethal = target.dataset.isLethal?.length === 0;
+    const item = this.actor.items.get(itemId);
     item.update({ "system.isLethal": !isLethal });
   }
 
-  _showNewEditTypeSkillDialog(targetSkill, currentLabel, currentGroup) {
+  _showNewEditTypeSkillDialog(targetSkill) {
     // TO DO: BUILD DIALOG TO CAPTURE UPDATED DATA
+
+    const { typedSkills } = this.actor.system;
+    const currentLabel = typedSkills[targetSkill].label;
+    const currentGroup = typedSkills[targetSkill].group;
 
     let htmlContent = `<div>`;
     htmlContent += `     <label>${
@@ -931,7 +969,7 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
             this._updateTypedSkill(
               targetSkill,
               newTypeSkillLabel,
-              newTypeSkillGroup
+              newTypeSkillGroup,
             );
           },
         },
@@ -1047,17 +1085,17 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
 
   async _showSpecialTrainingDialog(action, targetID) {
     const specialTraining = this.actor.system.specialTraining.find(
-      (training) => training.id === targetID
+      (training) => training.id === targetID,
     );
 
     // Define the option groups for our drop-down menu.
     const optionGroups = {
       stats: game.i18n.localize(
-        "DG.SpecialTraining.Dialog.DropDown.Statistics"
+        "DG.SpecialTraining.Dialog.DropDown.Statistics",
       ),
       skills: game.i18n.localize("DG.SpecialTraining.Dialog.DropDown.Skills"),
       typedSkills: game.i18n.localize(
-        "DG.SpecialTraining.Dialog.DropDown.CustomSkills"
+        "DG.SpecialTraining.Dialog.DropDown.CustomSkills",
       ),
     };
 
@@ -1068,7 +1106,7 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
         group: optionGroups.stats,
         label: game.i18n.localize(`DG.Attributes.${key}`),
         targetNumber: stat.value * 5,
-      })
+      }),
     );
 
     // Prepare simplified skill list
@@ -1078,7 +1116,7 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
         group: optionGroups.skills,
         label: game.i18n.localize(`DG.Skills.${key}`),
         targetNumber: skill.proficiency,
-      })
+      }),
     );
 
     // Prepare simplified typed/custom skill list
@@ -1090,7 +1128,7 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
           game.i18n.localize(`DG.TypeSkills.${skill.group}`) +
           ` (${skill.label})`,
         targetNumber: skill.proficiency,
-      })
+      }),
     );
 
     // Prepare the Select element
@@ -1101,6 +1139,7 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
     }).outerHTML;
 
     // Prepare the template to feed to Dialog.
+    const { renderTemplate } = foundry.applications.handlebars;
     const content = await renderTemplate(
       "systems/deltagreen/templates/dialog/special-training.html",
       {
@@ -1110,11 +1149,11 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
         statList,
         skillList,
         typedSkillList,
-      }
+      },
     );
 
     const buttonLabel = game.i18n.localize(
-      `DG.SpecialTraining.Dialog.${action}SpecialTraining`
+      `DG.SpecialTraining.Dialog.${action.capitalize()}SpecialTraining`,
     );
 
     // Prepare and render dialog with above template.
@@ -1132,16 +1171,16 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
             const specialTrainingAttribute = btn
               .find("[name='special-training-skill']")
               .val();
-            if (action === "Create")
+            if (action === "create")
               this._createSpecialTraining(
                 specialTrainingLabel,
-                specialTrainingAttribute
+                specialTrainingAttribute,
               );
-            if (action === "Edit")
+            if (action === "edit")
               this._editSpecialTraining(
                 specialTrainingLabel,
                 specialTrainingAttribute,
-                targetID
+                targetID,
               );
           },
         },
@@ -1151,7 +1190,7 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
 
   _createSpecialTraining(label, attribute) {
     const specialTrainingArray = foundry.utils.duplicate(
-      this.actor.system.specialTraining
+      this.actor.system.specialTraining,
     );
     specialTrainingArray.push({
       name: label,
@@ -1163,10 +1202,10 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
 
   _editSpecialTraining(label, attribute, id) {
     const specialTrainingArray = foundry.utils.duplicate(
-      this.actor.system.specialTraining
+      this.actor.system.specialTraining,
     );
     const specialTraining = specialTrainingArray.find(
-      (training) => training.id === id
+      (training) => training.id === id,
     );
     specialTraining.name = label;
     specialTraining.attribute = attribute;
@@ -1175,24 +1214,16 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
 
   /**
    * Handle creating a new Owned Item for the actor using initial data defined in the HTML dataset
-   * @param {Event} event   The originating click event
+   * @param {String} type   The originating click event
    * @private
    */
-  _onItemCreate(event) {
-    event.preventDefault();
-
-    const header = event.currentTarget;
-
-    // Get the type of item to create.
-    const { type } = header.dataset;
-
+  _onItemCreate(type) {
     // Initialize a default name.
-    // const name = `New ${type.capitalize()}`;
     const name = game.i18n.format(
       game.i18n.translations.DOCUMENT?.New || "DG.FallbackText.newItem",
       {
         type: game.i18n.localize(`TYPES.Item.${type}`),
-      }
+      },
     );
 
     // Prepare the item object.
@@ -1210,7 +1241,7 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
       // itemData.system.expense = "Standard";
     } else if (type === "bond") {
       // try to default bonds for an agent to their current CHA
-      itemData.system.score = this.object.system.statistics.cha.value; // Can vary, but at character creation starting bond score is usually agent's charisma
+      itemData.system.score = this.actor.system.statistics.cha.value; // Can vary, but at character creation starting bond score is usually agent's charisma
       // itemData.img = "icons/svg/mystery-man.svg"
     }
 
@@ -1225,16 +1256,10 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
    * @async
    * @private
    */
-  async _onRoll(event) {
-    event.preventDefault();
-    const element = event.currentTarget;
-    const { dataset } = element;
+  static async _onRoll(event, target) {
+    if (target.classList.contains("not-rollable") || event.which === 2) return;
 
-    if (event && event.which === 2) {
-      // probably don't want rolls to trigger from a middle mouse click so just kill it here
-      return;
-    }
-
+    const { dataset } = target;
     const item = this.actor.items.get(dataset.iid);
     const rollOptions = {
       rollType: dataset.rolltype,
@@ -1332,27 +1357,21 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
     this.actor.update({ system: updatedData });
   }
 
-  _onEquippedStatusChange(event) {
+  static _toggleEquipped(event, target) {
     event.preventDefault();
-    const element = event.currentTarget;
-    const { dataset } = element;
+    const { id } = target.dataset;
+    const item = this.actor.items.get(id);
 
-    try {
-      // const item = this.actor.getOwnedItem(dataset.id);
-      const item = this.actor.items.get(dataset.id);
-      let isEquipped = item.system.equipped;
-      isEquipped = !isEquipped;
-      item.update({ system: { equipped: isEquipped } });
-    } catch (ex) {
-      console.log(ex);
-    }
+    const targetProp = "system.equipped";
+    const currentVal = foundry.utils.getProperty(item, targetProp);
+    item.update({ [targetProp]: !currentVal });
   }
 
   // For any skills a user has checked off as failed, roll the improvement and update the agent's skills to their new values
   async _applySkillImprovements(
     baseRollFormula,
     failedSkills,
-    failedTypedSkills
+    failedTypedSkills,
   ) {
     const actorData = this.actor.system;
     const resultList = [];
@@ -1380,8 +1399,8 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
       // Put the results into a list.
       roll.terms[0].results.forEach((result) =>
         resultList.push(
-          baseRollFormula === "1d4-1" ? result.result - 1 : result.result
-        )
+          baseRollFormula === "1d4-1" ? result.result - 1 : result.result,
+        ),
       );
     }
 
@@ -1399,11 +1418,11 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
       // The if statement tells us whether to add a comma before the term or not.
       if (value === 0) {
         improvedSkillList += `${game.i18n.localize(
-          `DG.Skills.${skill}`
+          `DG.Skills.${skill}`,
         )}: <b>+${resultList[value] ?? 1}%</b>`;
       } else {
         improvedSkillList += `, ${game.i18n.localize(
-          `DG.Skills.${skill}`
+          `DG.Skills.${skill}`,
         )}: <b>+${resultList[value] ?? 1}%</b>`;
       }
     });
@@ -1419,13 +1438,13 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
       // The if statement tells us whether to add a comma before the term or not.
       if (value === 0 && improvedSkillList === "") {
         improvedSkillList += `${game.i18n.localize(
-          `DG.TypeSkills.${skillData.group.split(" ").join("")}`
+          `DG.TypeSkills.${skillData.group.split(" ").join("")}`,
         )} (${skillData.label}): <b>+${
           resultList[value + failedSkills.length] ?? 1
         }%</b>`;
       } else {
         improvedSkillList += `, ${game.i18n.localize(
-          `DG.TypeSkills.${skillData.group.split(" ").join("")}`
+          `DG.TypeSkills.${skillData.group.split(" ").join("")}`,
         )} (${skillData.label}): <b>+${
           resultList[value + failedSkills.length] ?? 1
         }%</b>`;
@@ -1450,7 +1469,7 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
       }),
       content: html,
       flavor: `${game.i18n.localize(
-        "DG.Skills.ApplySkillImprovementsChatFlavor"
+        "DG.Skills.ApplySkillImprovementsChatFlavor",
       )} <b>+${baseRollFormula}%</b>:`,
       type: baseRollFormula === "1" ? 0 : 5, // 0 = CHAT_MESSAGE_TYPES.OTHER, 5 = CHAT_MESSAGE_TYPES.ROLL
       rolls: baseRollFormula === "1" ? [] : [roll], // If adding flat +1, there is no roll.
@@ -1503,6 +1522,7 @@ export default class DeltaGreenActorSheet extends foundry.appv1.sheets
     // If alt key is held down, we will delete the original document.
     if (event.altKey) {
       // This is from Foundry. It will get the item data from the event.
+      const TextEditor = foundry.applications.ux.TextEditor.implementation;
       const dragData = TextEditor.getDragEventData(event);
       // Make sure that we are dragging an item, otherwise this doesn't make sense.
       if (dragData.type === "Item") {

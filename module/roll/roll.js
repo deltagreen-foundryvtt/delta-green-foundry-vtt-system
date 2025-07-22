@@ -1,6 +1,7 @@
 /* eslint-disable max-classes-per-file */
-
 import DGUtils from "../other/utility-functions.js";
+
+const { renderTemplate } = foundry.applications.handlebars;
 
 export class DGRoll extends Roll {
   /**
@@ -353,7 +354,9 @@ export class DGPercentileRoll extends DGRoll {
     }
     if (skillKeys.includes(this.key)) {
       // use calculated target proficiency (effects and etc like aim + 20%)
-      target = actorData.skills[this.key].targetProficiency || actorData.skills[this.key].proficiency;
+      target =
+        actorData.skills[this.key].targetProficiency ||
+        actorData.skills[this.key].proficiency;
       localizedKey = game.i18n.localize(`DG.Skills.${this.key}`);
       skillPath = `system.skills.${this.key}`;
     }

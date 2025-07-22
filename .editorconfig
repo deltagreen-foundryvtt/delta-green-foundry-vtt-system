@@ -1,0 +1,8 @@
+# Two spaces: 
+root = true
+indent_style = space
+indent_size = 2
+
+# four spaces for html files
+[*.{html}]
+indent_size = 4

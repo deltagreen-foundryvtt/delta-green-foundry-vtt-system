@@ -1,0 +1,66 @@
+{{!-- Physical Statistics like STR, CON, etc. --}}
+<div class="tab physical {{tabs.physical.cssClass}}"
+     data-group="primary"
+     data-tab="physical">
+
+    <div class="horizontal-bar-section-divider">
+        <span>{{localize "DG.Sheet.BlockHeaders.Attributes"}}</span>
+    </div>
+
+    {{> "systems/deltagreen/templates/actor/partials/attributes-grid-partial.html" actorType="agent"}}
+
+    <br />
+    <div class="horizontal-bar-section-divider">
+        <span>{{localize "DG.Sheet.BlockHeaders.Injuries"}}</span>
+    </div>
+
+    <div>
+        <div class="first-aid-received-section resource">
+            <label class="bolded-label first-aid-label"
+                   title="{{localize 'DG.Tooltip.FirstAidAttempted'}}">
+                {{localize 'DG.Physical.FirstAidLabel'}}
+            </label>
+            <input class="labeled-resource-checkbox"
+                   type="checkbox"
+                   name="system.physical.firstAidAttempted"
+                   {{checked actor.system.physical.firstAidAttempted}}
+                   data-dtype="Boolean"
+                   title="{{localize 'DG.Tooltip.FirstAidAttempted'}}" />
+        </div>
+        <div class="exhausted-section resource">
+
+            <label class="bolded-label exhaustion-label"
+                   title="{{localize 'DG.Tooltip.Exhaustion'}}">
+                {{localize 'DG.Physical.Exhausted'}}
+            </label>
+            <input class="labeled-resource-checkbox"
+                   type="checkbox"
+                   name="system.physical.exhausted"
+                   {{checked actor.system.physical.exhausted}}
+                   data-dtype="Boolean"
+                   title="{{localize 'DG.Tooltip.Exhaustion'}}" />
+
+            {{#if actor.system.physical.exhausted }}
+
+                <label class="bolded-label exhaustion-label"
+                       title="{{localize 'DG.Tooltip.Exhaustion'}}">
+                    {{localize 'DG.Physical.ExhaustionPenalty'}}
+                </label>
+                <input type="number"
+                       name="system.physical.exhaustedPenalty"
+                       value="{{actor.system.physical.exhaustedPenalty}}"
+                       data-dtype="Number"
+                       title="{{localize 'DG.Tooltip.Exhaustion'}}"
+                       min="-99"
+                       max="0" />
+
+            {{/if}}
+        </div>
+        <div>
+            <label class="bolded-label">{{localize 'DG.Physical.Wounds'}}</label>
+
+            <!-- This seems to save values, but not retrieve them... -->
+            <textarea class="wounds" name="system.physical.wounds">{{actor.system.physical.wounds}}</textarea>
+        </div>
+    </div>
+</div>

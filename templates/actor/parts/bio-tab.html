@@ -1,0 +1,102 @@
+{{!-- djlint:off H020 --}}
+
+{{!-- PERSONAL (Biography) Tab --}}
+<div class="tab bio {{tabs.bio.cssClass}}"
+     data-group="primary"
+     data-tab="bio">
+    <div class="horizontal-bar-section-divider">
+        <span>{{localize "DG.Sheet.BlockHeaders.PersonalInfoCV"}}</span>
+    </div>
+    <div class="bio-grid-5col bio-grid-top-border">
+        <span>{{localize 'DG.CV.Sex'}}</span>
+        <input class="fill-remaining-space"
+               type="text"
+               name="system.biography.sex"
+               value="{{actor.system.biography.sex}}"
+               data-dtype="String"
+               placeholder="{{localize 'DG.CV.SexPlaceholder'}}" />
+        <span></span>
+        <span class="bio-grid-label">{{localize 'DG.CV.AgeAndDoB'}}</span>
+        <input class="fill-remaining-space"
+               type="text"
+               name="system.biography.age"
+               value="{{actor.system.biography.age}}"
+               data-dtype="String"
+               placeholder="{{localize 'DG.CV.AgeAndDoBPlaceholder'}}" />
+    </div>
+
+    <div class="bio-grid-2col">
+
+        <span>{{localize 'DG.CV.Employer'}}</span>
+        <input class="fill-remaining-space"
+               type="text"
+               name="system.biography.employer"
+               value="{{actor.system.biography.employer}}"
+               data-dtype="String"
+               placeholder="{{localize 'DG.CV.EmployerPlaceholder'}}" />
+
+        <span>{{localize 'DG.CV.Nationality'}}</span>
+        <input class="fill-remaining-space"
+               type="text"
+               name="system.biography.nationality"
+               value="{{actor.system.biography.nationality}}"
+               data-dtype="String"
+               placeholder="{{localize 'DG.CV.NationalityPlaceholder'}}" />
+
+    </div>
+
+    <div class="bio-grid-2col">
+        <span>{{localize 'DG.CV.Education'}}</span>
+        <input class="fill-remaining-space"
+               type="text"
+               name="system.biography.education"
+               value="{{actor.system.biography.education}}"
+               data-dtype="String"
+               placeholder="{{localize 'DG.CV.EducationPlaceholder'}}" />
+    </div>
+
+    {{#if (showImpossibleLandscapesContent) }}
+
+        <div class="yellow-king yellow-king-grid-9col">
+            <span class="yellow-king yellow-king-rotate2">{{localize 'DG.ImpossibleLanscapes.IHaveSeenThe'}}</span>
+            <span></span>
+            <span class="yellow-king yellow-sign">{{localize 'DG.ImpossibleLanscapes.YellowSign'}}</span>
+            <input type="checkbox"
+                   name="system.corruption.haveSeenTheYellowSign"
+                   {{checked actor.system.corruption.haveSeenTheYellowSign}}
+                   data-dtype="Boolean" />
+            <span></span>
+            <span class="yellow-king yellow-king-rotate1">{{localize 'DG.ImpossibleLanscapes.CorruptionFirstHalf'}}</span>
+            <span class="yellow-king yellow-king-rotate4">{{localize 'DG.ImpossibleLanscapes.CorruptionSecondHalf'}}</span>
+            <span></span>
+            <input class="yellow-king"
+                   type="number"
+                   placeholder="0"
+                   name="system.corruption.value"
+                   value="{{actor.system.corruption.value}}" />
+        </div>
+
+        <div class="yellow-king yellow-king-grid-5col">
+            <span class="yellow-king-label">{{localize 'DG.ImpossibleLanscapes.Gift'}}</span>
+            <input class="fill-remaining-space"
+                   type="text"
+                   name="system.corruption.gift"
+                   value="{{actor.system.corruption.gift}}"
+                   data-dtype="String" />
+            <span></span>
+            <span class="yellow-king-label">{{localize 'DG.ImpossibleLanscapes.Insight'}}</span>
+            <input class="fill-remaining-space"
+                   type="text"
+                   name="system.corruption.insight"
+                   value="{{actor.system.corruption.insight}}"
+                   data-dtype="String" />
+        </div>
+
+    {{/if}}
+
+    <div class="horizontal-bar-section-divider">
+        <span>{{localize "DG.Sheet.BlockHeaders.PhysicalDescriptionNotes"}}</span>
+    </div>
+
+    <div class="editor-host">{{{descriptionField}}}</div>
+</div>

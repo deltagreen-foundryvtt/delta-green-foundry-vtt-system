@@ -6,8 +6,6 @@ parserOptions:
   ecmaVersion: latest
   sourceType: module
 rules:
-  no-console: "off"
-  no-param-reassign: "off"
   no-await-in-loop:
     - warn
   radix:
@@ -41,58 +39,34 @@ rules:
   import/extensions:
     - warn
     - always
+  no-plusplus:
+    - error
+    - allowForLoopAfterthoughts: true
 globals:
-  "$": readonly
+  $: readonly
   ActiveEffect: readonly
-  ActiveEffectConfig: readonly
   Actor: readonly
-  Actors: readonly
-  ActorSheet: readonly
-  Babele: readonly
   CONFIG: readonly
-  CONST: readonly
   ChatMessage: readonly
   Combat: readonly
   Combatant: readonly
-  ContextMenu: readonly
   Dialog: readonly
-  DocumentSheetConfig: readonly
-  Folder: readonly
-  FormApplication: readonly
-  FormDataExtended: readonly
+  DiceTerm: readonly
+  Die: readonly
   Handlebars: readonly
   Hooks: readonly
-  ImagePopout: readonly
   Item: readonly
-  Items: readonly
-  ItemSheet: readonly
   Macro: readonly
   Roll: readonly
-  Ruler: readonly
-  Scene: readonly
-  TextEditor: readonly
-  TokenDocument: readonly
   canvas: readonly
-  debugger: readonly
-  document: readonly
-  dragRuler: readonly
   duplicate: readonly
   foundry: readonly
-  fromUuid: readonly
   fromUuidSync: readonly
   game: readonly
-  getProperty: readonly
   globals: readonly
-  hasProperty: readonly
-  isNewerVersion: readonly
-  loadTemplates: readonly
   mergeObject: readonly
-  parseUuid: readonly
-  randomID: readonly
-  renderTemplate: readonly
   setProperty: readonly
   ui: readonly
-  window: readonly
 settings:
   import/extensions:
     - ".js"
