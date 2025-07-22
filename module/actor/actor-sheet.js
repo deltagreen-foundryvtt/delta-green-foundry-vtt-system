@@ -99,28 +99,32 @@ export default class DeltaGreenActorSheet extends DGSheetMixin(ActorSheetV2) {
 
   /** @override */
   get template() {
+    const templatePath = "systems/deltagreen/templates/actor";
+    let templateName = "limited-sheet.html";
+    
     if (this.actor !== null) {
-      if (this.actor.type === "agent") {
-        if (!game.user.isGM && this.actor.limited) {
-          return "systems/deltagreen/templates/actor/limited-sheet.html";
-        }
+      const actorIsLimited = !game.user.isGM && this.actor.limited;
 
-        return `systems/deltagreen/templates/actor/actor-sheet.html`;
+      switch (this.actor.type) {
+        case "agent":
+          templateName = actorIsLimited ? "limited-sheet.html" : "actor-sheet.html";
+          break;
+        case "unnatural":
+          templateName = "unnatural-sheet.html"; // No limited sheet
+          break;
+        case "npc":
+          templateName = actorIsLimited ? "npc-limited-sheet.html" : "npc-sheet.html";
+          break;
+        case "vehicle":
+          templateName = "vehicle-sheet.html"; // No limited sheet
+          break;
+        default:
+          templateName = "actor-sheet.html"; // No limited sheet
+          break;
       }
-      if (this.actor.type === "unnatural") {
-        return `systems/deltagreen/templates/actor/unnatural-sheet.html`;
-      }
-      if (this.actor.type === "npc") {
-        return `systems/deltagreen/templates/actor/npc-sheet.html`;
-      }
-      if (this.actor.type === "vehicle") {
-        return `systems/deltagreen/templates/actor/vehicle-sheet.html`;
-      }
-
-      return "systems/deltagreen/templates/actor/limited-sheet.html";
     }
 
-    return "systems/deltagreen/templates/actor/limited-sheet.html";
+    return `${templatePath}/${templateName}`;
   }
 
   /** @override */
