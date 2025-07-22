@@ -71,128 +71,9 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
     // Early return if this is a vehicle.
     if (this.actor.type === "vehicle") return context;
 
-    // Make it easy for the sheet handlebars to understand how to sort the skills.
-    context.sortSkillsSetting = game.settings.get("deltagreen", "sortSkills");
-
-    // fill an array that is sorted based on the appropriate localized entry
-    const sortedSkills = [];
-    for (const [key, skill] of Object.entries(this.actor.system.skills)) {
-      skill.key = key;
-
-      if (game.i18n.lang === "ja") {
-        skill.sortLabel = game.i18n.localize(`DG.Skills.ruby.${key}`);
-      } else {
-        skill.sortLabel = game.i18n.localize(`DG.Skills.${key}`);
-      }
-
-      if (skill.sortLabel === "" || skill.sortLabel === `DG.Skills.${key}`) {
-        skill.sortLabel = skill.key;
-      }
-
-      // if the actor is an NPC or Unnatural, and they have 'hide untrained skills' active,
-      // it will break the sorting logic, so we have to skip over these
-      if (
-        !(
-          (this.actor.type === "npc" || this.actor.type === "unnatural") &&
-          this.actor.system.showUntrainedSkills &&
-          skill.proficiency < 1
-        )
-      ) {
-        sortedSkills.push(skill);
-      }
-    }
-
-    sortedSkills.sort((a, b) => {
-      return a.sortLabel.localeCompare(b.sortLabel, game.i18n.lang);
-    });
-
-    // if sorting by columns, re-arrange the array to be columns first, then rows
-    if (game.settings.get("deltagreen", "sortSkills")) {
-      const columnSortedSkills = this.reorderForColumnSorting(sortedSkills, 3);
-
-      this.actor.system.sortedSkills = columnSortedSkills;
-    } else {
-      this.actor.system.sortedSkills = sortedSkills;
-    }
-
-    // Prepare a simplified version of the special training for display on sheet.
-    const specialTraining = this.actor.system.specialTraining.map(
-      (training) => {
-        const simplifiedTraining = {
-          name: training.name,
-          id: training.id,
-          key: training.attribute,
-        };
-        // Convert the machine-readable name to a human-readable one.
-        switch (true) {
-          // Stats
-          case DG.statistics.includes(training.attribute):
-            simplifiedTraining.attribute = `${training.attribute.toUpperCase()}x5`;
-            simplifiedTraining.targetNumber =
-              this.actor.system.statistics[training.attribute].x5;
-            break;
-          // Skills
-          case DG.skills.includes(training.attribute):
-            simplifiedTraining.attribute =
-              this.actor.system.skills[training.attribute].label;
-            simplifiedTraining.targetNumber =
-              this.actor.system.skills[training.attribute].proficiency;
-            break;
-          // Typed Skills
-          default:
-            simplifiedTraining.attribute =
-              this.actor.system.typedSkills[training.attribute].label;
-            simplifiedTraining.targetNumber =
-              this.actor.system.typedSkills[training.attribute].proficiency;
-            break;
-        }
-        return simplifiedTraining;
-      },
-    );
-    context.specialTraining = specialTraining;
-
-    // try to make a combined array of both typed skills and special trainings,
-    // so that it can be sorted together neatly on the sheet
-    const sortedCustomSkills = [];
-
-    for (const [key, skill] of Object.entries(this.actor.system.typedSkills)) {
-      skill.type = "typeSkill";
-      skill.key = key;
-      skill.sortLabel = `${skill.group}.${skill.label}`;
-      skill.sortLabel = skill.sortLabel.toUpperCase();
-      skill.actorType = this.actor.type;
-
-      if (skill.sortLabel === "" || skill.sortLabel === `DG.Skills.${key}`) {
-        skill.sortLabel = skill.key;
-      }
-
-      sortedCustomSkills.push(skill);
-    }
-
-    for (let i = 0; i < context.specialTraining.length; i++) {
-      const training = context.specialTraining[i];
-
-      training.type = "training";
-      training.sortLabel = training.name.toUpperCase();
-      training.actorType = this.actor.type;
-
-      sortedCustomSkills.push(training);
-    }
-
-    sortedCustomSkills.sort(function (a, b) {
-      return a.sortLabel.localeCompare(b.sortLabel, game.i18n.lang);
-    });
-
-    if (game.settings.get("deltagreen", "sortSkills")) {
-      const columnSortedSkills = this.reorderForColumnSorting(
-        sortedCustomSkills,
-        2,
-      );
-
-      this.actor.system.sortedCustomSkills = columnSortedSkills;
-    } else {
-      this.actor.system.sortedCustomSkills = sortedCustomSkills;
-    }
+    // Provide the sheet context sorted skills.
+    this._sortSkills();
+    this._sortCustomSkills();
 
     // Set sanity block per actor type.
     context.sanityInputs = await foundry.applications.handlebars.renderTemplate(
@@ -289,6 +170,155 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
   activateEditor(target, editorOptions, initialContent) {
     editorOptions.content_css = "./systems/deltagreen/css/editor.css";
     return super.activateEditor(target, editorOptions, initialContent);
+  }
+
+  /* --------- Context Preparation Functions --------- */
+
+  /**
+   * Sorts the skills on the actor sheet based on the appropriate localized entry.
+   * For the Japanese language, the sort label is the ruby text.
+   * If the localized entry is not found, the sort label is the skill key.
+   *
+   * @returns {void}
+   */
+  _sortSkills() {
+    // fill an array that is sorted based on the appropriate localized entry
+    const sortedSkills = [];
+    for (const [key, skill] of Object.entries(this.actor.system.skills)) {
+      skill.key = key;
+
+      if (game.i18n.lang === "ja") {
+        skill.sortLabel = game.i18n.localize(`DG.Skills.ruby.${key}`);
+      } else {
+        skill.sortLabel = game.i18n.localize(`DG.Skills.${key}`);
+      }
+
+      if (skill.sortLabel === "" || skill.sortLabel === `DG.Skills.${key}`) {
+        skill.sortLabel = skill.key;
+      }
+
+      // if the actor is an NPC or Unnatural, and they have 'hide untrained skills' active,
+      // it will break the sorting logic, so we have to skip over these
+      if (
+        !(
+          (this.actor.type === "npc" || this.actor.type === "unnatural") &&
+          this.actor.system.showUntrainedSkills &&
+          skill.proficiency < 1
+        )
+      ) {
+        sortedSkills.push(skill);
+      }
+    }
+
+    sortedSkills.sort((a, b) => {
+      return a.sortLabel.localeCompare(b.sortLabel, game.i18n.lang);
+    });
+
+    // if sorting by columns, re-arrange the array to be columns first, then rows
+    if (game.settings.get("deltagreen", "sortSkills")) {
+      const columnSortedSkills = this.reorderForColumnSorting(sortedSkills, 3);
+      this.actor.system.sortedSkills = columnSortedSkills;
+    } else {
+      this.actor.system.sortedSkills = sortedSkills;
+    }
+  }
+
+  /**
+   * Sorts the custom skills on the actor sheet based on the appropriate localized entry.
+   * If the localized entry is not found, the sort label is the skill key.
+   * If sorting by columns, re-arranges the array to be columns first, then rows.
+   *
+   * @returns {void}
+   */
+  _sortCustomSkills() {
+    // Prepare a simplified version of the special training for display on sheet.
+    const specialTrainings = this._prepareSpecialTrainings();
+
+    // try to make a combined array of both typed skills and special trainings,
+    // so that it can be sorted together neatly on the sheet
+    const sortedCustomSkills = [];
+
+    for (const [key, skill] of Object.entries(this.actor.system.typedSkills)) {
+      skill.type = "typeSkill";
+      skill.key = key;
+      skill.sortLabel = `${skill.group}.${skill.label}`;
+      skill.sortLabel = skill.sortLabel.toUpperCase();
+      skill.actorType = this.actor.type;
+
+      if (skill.sortLabel === "" || skill.sortLabel === `DG.Skills.${key}`) {
+        skill.sortLabel = skill.key;
+      }
+
+      sortedCustomSkills.push(skill);
+    }
+
+    for (let i = 0; i < specialTrainings.length; i++) {
+      const training = specialTrainings[i];
+
+      training.type = "training";
+      training.sortLabel = training.name.toUpperCase();
+      training.actorType = this.actor.type;
+
+      sortedCustomSkills.push(training);
+    }
+
+    sortedCustomSkills.sort((a, b) => {
+      return a.sortLabel.localeCompare(b.sortLabel, game.i18n.lang);
+    });
+
+    if (game.settings.get("deltagreen", "sortSkills")) {
+      const columnSortedSkills = this.reorderForColumnSorting(
+        sortedCustomSkills,
+        2,
+      );
+
+      this.actor.system.sortedCustomSkills = columnSortedSkills;
+    } else {
+      this.actor.system.sortedCustomSkills = sortedCustomSkills;
+    }
+  }
+
+  /**
+   * Prepares a simplified version of the special training for display on sheet.
+   *
+   * It takes the special training from the actor's system and converts the
+   * machine-readable name to a human-readable one. It also adds the proficiency
+   * of the special training to the object.
+   *
+   * @returns {object[]} An array of simplified special training objects.
+   */
+  _prepareSpecialTrainings() {
+    return this.actor.system.specialTraining.map((training) => {
+      const simplifiedTraining = {
+        name: training.name,
+        id: training.id,
+        key: training.attribute,
+      };
+      // Convert the machine-readable name to a human-readable one.
+      switch (true) {
+        // Stats
+        case DG.statistics.includes(training.attribute):
+          simplifiedTraining.attribute = `${training.attribute.toUpperCase()}x5`;
+          simplifiedTraining.targetNumber =
+            this.actor.system.statistics[training.attribute].x5;
+          break;
+        // Skills
+        case DG.skills.includes(training.attribute):
+          simplifiedTraining.attribute =
+            this.actor.system.skills[training.attribute].label;
+          simplifiedTraining.targetNumber =
+            this.actor.system.skills[training.attribute].proficiency;
+          break;
+        // Typed Skills
+        default:
+          simplifiedTraining.attribute =
+            this.actor.system.typedSkills[training.attribute].label;
+          simplifiedTraining.targetNumber =
+            this.actor.system.typedSkills[training.attribute].proficiency;
+          break;
+      }
+      return simplifiedTraining;
+    });
   }
 
   /**
