@@ -30,13 +30,31 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
     },
   });
 
-  static TEMPLATE_PATH = `${super.TEMPLATE_PATH}/actor`;
+  /** @override - Singular reference to the actor templates path */
+  static TEMPLATE_PATH = /** @type {const} */ (`${super.TEMPLATE_PATH}/actor`);
 
-  static PARTS = {
+  /** Holds base/shared parts of sheets for subclasses to reference. */
+  static BASE_PARTS = /** @type {const} */ ({
+    header: {
+      template: `${this.TEMPLATE_PATH}/parts/header.html`,
+    },
     tabs: {
       template: `templates/generic/tab-navigation.hbs`, // From FoundryVTT
     },
-  };
+    skills: {
+      template: `${this.TEMPLATE_PATH}/parts/skills-tab.html`,
+      templates: [`${this.TEMPLATE_PATH}/partials/custom-skills-partial.html`],
+      scrollable: [""],
+    },
+    gear: {
+      template: `${this.TEMPLATE_PATH}/parts/gear-tab.html`,
+      scrollable: [""],
+    },
+    about: {
+      template: `${this.TEMPLATE_PATH}/parts/about-tab.html`,
+      scrollable: [""],
+    },
+  });
 
   /** @override */
   async _prepareContext(options) {

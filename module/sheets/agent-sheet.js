@@ -31,15 +31,9 @@ export default class DGAgentSheet extends DGActorSheet {
   });
 
   static PARTS = /** @type {const} */ ({
-    header: {
-      template: `${this.TEMPLATE_PATH}/parts/header.html`,
-    },
-    tabs: super.PARTS.tabs,
-    skills: {
-      template: `${this.TEMPLATE_PATH}/parts/skills-tab.html`,
-      templates: [`${this.TEMPLATE_PATH}/partials/custom-skills-partial.html`],
-      scrollable: [""],
-    },
+    header: this.BASE_PARTS.header,
+    tabs: this.BASE_PARTS.tabs,
+    skills: this.BASE_PARTS.skills,
     physical: {
       template: `${this.TEMPLATE_PATH}/parts/physical-tab.html`,
       templates: [
@@ -50,10 +44,7 @@ export default class DGAgentSheet extends DGActorSheet {
     motivations: {
       template: `${this.TEMPLATE_PATH}/parts/motivations-tab.html`,
     },
-    gear: {
-      template: `${this.TEMPLATE_PATH}/parts/gear-tab.html`,
-      scrollable: [""],
-    },
+    gear: this.BASE_PARTS.gear,
     bio: {
       template: `${this.TEMPLATE_PATH}/parts/bio-tab.html`,
       templates: [`${this.TEMPLATE_PATH}/partials/cv-partial.html`],
@@ -63,10 +54,7 @@ export default class DGAgentSheet extends DGActorSheet {
       template: `${this.TEMPLATE_PATH}/parts/bonds-tab.html`,
       scrollable: [""],
     },
-    about: {
-      template: `${this.TEMPLATE_PATH}/parts/about-tab.html`,
-      scrollable: [""],
-    },
+    about: this.BASE_PARTS.about,
   });
 
   /* -------------------------------------------- */

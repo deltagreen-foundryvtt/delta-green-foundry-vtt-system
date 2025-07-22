@@ -17,26 +17,14 @@ export default class DGNPCSheet extends DGActorSheet {
 
   /** @override */
   static PARTS = /** @type {const} */ ({
-    header: {
-      template: `${this.TEMPLATE_PATH}/parts/header.html`,
-    },
-    physical: {
+    header: this.BASE_PARTS.header,
+    statistics: {
       template: `${this.TEMPLATE_PATH}/partials/attributes-grid-partial.html`,
     },
-    tabs: super.PARTS.tabs,
-    skills: {
-      template: `${this.TEMPLATE_PATH}/parts/skills-tab.html`,
-      templates: [`${this.TEMPLATE_PATH}/partials/custom-skills-partial.html`],
-      scrollable: [""],
-    },
-    gear: {
-      template: `${this.TEMPLATE_PATH}/parts/gear-tab.html`,
-      scrollable: [""],
-    },
-    about: {
-      template: `${this.TEMPLATE_PATH}/parts/about-tab.html`,
-      scrollable: [""],
-    },
+    tabs: this.BASE_PARTS.tabs,
+    skills: this.BASE_PARTS.skills,
+    gear: this.BASE_PARTS.gear,
+    about: this.BASE_PARTS.about,
   });
 
   /* -------------------------------------------- */
