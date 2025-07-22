@@ -11,7 +11,6 @@ export default async function preloadHandlebarsTemplates() {
     "systems/deltagreen/templates/actor/npc-limited-sheet.html",
     "systems/deltagreen/templates/dialog/modify-percentile-roll.html",
     "systems/deltagreen/templates/actor/vehicle-sheet.html",
-    "systems/deltagreen/templates/actor/partials/sanity-partial.html",
     "systems/deltagreen/templates/actor/partials/custom-skills-partial.html",
     "systems/deltagreen/templates/actor/partials/cv-partial.html",
     "systems/deltagreen/templates/actor/partials/help-and-licensing-partial.html",

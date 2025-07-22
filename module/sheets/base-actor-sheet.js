@@ -37,6 +37,7 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
   static BASE_PARTS = /** @type {const} */ ({
     header: {
       template: `${this.TEMPLATE_PATH}/parts/header.html`,
+      templates: [`${this.TEMPLATE_PATH}/partials/sanity-partial.html`],
     },
     tabs: {
       template: `templates/generic/tab-navigation.hbs`, // From FoundryVTT
