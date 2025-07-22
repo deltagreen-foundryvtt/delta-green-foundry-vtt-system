@@ -49,7 +49,9 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
       this.actor,
     );
 
+    // Early return if this is a vehicle.
     if (this.actor.type === "vehicle") return context;
+
     // Make it easy for the sheet handlebars to understand how to sort the skills.
     context.sortSkillsSetting = game.settings.get("deltagreen", "sortSkills");
 
@@ -172,6 +174,12 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
     } else {
       this.actor.system.sortedCustomSkills = sortedCustomSkills;
     }
+
+    // Set sanity block per actor type.
+    context.sanityInputs = await foundry.applications.handlebars.renderTemplate(
+      `${DGActorSheet.TEMPLATE_PATH}/partials/sanity-${this.actor.type}.html`,
+      context,
+    );
 
     // Set title for Physical Attributes.
     context.physicalAttributesTitle = game.i18n.localize(

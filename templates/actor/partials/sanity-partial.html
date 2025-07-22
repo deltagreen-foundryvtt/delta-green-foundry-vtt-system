@@ -1,0 +1,14 @@
+<div class="resource-outer-grid-1col">
+<label for="system.san.value"
+       class="resource-label rollable"
+       data-action="roll"
+       {{#if_eq actor.type 'unnatural' }}
+       data-rolltype="sanity-damage"
+       {{else }}
+       data-rolltype="sanity"
+       {{/if_eq }}
+       data-tooltip="{{localize 'DG.Attributes.Tooltip.SAN' }}">
+    {{localize 'DG.Attributes.SAN' }} <i class="fas fa-dice"></i>
+</label>
+<div class="resource-inner-grid-3col">{{{ sanityInputs }}}</div>
+</div>

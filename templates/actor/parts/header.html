@@ -70,40 +70,7 @@
                 </div>
             </div>
             {{!-- Sanity --}}
-            <div class="resource-outer-grid-1col">
-                <label for="system.san.value"
-                       class="resource-label rollable"
-                       data-action="roll"
-                       data-rolltype="sanity"
-                       data-tooltip="{{localize 'DG.Attributes.Tooltip.SAN'}}">
-                    {{localize 'DG.Attributes.SAN' }} <i class="fas fa-dice"></i>
-                </label>
-                <div class="resource-inner-grid-3col">
-                    {{#if (keepSanityPrivate) }}
-                        <input type="text" value="??" disabled data-tooltip="" />
-                        <span>/</span>
-                        <div class="max-resource-value"
-                             data-tooltip="{{localize 'DG.Tooltip.MaximumSanity'}}">
-                            <div>{{numberFormat actor.system.sanity.max decimals=0 sign=false}}</div>
-                        </div>
-                    {{/if}}
-                    {{#unless (keepSanityPrivate)}}
-                        <input class="centered
-                                      {{#if actor.system.sanity.breakingPointHit }}
-                                          breaking-point-hit{{/if }}"
-                               type="text"
-                               name="system.sanity.value"
-                               value="{{actor.system.sanity.value }}"
-                               data-dtype="Number"
-                               data-tooltip="{{localize 'DG.Tooltip.CurrentSanityPartOne' }}{{actor.system.sanity.currentBreakingPoint }}{{localize 'DG.Tooltip.CurrentSanityPartTwo' }}" />
-                        <span>/</span>
-                        <div class="max-resource-value"
-                             data-tooltip="{{localize 'DG.Tooltip.MaximumSanity'}}">
-                            <div>{{numberFormat actor.system.sanity.max decimals=0 sign=false}}</div>
-                        </div>
-                    {{/unless}}
-                </div>
-            </div>
+            {{> "systems/deltagreen/templates/actor/partials/sanity-partial.html" }}
         </div>
     </div>
 </header>
