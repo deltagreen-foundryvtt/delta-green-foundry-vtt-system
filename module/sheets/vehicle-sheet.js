@@ -6,9 +6,9 @@ export default class DGVehicleSheet extends DGActorSheet {
   static TABS = /** @type {const} */ ({
     primary: {
       initial: "gear",
-      labelPrefix: "DG.Navigation",
+      labelPrefix: "DG.Navigation.Vehicle",
       tabs: [
-        { id: "gear", label: "Gear" },
+        { id: "gear" },
         { id: "about", icon: "fas fa-question-circle", label: "" },
       ],
     },

@@ -17,14 +17,14 @@ export default class DGAgentSheet extends DGActorSheet {
   static TABS = /** @type {const} */ ({
     primary: {
       initial: "skills",
-      labelPrefix: "DG.Navigation",
+      labelPrefix: "DG.Navigation.Agent",
       tabs: [
-        { id: "skills", label: "Skills" },
-        { id: "physical", label: "Physical" },
-        { id: "motivations", label: "Mental" },
-        { id: "gear", label: "Gear" },
-        { id: "bio", label: "CV" },
-        { id: "bonds", label: "Contacts" },
+        { id: "skills" },
+        { id: "physical" },
+        { id: "motivations" },
+        { id: "gear" },
+        { id: "bio" },
+        { id: "bonds" },
         { id: "about", icon: "fas fa-question-circle", label: "" },
       ],
     },

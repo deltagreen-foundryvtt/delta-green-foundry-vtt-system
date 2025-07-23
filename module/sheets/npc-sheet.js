@@ -6,10 +6,10 @@ export default class DGNPCSheet extends DGActorSheet {
   static TABS = /** @type {const} */ ({
     primary: {
       initial: "skills",
-      labelPrefix: "DG.Navigation",
+      labelPrefix: "DG.Navigation.NPC",
       tabs: [
-        { id: "skills", label: "Skills" },
-        { id: "gear", label: "Gear" },
+        { id: "skills" },
+        { id: "gear" },
         { id: "about", icon: "fas fa-question-circle", label: "" },
       ],
     },
