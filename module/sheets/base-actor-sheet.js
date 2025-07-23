@@ -68,6 +68,9 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
       this.actor,
     );
 
+    // Prepare subname info placeholder.
+    context.subnameInfoPlaceholder = this._prepareSubnameInfoPlaceholder();
+
     // Early return if this is a vehicle.
     if (this.actor.type === "vehicle") return context;
 
@@ -173,6 +176,31 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
   }
 
   /* --------- Context Preparation Functions --------- */
+
+  /**
+   * Prepares the subname info placeholder based on the actor type.
+   * Returns a localized string that acts as a placeholder for different
+   * types of actors, such as "unnatural", "vehicle", or defaulting to
+   * "agent" type.
+   *
+   * @returns {string} The localized placeholder string for the actor's subname info.
+   */
+  _prepareSubnameInfoPlaceholder() {
+    let subnameInfoPlaceholder = "";
+    switch (this.actor.type) {
+      case "unnatural":
+        subnameInfoPlaceholder =
+          "DG.UnnaturalSheet.ShortDescriptionPlaceholder";
+        break;
+      case "vehicle":
+        subnameInfoPlaceholder = "DG.VehicleSheet.DescriptionPlaceHolder";
+        break;
+      default:
+        subnameInfoPlaceholder = "DG.AgentSheet.ProfessionPlaceholder";
+        break;
+    }
+    return game.i18n.localize(subnameInfoPlaceholder);
+  }
 
   /**
    * Sorts the skills on the actor sheet based on the appropriate localized entry.

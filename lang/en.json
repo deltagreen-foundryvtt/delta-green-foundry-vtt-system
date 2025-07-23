@@ -4,7 +4,6 @@
   "DG.RollLuck": "Roll Luck",
   "DG.Luck": "Luck",
 
-  "DG.FallbackText.ProfessionAndOrRank": "PROFESSION (RANK IF APPLICABLE)",
   "DG.FallbackText.newItem": "New {type}",
 
   "DG.Skills.accounting": "Accounting",
@@ -307,9 +306,11 @@
   "DG.Sheet.BlockHeaders.PersonalInfoCV": "PERSONAL INFORMATION / CV",
   "DG.Sheet.BlockHeaders.BondsRelationshipsContacts": "BONDS / RELATIONSHIPS / CONTACTS",
 
+  "DG.AgentSheet.ProfessionPlaceholder": "PROFESSION (RANK IF APPLICABLE)",
+
   "DG.UnnaturalSheet.HideUntrainedSkillsLabel": "Hide Untrained",
   "DG.UnnaturalSheet.NotesLabel": "Notes",
-  "DG.UnnaturalSheet.ShortDescriptionFallbackText": "Description of creature or creature type",
+  "DG.UnnaturalSheet.ShortDescriptionPlaceholder": "Description of creature or creature type",
   "DG.UnnaturalSheet.ShowUntrainedSkillsLabel": "Show Untrained",
   "DG.UnnaturalSheet.Tabs.NotesTabLabel": "Skills & Notes",
   "DG.UnnaturalSheet.Tabs.ItemsTabLabel": "Attacks & Abilities",
