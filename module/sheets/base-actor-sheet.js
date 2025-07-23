@@ -20,11 +20,9 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
       specialTrainingAction: this._onSpecialTrainingAction,
       roll: this._onRoll,
       rollLuck: this._onRollLuck,
-      // Toggles/resets.
-      toggleEquipped: this._toggleEquipped,
+      // Toggles.
+      toggle: this._toggleGeneric,
       toggleItemSortMode: this._toggleItemSortMode,
-      toggleShowUntrained: this._toggleShowUntrained,
-      toggleLethality: this._toggleLethality,
       // Other actions.
       browsePack: this._browsePack,
     },
@@ -1165,37 +1163,19 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
     roll.toChat();
   }
 
+  /** Handler for generic toggle events */
+  static _toggleGeneric(event, target) {
+    const { prop } = target.dataset;
+    const itemId = target.closest("[data-item-id]")?.dataset.itemId;
+    this.toggle(prop, itemId);
+  }
+
+  /** Handler for item-sort-mode toggle events */
   static _toggleItemSortMode(event, target) {
     const itemType = target.dataset.gearType;
     const propString = `${itemType}SortAlphabetical`;
     const targetProp = `system.settings.sorting.${propString}`;
-    const currentValue = foundry.utils.getProperty(this.actor, targetProp);
-    this.actor.update({
-      [targetProp]: !currentValue,
-    });
-  }
-
-  static _toggleShowUntrained() {
-    const targetProp = "system.showUntrainedSkills";
-    const currentVal = foundry.utils.getProperty(this.actor, targetProp);
-    this.actor.update({ [targetProp]: !currentVal });
-  }
-
-  static _toggleLethality(event, target) {
-    const { itemId } = target.dataset;
-    const isLethal = target.dataset.isLethal?.length === 0;
-    const item = this.actor.items.get(itemId);
-    item.update({ "system.isLethal": !isLethal });
-  }
-
-  static _toggleEquipped(event, target) {
-    event.preventDefault();
-    const { id } = target.dataset;
-    const item = this.actor.items.get(id);
-
-    const targetProp = "system.equipped";
-    const currentVal = foundry.utils.getProperty(item, targetProp);
-    item.update({ [targetProp]: !currentVal });
+    this.toggle(targetProp);
   }
 
   static _browsePack(event, target) {
@@ -1231,5 +1211,19 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
           .render(true);
         break;
     }
+  }
+
+  /**
+   * Toggle a boolean property on an item or actor.
+   *
+   * @param {string} prop   The property to toggle.
+   * @param {string} itemId   The ID of the item to toggle.
+   */
+  toggle(prop, itemId) {
+    const item = this.actor.items.get(itemId);
+    const targetDoc = item ?? this.actor;
+
+    const currentVal = foundry.utils.getProperty(targetDoc, prop);
+    targetDoc.update({ [prop]: !currentVal });
   }
 }

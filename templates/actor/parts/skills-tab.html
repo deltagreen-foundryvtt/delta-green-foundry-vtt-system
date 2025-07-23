@@ -5,7 +5,9 @@
         <span class="skills-header-title">{{localize "DG.Sheet.BlockHeaders.SkillsAndTraining"}}</span>
         {{#if (ne actor.type "agent") }}
             {{!-- Checkbox to hide/show skills that are at zero --}}
-            <a class="toggle-untrained" data-action="toggleShowUntrained">
+            <a class="toggle-untrained"
+               data-action="toggle"
+               data-prop="system.showUntrainedSkills">
                 {{localize (concat 'DG.UnnaturalSheet.' (ifThen actor.system.showUntrainedSkills 'Show' 'Hide') 'UntrainedSkillsLabel')}}
                 {{!-- djlint:off --}}
                 <i class="far fa-eye{{#if actor.system.showUntrainedSkills }}-slash{{/if }}"></i>

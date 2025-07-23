@@ -62,15 +62,16 @@
                         {{#if item.system.lethality }}
                             {{#if item.system.isLethal }}
                                 <a class="item-control dg-red"
-                                   data-action="toggleLethality"
+                                   data-action="toggle"
+                                   data-prop="system.isLethal"
                                    data-item-id="{{item._id}}"
-                                   data-is-lethal
                                    title="Toggle Lethality (Current Lethality: {{item.system.lethality}}%)">
                                     <i class="fas fa-skull-crossbones"></i>
                                 </a>
                             {{else}}
                                 <a class="item-control"
-                                   data-action="toggleLethality"
+                                   data-action="toggle"
+                                   data-prop="system.isLethal"
                                    data-item-id="{{item._id}}"
                                    title="Toggle Lethality (Currently No Lethality)">
                                     <i class="fas fa-user-injured"></i>
@@ -175,8 +176,9 @@
                     <span class="centered-item-property">{{item.system.protection}}</span>
 
                     <a class="centered-item-property"
-                       data-action="toggleEquipped"
-                       data-id="{{item._id}}"
+                       data-action="toggle"
+                       data-prop="system.equipped"
+                       data-item-id="{{item._id}}"
                        title="{{localize 'DG.Tooltip.ToggleEquippedState'}}">
                         {{#if item.system.equipped }}
                             <i class="fas fa-check"></i>
@@ -249,8 +251,9 @@
                     <span style="min-width: 55%;" class="item-name">{{item.name}}</span>
 
                     <a class="centered-item-property"
-                       data-action="toggleEquipped"
-                       data-id="{{item._id}}"
+                       data-action="toggle"
+                       data-prop="system.equipped"
+                       data-item-id="{{item._id}}"
                        title="{{localize 'DG.Tooltip.ToggleEquippedState'}}">
                         {{#if item.system.equipped }}
                             <i class="fas fa-check"></i>

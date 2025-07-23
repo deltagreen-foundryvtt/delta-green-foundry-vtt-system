@@ -5,9 +5,8 @@ export default class DGAgentSheet extends DGActorSheet {
   /** @override */
   static DEFAULT_OPTIONS = /** @type {const} */ ({
     actions: {
-      // Toggles/resets.
+      // Resets.
       clearBondDamage: DGAgentSheet._clearBondDamage,
-      toggleBondDamage: DGAgentSheet._toggleBondDamage,
       resetBreakingPoint: DGAgentSheet._resetBreakingPoint,
       // Other actions.
       applySkillImprovements: DGAgentSheet._applySkillImprovements,
@@ -151,22 +150,6 @@ export default class DGAgentSheet extends DGActorSheet {
         },
       },
     }).render(true);
-  }
-
-  static _toggleBondDamage(event, target) {
-    const li = target.closest(".item");
-    const item = this.actor.items.get(li.dataset.itemId);
-    const value = target.checked;
-
-    item.update({ "system.hasBeenDamagedSinceLastHomeScene": value });
-  }
-
-  static _clearBondDamage() {
-    for (const i of this.actor.itemTypes.bond) {
-      // eslint-disable-next-line no-continue
-      if (!i.system.hasBeenDamagedSinceLastHomeScene) continue;
-      i.update({ "system.hasBeenDamagedSinceLastHomeScene": false });
-    }
   }
 
   /** Resets the actor's current breaking point based on their sanity and POW statistics. */
