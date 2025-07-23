@@ -19,15 +19,9 @@ export default class DGVehicleSheet extends DGActorSheet {
     main: {
       template: `${this.TEMPLATE_PATH}/vehicle-sheet.html`,
     },
-    tabs: super.PARTS.tabs,
-    gear: {
-      template: `${this.TEMPLATE_PATH}/parts/gear-tab.html`,
-      scrollable: [""],
-    },
-    about: {
-      template: `${this.TEMPLATE_PATH}/parts/about-tab.html`,
-      scrollable: [""],
-    },
+    tabs: this.BASE_PARTS.tabs,
+    gear: this.BASE_PARTS.gear,
+    about: this.BASE_PARTS.about,
   });
 
   /* -------------------------------------------- */
