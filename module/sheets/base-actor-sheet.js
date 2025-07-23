@@ -69,6 +69,9 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
     // Prepare subname info placeholder.
     context.subnameInfoPlaceholder = this._prepareSubnameInfoPlaceholder();
 
+    // Prepare descriptions for each sheet.
+    context.enrichedDescription = await this._prepareDescriptions();
+
     // Early return if this is a vehicle.
     if (this.actor.type === "vehicle") return context;
 
@@ -201,8 +204,52 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
   }
 
   /**
+   * Prepares and enriches the description for an actor based on its type.
+   *
+   * @returns {Promise<string>} The outer HTML of the enriched description.
+   */
+  async _prepareDescriptions() {
+    let descriptionPath;
+
+    switch (this.actor.type) {
+      case "agent":
+        descriptionPath = "system.physicalDescription";
+        break;
+      case "npc":
+      case "unnatural":
+        descriptionPath = "system.notes";
+        break;
+      case "vehicle":
+        descriptionPath = "system.description";
+        break;
+      default:
+        break;
+    }
+
+    const descriptionValue = foundry.utils.getProperty(
+      this.actor,
+      descriptionPath,
+    );
+
+    const enrichedDescription =
+      await foundry.applications.ux.TextEditor.implementation.enrichHTML(
+        descriptionValue,
+        {
+          rollData: this.document.getRollData(),
+          relativeTo: this.document,
+        },
+      );
+    const { HTMLProseMirrorElement } = foundry.applications.elements;
+    return HTMLProseMirrorElement.create({
+      name: descriptionPath,
+      value: descriptionValue,
+      enriched: enrichedDescription,
+      toggled: true,
+    }).outerHTML;
+  }
+
+  /**
    * Sorts the skills on the actor sheet based on the appropriate localized entry.
-   * For the Japanese language, the sort label is the ruby text.
    * If the localized entry is not found, the sort label is the skill key.
    *
    * @returns {void}
@@ -1217,7 +1264,7 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
    * Toggle a boolean property on an item or actor.
    *
    * @param {string} prop   The property to toggle.
-   * @param {string} itemId   The ID of the item to toggle.
+   * @param {string} [itemId]   The ID of item on which to apply toggle, if it exists.
    */
   toggle(prop, itemId) {
     const item = this.actor.items.get(itemId);

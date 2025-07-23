@@ -23,19 +23,4 @@ export default class DGVehicleSheet extends DGActorSheet {
     gear: this.BASE_PARTS.gear,
     about: this.BASE_PARTS.about,
   });
-
-  /* -------------------------------------------- */
-
-  /** @override */
-  async _prepareContext(options) {
-    const context = await super._prepareContext(options);
-
-    context.enrichedDescription =
-      await foundry.applications.ux.TextEditor.implementation.enrichHTML(
-        this.actor.system.description,
-        { async: true },
-      );
-
-    return context;
-  }
 }

@@ -38,12 +38,6 @@ export default class DGNPCSheet extends DGActorSheet {
       "DG.Sheet.BlockHeaders.Statistics",
     );
 
-    context.enrichedDescription =
-      await foundry.applications.ux.TextEditor.implementation.enrichHTML(
-        this.actor.system.notes,
-        { async: true },
-      );
-
     return context;
   }
 }

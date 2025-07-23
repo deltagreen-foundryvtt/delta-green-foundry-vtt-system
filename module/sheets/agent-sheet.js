@@ -29,6 +29,7 @@ export default class DGAgentSheet extends DGActorSheet {
     },
   });
 
+  /** @override */
   static PARTS = /** @type {const} */ ({
     header: this.BASE_PARTS.header,
     tabs: this.BASE_PARTS.tabs,
