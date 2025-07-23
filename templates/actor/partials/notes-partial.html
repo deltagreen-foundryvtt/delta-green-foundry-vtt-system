@@ -1,4 +1,8 @@
-<section class="notes">
+<section class="tab notes {{tabs.notes.cssClass}}"
+         {{#if (eq actor.type "vehicle") }}
+         data-group="primary"
+         data-tab="notes"
+         {{/if }}>
     <div class="horizontal-bar-section-divider">
         <span>{{localize "DG.Sheet.BlockHeaders.PhysicalDescriptionNotes"}}</span>
     </div>

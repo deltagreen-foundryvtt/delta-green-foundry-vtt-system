@@ -49,28 +49,30 @@
                     </div>
                 </div>
             </div>
-            {{!-- WP --}}
-            <div class="resource-outer-grid-1col">
-                <label for="system.wp.value"
-                       class="resource-label"
-                       data-tooltip="{{localize 'DG.Attributes.Tooltip.WP'}}">
-                    {{localize 'DG.Attributes.WP' }}
-                </label>
-                <div class="resource-inner-grid-3col">
-                    <input class="centered"
-                           type="text"
-                           name="system.wp.value"
-                           value="{{actor.system.wp.value}}"
-                           data-dtype="Number" />
-                    <span>/</span>
-                    <div class="max-resource-value"
-                         data-tooltip="{{localize 'DG.Tooltip.MaximumWP'}}">
-                        <div>{{numberFormat actor.system.wp.max decimals=0 sign=false}}</div>
+            {{#if (ne actor.type "vehicle") }}
+                {{!-- WP --}}
+                <div class="resource-outer-grid-1col">
+                    <label for="system.wp.value"
+                           class="resource-label"
+                           data-tooltip="{{localize 'DG.Attributes.Tooltip.WP'}}">
+                        {{localize 'DG.Attributes.WP' }}
+                    </label>
+                    <div class="resource-inner-grid-3col">
+                        <input class="centered"
+                               type="text"
+                               name="system.wp.value"
+                               value="{{actor.system.wp.value}}"
+                               data-dtype="Number" />
+                        <span>/</span>
+                        <div class="max-resource-value"
+                             data-tooltip="{{localize 'DG.Tooltip.MaximumWP'}}">
+                            <div>{{numberFormat actor.system.wp.max decimals=0 sign=false}}</div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            {{!-- Sanity --}}
-            {{> "systems/deltagreen/templates/actor/partials/sanity-partial.html" }}
+                {{!-- Sanity --}}
+                {{> "systems/deltagreen/templates/actor/partials/sanity-partial.html" }}
+            {{/if}}
         </div>
     </div>
 </header>
