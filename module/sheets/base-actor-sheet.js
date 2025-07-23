@@ -42,7 +42,10 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
     },
     skills: {
       template: `${this.TEMPLATE_PATH}/parts/skills-tab.html`,
-      templates: [`${this.TEMPLATE_PATH}/partials/custom-skills-partial.html`],
+      templates: [
+        `${this.TEMPLATE_PATH}/partials/custom-skills-partial.html`,
+        `${this.TEMPLATE_PATH}/partials/notes-partial.html`,
+      ],
       scrollable: [""],
     },
     gear: {
@@ -89,6 +92,9 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
     context.physicalAttributesTitle = game.i18n.localize(
       "DG.Sheet.BlockHeaders.Attributes",
     );
+
+    // Whether to append the notes section to the skills.
+    context.showNotesInSkills = this.actor.type !== "agent";
 
     return context;
   }

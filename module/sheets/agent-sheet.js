@@ -47,7 +47,10 @@ export default class DGAgentSheet extends DGActorSheet {
     gear: this.BASE_PARTS.gear,
     bio: {
       template: `${this.TEMPLATE_PATH}/parts/bio-tab.html`,
-      templates: [`${this.TEMPLATE_PATH}/partials/cv-partial.html`],
+      templates: [
+        `${this.TEMPLATE_PATH}/partials/cv-partial.html`,
+        `${this.TEMPLATE_PATH}/partials/notes-partial.html`,
+      ],
       scrollable: [""],
     },
     bonds: {

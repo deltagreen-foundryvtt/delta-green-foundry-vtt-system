@@ -52,4 +52,8 @@
 
     {{!-- Custom Skills and Special Training --}}
     <div>{{> "systems/deltagreen/templates/actor/partials/custom-skills-partial.html" }}</div>
+
+    {{#if showNotesInSkills }}
+        {{> "systems/deltagreen/templates/actor/partials/notes-partial.html"}}
+    {{/if}}
 </div>
