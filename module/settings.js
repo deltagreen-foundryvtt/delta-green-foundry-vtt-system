@@ -1,6 +1,142 @@
 import DG from "./config.js";
 
+const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
+
+const SettingForm = class extends HandlebarsApplicationMixin(ApplicationV2) {
+  constructor() {
+    super();
+  }
+
+  static _namespace;
+
+  static get namespace() {
+    return this.constructor._namespace
+  };
+
+  static get settings() {
+    return {}
+  }
+
+  static init() {
+    const settings = this.settings;
+    for (const setting of Object.keys(settings)) {
+      game.settings.register(DG.ID, setting, {
+        scope: "world",
+        config: false,
+        name: game.i18n.localize(`DG.Settings.${setting}.name`),
+        hint: game.i18n.localize(`DG.Settings.${setting}.hint`),
+        ...settings[setting],
+      });
+    }
+  }
+
+  static DEFAULT_OPTIONS = {
+    tag: "form",
+    id: `${DG.ID}-setting-form`,
+    classes: [DG.ID, "settings-menu"],
+    window: {title:  ``, resizable: true},
+    position: {width: 500, height: 400},
+    actions: {},
+    form: {
+      handler: this.onSubmit,
+      submitOnChange: false,
+      closeOnSubmit: false
+    }
+  };
+
+  static PARTS = {
+    form: { template: `systems/${DG.ID}/templates/settings.hbs` },
+  }
+
+  static async onSubmit(event, form, formData) {
+    event.preventDefault();
+    const data = foundry.utils.expandObject(formData.object);
+
+    for (const key in data) {
+      game.settings.set(DG.ID, key, data[key]);
+    }
+  }
+
+  async _prepareContext(_options) {
+    let context = await super._prepareContext(_options);
+    context.settings = Object.entries(this.constructor.settings).reduce(function (obj, [key, setting]) {
+      obj[key] = {
+        ...setting,
+        key,
+        name: `DG.Settings.${key}.name`,
+        hint: `DG.Settings.${key}.hint`,
+        value: game.settings.get(DG.ID, key),
+        isSelect: !!setting.choices,
+        isNumber: setting.type === Number,
+        isString: setting.type === String,
+        isCheckbox: setting.type === Boolean,
+      };
+      return obj;
+    }, {});
+    return context;
+  }
+}
+
+class AutomationSettings extends SettingForm {
+
+  static _namespace = "automation";
+
+  static get settings() {
+    return {
+      skillFailure: {
+        default: false,
+        type: Boolean,
+      }
+    };
+  }
+}
+
+class HandlerSettings extends SettingForm {
+
+  static _namespace = "handler";
+
+  static get settings() {
+    return {
+      alwaysShowHypergeometrySectionForPlayers: {
+        requiresReload: true,
+        type: Boolean,
+        default: false,
+      },
+      showImpossibleLandscapesContent: {
+        requiresReload: true,
+        type: Boolean,
+        default: true,
+      },
+      keepSanityPrivate: {
+        requiresReload: true,
+        type: Boolean,
+        default: false,
+      }
+    };
+  }
+}
+
 export default function registerSystemSettings() {
+  game.settings.registerMenu(DG.ID, "automation", {
+    name: game.i18n.localize(`DG.SettingsMenu.automation.name`),
+    label: game.i18n.localize(`DG.SettingsMenu.automation.label`),
+    hint: "",
+    icon: "fa-solid fa-dice",
+    type: AutomationSettings,
+    restricted: true
+  });
+  AutomationSettings.init();
+
+  game.settings.registerMenu(DG.ID, "handler", {
+    name: game.i18n.localize(`DG.SettingsMenu.handler.name`),
+    label: game.i18n.localize(`DG.SettingsMenu.handler.label`),
+    hint: "",
+    icon: "fa-solid fa-dice",
+    type: HandlerSettings,
+    restricted: true
+  });
+  HandlerSettings.init();
+
   game.settings.register("deltagreen", "characterSheetStyle", {
     name: game.i18n.localize("DG.Settings.charactersheet.name"),
     hint: game.i18n.localize("DG.Settings.charactersheet.hint"),
@@ -31,16 +167,6 @@ export default function registerSystemSettings() {
     default: false,
   });
 
-  game.settings.register("deltagreen", "keepSanityPrivate", {
-    name: game.i18n.localize("DG.Settings.sanityprivate.name"),
-    hint: game.i18n.localize("DG.Settings.sanityprivate.hint"),
-    scope: "world",
-    config: true,
-    requiresReload: true,
-    type: Boolean,
-    default: false,
-  });
-
   game.settings.register("deltagreen", "skillImprovementFormula", {
     name: game.i18n.localize("DG.Settings.improvementroll.name"),
     hint: game.i18n.localize("DG.Settings.improvementroll.hint"),
@@ -53,30 +179,6 @@ export default function registerSystemSettings() {
       // A callback function which triggers when the setting is changed
       // console.log(value)
     },
-  });
-
-  game.settings.register(
-    "deltagreen",
-    "alwaysShowHypergeometrySectionForPlayers",
-    {
-      name: game.i18n.localize("DG.Settings.hypergeometry.name"),
-      hint: game.i18n.localize("DG.Settings.hypergeometry.hint"),
-      scope: "world",
-      config: true,
-      requiresReload: true,
-      type: Boolean,
-      default: false,
-    },
-  );
-
-  game.settings.register("deltagreen", "showImpossibleLandscapesContent", {
-    name: game.i18n.localize("DG.Settings.landscapes.name"),
-    hint: game.i18n.localize("DG.Settings.landscapes.hint"),
-    scope: "world",
-    config: true,
-    requiresReload: true,
-    type: Boolean,
-    default: true,
   });
 
   // obsolete - will be removed at some point

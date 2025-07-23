@@ -1,5 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import DGUtils from "../other/utility-functions.js";
+import DG from "../config.js";
 
 const { renderTemplate } = foundry.applications.handlebars;
 
@@ -298,7 +299,8 @@ export class DGPercentileRoll extends DGRoll {
     }
 
     const failureMark = !this.isSuccess && this.skillPath
-      && !foundry.utils.getProperty(this.actor, `${this.skillPath}.failure`);
+      && !foundry.utils.getProperty(this.actor, `${this.skillPath}.failure`)
+      && game.settings.get(DG.ID, "skillFailure");
 
     const { renderTemplate } = foundry.applications.handlebars;
     const html = await renderTemplate(
