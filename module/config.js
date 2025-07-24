@@ -54,4 +54,8 @@ const DG = /** @type {const} */ ({
   statistics: ["str", "con", "dex", "int", "pow", "cha"],
 });
 
+// Set base template path for single source of truth for hbs locations.
+const BASE_TEMPLATE_PATH = /** @type {const} */ (`systems/${DG.ID}/templates`);
+
 export default DG;
+export { DG, BASE_TEMPLATE_PATH };

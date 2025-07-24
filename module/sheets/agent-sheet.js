@@ -1,4 +1,7 @@
+import { DG, BASE_TEMPLATE_PATH } from "../config.js";
 import DGActorSheet from "./base-actor-sheet.js";
+
+const { renderTemplate } = foundry.applications.handlebars;
 
 /** @extends {DGActorSheet} */
 export default class DGAgentSheet extends DGActorSheet {
@@ -84,7 +87,7 @@ export default class DGAgentSheet extends DGActorSheet {
 
   /* -------------------------------------------- */
 
-  static _applySkillImprovements(event, target) {
+  static async _applySkillImprovements(event, target) {
     const failedSkills = Object.entries(this.actor.system.skills).filter(
       (skill) => skill[1].failure,
     );
@@ -92,11 +95,10 @@ export default class DGAgentSheet extends DGActorSheet {
       this.actor.system.typedSkills,
     ).filter((skill) => skill[1].failure);
     if (failedSkills.length === 0 && failedTypedSkills.length === 0) {
-      ui.notifications.warn("No Skills to Increase");
+      ui.notifications.warn("DG.Skills.ApplySkillImprovements.Warning");
       return;
     }
 
-    let htmlContent = "";
     let failedSkillNames = "";
     failedSkills.forEach(([skill], value) => {
       if (value === 0) {
@@ -117,30 +119,20 @@ export default class DGAgentSheet extends DGActorSheet {
       }
     });
 
-    const baseRollFormula = game.settings.get(
-      "deltagreen",
-      "skillImprovementFormula",
+    const baseRollFormula = game.settings.get(DG.ID, "skillImprovementFormula");
+
+    const content = await renderTemplate(
+      `${BASE_TEMPLATE_PATH}/dialog/apply-skill-improvements.html`,
+      { failedSkillNames, baseRollFormula },
     );
 
-    htmlContent += `<div>`;
-    htmlContent += `     <label>${game.i18n.localize(
-      "DG.Skills.ApplySkillImprovementsDialogLabel",
-    )} <b>+${baseRollFormula}%</b></label>`;
-    htmlContent += `     <hr>`;
-    htmlContent += `     <span> ${game.i18n.localize(
-      "DG.Skills.ApplySkillImprovementsDialogEffectsFollowing",
-    )} <b>${failedSkillNames}</b> </span>`;
-    htmlContent += `</div>`;
-
     new Dialog({
-      content: htmlContent,
-      title:
-        game.i18n.translations.DG?.Skills?.ApplySkillImprovements ??
-        "Apply Skill Improvements",
+      content,
+      title: game.i18n.localize("DG.Skills.ApplySkillImprovements.Title"),
       default: "add",
       buttons: {
         apply: {
-          label: game.i18n.translations.DG?.Skills?.Apply ?? "Apply",
+          label: game.i18n.localize("DG.Skills.Apply"),
           callback: (btn) => {
             this._applySkillImprovements(
               baseRollFormula,
@@ -286,7 +278,7 @@ export default class DGAgentSheet extends DGActorSheet {
       }),
       content: html,
       flavor: `${game.i18n.localize(
-        "DG.Skills.ApplySkillImprovementsChatFlavor",
+        "DG.Skills.ApplySkillImprovements.ChatFlavor",
       )} <b>+${baseRollFormula}%</b>:`,
       type: baseRollFormula === "1" ? 0 : 5, // 0 = CHAT_MESSAGE_TYPES.OTHER, 5 = CHAT_MESSAGE_TYPES.ROLL
       rolls: baseRollFormula === "1" ? [] : [roll], // If adding flat +1, there is no roll.
