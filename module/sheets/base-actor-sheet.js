@@ -99,21 +99,48 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
     return context;
   }
 
+  /** @override - Manipulate which PARTS are rendered. */
+  _configureRenderOptions(options) {
+    super._configureRenderOptions(options);
+
+    if (!this.actor.limited) return;
+
+    // Hide most PARTS on limited sheets.
+    options.parts = ["header"];
+
+    if (this.actor.type === "agent") options.parts.push("tabs", "bio");
+  }
+
+  /** @override - Manipulate which TABS are rendered. */
+  _prepareTabs(group) {
+    const tabs = super._prepareTabs(group);
+
+    // Hide most TABS on limited sheets.
+    if (!this.actor.limited || this.actor.type !== "agent") return tabs;
+
+    // Override settings to activate bio tab (only tab shown).
+    return { bio: { ...tabs.bio, active: true, cssClass: "active" } };
+  }
+
   /** @override */
   async _onRender(context, options) {
     await super._onRender(context, options);
     const { element } = this;
 
+    // Reset height if this is a limited sheet.
+    if (this.actor.limited) {
+      this.setPosition({ height: "auto" });
+      this.setPosition({ height: Number.parseInt(this.element.style.height) });
+    }
+
     this._setRightClickListeners();
 
-    if (this.actor.isOwner) {
-      const handler = (ev) => this._onDragStart(ev);
-      element.querySelectorAll("li.item").forEach((li) => {
-        if (li.classList.contains("inventory-header")) return;
-        li.setAttribute("draggable", true);
-        li.addEventListener("dragstart", handler, false);
-      });
-    }
+    const handler = (ev) => this._onDragStart(ev);
+    element.querySelectorAll("li.item").forEach((li) => {
+      if (li.classList.contains("inventory-header")) return;
+      li.setAttribute("draggable", true);
+      li.addEventListener("dragstart", handler, false);
+    });
   }
 
   /** @override - Add buttons to the header controls. */
