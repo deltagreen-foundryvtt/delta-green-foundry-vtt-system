@@ -87,37 +87,36 @@ export default class DGAgentSheet extends DGActorSheet {
 
   /* -------------------------------------------- */
 
-  static async _applySkillImprovements(event, target) {
-    const failedSkills = Object.entries(this.actor.system.skills).filter(
-      (skill) => skill[1].failure,
+  static async _applySkillImprovements() {
+    const { skills, typedSkills } = this.actor.system;
+
+    const failedSkills = Object.values(skills).filter((data) => data.failure);
+
+    const failedTypedSkills = Object.values(typedSkills).filter(
+      (data) => data.failure,
     );
-    const failedTypedSkills = Object.entries(
-      this.actor.system.typedSkills,
-    ).filter((skill) => skill[1].failure);
+
+    const localizedFailedSkills = failedSkills.map((skill) =>
+      game.i18n.localize(`DG.Skills.${skill.key}`),
+    );
+
+    const localizedFailedTypedSkills = failedTypedSkills.map((skill) => {
+      const groupKey = `DG.TypeSkills.${skill.group.replace(/\s+/g, "")}`;
+      const groupLabel = game.i18n.localize(groupKey);
+      return `${groupLabel} (${skill.label})`;
+    });
+
     if (failedSkills.length === 0 && failedTypedSkills.length === 0) {
-      ui.notifications.warn("DG.Skills.ApplySkillImprovements.Warning");
+      ui.notifications.warn("DG.Skills.ApplySkillImprovements.Warning", {
+        localize: true,
+      });
       return;
     }
 
-    let failedSkillNames = "";
-    failedSkills.forEach(([skill], value) => {
-      if (value === 0) {
-        failedSkillNames += game.i18n.localize(`DG.Skills.${skill}`);
-      } else {
-        failedSkillNames += `, ${game.i18n.localize(`DG.Skills.${skill}`)}`;
-      }
-    });
-    failedTypedSkills.forEach(([skillName, skillData], value) => {
-      if (value === 0 && failedSkillNames === "") {
-        failedSkillNames += `${game.i18n.localize(
-          `DG.TypeSkills.${skillData.group.split(" ").join("")}`,
-        )} (${skillData.label})`;
-      } else {
-        failedSkillNames += `, ${game.i18n.localize(
-          `DG.TypeSkills.${skillData.group.split(" ").join("")}`,
-        )} (${skillData.label})`;
-      }
-    });
+    const failedSkillNames = [
+      ...localizedFailedSkills,
+      ...localizedFailedTypedSkills,
+    ].join(", ");
 
     const baseRollFormula = game.settings.get(DG.ID, "skillImprovementFormula");
 
@@ -219,42 +218,42 @@ export default class DGAgentSheet extends DGActorSheet {
     // Get copy of current system data, will update this and then apply all changes at once synchronously at the end.
     const updatedData = foundry.utils.duplicate(actorData);
 
-    failedSkills.forEach(([skill], value) => {
-      updatedData.skills[skill].proficiency += resultList[value] ?? 1; // Increase proficiency by die result or by 1 if there is no dice roll.
-      updatedData.skills[skill].failure = false;
+    failedSkills.forEach((skill, value) => {
+      updatedData.skills[skill.key].proficiency += resultList[value] ?? 1; // Increase proficiency by die result or by 1 if there is no dice roll.
+      updatedData.skills[skill.key].failure = false;
 
       // So we can record the regular skills improved and how much they were increased by in chat.
       // The if statement tells us whether to add a comma before the term or not.
       if (value === 0) {
         improvedSkillList += `${game.i18n.localize(
-          `DG.Skills.${skill}`,
+          `DG.Skills.${skill.key}`,
         )}: <b>+${resultList[value] ?? 1}%</b>`;
       } else {
         improvedSkillList += `, ${game.i18n.localize(
-          `DG.Skills.${skill}`,
+          `DG.Skills.${skill.key}`,
         )}: <b>+${resultList[value] ?? 1}%</b>`;
       }
     });
 
-    failedTypedSkills.forEach(([skillName, skillData], value) => {
+    failedTypedSkills.forEach((skill, value) => {
       // We must increase value in the following line by the length of failedSkills, so that we index the entire resultList.
       // Otherwise we would be adding the same die results to regular skills and typed skills.
-      updatedData.typedSkills[skillName].proficiency +=
+      updatedData.typedSkills[skill.key].proficiency +=
         resultList[value + failedSkills.length] ?? 1;
-      updatedData.typedSkills[skillName].failure = false;
+      updatedData.typedSkills[skill.key].failure = false;
 
       // So we can record the typed skills improved and how much they were increased by in chat.
       // The if statement tells us whether to add a comma before the term or not.
       if (value === 0 && improvedSkillList === "") {
         improvedSkillList += `${game.i18n.localize(
-          `DG.TypeSkills.${skillData.group.split(" ").join("")}`,
-        )} (${skillData.label}): <b>+${
+          `DG.TypeSkills.${skill.group.split(" ").join("")}`,
+        )} (${skill.label}): <b>+${
           resultList[value + failedSkills.length] ?? 1
         }%</b>`;
       } else {
         improvedSkillList += `, ${game.i18n.localize(
-          `DG.TypeSkills.${skillData.group.split(" ").join("")}`,
-        )} (${skillData.label}): <b>+${
+          `DG.TypeSkills.${skill.group.split(" ").join("")}`,
+        )} (${skill.label}): <b>+${
           resultList[value + failedSkills.length] ?? 1
         }%</b>`;
       }
