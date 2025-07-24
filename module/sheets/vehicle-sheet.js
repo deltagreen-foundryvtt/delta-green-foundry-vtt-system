@@ -20,7 +20,7 @@ export default class DGVehicleSheet extends DGActorSheet {
     header: this.BASE_PARTS.header,
     tabs: this.BASE_PARTS.tabs,
     notes: {
-      template: `${this.TEMPLATE_PATH}/partials/notes-partial.html`,
+      template: `${this.TEMPLATE_PATH}/parts/notes-tab.html`,
     },
     gear: this.BASE_PARTS.gear,
     about: this.BASE_PARTS.about,

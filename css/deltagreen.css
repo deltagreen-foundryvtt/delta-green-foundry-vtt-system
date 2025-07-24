@@ -829,6 +829,11 @@ div.horizontal-bar-section-header {
   font-weight: bold;
 }
 
+.notes-wrapper {
+  height: 100%;
+  margin-block-start: 12px;
+}
+
 div.motivation-editor-container div.editor {
   height: 400px;
   min-height: 100% !important;
