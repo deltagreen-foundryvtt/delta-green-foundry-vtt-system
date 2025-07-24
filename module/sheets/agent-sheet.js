@@ -212,10 +212,11 @@ export default class DGAgentSheet extends DGActorSheet {
       );
     }
 
-    // This will be end up being a list of skills and how much each were improved by. It gets modified in the following loops.
-
     // Get copy of current system data, will update this and then apply all changes at once synchronously at the end.
-    const updatedData = foundry.utils.duplicate(actorData);
+    const updatedData = {
+      skills: foundry.utils.duplicate(actorData.skills),
+      typedSkills: foundry.utils.duplicate(actorData.typedSkills),
+    };
 
     failedSkills.forEach((skill, value) => {
       updatedData.skills[skill.key].proficiency += resultList[value] ?? 1; // Increase proficiency by die result or by 1 if there is no dice roll.
@@ -246,15 +247,12 @@ export default class DGAgentSheet extends DGActorSheet {
         }%</b>`,
     );
 
-    const failedSkillList = [
+    const improvedSkillList = [
       ...localizedFailedSkills,
       ...localizedFailedTypedSkills,
     ].join(", ");
 
-    let html;
-    html = `<div class="dice-roll">`;
-    html += `  <div>${failedSkillList}</div>`;
-    html += `</div>`;
+    const content = `<div class="dice-roll"><div>${improvedSkillList}</div></div>`;
 
     const chatData = {
       speaker: ChatMessage.getSpeaker({
@@ -262,7 +260,7 @@ export default class DGAgentSheet extends DGActorSheet {
         token: this.token,
         alias: this.actor.name,
       }),
-      content: html,
+      content,
       flavor: `${game.i18n.localize(
         "DG.Skills.ApplySkillImprovements.ChatFlavor",
       )} <b>+${baseRollFormula}%</b>:`,
