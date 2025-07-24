@@ -48,6 +48,13 @@
   input[type="checkbox"]:checked::before {
     color: black; /* Override for when in Foundry's dark mode */
   }
+
+  input[type="text"],
+  input[type="number"],
+  input[type="password"] {
+    height: unset;
+    line-height: 1.5rem;
+  }
 }
 
 /* Character Sheet Style Options */
@@ -345,8 +352,8 @@ explicitly define a number of rows, rather than columns. */
   border-top: transparent !important;
 }
 .deltagreen .tabs {
-  height: auto;
-  line-height: 2;
+  height: 1.5rem;
+  line-height: 1.5rem;
   text-align: center;
   vertical-align: middle;
   margin-bottom: 0px !important;
@@ -357,8 +364,9 @@ explicitly define a number of rows, rather than columns. */
   font-weight: bold;
   color: inherit;
   vertical-align: middle !important;
+  height: inherit;
   line-height: inherit;
-  padding: 5px 10px 0px 10px;
+  padding-inline: 10px;
   border-radius: 5px 5px 0px 0px;
   border-color: #000;
   border: gray;
@@ -744,7 +752,7 @@ div.max-resource-value {
 
 .physical-stats-outer-grid-3col {
   display: grid;
-  grid-template-columns: 33% 34% 33%;
+  grid-template-columns: 1fr 1fr 1fr;
   align-items: center;
   justify-content: center;
   text-align: center;
@@ -755,6 +763,10 @@ div.max-resource-value {
 .physical-stats-and-feature {
   border-radius: 2px;
   border: 1.5px solid #000000;
+}
+
+.attributes-wrapper {
+  margin-block-end: 12px;
 }
 
 div.horizontal-bar-section-divider {
@@ -824,6 +836,7 @@ div.motivation-editor-container div.editor {
 
 .deltagreen .editor-host {
   align-items: stretch;
+  height: 100%;
 }
 
 .deltagreen .editor-host .editor {
