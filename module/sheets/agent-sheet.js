@@ -213,7 +213,6 @@ export default class DGAgentSheet extends DGActorSheet {
     }
 
     // This will be end up being a list of skills and how much each were improved by. It gets modified in the following loops.
-    let improvedSkillList = "";
 
     // Get copy of current system data, will update this and then apply all changes at once synchronously at the end.
     const updatedData = foundry.utils.duplicate(actorData);
@@ -221,18 +220,6 @@ export default class DGAgentSheet extends DGActorSheet {
     failedSkills.forEach((skill, value) => {
       updatedData.skills[skill.key].proficiency += resultList[value] ?? 1; // Increase proficiency by die result or by 1 if there is no dice roll.
       updatedData.skills[skill.key].failure = false;
-
-      // So we can record the regular skills improved and how much they were increased by in chat.
-      // The if statement tells us whether to add a comma before the term or not.
-      if (value === 0) {
-        improvedSkillList += `${game.i18n.localize(
-          `DG.Skills.${skill.key}`,
-        )}: <b>+${resultList[value] ?? 1}%</b>`;
-      } else {
-        improvedSkillList += `, ${game.i18n.localize(
-          `DG.Skills.${skill.key}`,
-        )}: <b>+${resultList[value] ?? 1}%</b>`;
-      }
     });
 
     failedTypedSkills.forEach((skill, value) => {
@@ -241,32 +228,32 @@ export default class DGAgentSheet extends DGActorSheet {
       updatedData.typedSkills[skill.key].proficiency +=
         resultList[value + failedSkills.length] ?? 1;
       updatedData.typedSkills[skill.key].failure = false;
-
-      // So we can record the typed skills improved and how much they were increased by in chat.
-      // The if statement tells us whether to add a comma before the term or not.
-      if (value === 0 && improvedSkillList === "") {
-        improvedSkillList += `${game.i18n.localize(
-          `DG.TypeSkills.${skill.group.split(" ").join("")}`,
-        )} (${skill.label}): <b>+${
-          resultList[value + failedSkills.length] ?? 1
-        }%</b>`;
-      } else {
-        improvedSkillList += `, ${game.i18n.localize(
-          `DG.TypeSkills.${skill.group.split(" ").join("")}`,
-        )} (${skill.label}): <b>+${
-          resultList[value + failedSkills.length] ?? 1
-        }%</b>`;
-      }
     });
 
-    // Probably not worth triggering the update if the user didn't pick any skills
-    if (improvedSkillList !== "") {
-      await this.actor.update({ system: updatedData });
-    }
+    const localizedFailedSkills = failedSkills.map(
+      (skill, value) =>
+        `${game.i18n.localize(`DG.Skills.${skill.key}`)}: <b>+${
+          resultList[value] ?? 1
+        }%</b>`,
+    );
+
+    const localizedFailedTypedSkills = failedTypedSkills.map(
+      (skill, value) =>
+        `${game.i18n.localize(
+          `DG.TypeSkills.${skill.group.replace(/\s+/g, "")}`,
+        )} (${skill.label}): <b>+${
+          resultList[value + failedSkills.length] ?? 1
+        }%</b>`,
+    );
+
+    const failedSkillList = [
+      ...localizedFailedSkills,
+      ...localizedFailedTypedSkills,
+    ].join(", ");
 
     let html;
     html = `<div class="dice-roll">`;
-    html += `  <div>${improvedSkillList}</div>`;
+    html += `  <div>${failedSkillList}</div>`;
     html += `</div>`;
 
     const chatData = {
@@ -285,9 +272,13 @@ export default class DGAgentSheet extends DGActorSheet {
     };
 
     // Create a message from this roll, if there is one.
-    if (roll) return roll.toMessage(chatData);
+    if (roll) {
+      await roll.toMessage(chatData);
+    } else {
+      // If no roll, create a chat message directly.
+      return ChatMessage.create(chatData, {});
+    }
 
-    // If no roll, create a chat message directly.
-    return ChatMessage.create(chatData, {});
+    return this.actor.update({ system: updatedData });
   }
 }
