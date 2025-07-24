@@ -182,77 +182,70 @@ export default class DGAgentSheet extends DGActorSheet {
     failedTypedSkills,
   ) {
     const actorData = this.actor.system;
+    const totalFailures = failedSkills.length + failedTypedSkills.length;
     const resultList = [];
-    let rollFormula;
 
-    // Define the amount of dice being rolled, if any.
+    // Determine roll formula
+    let rollFormula;
     switch (baseRollFormula) {
       case "1":
         rollFormula = 1;
         break;
       case "1d3":
-        rollFormula = `${failedSkills.length + failedTypedSkills.length}d3`;
-        break;
       case "1d4":
       case "1d4-1":
-        rollFormula = `${failedSkills.length + failedTypedSkills.length}d4`;
+        rollFormula = `${totalFailures}${baseRollFormula.replace(/-.*/, "")}`;
         break;
       default:
+        throw new Error(`Unknown baseRollFormula: ${baseRollFormula}`);
     }
 
     let roll;
     if (rollFormula !== 1) {
       roll = new Roll(rollFormula, actorData);
       await roll.evaluate();
-      // Put the results into a list.
-      roll.terms[0].results.forEach((result) =>
-        resultList.push(
-          baseRollFormula === "1d4-1" ? result.result - 1 : result.result,
-        ),
+
+      const modifier = baseRollFormula === "1d4-1" ? -1 : 0;
+      resultList.push(
+        ...roll.terms[0].results.map((result) => result.result + modifier),
       );
     }
 
-    // Get copy of current system data, will update this and then apply all changes at once synchronously at the end.
-    const updatedData = {
-      skills: foundry.utils.duplicate(actorData.skills),
-      typedSkills: foundry.utils.duplicate(actorData.typedSkills),
+    const updatedSkills = foundry.utils.duplicate(actorData.skills);
+    const updatedTypedSkills = foundry.utils.duplicate(actorData.typedSkills);
+
+    const applyImprovements = (skillsArray, updatedTarget, offset = 0) => {
+      return skillsArray.map((skill, i) => {
+        const index = i + offset;
+        const increment = resultList[index] ?? 1;
+        updatedTarget[skill.key].proficiency += increment;
+        updatedTarget[skill.key].failure = false;
+
+        const label =
+          skill.label ?? game.i18n.localize(`DG.Skills.${skill.key}`); // fallback for regular skills
+        const groupLabel = skill.group
+          ? `${game.i18n.localize(
+              `DG.TypeSkills.${skill.group.replace(/\s+/g, "")}`,
+            )} (${label})`
+          : label;
+
+        return `${groupLabel}: <b>+${increment}%</b>`;
+      });
     };
 
-    failedSkills.forEach((skill, value) => {
-      updatedData.skills[skill.key].proficiency += resultList[value] ?? 1; // Increase proficiency by die result or by 1 if there is no dice roll.
-      updatedData.skills[skill.key].failure = false;
-    });
-
-    failedTypedSkills.forEach((skill, value) => {
-      // We must increase value in the following line by the length of failedSkills, so that we index the entire resultList.
-      // Otherwise we would be adding the same die results to regular skills and typed skills.
-      updatedData.typedSkills[skill.key].proficiency +=
-        resultList[value + failedSkills.length] ?? 1;
-      updatedData.typedSkills[skill.key].failure = false;
-    });
-
-    const localizedFailedSkills = failedSkills.map(
-      (skill, value) =>
-        `${game.i18n.localize(`DG.Skills.${skill.key}`)}: <b>+${
-          resultList[value] ?? 1
-        }%</b>`,
+    const failedSkillTexts = applyImprovements(failedSkills, updatedSkills);
+    const failedTypedSkillTexts = applyImprovements(
+      failedTypedSkills,
+      updatedTypedSkills,
+      failedSkills.length,
     );
 
-    const localizedFailedTypedSkills = failedTypedSkills.map(
-      (skill, value) =>
-        `${game.i18n.localize(
-          `DG.TypeSkills.${skill.group.replace(/\s+/g, "")}`,
-        )} (${skill.label}): <b>+${
-          resultList[value + failedSkills.length] ?? 1
-        }%</b>`,
+    const content = [...failedSkillTexts, ...failedTypedSkillTexts].join(", ");
+
+    const flavor = game.i18n.format(
+      "DG.Skills.ApplySkillImprovements.ChatFlavor",
+      { formula: rollFormula },
     );
-
-    const improvedSkillList = [
-      ...localizedFailedSkills,
-      ...localizedFailedTypedSkills,
-    ].join(", ");
-
-    const content = `<div class="dice-roll"><div>${improvedSkillList}</div></div>`;
 
     const chatData = {
       speaker: ChatMessage.getSpeaker({
@@ -261,22 +254,25 @@ export default class DGAgentSheet extends DGActorSheet {
         alias: this.actor.name,
       }),
       content,
-      flavor: `${game.i18n.localize(
-        "DG.Skills.ApplySkillImprovements.ChatFlavor",
-      )} <b>+${baseRollFormula}%</b>:`,
-      type: baseRollFormula === "1" ? 0 : 5, // 0 = CHAT_MESSAGE_TYPES.OTHER, 5 = CHAT_MESSAGE_TYPES.ROLL
-      rolls: baseRollFormula === "1" ? [] : [roll], // If adding flat +1, there is no roll.
+      flavor,
+      type: roll
+        ? CONST.CHAT_MESSAGE_TYPES.ROLL
+        : CONST.CHAT_MESSAGE_TYPES.OTHER,
+      rolls: roll ? [roll] : [],
       rollMode: game.settings.get("core", "rollMode"),
     };
 
-    // Create a message from this roll, if there is one.
     if (roll) {
       await roll.toMessage(chatData);
     } else {
-      // If no roll, create a chat message directly.
-      return ChatMessage.create(chatData, {});
+      await ChatMessage.create(chatData);
     }
 
-    return this.actor.update({ system: updatedData });
+    return this.actor.update({
+      system: {
+        skills: updatedSkills,
+        typedSkills: updatedTypedSkills,
+      },
+    });
   }
 }

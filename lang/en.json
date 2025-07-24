@@ -87,7 +87,7 @@
   "DG.Skills.AddSkill": "Add Skill",
   "DG.Skills.Apply": "Apply",
   "DG.Skills.ApplySkillImprovements.Title": "Apply Skill Improvements",
-  "DG.Skills.ApplySkillImprovements.ChatFlavor": "Improved the following skills by",
+  "DG.Skills.ApplySkillImprovements.ChatFlavor": "Improved the following skills by <b>{formula}</b>:",
   "DG.Skills.ApplySkillImprovements.DialogLabel": "Improve skills by the following formula: <b>{formula}</b>",
   "DG.Skills.ApplySkillImprovements.DialogEffectsFollowing": "Effects the following skills: <b>{skillList}</b>",
   "DG.Skills.ApplySkillImprovements.Warning": "No failed skills to improve.",
