@@ -47,6 +47,7 @@ globals:
   ActiveEffect: readonly
   Actor: readonly
   CONFIG: readonly
+  CONST: readonly
   ChatMessage: readonly
   Combat: readonly
   Combatant: readonly

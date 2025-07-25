@@ -1,4 +1,7 @@
+import DG, { BASE_TEMPLATE_PATH } from "../config.js";
 import DGActorSheet from "./base-actor-sheet.js";
+
+const { renderTemplate } = foundry.applications.handlebars;
 
 /** @extends {DGActorSheet} */
 export default class DGAgentSheet extends DGActorSheet {
@@ -9,7 +12,7 @@ export default class DGAgentSheet extends DGActorSheet {
       clearBondDamage: DGAgentSheet._clearBondDamage,
       resetBreakingPoint: DGAgentSheet._resetBreakingPoint,
       // Other actions.
-      applySkillImprovements: DGAgentSheet._applySkillImprovements,
+      applySkillImprovements: DGAgentSheet._processSkillImprovements,
     },
   });
 
@@ -84,75 +87,6 @@ export default class DGAgentSheet extends DGActorSheet {
 
   /* -------------------------------------------- */
 
-  static _applySkillImprovements(event, target) {
-    const failedSkills = Object.entries(this.actor.system.skills).filter(
-      (skill) => skill[1].failure,
-    );
-    const failedTypedSkills = Object.entries(
-      this.actor.system.typedSkills,
-    ).filter((skill) => skill[1].failure);
-    if (failedSkills.length === 0 && failedTypedSkills.length === 0) {
-      ui.notifications.warn("No Skills to Increase");
-      return;
-    }
-
-    let htmlContent = "";
-    let failedSkillNames = "";
-    failedSkills.forEach(([skill], value) => {
-      if (value === 0) {
-        failedSkillNames += game.i18n.localize(`DG.Skills.${skill}`);
-      } else {
-        failedSkillNames += `, ${game.i18n.localize(`DG.Skills.${skill}`)}`;
-      }
-    });
-    failedTypedSkills.forEach(([skillName, skillData], value) => {
-      if (value === 0 && failedSkillNames === "") {
-        failedSkillNames += `${game.i18n.localize(
-          `DG.TypeSkills.${skillData.group.split(" ").join("")}`,
-        )} (${skillData.label})`;
-      } else {
-        failedSkillNames += `, ${game.i18n.localize(
-          `DG.TypeSkills.${skillData.group.split(" ").join("")}`,
-        )} (${skillData.label})`;
-      }
-    });
-
-    const baseRollFormula = game.settings.get(
-      "deltagreen",
-      "skillImprovementFormula",
-    );
-
-    htmlContent += `<div>`;
-    htmlContent += `     <label>${game.i18n.localize(
-      "DG.Skills.ApplySkillImprovementsDialogLabel",
-    )} <b>+${baseRollFormula}%</b></label>`;
-    htmlContent += `     <hr>`;
-    htmlContent += `     <span> ${game.i18n.localize(
-      "DG.Skills.ApplySkillImprovementsDialogEffectsFollowing",
-    )} <b>${failedSkillNames}</b> </span>`;
-    htmlContent += `</div>`;
-
-    new Dialog({
-      content: htmlContent,
-      title:
-        game.i18n.translations.DG?.Skills?.ApplySkillImprovements ??
-        "Apply Skill Improvements",
-      default: "add",
-      buttons: {
-        apply: {
-          label: game.i18n.translations.DG?.Skills?.Apply ?? "Apply",
-          callback: (btn) => {
-            this._applySkillImprovements(
-              baseRollFormula,
-              failedSkills,
-              failedTypedSkills,
-            );
-          },
-        },
-      },
-    }).render(true);
-  }
-
   /** Resets the actor's current breaking point based on their sanity and POW statistics. */
   static _resetBreakingPoint() {
     const systemData = this.actor.system;
@@ -168,115 +102,217 @@ export default class DGAgentSheet extends DGActorSheet {
   _resetBreakingPoint(event) {
     event.preventDefault();
 
-    let currentBreakingPoint = 0;
+    const currentBreakingPoint = Math.max(
+      this.actor.system.sanity.value - this.actor.system.statistics.pow.value,
+      0,
+    );
 
-    currentBreakingPoint =
-      this.actor.system.sanity.value - this.actor.system.statistics.pow.value;
-
-    if (currentBreakingPoint < 0) {
-      currentBreakingPoint = 0;
-    }
-
-    const updatedData = foundry.utils.duplicate(this.actor.system);
-
-    updatedData.sanity.currentBreakingPoint = currentBreakingPoint;
-
-    this.actor.update({ system: updatedData });
+    this.actor.update({
+      "system.sanity.currentBreakingPoint": currentBreakingPoint,
+    });
   }
 
-  // For any skills a user has checked off as failed, roll the improvement and update the agent's skills to their new values
-  async _applySkillImprovements(
-    baseRollFormula,
+  /**
+   * Runs through the whole process of improving skills,
+   * i.e., prompting the user, rolling, and creating the chat card.
+   *
+   * @returns {Promise<void>}
+   */
+  static async _processSkillImprovements() {
+    const { skills, typedSkills } = this.actor.system;
+
+    const failedSkills = Object.values(skills).filter((skill) => skill.failure);
+    const failedTypedSkills = Object.values(typedSkills).filter(
+      (skill) => skill.failure,
+    );
+
+    if (failedSkills.length + failedTypedSkills.length === 0) {
+      ui.notifications.warn("DG.Skills.ApplySkillImprovements.Warning", {
+        localize: true,
+      });
+      return null;
+    }
+
+    const baseRollFormula = game.settings.get(DG.ID, "skillImprovementFormula");
+
+    const prompt = await DGAgentSheet._createSkillImprovementDialog(
+      baseRollFormula,
+      failedSkills,
+      failedTypedSkills,
+    );
+
+    if (!prompt) return null;
+
+    const { roll, resultObj } = await this._createSkillImprovementRolls(
+      baseRollFormula,
+      failedSkills,
+      failedTypedSkills,
+    );
+
+    await this._createSkillImprovementChatCard(
+      failedSkills,
+      failedTypedSkills,
+      roll,
+      resultObj,
+    );
+
+    return this._applySkillImprovements(
+      failedSkills,
+      failedTypedSkills,
+      resultObj,
+    );
+  }
+
+  /**
+   * A map of skill keys -> number to improve them by
+   * @typedef {Object<string, number>} ResultObj
+   */
+
+  /**
+   * @typedef {Object} FailedSkill
+   */
+
+  /**
+   * @typedef {FailedSkill} FailedTypedSkill
+   */
+
+  /**
+   * The formula used to calculate skill improvements
+   * Note. There is not a leading number of dice here, just 1 or dX-Y.
+   * @typedef {"1"|"d3"|"d4"|"d4-1"} SkillImprovementFormula
+   */
+
+  /**
+   * Creates and displays a dialog to approve applying skill improvements to failed skills.
+   *
+   * @param {SkillImprovementFormula} baseFormula - The formula used to calculate skill improvements.
+   * @param {FailedSkill[]} failedSkills - An array of failed skills.
+   * @param {FailedTypedSkill[]} failedTypedSkills - An array of failed typed skills.
+   *
+   * @returns {Promise<Boolean>} - A promise that resolves to `true` if accepted, `false` otherwise.
+   */
+  static async _createSkillImprovementDialog(
+    baseFormula,
     failedSkills,
     failedTypedSkills,
   ) {
-    const actorData = this.actor.system;
-    const resultList = [];
-    let rollFormula;
+    const localizedFailedSkills = failedSkills.map((skill) =>
+      game.i18n.localize(`DG.Skills.${skill.key}`),
+    );
 
-    // Define the amount of dice being rolled, if any.
-    switch (baseRollFormula) {
-      case "1":
-        rollFormula = 1;
-        break;
-      case "1d3":
-        rollFormula = `${failedSkills.length + failedTypedSkills.length}d3`;
-        break;
-      case "1d4":
-      case "1d4-1":
-        rollFormula = `${failedSkills.length + failedTypedSkills.length}d4`;
-        break;
-      default:
+    const localizedFailedTypedSkills = failedTypedSkills.map((skill) => {
+      const groupKey = `DG.TypeSkills.${skill.group.replace(/\s+/g, "")}`;
+      const groupLabel = game.i18n.localize(groupKey);
+      return `${groupLabel} (${skill.label})`;
+    });
+
+    const failedSkillNames = [
+      ...localizedFailedSkills,
+      ...localizedFailedTypedSkills,
+    ].join(", ");
+
+    const content = await renderTemplate(
+      `${BASE_TEMPLATE_PATH}/dialog/apply-skill-improvements.html`,
+      {
+        failedSkillNames,
+        baseFormula: `${baseFormula === "1" ? "1" : `1${baseFormula}`}%`,
+      },
+    );
+
+    return Dialog.wait({
+      content,
+      title: game.i18n.localize("DG.Skills.ApplySkillImprovements.Title"),
+      default: "apply",
+      buttons: {
+        apply: {
+          label: game.i18n.localize("DG.Skills.Apply"),
+          icon: "<i class='fas fa-check'></i>",
+        },
+      },
+    });
+  }
+
+  /**
+   * Generates and evaluates the rolls for skill improvements based on failed skills.
+   *
+   * @param {SkillImprovementFormula} baseFormula - The formula used to calculate skill improvements.
+   * @param {FailedSkill[]} failedSkills - An array of failed skills.
+   * @param {FailedTypedSkill[]} failedTypedSkills - An array of failed typed skills.
+   *
+   * @returns {Promise<{roll: Roll|undefined, resultObj: ResultObj}>} - An object containing the roll result and a map of skill keys to improvement values.
+   *
+   * @throws {Error} - Throws an error if the baseFormula is unknown.
+   */
+  async _createSkillImprovementRolls(
+    baseFormula,
+    failedSkills,
+    failedTypedSkills,
+  ) {
+    const totalFailures = failedSkills.length + failedTypedSkills.length;
+
+    if (!Object.keys(DG.skillImprovementFormulas).includes(baseFormula)) {
+      throw new Error(`Unknown roll formula: ${baseFormula}`);
     }
+
+    const rollFormula =
+      baseFormula === "1" ? "1" : `${totalFailures}${baseFormula}`;
 
     let roll;
-    if (rollFormula !== 1) {
-      roll = new Roll(rollFormula, actorData);
-      await roll.evaluate();
-      // Put the results into a list.
-      roll.terms[0].results.forEach((result) =>
-        resultList.push(
-          baseRollFormula === "1d4-1" ? result.result - 1 : result.result,
-        ),
-      );
+    const resultObj = {};
+    if (rollFormula !== "1") {
+      roll = await new Roll(rollFormula, this.actor.system).evaluate();
+      [...failedSkills, ...failedTypedSkills].forEach((skill, index) => {
+        const { result } = roll.terms[0].results[index];
+        resultObj[skill.key] = result;
+      });
     }
 
-    // This will be end up being a list of skills and how much each were improved by. It gets modified in the following loops.
-    let improvedSkillList = "";
+    return { roll, resultObj };
+  }
 
-    // Get copy of current system data, will update this and then apply all changes at once synchronously at the end.
-    const updatedData = foundry.utils.duplicate(actorData);
+  /**
+   * Create a chat card to record skill improvements.
+   *
+   * @param {FailedSkill[]} failedSkills - array of failed skills
+   * @param {FailedTypedSkill[]} failedTypedSkills - array of failed typed skills
+   * @param {Roll|undefined} roll - the improvement roll
+   * @param {ResultObj} resultObj
+   *
+   * @returns {Promise<ChatMessage>}
+   */
+  _createSkillImprovementChatCard(
+    failedSkills,
+    failedTypedSkills,
+    roll,
+    resultObj,
+  ) {
+    const localizeFailedSkills = (skillsArray) => {
+      return skillsArray.map((skill) => {
+        const increment = resultObj[skill.key] ?? 1;
+        const label =
+          skill.label ?? game.i18n.localize(`DG.Skills.${skill.key}`); // fallback for regular skills
+        const groupLabel = skill.group
+          ? `${game.i18n.localize(
+              `DG.TypeSkills.${skill.group.replace(/\s+/g, "")}`,
+            )} (${label})`
+          : label;
 
-    failedSkills.forEach(([skill], value) => {
-      updatedData.skills[skill].proficiency += resultList[value] ?? 1; // Increase proficiency by die result or by 1 if there is no dice roll.
-      updatedData.skills[skill].failure = false;
+        return `${groupLabel}: <b>+${increment}%</b>`;
+      });
+    };
 
-      // So we can record the regular skills improved and how much they were increased by in chat.
-      // The if statement tells us whether to add a comma before the term or not.
-      if (value === 0) {
-        improvedSkillList += `${game.i18n.localize(
-          `DG.Skills.${skill}`,
-        )}: <b>+${resultList[value] ?? 1}%</b>`;
-      } else {
-        improvedSkillList += `, ${game.i18n.localize(
-          `DG.Skills.${skill}`,
-        )}: <b>+${resultList[value] ?? 1}%</b>`;
-      }
-    });
+    const failedSkillNames = localizeFailedSkills(failedSkills);
+    const failedTypedSkillNames = localizeFailedSkills(failedTypedSkills);
 
-    failedTypedSkills.forEach(([skillName, skillData], value) => {
-      // We must increase value in the following line by the length of failedSkills, so that we index the entire resultList.
-      // Otherwise we would be adding the same die results to regular skills and typed skills.
-      updatedData.typedSkills[skillName].proficiency +=
-        resultList[value + failedSkills.length] ?? 1;
-      updatedData.typedSkills[skillName].failure = false;
-
-      // So we can record the typed skills improved and how much they were increased by in chat.
-      // The if statement tells us whether to add a comma before the term or not.
-      if (value === 0 && improvedSkillList === "") {
-        improvedSkillList += `${game.i18n.localize(
-          `DG.TypeSkills.${skillData.group.split(" ").join("")}`,
-        )} (${skillData.label}): <b>+${
-          resultList[value + failedSkills.length] ?? 1
-        }%</b>`;
-      } else {
-        improvedSkillList += `, ${game.i18n.localize(
-          `DG.TypeSkills.${skillData.group.split(" ").join("")}`,
-        )} (${skillData.label}): <b>+${
-          resultList[value + failedSkills.length] ?? 1
-        }%</b>`;
-      }
-    });
-
-    // Probably not worth triggering the update if the user didn't pick any skills
-    if (improvedSkillList !== "") {
-      await this.actor.update({ system: updatedData });
-    }
-
-    let html;
-    html = `<div class="dice-roll">`;
-    html += `  <div>${improvedSkillList}</div>`;
-    html += `</div>`;
+    // Prepare chat data
+    const content = [...failedSkillNames, ...failedTypedSkillNames].join(", ");
+    const flavor = game.i18n.format(
+      "DG.Skills.ApplySkillImprovements.ChatFlavor",
+      { formula: `${roll.formula?.replace(/^.*d/, "1d") ?? "1"}%` }, // formula = 1, otherwise 1dX-Y (i.e. 1d3, 1d4, 1d4-1)
+    );
+    const type = roll
+      ? CONST.CHAT_MESSAGE_TYPES.ROLL
+      : CONST.CHAT_MESSAGE_TYPES.OTHER;
 
     const chatData = {
       speaker: ChatMessage.getSpeaker({
@@ -284,19 +320,45 @@ export default class DGAgentSheet extends DGActorSheet {
         token: this.token,
         alias: this.actor.name,
       }),
-      content: html,
-      flavor: `${game.i18n.localize(
-        "DG.Skills.ApplySkillImprovementsChatFlavor",
-      )} <b>+${baseRollFormula}%</b>:`,
-      type: baseRollFormula === "1" ? 0 : 5, // 0 = CHAT_MESSAGE_TYPES.OTHER, 5 = CHAT_MESSAGE_TYPES.ROLL
-      rolls: baseRollFormula === "1" ? [] : [roll], // If adding flat +1, there is no roll.
+      content,
+      flavor,
+      type,
+      rolls: roll ? [roll] : [],
       rollMode: game.settings.get("core", "rollMode"),
     };
 
-    // Create a message from this roll, if there is one.
     if (roll) return roll.toMessage(chatData);
+    return ChatMessage.create(chatData);
+  }
 
-    // If no roll, create a chat message directly.
-    return ChatMessage.create(chatData, {});
+  /**
+   * Updates the actor's skills / typed skills with the improvements,
+   * persisting the changes to the database.
+   *
+   * @param {FailedSkill[]} failedSkills - array of failed skills that need to be updated
+   * @param {FailedTypedSkill[]} failedTypedSkills - array of failed skills that need to be updated
+   * @param {ResultObj} resultObj
+   * @returns {Promise<DeltaGreenActor>} - the update promise
+   */
+  _applySkillImprovements(failedSkills, failedTypedSkills, resultObj) {
+    const updateSkills = (skillsArray, updatedTarget) => {
+      skillsArray.forEach((skill) => {
+        const increment = resultObj[skill.key] ?? 1;
+        updatedTarget[skill.key].proficiency += increment;
+        updatedTarget[skill.key].failure = false;
+      });
+    };
+
+    const actorData = this.actor.system;
+    // Get data and update it.
+    const updatedSkills = foundry.utils.duplicate(actorData.skills);
+    const updatedTypedSkills = foundry.utils.duplicate(actorData.typedSkills);
+    updateSkills(failedSkills, updatedSkills);
+    updateSkills(failedTypedSkills, updatedTypedSkills);
+
+    // Send updates to database.
+    return this.actor.update({
+      system: { skills: updatedSkills, typedSkills: updatedTypedSkills },
+    });
   }
 }
