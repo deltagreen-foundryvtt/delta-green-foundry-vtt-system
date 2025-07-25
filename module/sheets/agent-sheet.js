@@ -16,6 +16,7 @@ export default class DGAgentSheet extends DGActorSheet {
     },
   });
 
+  /** @override */
   static TABS = /** @type {const} */ ({
     primary: {
       initial: "skills",
@@ -87,21 +88,14 @@ export default class DGAgentSheet extends DGActorSheet {
 
   /* -------------------------------------------- */
 
-  /** Resets the actor's current breaking point based on their sanity and POW statistics. */
+  /**
+   * Resets the actor's current breaking point by recalculating it as the difference
+   * between the actor's sanity value and POW value, ensuring it is non-negative,
+   * and updates the actor's system with this new breaking point.
+   *
+   * @returns {void}
+   */
   static _resetBreakingPoint() {
-    const systemData = this.actor.system;
-
-    const newBreakingPoint =
-      systemData.sanity.value - systemData.statistics.pow.value;
-
-    const updatedData = foundry.utils.duplicate(systemData);
-    updatedData.sanity.currentBreakingPoint = newBreakingPoint;
-    this.actor.update({ system: updatedData });
-  }
-
-  _resetBreakingPoint(event) {
-    event.preventDefault();
-
     const currentBreakingPoint = Math.max(
       this.actor.system.sanity.value - this.actor.system.statistics.pow.value,
       0,
