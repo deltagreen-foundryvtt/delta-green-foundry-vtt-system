@@ -137,16 +137,16 @@ export default class DGAgentSheet extends DGActorSheet {
 
     if (!prompt) return null;
 
-    const { roll, resultObj } = await this._createSkillImprovementRolls(
+    const resultObj = await this._createSkillImprovementRolls(
       baseRollFormula,
       failedSkills,
       failedTypedSkills,
     );
 
     await this._createSkillImprovementChatCard(
+      baseRollFormula,
       failedSkills,
       failedTypedSkills,
-      roll,
       resultObj,
     );
 
@@ -209,7 +209,8 @@ export default class DGAgentSheet extends DGActorSheet {
       `${BASE_TEMPLATE_PATH}/dialog/apply-skill-improvements.html`,
       {
         failedSkillNames,
-        baseFormula: `${baseFormula === "1" ? "1" : `1${baseFormula}`}%`,
+        baseFormula:
+          DGAgentSheet._getSkillImprovementFormulaAsPercent(baseFormula),
       },
     );
 
@@ -248,20 +249,20 @@ export default class DGAgentSheet extends DGActorSheet {
       throw new Error(`Unknown roll formula: ${baseFormula}`);
     }
 
-    const rollFormula =
-      baseFormula === "1" ? "1" : `${totalFailures}${baseFormula}`;
-
-    let roll;
+    const rollPromises = [];
     const resultObj = {};
-    if (rollFormula !== "1") {
-      roll = await new Roll(rollFormula, this.actor.system).evaluate();
+    if (baseFormula !== "1") {
+      for (let i = 0; i < totalFailures; i++) {
+        rollPromises.push(new Roll(baseFormula, this.actor.system).evaluate());
+      }
+      const rolls = await Promise.all(rollPromises);
+
       [...failedSkills, ...failedTypedSkills].forEach((skill, index) => {
-        const { result } = roll.terms[0].results[index];
-        resultObj[skill.key] = result;
+        resultObj[skill.key] = rolls[index].total;
       });
     }
 
-    return { roll, resultObj };
+    return resultObj;
   }
 
   /**
@@ -275,9 +276,9 @@ export default class DGAgentSheet extends DGActorSheet {
    * @returns {Promise<ChatMessage>}
    */
   _createSkillImprovementChatCard(
+    baseFormula,
     failedSkills,
     failedTypedSkills,
-    roll,
     resultObj,
   ) {
     const localizeFailedSkills = (skillsArray) => {
@@ -302,11 +303,10 @@ export default class DGAgentSheet extends DGActorSheet {
     const content = [...failedSkillNames, ...failedTypedSkillNames].join(", ");
     const flavor = game.i18n.format(
       "DG.Skills.ApplySkillImprovements.ChatFlavor",
-      { formula: `${roll.formula?.replace(/^.*d/, "1d") ?? "1"}%` }, // formula = 1, otherwise 1dX-Y (i.e. 1d3, 1d4, 1d4-1)
+      {
+        formula: DGAgentSheet._getSkillImprovementFormulaAsPercent(baseFormula),
+      },
     );
-    const type = roll
-      ? CONST.CHAT_MESSAGE_TYPES.ROLL
-      : CONST.CHAT_MESSAGE_TYPES.OTHER;
 
     const chatData = {
       speaker: ChatMessage.getSpeaker({
@@ -316,12 +316,9 @@ export default class DGAgentSheet extends DGActorSheet {
       }),
       content,
       flavor,
-      type,
-      rolls: roll ? [roll] : [],
       rollMode: game.settings.get("core", "rollMode"),
     };
 
-    if (roll) return roll.toMessage(chatData);
     return ChatMessage.create(chatData);
   }
 
@@ -354,5 +351,18 @@ export default class DGAgentSheet extends DGActorSheet {
     return this.actor.update({
       system: { skills: updatedSkills, typedSkills: updatedTypedSkills },
     });
+  }
+
+  /**
+   * Takes a base formula and returns a string representing the skill improvement formula as a percentage.
+   * TODO: Move to the roll class itself, probably even a "SkillImprovementRoll".
+   *
+   * @param {SkillImprovementFormula} baseFormula - the base formula to convert
+   * @returns {string} the skill improvement formula as a percentage (e.g. "1D3%" or "1%")
+   */
+  static _getSkillImprovementFormulaAsPercent(baseFormula) {
+    const flat = baseFormula === "1";
+    const formula = flat ? "1" : `1${baseFormula}`;
+    return `${formula}%`.toUpperCase();
   }
 }
