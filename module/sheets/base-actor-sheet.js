@@ -90,7 +90,7 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
 
     // Set title for Physical Attributes.
     context.physicalAttributesTitle = game.i18n.localize(
-      "DG.Sheet.BlockHeaders.Attributes",
+      "DG.Sheet.BlockHeaders.Statistics",
     );
 
     // Whether to append the notes section to the skills.
