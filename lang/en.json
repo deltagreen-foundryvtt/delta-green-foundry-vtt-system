@@ -399,7 +399,7 @@
   "DG.Settings.alwaysShowHypergeometrySectionForPlayers.hint": "Always show Hypergeometry item section for players, even if they don't have any items of that type.",
   "DG.Settings.showImpossibleLandscapesContent.name": "Show Impossible Landscapes Content",
   "DG.Settings.showImpossibleLandscapesContent.hint": "Show Impossible Landscapes-specific fields from character sheets.",
-  "DG.Settings.skillFailure.name": "Auto set skill failure",
+  "DG.Settings.skillFailure.name": "Auto-mark Skill Failure",
   "DG.Settings.skillFailure.hint": "Activate this setting to always mark a failure checkbox upon failing a skill. This also enables an undo function in the chat card.",
 
   "DG.SettingsMenu.automation.name": "Automation Menu",
