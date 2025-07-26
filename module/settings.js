@@ -3,9 +3,6 @@ import DG from "./config.js";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 const SettingForm = class extends HandlebarsApplicationMixin(ApplicationV2) {
-  constructor() {
-    super();
-  }
 
   static _namespace;
 
