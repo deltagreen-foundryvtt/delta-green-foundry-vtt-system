@@ -15,14 +15,14 @@ const SettingForm = class extends HandlebarsApplicationMixin(ApplicationV2) {
   }
 
   static init() {
-    const settings = this.settings;
-    for (const setting of Object.keys(settings)) {
-      game.settings.register(DG.ID, setting, {
+    const { settings } = this;
+    for (const settingID of Object.keys(settings)) {
+      game.settings.register(DG.ID, settingID, {
         scope: "world",
         config: false,
-        name: game.i18n.localize(`DG.Settings.${setting}.name`),
-        hint: game.i18n.localize(`DG.Settings.${setting}.hint`),
-        ...settings[setting],
+        name: game.i18n.localize(`DG.Settings.${settingID}.name`),
+        hint: game.i18n.localize(`DG.Settings.${settingID}.hint`),
+        ...setting,
       });
     }
   }
