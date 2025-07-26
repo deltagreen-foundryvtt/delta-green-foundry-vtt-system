@@ -391,7 +391,7 @@
   "DG.Settings.keepSanityPrivate.hint": "Hide sanity from players on both character sheet and rolls.",
   "DG.Settings.skillImprovementFormula.name": "Default Skill Improvement Roll",
   "DG.Settings.skillImprovementFormula.hint": " Default 1d4. There have been multiple errata on this, choose which fits best for the pace of your game.",
-  "DG.Settings.skillImprovementFormula.1": "Flat +1",
+  "DG.Settings.skillImprovementFormula.1": "Flat +1%",
   "DG.Settings.skillImprovementFormula.2": "+1D3%",
   "DG.Settings.skillImprovementFormula.3": "+1D4%",
   "DG.Settings.skillImprovementFormula.4": "+1D4-1%",
