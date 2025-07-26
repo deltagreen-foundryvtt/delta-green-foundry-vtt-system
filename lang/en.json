@@ -388,7 +388,7 @@
   "DG.Settings.sortskills.name": "Sort Skills By Column?",
   "DG.Settings.sortskills.hint": "Checked sorts by column. Unchecked sorts by row.",
   "DG.Settings.keepSanityPrivate.name": "Keep Sanity Private",
-  "DG.Settings.keepSanityPrivate.hint": "Hide sanity from players on both character sheet and rolls.",
+  "DG.Settings.keepSanityPrivate.hint": "Hide sanity from players in both Agent sheets and rolls.",
   "DG.Settings.skillImprovementFormula.name": "Default Skill Improvement Roll",
   "DG.Settings.skillImprovementFormula.hint": " Default 1d4. There have been multiple errata on this, choose which fits best for the pace of your game.",
   "DG.Settings.skillImprovementFormula.1": "Flat +1%",
