@@ -35,7 +35,7 @@ const SettingForm = class extends HandlebarsApplicationMixin(ApplicationV2) {
     id: `${DG.ID}-setting-form`,
     classes: [DG.ID, "settings-menu"],
     window: {title:  ``, resizable: true},
-    position: {width: 500, height: 400},
+    position: {width: 500, height: 'auto'},
     actions: {},
     form: {
       handler: this.onSubmit,
@@ -111,6 +111,11 @@ class HandlerSettings extends SettingForm {
         requiresReload: true,
         type: Boolean,
         default: false,
+      },
+      skillImprovementFormula: {
+        type: String,
+        choices: DG.skillImprovementFormulas,
+        default: "d4",
       }
     };
   }
@@ -165,20 +170,6 @@ export default function registerSystemSettings() {
     requiresReload: true,
     type: Boolean,
     default: false,
-  });
-
-  game.settings.register("deltagreen", "skillImprovementFormula", {
-    name: game.i18n.localize("DG.Settings.improvementroll.name"),
-    hint: game.i18n.localize("DG.Settings.improvementroll.hint"),
-    scope: "world", // This specifies a world-stored setting
-    config: true, // This specifies that the setting appears in the configuration view
-    type: String,
-    choices: DG.skillImprovementFormulas,
-    default: "d4", // The default value for the setting, per the most recent errata.
-    onChange: (value) => {
-      // A callback function which triggers when the setting is changed
-      // console.log(value)
-    },
   });
 
   // obsolete - will be removed at some point
