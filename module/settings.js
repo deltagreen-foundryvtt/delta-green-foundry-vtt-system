@@ -1,3 +1,5 @@
+import DG from "./config.js";
+
 export default function registerSystemSettings() {
   game.settings.register("deltagreen", "characterSheetStyle", {
     name: game.i18n.localize("DG.Settings.charactersheet.name"),
@@ -45,14 +47,8 @@ export default function registerSystemSettings() {
     scope: "world", // This specifies a world-stored setting
     config: true, // This specifies that the setting appears in the configuration view
     type: String,
-    choices: {
-      // If choices are defined, the resulting setting will be a select menu
-      1: game.i18n.localize("DG.Settings.improvementroll.1"),
-      "1d3": game.i18n.localize("DG.Settings.improvementroll.2"),
-      "1d4": game.i18n.localize("DG.Settings.improvementroll.3"),
-      "1d4-1": game.i18n.localize("DG.Settings.improvementroll.4"),
-    },
-    default: "1d4", // The default value for the setting, per the most recent errata.
+    choices: DG.skillImprovementFormulas,
+    default: "d4", // The default value for the setting, per the most recent errata.
     onChange: (value) => {
       // A callback function which triggers when the setting is changed
       // console.log(value)
@@ -70,7 +66,7 @@ export default function registerSystemSettings() {
       requiresReload: true,
       type: Boolean,
       default: false,
-    }
+    },
   );
 
   game.settings.register("deltagreen", "showImpossibleLandscapesContent", {

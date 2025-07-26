@@ -1,4 +1,4 @@
-import { DG, BASE_TEMPLATE_PATH } from "../config.js";
+import DG, { BASE_TEMPLATE_PATH } from "../config.js";
 
 const HbsAppMixin = foundry.applications.api.HandlebarsApplicationMixin;
 
