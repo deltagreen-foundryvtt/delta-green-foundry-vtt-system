@@ -306,7 +306,6 @@ export default class DGAgentSheet extends DGActorSheet {
       {
         formula: DGAgentSheet._getSkillImprovementFormulaAsPercent(baseFormula),
       },
-
     );
 
     const chatData = {
