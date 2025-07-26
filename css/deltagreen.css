@@ -130,7 +130,8 @@
 }
 
 input.breaking-point-hit {
-  color: rgb(117, 0, 0);
+  color: rgb(255, 255, 255);
+  background-color: rgb(117, 0, 0);
   font-weight: bold;
 }
 
@@ -603,7 +604,7 @@ div span.bio-grid-label {
 
 .breaking-point-grid-3col {
   display: grid;
-  grid-template-columns: 100px 70px 65px;
+  grid-template-columns: 20% 70px 65px;
   border-top: 0px solid #aaa;
   margin-bottom: 10px;
   border-bottom: 1px solid #aaa;
@@ -616,7 +617,7 @@ div span.bio-grid-label {
 
 .adaptation-grid-5col {
   display: grid;
-  grid-template-columns: 100px 50px 50px 50px 200px;
+  grid-template-columns: 30% 50px 50px 50px 200px;
   margin-top: 10px;
   margin-bottom: 10px;
   align-content: center;
@@ -671,11 +672,15 @@ div .bottom-left-justified-resource {
 }
 
 div .first-aid-received-section {
+  display: grid;
+  grid-template-columns: 40% 70px;
   border-bottom: 1px solid #aaa;
   margin-bottom: 10px;
 }
 
 div .exhausted-section {
+  display: grid;
+  grid-template-columns: 40% 70px;
   border-bottom: 1px solid #aaa;
   margin-bottom: 10px;
 }
