@@ -125,7 +125,7 @@ export default function registerSystemSettings() {
   game.settings.registerMenu(DG.ID, "automation", {
     name: game.i18n.localize(`DG.SettingsMenu.automation.name`),
     label: game.i18n.localize(`DG.SettingsMenu.automation.label`),
-    hint: game.i18n.localize(`DG.SettingsMenu.onlyHandlerHint`),
+    hint: "",
     icon: "fa-solid fa-dice",
     type: AutomationSettings,
     restricted: true
@@ -135,7 +135,7 @@ export default function registerSystemSettings() {
   game.settings.registerMenu(DG.ID, "handler", {
     name: game.i18n.localize(`DG.SettingsMenu.handler.name`),
     label: game.i18n.localize(`DG.SettingsMenu.handler.label`),
-    hint: game.i18n.localize(`DG.SettingsMenu.onlyHandlerHint`),
+    hint: "",
     icon: "fa-solid fa-dice",
     type: HandlerSettings,
     restricted: true

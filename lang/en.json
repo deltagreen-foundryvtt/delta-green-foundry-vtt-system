@@ -406,7 +406,6 @@
   "DG.SettingsMenu.automation.name": "Automation Menu",
   "DG.SettingsMenu.automation.label": "Automation Menu",
 
-  "DG.SettingsMenu.onlyHandlerHint": "These settings are only visible by the handler",
   "DG.SettingsMenu.handler.name": "Handler Settings",
   "DG.SettingsMenu.handler.label": "Handler Settings",
 
