@@ -11,7 +11,7 @@ const SettingForm = class extends HandlebarsApplicationMixin(ApplicationV2) {
   };
 
   static get settings() {
-    return {}
+    throw new Error("This static getter must be defined by a subclass")
   }
 
   static init() {
@@ -31,7 +31,7 @@ const SettingForm = class extends HandlebarsApplicationMixin(ApplicationV2) {
     tag: "form",
     id: `${DG.ID}-setting-form`,
     classes: [DG.ID, "settings-menu"],
-    window: {title:  ``, resizable: true},
+    window: {resizable: true},
     position: {width: 500, height: 'auto'},
     actions: {},
     form: {
@@ -45,13 +45,19 @@ const SettingForm = class extends HandlebarsApplicationMixin(ApplicationV2) {
     form: { template: `systems/${DG.ID}/templates/settings.hbs` },
   }
 
+  /** @override */
   static async onSubmit(event, form, formData) {
     event.preventDefault();
     const data = foundry.utils.expandObject(formData.object);
 
-    for (const key in data) {
-      game.settings.set(DG.ID, key, data[key]);
+    const settingsPromises = [];
+    for (const [key, value] of Object.entries(data)) {
+      settingsPromises.push(game.settings.set(DG.ID, key, value);
     }
+    
+    Promise.allSettled(settingsPromises).then((values) => {
+        ui.notifications.info(game.i18n.localize("DG.Settings.Saved"));
+    });
   }
 
   async _prepareContext(_options) {
@@ -78,6 +84,9 @@ class AutomationSettings extends SettingForm {
 
   static _namespace = "automation";
 
+  static DEFAULT_OPTIONS = {
+    window: { title: "Automation Settings" }
+  };
   static get settings() {
     return {
       skillFailure: {
@@ -91,6 +100,10 @@ class AutomationSettings extends SettingForm {
 class HandlerSettings extends SettingForm {
 
   static _namespace = "handler";
+  
+  static DEFAULT_OPTIONS = {
+    window: { title: "Handler-only Settings" }
+  };
 
   static get settings() {
     return {
