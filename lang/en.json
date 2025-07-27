@@ -396,7 +396,7 @@
   "DG.Settings.skillImprovementFormula.3": "+1D4%",
   "DG.Settings.skillImprovementFormula.4": "+1D4-1%",
   "DG.Settings.alwaysShowHypergeometrySectionForPlayers.name": "Always Show Hypergeometry Section for Players",
-  "DG.Settings.alwaysShowHypergeometrySectionForPlayers.hint": "Always show Hypergeometry item section for players, even if they don't have any items of that type.",
+  "DG.Settings.alwaysShowHypergeometrySectionForPlayers.hint": "Always show Hypergeometry item section (i.e., Rituals and Tomes) on Agent sheets, even if the Agent has no items of those types.",
   "DG.Settings.showImpossibleLandscapesContent.name": "Show Impossible Landscapes Content",
   "DG.Settings.showImpossibleLandscapesContent.hint": "Show Impossible Landscapes-specific fields in Agent sheets. These fields are only ever visible to the Handler, even if this setting is checked.",
   "DG.Settings.skillFailure.name": "Auto-mark Skill Failure",
