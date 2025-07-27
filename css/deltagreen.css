@@ -1296,11 +1296,3 @@ body:not(.no-theme) #interface:not(.theme-light) #action-bar .slot.full:hover {
 .strike {
   text-decoration: line-through;
 }
-
-.settings-menu {
-  footer {
-    position: absolute;
-    left: 10px;
-    bottom: 10px;
-  }
-}

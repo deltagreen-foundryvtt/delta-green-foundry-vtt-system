@@ -22,7 +22,7 @@ const SettingForm = class extends HandlebarsApplicationMixin(ApplicationV2) {
         config: false,
         name: game.i18n.localize(`DG.Settings.${settingID}.name`),
         hint: game.i18n.localize(`DG.Settings.${settingID}.hint`),
-        ...setting,
+        ...settings[settingID],
       });
     }
   }
@@ -43,6 +43,7 @@ const SettingForm = class extends HandlebarsApplicationMixin(ApplicationV2) {
 
   static PARTS = {
     form: { template: `systems/${DG.ID}/templates/settings.hbs` },
+    footer: { template: `systems/${DG.ID}/templates/save.hbs` },
   }
 
   /** @override */
@@ -52,7 +53,7 @@ const SettingForm = class extends HandlebarsApplicationMixin(ApplicationV2) {
 
     const settingsPromises = [];
     for (const [key, value] of Object.entries(data)) {
-      settingsPromises.push(game.settings.set(DG.ID, key, value);
+      settingsPromises.push(game.settings.set(DG.ID, key, value));
     }
     
     Promise.allSettled(settingsPromises).then((values) => {
