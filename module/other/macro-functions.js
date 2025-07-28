@@ -1,5 +1,7 @@
 import * as DGRolls from "../roll/roll.js";
 
+const { fromUuid } = foundry.utils;
+
 /* -------------------------------------------- */
 /*  Hotbar Macros                               */
 /* -------------------------------------------- */

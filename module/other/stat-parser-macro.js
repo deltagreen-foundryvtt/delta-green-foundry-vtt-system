@@ -113,6 +113,7 @@ function GetAttacksFromInput(inputText) {
 
             // look for armor piercing
             if (attackLine.indexOf("ARMOR PIERCING") >= 0) {
+              // TODO: This should do something.
             }
           }
 

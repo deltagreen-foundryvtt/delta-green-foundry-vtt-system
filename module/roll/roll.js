@@ -144,7 +144,7 @@ export class DGPercentileRoll extends DGRoll {
           this.actor.system.settings.rolling.defaultPercentileModifier,
         );
       } catch {
-        /* empty */
+        // do nothing
       }
     }
 
