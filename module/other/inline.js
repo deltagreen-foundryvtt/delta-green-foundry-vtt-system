@@ -1,3 +1,5 @@
+/* eslint-disable import/prefer-default-export */
+
 export async function handleInlineActions(btnWithAction, messageId) {
   const action = btnWithAction.dataset?.action;
   const message = game.messages.get(messageId);
@@ -8,6 +10,7 @@ export async function handleInlineActions(btnWithAction, messageId) {
     const rollbackFlag = message.getFlag("deltagreen", "rollbacks");
     await actor.update(foundry.utils.deepClone(rollbackFlag));
 
+    // eslint-disable-next-line no-use-before-define
     toggleAllSkillFailures(rollbackFlag);
 
     const label = btnWithAction

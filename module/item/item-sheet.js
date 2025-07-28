@@ -116,7 +116,7 @@ export default class DeltaGreenItemSheet extends foundry.appv1.sheets
       key: dataset.key,
       // actor: this,
       specialTrainingName: dataset?.name || null, // Only applies to Special Training Rolls
-      item: this,
+      item: this.item,
     };
 
     // Create a default 1d100 roll just in case.
@@ -133,8 +133,8 @@ export default class DeltaGreenItemSheet extends foundry.appv1.sheets
         roll = new DGLethalityRoll("1D100", {}, rollOptions);
         break;
       case "damage": {
-        let diceFormula = item.system.damage;
-        const { skill } = item.system;
+        let diceFormula = this.item.system.damage;
+        const { skill } = this.item.system;
         if (
           this.actor.type === "agent" &&
           (skill === "unarmed_combat" || skill === "melee_weapons")
@@ -146,10 +146,8 @@ export default class DeltaGreenItemSheet extends foundry.appv1.sheets
         break;
       }
       case "sanity-damage": {
-        let combinedFormula;
-
         const { successLoss, failedLoss } = this.item.system.sanity;
-        combinedFormula = `{${successLoss}, ${failedLoss}}`;
+        const combinedFormula = `{${successLoss}, ${failedLoss}}`;
 
         roll = new DGSanityDamageRoll(combinedFormula, {}, rollOptions);
         break;

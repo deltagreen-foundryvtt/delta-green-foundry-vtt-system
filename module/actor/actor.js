@@ -98,7 +98,9 @@ export default class DeltaGreenActor extends Actor {
 
     try {
       delete system.skills.ritual; // try to remove legacy skill for ritual if it exists
-    } catch {}
+    } catch {
+      // do nothing
+    }
 
     system.sanity.ritual = 99 - system.sanity.value;
 
@@ -189,7 +191,9 @@ export default class DeltaGreenActor extends Actor {
 
     try {
       delete system.skills.ritual; // try to remove legacy skill for ritual if it exists
-    } catch {}
+    } catch {
+      // do nothing
+    }
 
     system.sanity.ritual = 99 - system.sanity.value;
 
