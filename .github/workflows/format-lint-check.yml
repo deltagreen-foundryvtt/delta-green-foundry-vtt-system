@@ -7,23 +7,27 @@ on:
 
 jobs:
   lint:
-    name: Lint and Format Check
+    name: Run ESLint
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-
-      - name: Install dependencies
-        run: npm ci
+      - uses: actions/checkout@v4
+      - name: Node Setup
+        uses: ./.github/actions/setup-node # Set the folder
 
       - name: Run ESLint
         run: npm run lint
 
+  format:
+    name: Run Prettier Format Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Node Setup
+        uses: ./.github/actions/setup-node # Set the folder
+
       - name: Check Prettier formatting
         run: npm run format:check
+
+defaults:
+  run:
+    shell: bash

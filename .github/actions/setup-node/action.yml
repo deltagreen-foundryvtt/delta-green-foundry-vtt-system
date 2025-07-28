@@ -1,0 +1,14 @@
+name: "Setup Node Project"
+description: "Sets up a Node.js project"
+runs:
+  using: "composite"
+  steps:
+    - name: Use Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: "22"
+        cache: npm
+
+    - name: Install dependencies
+      run: npm ci
+      shell: bash
