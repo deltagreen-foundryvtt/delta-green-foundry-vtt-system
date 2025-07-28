@@ -14,15 +14,15 @@ const SettingForm = class extends HandlebarsApplicationMixin(ApplicationV2) {
     throw new Error("This static getter must be defined by a subclass")
   }
 
-  static init() {
+  static register() {
     const { settings } = this;
-    for (const settingID of Object.keys(settings)) {
+    for (const [settingID, setting] of Object.entries(settings)) {
       game.settings.register(DG.ID, settingID, {
         scope: "world",
         config: false,
         name: game.i18n.localize(`DG.Settings.${settingID}.name`),
         hint: game.i18n.localize(`DG.Settings.${settingID}.hint`),
-        ...settings[settingID],
+        ...setting,
       });
     }
   }
@@ -31,7 +31,7 @@ const SettingForm = class extends HandlebarsApplicationMixin(ApplicationV2) {
     tag: "form",
     id: `${DG.ID}-setting-form`,
     classes: [DG.ID, "settings-menu"],
-    window: {resizable: true},
+    window: {contentClasses: ["standard-form"], resizable: true},
     position: {width: 500, height: 'auto'},
     actions: {},
     form: {
@@ -141,7 +141,7 @@ export default function registerSystemSettings() {
     type: AutomationSettings,
     restricted: true
   });
-  AutomationSettings.init();
+  AutomationSettings.register();
 
   game.settings.registerMenu(DG.ID, "handler", {
     name: game.i18n.localize(`DG.SettingsMenu.handler.name`),
@@ -151,7 +151,7 @@ export default function registerSystemSettings() {
     type: HandlerSettings,
     restricted: true
   });
-  HandlerSettings.init();
+  HandlerSettings.register();
 
   game.settings.register("deltagreen", "characterSheetStyle", {
     name: game.i18n.localize("DG.Settings.charactersheet.name"),
