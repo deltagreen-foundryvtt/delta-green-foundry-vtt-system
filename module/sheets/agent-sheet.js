@@ -225,7 +225,6 @@ export default class DGAgentSheet extends DGActorSheet {
           icon: "<i class='fas fa-check'></i>"
         }
       ],
-      default: "apply"
     });
   }
 
