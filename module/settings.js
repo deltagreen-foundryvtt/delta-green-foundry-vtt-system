@@ -92,8 +92,8 @@ const SettingForm = class extends HandlebarsApplicationMixin(ApplicationV2) {
   }
 
   /** @override */
-  _onRender(options) {
-    super._onRender(options);
+  _onFirstRender(options) {
+    super._onFirstRender(options);
 
     this._attachFormGroupHTML();
   }
