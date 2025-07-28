@@ -7,7 +7,7 @@ const SettingForm = class extends HandlebarsApplicationMixin(ApplicationV2) {
   static _namespace;
 
   static get namespace() {
-    return this.constructor._namespace;
+    return this._namespace;
   }
 
   static get settings() {
@@ -27,9 +27,10 @@ const SettingForm = class extends HandlebarsApplicationMixin(ApplicationV2) {
     }
   }
 
+  /** @override */
   static DEFAULT_OPTIONS = {
     tag: "form",
-    id: `dg-settings`,
+    id: "deltagreen-settings",
     classes: [DG.ID, "settings-menu"],
     window: { contentClasses: ["standard-form"], resizable: true },
     position: { width: 500, height: "auto" },
@@ -41,6 +42,7 @@ const SettingForm = class extends HandlebarsApplicationMixin(ApplicationV2) {
     },
   };
 
+  /** @override */
   static PARTS = {
     form: { template: `systems/${DG.ID}/templates/settings.hbs` },
     footer: { template: `systems/${DG.ID}/templates/save.hbs` },
@@ -128,7 +130,7 @@ class AutomationSettings extends SettingForm {
   static _namespace = "automation";
 
   static DEFAULT_OPTIONS = {
-    id: `${super.DEFAULT_OPTIONS.id}-automation`,
+    id: `${super.DEFAULT_OPTIONS.id}-${this.namespace ?? ""}`,
     window: { title: "Automation Settings" },
   };
 
@@ -146,7 +148,7 @@ class HandlerSettings extends SettingForm {
   static _namespace = "handler";
 
   static DEFAULT_OPTIONS = {
-    id: `${super.DEFAULT_OPTIONS.id}-handler`,
+    id: `${super.DEFAULT_OPTIONS.id}-${this.namespace ?? ""}`,
     window: { title: "Handler-only Settings" },
   };
 
