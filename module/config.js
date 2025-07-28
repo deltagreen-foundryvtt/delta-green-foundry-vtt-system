@@ -52,10 +52,10 @@ const DG = /** @type {const} */ ({
 
   skillImprovementFormulas: {
     // If choices are defined, the resulting setting will be a select menu
-    1: "DG.Settings.improvementroll.1",
-    d3: "DG.Settings.improvementroll.2",
-    d4: "DG.Settings.improvementroll.3",
-    "d4-1": "DG.Settings.improvementroll.4",
+    1: "DG.Settings.skillImprovementFormula.1",
+    d3: "DG.Settings.skillImprovementFormula.2",
+    d4: "DG.Settings.skillImprovementFormula.3",
+    "d4-1": "DG.Settings.skillImprovementFormula.4",
   },
 
   // All the base rollable stats.
