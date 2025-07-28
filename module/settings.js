@@ -81,7 +81,7 @@ const SettingForm = class extends HandlebarsApplicationMixin(ApplicationV2) {
 
     const settingsPromises = [];
     // Set each setting with the new value, if any.
-    for (const [key, value] of Object.entries(data)) {
+    for (const [key, value] of Object.entries(data[DG.ID])) {
       settingsPromises.push(game.settings.set(DG.ID, key, value));
     }
 
