@@ -56,7 +56,7 @@ const SettingForm = class extends HandlebarsApplicationMixin(ApplicationV2) {
   /** @override */
   static DEFAULT_OPTIONS = {
     tag: "form",
-    id: "deltagreen-settings",
+    id: "dg-settings",
     classes: [DG.ID, "settings-menu"],
     window: { contentClasses: ["standard-form"], resizable: true },
     position: { width: 500, height: "auto" },
@@ -70,7 +70,6 @@ const SettingForm = class extends HandlebarsApplicationMixin(ApplicationV2) {
 
   /** @override */
   static PARTS = {
-    form: { template: `systems/${DG.ID}/templates/settings.hbs` },
     footer: { template: `systems/${DG.ID}/templates/save.hbs` },
   };
 
@@ -93,9 +92,34 @@ const SettingForm = class extends HandlebarsApplicationMixin(ApplicationV2) {
   }
 
   /** @override */
-  async _prepareContext(_options) {
-    const context = await super._prepareContext(_options);
+  _onRender(options) {
+    super._onRender(options);
 
+    this._attachFormGroupHTML();
+  }
+
+  /**
+   * Populate the window content section with form groups representing the settings.
+   * @returns {void}
+   */
+  _attachFormGroupHTML() {
+    const windowContent = this.element.querySelector("section.window-content");
+    const formGroupString = this._prepareFormGroupElements()
+      .map((formGroup) => formGroup.outerHTML)
+      .join("");
+
+    // Create a div element whose inner html is the form groups (as a string of HTML),
+    // and prepend it to the window content.
+    const div = document.createElement("div");
+    div.innerHTML = formGroupString;
+    windowContent.prepend(div);
+  }
+
+  /**
+   * Generates an array of form groups, each corresponding to a setting in a menu.
+   * @returns {HTMLDivElement[]} An array of form group HTML elements.
+   */
+  _prepareFormGroupElements() {
     // Get Foundry's built-in input creation functions.
     const {
       createCheckboxInput,
@@ -104,7 +128,7 @@ const SettingForm = class extends HandlebarsApplicationMixin(ApplicationV2) {
       createTextInput,
       createFormGroup,
     } = foundry.applications.fields;
-    context.formGroups = [];
+    const formGroups = [];
 
     // Iterate over each setting and create the appropriate input element.
     const { settings } = this.constructor;
@@ -153,7 +177,7 @@ const SettingForm = class extends HandlebarsApplicationMixin(ApplicationV2) {
 
       // Create a Form Group, which generates all of the HTML for a single setting.
       // It includes a label and hint.
-      context.formGroups.push(
+      formGroups.push(
         createFormGroup({
           input,
           hint: settingConfig.hint,
@@ -164,7 +188,7 @@ const SettingForm = class extends HandlebarsApplicationMixin(ApplicationV2) {
       );
     }
 
-    return context;
+    return formGroups;
   }
 };
 
