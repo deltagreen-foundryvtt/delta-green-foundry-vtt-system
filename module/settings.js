@@ -3,17 +3,43 @@ import DG from "./config.js";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
+/**
+ * Base class for all setting forms.
+ *
+ * Note: This class is abstract and should not be instantiated directly.
+ *
+ * @extends {ApplicationV2}
+ */
 const SettingForm = class extends HandlebarsApplicationMixin(ApplicationV2) {
-  static _namespace;
+  /** @type {"automation"|"handler"|null} */
+  static _namespace = null;
 
+  /**
+   * The namespace for the settings defined by this class. This is necessary
+   * to register the settings with the game.
+   *
+   * @returns {string}
+   */
   static get namespace() {
     return this._namespace;
   }
 
+  /**
+   * A getter that returns an object with all the settings defined by the subclass.
+   * Used to register settings with the game.
+   *
+   * @abstract
+   * @returns {object} An object with all the settings defined by the subclass
+   * @throws Will throw an error if this method is not defined by a subclass.
+   */
   static get settings() {
     throw new Error("This static getter must be defined by a subclass");
   }
 
+  /**
+   * Registers the settings for each defined SettingForm subclass.
+   * @returns {void}
+   */
   static register() {
     const { settings } = this;
     for (const [settingID, setting] of Object.entries(settings)) {
@@ -63,6 +89,7 @@ const SettingForm = class extends HandlebarsApplicationMixin(ApplicationV2) {
     });
   }
 
+  /** @override */
   async _prepareContext(_options) {
     const context = await super._prepareContext(_options);
 
@@ -84,8 +111,10 @@ const SettingForm = class extends HandlebarsApplicationMixin(ApplicationV2) {
         label: settingConfig.name,
       };
 
+      // Use Foundry's built-in <input>/<select> creation functions.
       let input;
       if (settingConfig.type === String && settingConfig.choices) {
+        // Select Input
         const choices = Object.entries(settingConfig.choices);
         const options = choices.map(([value, label]) => ({
           value,
@@ -97,20 +126,25 @@ const SettingForm = class extends HandlebarsApplicationMixin(ApplicationV2) {
           localize: true,
         });
       } else if (settingConfig.type === String) {
+        // Text Input
         input = createTextInput({
           ...inputConfig,
         });
       } else if (settingConfig.type === Number) {
+        // Number Input
         input = createNumberInput({
           ...inputConfig,
           ...settingConfig.range,
         });
       } else if (settingConfig.type === Boolean) {
+        // Checkbox
         input = createCheckboxInput({
           ...inputConfig,
         });
       }
 
+      // Create a Form Group, which generates all of the HTML for a single setting.
+      // It includes a label and hint.
       context.formGroups.push(
         createFormGroup({
           input,
@@ -126,14 +160,22 @@ const SettingForm = class extends HandlebarsApplicationMixin(ApplicationV2) {
   }
 };
 
+/**
+ * Defines the Automation Settings form.
+ *
+ * @extends {SettingForm}
+ */
 class AutomationSettings extends SettingForm {
+  /** @override */
   static _namespace = "automation";
 
+  /** @override */
   static DEFAULT_OPTIONS = {
     id: `${super.DEFAULT_OPTIONS.id}-${this.namespace ?? ""}`,
     window: { title: "Automation Settings" },
   };
 
+  /** @override */
   static get settings() {
     return {
       skillFailure: {
@@ -144,14 +186,22 @@ class AutomationSettings extends SettingForm {
   }
 }
 
+/**
+ * Defines the Handler-only Settings form.
+ *
+ * @extends {SettingForm}
+ */
 class HandlerSettings extends SettingForm {
+  /** @override */
   static _namespace = "handler";
 
+  /** @override */
   static DEFAULT_OPTIONS = {
     id: `${super.DEFAULT_OPTIONS.id}-${this.namespace ?? ""}`,
     window: { title: "Handler-only Settings" },
   };
 
+  /** @override */
   static get settings() {
     return {
       alwaysShowHypergeometrySectionForPlayers: {
