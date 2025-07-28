@@ -1,5 +1,5 @@
 /* eslint-disable max-classes-per-file */
-import DG from "./config.js";
+import DG, { BASE_TEMPLATE_PATH } from "./config.js";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
@@ -70,7 +70,7 @@ const SettingForm = class extends HandlebarsApplicationMixin(ApplicationV2) {
 
   /** @override */
   static PARTS = {
-    footer: { template: `systems/${DG.ID}/templates/save.hbs` },
+    footer: { template: `${BASE_TEMPLATE_PATH}/save.hbs` },
   };
 
   /** @override */
