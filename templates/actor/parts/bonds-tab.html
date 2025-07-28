@@ -35,7 +35,8 @@
                     <li class="item flexrow" data-item-id="{{item.id}}">
                         <input class="item-bond-damage"
                                type="checkbox"
-                               data-action="toggleBondDamage"
+                               data-action="toggle"
+                               data-prop="system.hasBeenDamagedSinceLastHomeScene"
                                title="Check if bond has been damaged since last home scene."
                                {{checked item.system.hasBeenDamagedSinceLastHomeScene}} />
                         <div class="item-image">

@@ -1,4 +1,4 @@
-import DG from "./config.js";
+import DG, { BASE_TEMPLATE_PATH } from "../config.js";
 
 const HbsAppMixin = foundry.applications.api.HandlebarsApplicationMixin;
 
@@ -11,8 +11,7 @@ const DGSheetMixin = (Base) => {
       form: { submitOnChange: true },
     });
 
-    /** @inheritdoc */
-    static TEMPLATE_PATH = /** @type {const} */ (`systems/${DG.ID}/templates`);
+    static TEMPLATE_PATH = BASE_TEMPLATE_PATH;
 
     static get THEME() {
       return game.settings.get(DG.ID, "characterSheetStyle");

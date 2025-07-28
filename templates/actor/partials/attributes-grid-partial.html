@@ -1,35 +1,40 @@
-<div class="grid grid-3col">
-    {{#each actor.system.statistics as |statistic key| }}
-        <div class="flex-group-center flex-mid-border">
-            <div>
-                <div class="physical-stats-outer-grid-3col">
-                    <label class="rollable resource-label"
-                           data-action="roll"
-                           data-rolltype="stat"
-                           data-key="{{key}}"
-                           data-tooltip="{{localize (concat 'DG.Attributes.Tooltip.' key)}}"
-                           for="system.statistics.{{key}}.value">
-                        {{localize (concat 'DG.Attributes.' key)}}
-                    </label>
-                    <input class="centered"
-                           type="text"
-                           name="system.statistics.{{key}}.value"
-                           value="{{statistic.value}}"
-                           data-dtype="Number" />
-                    <span class="rollable"
-                          data-action="roll"
-                          data-rolltype="stat"
-                          data-key="{{key}}"
-                          title="{{localize 'DG.Tooltip.x5AttributeLabel'}}">({{numberFormat statistic.x5 decimals=0 sign=false}}% <i class="fas fa-dice"></i>)</span>
-                </div>
+<section class="attributes-wrapper">
+    <div class="horizontal-bar-section-divider">
+        <span>{{physicalAttributesTitle}}</span>
+    </div>
+    <div class="grid grid-3col">
+        {{#each actor.system.statistics as |statistic key| }}
+            <div class="flex-group-center flex-mid-border">
                 <div>
-                    <input type="text"
-                           name="system.statistics.{{key}}.distinguishing_feature"
-                           value="{{statistic.distinguishing_feature}}"
-                           data-dtype="String"
-                           title="{{localize 'DG.Tooltip.DistinguishingFeature'}}" />
+                    <div class="physical-stats-outer-grid-3col">
+                        <label class="rollable resource-label"
+                               data-action="roll"
+                               data-rolltype="stat"
+                               data-key="{{key}}"
+                               data-tooltip="{{localize (concat 'DG.Attributes.Tooltip.' key)}}"
+                               for="system.statistics.{{key}}.value">
+                            {{localize (concat 'DG.Attributes.' key)}}
+                        </label>
+                        <input class="centered"
+                               type="text"
+                               name="system.statistics.{{key}}.value"
+                               value="{{statistic.value}}"
+                               data-dtype="Number" />
+                        <span class="rollable"
+                              data-action="roll"
+                              data-rolltype="stat"
+                              data-key="{{key}}"
+                              title="{{localize 'DG.Tooltip.x5AttributeLabel'}}">({{numberFormat statistic.x5 decimals=0 sign=false}}% <i class="fas fa-dice"></i>)</span>
+                    </div>
+                    <div>
+                        <input type="text"
+                               name="system.statistics.{{key}}.distinguishing_feature"
+                               value="{{statistic.distinguishing_feature}}"
+                               data-dtype="String"
+                               title="{{localize 'DG.Tooltip.DistinguishingFeature'}}" />
+                    </div>
                 </div>
             </div>
-        </div>
-    {{/each}}
-</div>
+        {{/each}}
+    </div>
+</section>

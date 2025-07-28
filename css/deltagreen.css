@@ -48,6 +48,13 @@
   input[type="checkbox"]:checked::before {
     color: black; /* Override for when in Foundry's dark mode */
   }
+
+  input[type="text"],
+  input[type="number"],
+  input[type="password"] {
+    height: unset;
+    line-height: 1.5rem;
+  }
 }
 
 /* Character Sheet Style Options */
@@ -123,7 +130,8 @@
 }
 
 input.breaking-point-hit {
-  color: rgb(117, 0, 0);
+  color: rgb(255, 255, 255);
+  background-color: rgb(117, 0, 0);
   font-weight: bold;
 }
 
@@ -345,8 +353,8 @@ explicitly define a number of rows, rather than columns. */
   border-top: transparent !important;
 }
 .deltagreen .tabs {
-  height: auto;
-  line-height: 2;
+  height: 1.5rem;
+  line-height: 1.5rem;
   text-align: center;
   vertical-align: middle;
   margin-bottom: 0px !important;
@@ -357,8 +365,9 @@ explicitly define a number of rows, rather than columns. */
   font-weight: bold;
   color: inherit;
   vertical-align: middle !important;
+  height: inherit;
   line-height: inherit;
-  padding: 5px 10px 0px 10px;
+  padding-inline: 10px;
   border-radius: 5px 5px 0px 0px;
   border-color: #000;
   border: gray;
@@ -595,7 +604,7 @@ div span.bio-grid-label {
 
 .breaking-point-grid-3col {
   display: grid;
-  grid-template-columns: 100px 70px 65px;
+  grid-template-columns: 20% 70px 65px;
   border-top: 0px solid #aaa;
   margin-bottom: 10px;
   border-bottom: 1px solid #aaa;
@@ -608,7 +617,7 @@ div span.bio-grid-label {
 
 .adaptation-grid-5col {
   display: grid;
-  grid-template-columns: 100px 50px 50px 50px 200px;
+  grid-template-columns: 30% 50px 50px 50px 200px;
   margin-top: 10px;
   margin-bottom: 10px;
   align-content: center;
@@ -663,11 +672,15 @@ div .bottom-left-justified-resource {
 }
 
 div .first-aid-received-section {
+  display: grid;
+  grid-template-columns: 40% 70px;
   border-bottom: 1px solid #aaa;
   margin-bottom: 10px;
 }
 
 div .exhausted-section {
+  display: grid;
+  grid-template-columns: 40% 70px;
   border-bottom: 1px solid #aaa;
   margin-bottom: 10px;
 }
@@ -744,7 +757,7 @@ div.max-resource-value {
 
 .physical-stats-outer-grid-3col {
   display: grid;
-  grid-template-columns: 33% 34% 33%;
+  grid-template-columns: 1fr 1fr 1fr;
   align-items: center;
   justify-content: center;
   text-align: center;
@@ -755,6 +768,10 @@ div.max-resource-value {
 .physical-stats-and-feature {
   border-radius: 2px;
   border: 1.5px solid #000000;
+}
+
+.attributes-wrapper {
+  margin-block-end: 12px;
 }
 
 div.horizontal-bar-section-divider {
@@ -773,7 +790,7 @@ div.horizontal-bar-section-divider {
   border-radius: 3px 3px 3px 3px;
 }
 
-div.horizontal-bar-section-divider.contains-hide-button {
+div.horizontal-bar-section-divider.skills-header {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   justify-content: center;
@@ -789,7 +806,7 @@ div.horizontal-bar-section-divider.contains-hide-button {
   border-radius: 3px 3px 3px 3px;
 }
 
-.horizontal-bar-section-divider .contains-hide-button-title {
+.horizontal-bar-section-divider .skills-header-title {
   grid-column: 2;
 }
 
@@ -817,6 +834,11 @@ div.horizontal-bar-section-header {
   font-weight: bold;
 }
 
+.notes-wrapper {
+  height: 100%;
+  margin-block-start: 12px;
+}
+
 div.motivation-editor-container div.editor {
   height: 400px;
   min-height: 100% !important;
@@ -824,6 +846,7 @@ div.motivation-editor-container div.editor {
 
 .deltagreen .editor-host {
   align-items: stretch;
+  height: 100%;
 }
 
 .deltagreen .editor-host .editor {
@@ -1268,11 +1291,6 @@ body:not(.no-theme) #interface:not(.theme-light) #action-bar .slot.full:hover {
   height: 20px;
   margin-left: 5px;
   font-size: 12px;
-}
-
-[data-tooltip] {
-  position: relative;
-  cursor: pointer;
 }
 
 .strike {

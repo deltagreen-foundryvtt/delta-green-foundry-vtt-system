@@ -50,8 +50,20 @@ const DG = /** @type {const} */ ({
     "ritual",
   ],
 
+  skillImprovementFormulas: {
+    // If choices are defined, the resulting setting will be a select menu
+    1: "DG.Settings.improvementroll.1",
+    d3: "DG.Settings.improvementroll.2",
+    d4: "DG.Settings.improvementroll.3",
+    "d4-1": "DG.Settings.improvementroll.4",
+  },
+
   // All the base rollable stats.
   statistics: ["str", "con", "dex", "int", "pow", "cha"],
 });
 
+// Set base template path for single source of truth for hbs locations.
+const BASE_TEMPLATE_PATH = /** @type {const} */ (`systems/${DG.ID}/templates`);
+
 export default DG;
+export { BASE_TEMPLATE_PATH };

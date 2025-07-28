@@ -1,7 +1,7 @@
 // Import Modules
 import DG from "./config.js";
 import DeltaGreenActor from "./actor/actor.js";
-import DeltaGreenActorSheet from "./actor/actor-sheet.js";
+import DGAgentSheet from "./sheets/agent-sheet.js";
 import DeltaGreenItem from "./item/item.js";
 import DeltaGreenItemSheet from "./item/item-sheet.js";
 import * as DGRolls from "./roll/roll.js";
@@ -17,6 +17,9 @@ import {
   rollSkillTestAndDamageForOwnedItem,
 } from "./other/macro-functions.js";
 import { handleInlineActions } from "./other/inline.js";
+import DGNPCSheet from "./sheets/npc-sheet.js";
+import DGUnnaturalSheet from "./sheets/unnatural-sheet.js";
+import DGVehicleSheet from "./sheets/vehicle-sheet.js";
 
 const { Actors, Items } = foundry.documents.collections;
 
@@ -50,13 +53,26 @@ Hooks.once("init", async () => {
   CONFIG.Actor.documentClass = DeltaGreenActor;
   CONFIG.Item.documentClass = DeltaGreenItem;
 
-  // Register sheet application classes
+  // Unregister core sheets.
   Actors.unregisterSheet("core", foundry.appv1.sheets.ActorSheet);
   Items.unregisterSheet("core", foundry.appv1.sheets.ItemSheet);
-  Actors.registerSheet(DG.ID, DeltaGreenActorSheet, {
-    makeDefault: true,
-    themes: null,
+
+  // Register all actor sheets.
+  const sheetClassMap = {
+    agent: DGAgentSheet,
+    npc: DGNPCSheet,
+    unnatural: DGUnnaturalSheet,
+    vehicle: DGVehicleSheet,
+  };
+  Object.entries(sheetClassMap).forEach(([actorType, SheetClass]) => {
+    Actors.registerSheet(DG.ID, SheetClass, {
+      makeDefault: true,
+      themes: null,
+      types: [actorType],
+    });
   });
+
+  // Register item sheet.
   Items.registerSheet(DG.ID, DeltaGreenItemSheet, {
     makeDefault: true,
     themes: null,
@@ -199,9 +215,9 @@ Hooks.on("renderGamePause", function (_, html, options) {
 Hooks.on("renderChatLog", async (app, element, context, options) => {
   element.addEventListener("click", (event) => {
     const btnWithAction = event.target.closest("button[data-action]");
-    const message = event.target.closest("li[data-message-id]")
+    const message = event.target.closest("li[data-message-id]");
 
-    const { messageId } = message?.dataset || {}
+    const { messageId } = message?.dataset || {};
     if (btnWithAction && messageId) {
       handleInlineActions(btnWithAction, messageId);
     }

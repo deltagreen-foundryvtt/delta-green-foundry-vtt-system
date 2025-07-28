@@ -120,7 +120,9 @@ export default class DeltaGreenActor extends Actor {
 
     system.health.protection = protection;
 
-    //console.log(actor);
+    for (const [_key, skill] of Object.entries(system.skills)) {
+      skill.targetProficiency = skill.proficiency;
+    }
   }
 
   /**
@@ -148,7 +150,9 @@ export default class DeltaGreenActor extends Actor {
 
     system.health.protection = protection;
 
-    //console.log(actor);
+    for (const [_key, skill] of Object.entries(system.skills)) {
+      skill.targetProficiency = skill.proficiency;
+    }
   }
 
   /**
