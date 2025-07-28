@@ -1,17 +1,17 @@
+/* eslint-disable max-classes-per-file */
 import DG from "./config.js";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 const SettingForm = class extends HandlebarsApplicationMixin(ApplicationV2) {
-
   static _namespace;
 
   static get namespace() {
-    return this.constructor._namespace
-  };
+    return this.constructor._namespace;
+  }
 
   static get settings() {
-    throw new Error("This static getter must be defined by a subclass")
+    throw new Error("This static getter must be defined by a subclass");
   }
 
   static register() {
@@ -29,22 +29,22 @@ const SettingForm = class extends HandlebarsApplicationMixin(ApplicationV2) {
 
   static DEFAULT_OPTIONS = {
     tag: "form",
-    id: `${DG.ID}-setting-form`,
+    id: `dg-settings`,
     classes: [DG.ID, "settings-menu"],
-    window: {contentClasses: ["standard-form"], resizable: true},
-    position: {width: 500, height: 'auto'},
+    window: { contentClasses: ["standard-form"], resizable: true },
+    position: { width: 500, height: "auto" },
     actions: {},
     form: {
       handler: this.onSubmit,
       submitOnChange: false,
-      closeOnSubmit: false
-    }
+      closeOnSubmit: false,
+    },
   };
 
   static PARTS = {
     form: { template: `systems/${DG.ID}/templates/settings.hbs` },
     footer: { template: `systems/${DG.ID}/templates/save.hbs` },
-  }
+  };
 
   /** @override */
   static async onSubmit(event, form, formData) {
@@ -55,55 +55,99 @@ const SettingForm = class extends HandlebarsApplicationMixin(ApplicationV2) {
     for (const [key, value] of Object.entries(data)) {
       settingsPromises.push(game.settings.set(DG.ID, key, value));
     }
-    
+
     Promise.allSettled(settingsPromises).then((values) => {
-        ui.notifications.info(game.i18n.localize("DG.Settings.Saved"));
+      ui.notifications.info(game.i18n.localize("DG.Settings.Saved"));
     });
   }
 
   async _prepareContext(_options) {
-    let context = await super._prepareContext(_options);
-    context.settings = Object.entries(this.constructor.settings).reduce(function (obj, [key, setting]) {
-      obj[key] = {
-        ...setting,
-        key,
-        name: `DG.Settings.${key}.name`,
-        hint: `DG.Settings.${key}.hint`,
-        value: game.settings.get(DG.ID, key),
-        isSelect: !!setting.choices,
-        isNumber: setting.type === Number,
-        isString: setting.type === String,
-        isCheckbox: setting.type === Boolean,
+    const context = await super._prepareContext(_options);
+
+    const {
+      createCheckboxInput,
+      createNumberInput,
+      createSelectInput,
+      createTextInput,
+      createFormGroup,
+    } = foundry.applications.fields;
+    context.formGroups = [];
+
+    const { settings } = this.constructor;
+    for (const settingID of Object.keys(settings)) {
+      const settingConfig = game.settings.settings.get(`${DG.ID}.${settingID}`); // The setting config object, not the value.
+      const inputConfig = {
+        name: `${DG.ID}.${settingID}`,
+        value: game.settings.get(DG.ID, settingID), // The value that the setting is currently set to.
+        label: settingConfig.name,
       };
-      return obj;
-    }, {});
+
+      let input;
+      if (settingConfig.type === String && settingConfig.choices) {
+        const choices = Object.entries(settingConfig.choices);
+        const options = choices.map(([value, label]) => ({
+          value,
+          label,
+        }));
+        input = createSelectInput({
+          ...inputConfig,
+          options,
+          localize: true,
+        });
+      } else if (settingConfig.type === String) {
+        input = createTextInput({
+          ...inputConfig,
+        });
+      } else if (settingConfig.type === Number) {
+        input = createNumberInput({
+          ...inputConfig,
+          ...settingConfig.range,
+        });
+      } else if (settingConfig.type === Boolean) {
+        input = createCheckboxInput({
+          ...inputConfig,
+        });
+      }
+
+      context.formGroups.push(
+        createFormGroup({
+          input,
+          hint: settingConfig.hint,
+          label: settingConfig.name,
+          localize: true,
+          rootId: this.options.id,
+        }),
+      );
+    }
+
     return context;
   }
-}
+};
 
 class AutomationSettings extends SettingForm {
-
   static _namespace = "automation";
 
   static DEFAULT_OPTIONS = {
-    window: { title: "Automation Settings" }
+    id: `${super.DEFAULT_OPTIONS.id}-automation`,
+    window: { title: "Automation Settings" },
   };
+
   static get settings() {
     return {
       skillFailure: {
         default: false,
         type: Boolean,
-      }
+      },
     };
   }
 }
 
 class HandlerSettings extends SettingForm {
-
   static _namespace = "handler";
-  
+
   static DEFAULT_OPTIONS = {
-    window: { title: "Handler-only Settings" }
+    id: `${super.DEFAULT_OPTIONS.id}-handler`,
+    window: { title: "Handler-only Settings" },
   };
 
   static get settings() {
@@ -139,7 +183,7 @@ export default function registerSystemSettings() {
     hint: "",
     icon: "fa-solid fa-dice",
     type: AutomationSettings,
-    restricted: true
+    restricted: true,
   });
   AutomationSettings.register();
 
@@ -149,7 +193,7 @@ export default function registerSystemSettings() {
     hint: "",
     icon: "fa-solid fa-dice",
     type: HandlerSettings,
-    restricted: true
+    restricted: true,
   });
   HandlerSettings.register();
 
