@@ -205,7 +205,7 @@ class AutomationSettings extends SettingForm {
   /** @override */
   static DEFAULT_OPTIONS = {
     id: `${super.DEFAULT_OPTIONS.id}-${this.namespace ?? ""}`,
-    window: { title: "Automation Settings" },
+    window: { title: "DG.SettingsMenu.automation.title" },
   };
 
   /** @override */
@@ -231,7 +231,7 @@ class HandlerSettings extends SettingForm {
   /** @override */
   static DEFAULT_OPTIONS = {
     id: `${super.DEFAULT_OPTIONS.id}-${this.namespace ?? ""}`,
-    window: { title: "Handler-only Settings" },
+    window: { title: "DG.SettingsMenu.handler.title" },
   };
 
   /** @override */

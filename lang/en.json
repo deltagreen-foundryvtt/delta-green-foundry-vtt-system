@@ -395,18 +395,21 @@
   "DG.Settings.skillImprovementFormula.2": "+1D3%",
   "DG.Settings.skillImprovementFormula.3": "+1D4%",
   "DG.Settings.skillImprovementFormula.4": "+1D4-1%",
-  "DG.Settings.alwaysShowHypergeometrySectionForPlayers.name": "Always Show Hypergeometry Section for Players",
+  "DG.Settings.alwaysShowHypergeometrySectionForPlayers.name": "Show Hypergeometry Section",
   "DG.Settings.alwaysShowHypergeometrySectionForPlayers.hint": "Always show Hypergeometry item section (i.e., Rituals and Tomes) on Agent sheets, even if the Agent has no items of those types.",
   "DG.Settings.showImpossibleLandscapesContent.name": "Show Impossible Landscapes Content",
   "DG.Settings.showImpossibleLandscapesContent.hint": "Show Impossible Landscapes-specific fields in Agent sheets. These fields are only ever visible to the Handler, even if this setting is checked.",
   "DG.Settings.skillFailure.name": "Auto-mark Skill Failure",
   "DG.Settings.skillFailure.hint": "Activate this setting to always mark a failure checkbox upon failing a skill. The Handler can undo the action from the chat message for the roll.",
+  "DG.Settings.Saved": "The current settings have been saved.",
 
   "DG.SettingsMenu.automation.name": "Automation Menu",
   "DG.SettingsMenu.automation.label": "Automation Menu",
+  "DG.SettingsMenu.automation.title": "Automation Settings",
 
   "DG.SettingsMenu.handler.name": "Handler Settings",
   "DG.SettingsMenu.handler.label": "Handler Settings",
+  "DG.SettingsMenu.handler.title": "Handler-only Settings",
 
   "DG.Messages.Skillsmark.Marked": "This skill is marked",
   "DG.Messages.Skillsmark.Tooltip": "See p. 29 Agent's Handbook"
