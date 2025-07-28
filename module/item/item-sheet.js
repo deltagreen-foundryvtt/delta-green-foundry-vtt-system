@@ -44,14 +44,14 @@ export default class DeltaGreenItemSheet extends foundry.appv1.sheets
     data.enrichedDescription =
       await foundry.applications.ux.TextEditor.implementation.enrichHTML(
         this.object.system.description,
-        { async: true }
+        { async: true },
       );
 
     if (data.item.type === "tome" || data.item.type === "ritual") {
       data.enrichedHandlerNotes =
         await foundry.applications.ux.TextEditor.implementation.enrichHTML(
           this.object.system.handlerNotes,
-          { async: true }
+          { async: true },
         );
     }
 
@@ -110,11 +110,11 @@ export default class DeltaGreenItemSheet extends foundry.appv1.sheets
       return;
     }
 
-    //const item = this.actor.items.get(dataset.iid);
+    // const item = this.actor.items.get(dataset.iid);
     const rollOptions = {
       rollType: dataset.rolltype,
       key: dataset.key,
-      //actor: this,
+      // actor: this,
       specialTrainingName: dataset?.name || null, // Only applies to Special Training Rolls
       item: this,
     };
