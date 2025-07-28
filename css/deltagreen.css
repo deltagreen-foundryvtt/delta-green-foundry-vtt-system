@@ -474,6 +474,16 @@ explicitly define a number of rows, rather than columns. */
   background-color: rgba(0, 0, 0, 0.185);
 }
 
+.deltagreen[id^="dg-settings"] {
+  .window-content > div.flexcol {
+    gap: 1rem;
+  }
+
+  .form-group label {
+    flex: unset;
+  }
+}
+
 a.btn-tiny {
   height: 26px;
   margin-left: 5px;

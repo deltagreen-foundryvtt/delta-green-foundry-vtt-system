@@ -111,6 +111,7 @@ const SettingForm = class extends HandlebarsApplicationMixin(ApplicationV2) {
     // Create a div element whose inner html is the form groups (as a string of HTML),
     // and prepend it to the window content.
     const div = document.createElement("div");
+    div.classList.add("flexcol");
     div.innerHTML = formGroupString;
     windowContent.prepend(div);
   }
