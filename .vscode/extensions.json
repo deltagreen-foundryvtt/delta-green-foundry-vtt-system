@@ -4,6 +4,7 @@
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
     "monosans.djlint",
+    "DavidAnson.vscode-markdownlint",
     "EditorConfig.EditorConfig"
   ],
   "unwantedRecommendations": []
