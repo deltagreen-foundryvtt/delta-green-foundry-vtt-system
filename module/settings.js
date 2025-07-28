@@ -77,13 +77,16 @@ const SettingForm = class extends HandlebarsApplicationMixin(ApplicationV2) {
   /** @override */
   static async onSubmit(event, form, formData) {
     event.preventDefault();
+    // Get form data into a standard object.
     const data = foundry.utils.expandObject(formData.object);
 
     const settingsPromises = [];
+    // Set each setting with the new value, if any.
     for (const [key, value] of Object.entries(data)) {
       settingsPromises.push(game.settings.set(DG.ID, key, value));
     }
 
+    // Once all promises resolve, show a notification.
     Promise.allSettled(settingsPromises).then((values) => {
       ui.notifications.info(game.i18n.localize("DG.Settings.Saved"));
     });
@@ -93,6 +96,7 @@ const SettingForm = class extends HandlebarsApplicationMixin(ApplicationV2) {
   async _prepareContext(_options) {
     const context = await super._prepareContext(_options);
 
+    // Get Foundry's built-in input creation functions.
     const {
       createCheckboxInput,
       createNumberInput,
@@ -102,9 +106,13 @@ const SettingForm = class extends HandlebarsApplicationMixin(ApplicationV2) {
     } = foundry.applications.fields;
     context.formGroups = [];
 
+    // Iterate over each setting and create the appropriate input element.
     const { settings } = this.constructor;
     for (const settingID of Object.keys(settings)) {
-      const settingConfig = game.settings.settings.get(`${DG.ID}.${settingID}`); // The setting config object, not the value.
+      // The setting config object, not the value of the setting itself.
+      const settingConfig = game.settings.settings.get(`${DG.ID}.${settingID}`);
+
+      // Default input settings.
       const inputConfig = {
         name: `${DG.ID}.${settingID}`,
         value: game.settings.get(DG.ID, settingID), // The value that the setting is currently set to.
