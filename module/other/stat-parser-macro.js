@@ -13,7 +13,7 @@ function GetAttacksFromInput(inputText) {
     let isInAttackSection = false;
 
     if (lines !== null && lines.length > 0) {
-      for (var i = 0; i < lines.length; i++) {
+      for (let i = 0; i < lines.length; i++) {
         if (lines[i].toString().toUpperCase().indexOf("ATTACKS:") >= 0) {
           isInAttackSection = true;
         } else if (
@@ -142,8 +142,8 @@ function GetNotesFromInput(inputText) {
 
       const lines = results[0].split(/\r?\n/);
 
-      for (var i = 0; i < lines.length; i++) {
-        output += lines[i] + "<br>";
+      for (let i = 0; i < lines.length; i++) {
+        output += `${lines[i]}<br>`;
       }
 
       notes = output;
@@ -158,12 +158,12 @@ function GetNotesFromInput(inputText) {
 
 function GetArmorFromInput(inputText) {
   try {
-    let armor = { name: "Armor", description: "", armor: 0 };
+    const armor = { name: "Armor", description: "", armor: 0 };
 
     const lines = inputText.split(/\r?\n/);
 
     if (lines !== null && lines.length > 0) {
-      for (var i = 0; i < lines.length; i++) {
+      for (let i = 0; i < lines.length; i++) {
         if (lines[i].toString().toUpperCase().indexOf("ARMOR:") >= 0) {
           armor.description = lines[i]
             .replace("Armor:", "")
@@ -316,9 +316,9 @@ async function RegexParseNpcStatBlock(inputStr, actorType) {
     actorData.name = "Unknown";
   }
 
-  let armor = GetArmorFromInput(inputStr);
+  const armor = GetArmorFromInput(inputStr);
 
-  let attacks = GetAttacksFromInput(inputStr);
+  const attacks = GetAttacksFromInput(inputStr);
 
   if (armor !== null) {
     console.log(armor);

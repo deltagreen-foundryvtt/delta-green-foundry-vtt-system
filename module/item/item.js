@@ -45,7 +45,7 @@ export default class DeltaGreenItem extends Item {
       }
 
       if (isCrit) {
-        diceFormula = "2*(" + diceFormula + ")";
+        diceFormula = `2*(${diceFormula})`;
       }
 
       roll = new DGDamageRoll(
