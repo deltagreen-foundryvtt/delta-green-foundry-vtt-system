@@ -841,22 +841,25 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
     htmlContent += `     <input type="text" name="new-type-skill-label" value="${currentLabel}" />`;
     htmlContent += `</div>`;
 
-    new Dialog({
+    new foundry.applications.api.DialogV2({
       content: htmlContent,
-      title:
-        game.i18n.translations.DG?.Skills?.EditTypedOrCustomSkill ??
-        "Edit Typed or Custom Skill",
-      default: "add",
-      buttons: {
-        add: {
+      window: {
+        title:
+          game.i18n.translations.DG?.Skills?.EditTypedOrCustomSkill ??
+          "Edit Typed or Custom Skill",
+      },
+      buttons: [
+        {
+          default: true,
+          action: "add",
           label: game.i18n.translations.DG?.Skills?.EditSkill ?? "Edit Skill",
-          callback: (btn) => {
-            const newTypeSkillLabel = btn
-              .find("[name='new-type-skill-label']")
-              .val();
-            const newTypeSkillGroup = btn
-              .find("[name='new-type-skill-group']")
-              .val();
+          callback: (event, button, dialog) => {
+            const newTypeSkillLabel = dialog.element.querySelector(
+              "[name='new-type-skill-label']",
+            )?.value;
+            const newTypeSkillGroup = dialog.element.querySelector(
+              "[name='new-type-skill-group']",
+            )?.value;
             this._updateTypedSkill(
               targetSkill,
               newTypeSkillLabel,
@@ -864,7 +867,7 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
             );
           },
         },
-      },
+      ],
     }).render(true);
   }
 
@@ -909,26 +912,30 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
     htmlContent += `     <input type="text" name="new-type-skill-label" />`;
     htmlContent += `</div>`;
 
-    new Dialog({
+    new foundry.applications.api.DialogV2({
       content: htmlContent,
-      title:
-        game.i18n.translations.DG?.Skills?.AddTypedOrCustomSkill ??
-        "Add Typed or Custom Skill",
+      window: {
+        title:
+          game.i18n.translations.DG?.Skills?.AddTypedOrCustomSkill ??
+          "Add Typed or Custom Skill",
+      },
       default: "add",
-      buttons: {
-        add: {
+      buttons: [
+        {
+          default: true,
+          action: "add",
           label: game.i18n.translations.DG?.Skills?.AddSkill ?? "Add Skill",
-          callback: (btn) => {
-            const newTypeSkillLabel = btn
-              .find("[name='new-type-skill-label']")
-              .val();
-            const newTypeSkillGroup = btn
-              .find("[name='new-type-skill-group']")
-              .val();
+          callback: (event, button, dialog) => {
+            const newTypeSkillLabel = dialog.element.querySelector(
+              "[name='new-type-skill-label']",
+            )?.value;
+            const newTypeSkillGroup = dialog.element.querySelector(
+              "[name='new-type-skill-group']",
+            )?.value;
             this._addNewTypedSkill(newTypeSkillLabel, newTypeSkillGroup);
           },
         },
-      },
+      ],
     }).render(true);
   }
 
@@ -1072,20 +1079,24 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
     );
 
     // Prepare and render dialog with above template.
-    new Dialog({
+    new foundry.applications.api.DialogV2({
       content,
-      title: game.i18n.localize("DG.SpecialTraining.Dialog.Title"),
+      window: {
+        title: game.i18n.localize("DG.SpecialTraining.Dialog.Title"),
+      },
       default: "confirm",
-      buttons: {
-        confirm: {
+      buttons: [
+        {
+          default: true,
+          action: "confirm",
           label: buttonLabel,
-          callback: (btn) => {
-            const specialTrainingLabel = btn
-              .find("[name='special-training-label']")
-              .val();
-            const specialTrainingAttribute = btn
-              .find("[name='special-training-skill']")
-              .val();
+          callback: (event, button, dialog) => {
+            const specialTrainingLabel = dialog.element.querySelector(
+              "[name='special-training-label']",
+            )?.value;
+            const specialTrainingAttribute = dialog.element.querySelector(
+              "[name='special-training-skill']",
+            )?.value;
             if (action === "create")
               this._createSpecialTraining(
                 specialTrainingLabel,
@@ -1099,7 +1110,7 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
               );
           },
         },
-      },
+      ],
     }).render(true);
   }
 
@@ -1262,17 +1273,21 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
     const { packType } = target.dataset;
     switch (packType) {
       case "weapon": {
-        new Dialog({
-          title: "Select Compendium",
-          buttons: {
-            firearms: {
+        new foundry.applications.api.DialogV2({
+          window: { title: "Select Compendium" },
+          buttons: [
+            {
+              action: "firearms",
+              label: "Firearms",
               icon: '<i class="fas fa-crosshairs"></i>',
               callback: () =>
                 game.packs
                   .find((k) => k.collection === "deltagreen.firearms")
                   .render(true),
             },
-            melee: {
+            {
+              action: "melee",
+              label: "Melee",
               icon: '<i class="far fa-hand-rock"></i>',
               callback: () =>
                 game.packs
@@ -1281,7 +1296,7 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
                   )
                   .render(true),
             },
-          },
+          ],
         }).render(true);
         break;
       }
