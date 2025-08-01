@@ -656,21 +656,24 @@ async function GetUserInput() {
             </div>
     </form>`;
 
-  new Dialog({
-    title: "Stat Block Parser",
+  new foundry.applications.api.DialogV2({
+    window: { title: "Stat Block Parser" },
     content,
-    buttons: {
-      roll: {
+    buttons: [
+      {
         label: "PARSE",
-        callback: async (html) => {
-          const textInput = html.find("[name=parse-input]")[0].value;
+        action: "roll",
+        callback: (event, button, dialog) => {
+          const textInput =
+            dialog.element.querySelector("[name=parse-input]")?.value;
 
-          const actorType = html.find("[name=actor-type]")[0].value;
+          const actorType =
+            dialog.element.querySelector("[name=actor-type]")?.value;
 
           RegexParseNpcStatBlock(textInput, actorType);
         },
       },
-    },
+    ],
   }).render(true);
 }
 
