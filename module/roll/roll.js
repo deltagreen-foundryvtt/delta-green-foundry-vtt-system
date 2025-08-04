@@ -160,6 +160,23 @@ export class DGPercentileRoll extends DGRoll {
       "systems/deltagreen/templates/dialog/modify-percentile-roll.html";
     const content = await renderTemplate(template, backingData);
     return new Promise((resolve, reject) => {
+      const modButtons = [-40, -20, 20, 40].map((mod) => {
+        const sign = mod > 0 ? "Positive" : "Negative";
+        return {
+          action: `roll${Math.abs(mod)}${sign}`,
+          label: String(mod),
+          callback: (event, button, dialog) => {
+            try {
+              const rollMode =
+                dialog.element.querySelector("[name='rollMode']")?.value;
+              resolve({ targetModifier: mod, rollMode });
+            } catch (ex) {
+              reject(console.log(ex));
+            }
+          },
+        };
+      });
+
       new foundry.applications.api.DialogV2({
         content,
         window: {
@@ -210,62 +227,7 @@ export class DGPercentileRoll extends DGRoll {
               }
             },
           },
-          {
-            action: "roll40Negative",
-            label: "-40",
-            callback: (event, button, dialog) => {
-              try {
-                const rollMode =
-                  dialog.element.querySelector("[name='rollMode']")?.value;
-                const targetModifier = -40;
-                resolve({ targetModifier, rollMode });
-              } catch (ex) {
-                reject(console.log(ex));
-              }
-            },
-          },
-          {
-            action: "roll20Negative",
-            label: "-20",
-            callback: (event, button, dialog) => {
-              try {
-                const rollMode =
-                  dialog.element.querySelector("[name='rollMode']")?.value;
-                const targetModifier = -20;
-                resolve({ targetModifier, rollMode });
-              } catch (ex) {
-                reject(console.log(ex));
-              }
-            },
-          },
-          {
-            action: "roll20Positive",
-            label: "+20",
-            callback: (event, button, dialog) => {
-              try {
-                const rollMode =
-                  dialog.element.querySelector("[name='rollMode']")?.value;
-                const targetModifier = 20;
-                resolve({ targetModifier, rollMode });
-              } catch (ex) {
-                reject(console.log(ex));
-              }
-            },
-          },
-          {
-            action: "roll40Positive",
-            label: "+40",
-            callback: (event, button, dialog) => {
-              try {
-                const rollMode =
-                  dialog.element.querySelector("[name='rollMode']")?.value;
-                const targetModifier = 40;
-                resolve({ targetModifier, rollMode });
-              } catch (ex) {
-                reject(console.log(ex));
-              }
-            },
-          },
+          ...modButtons,
         ],
       }).render(true);
     });
