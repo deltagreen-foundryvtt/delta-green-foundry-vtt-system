@@ -3,6 +3,7 @@ import DGUtils from "../other/utility-functions.js";
 import DG from "../config.js";
 
 const { renderTemplate } = foundry.applications.handlebars;
+const { DialogV2 } = foundry.applications.api;
 
 export class DGRoll extends Roll {
   /**
@@ -177,7 +178,7 @@ export class DGPercentileRoll extends DGRoll {
         };
       });
 
-      new foundry.applications.api.DialogV2({
+      new DialogV2({
         content,
         window: {
           title: DGUtils.localizeWithFallback(
@@ -705,7 +706,7 @@ export class DGDamageRoll extends DGRoll {
 
     const content = await renderTemplate(template, backingData);
     return new Promise((resolve, reject) => {
-      new foundry.applications.api.DialogV2({
+      new DialogV2({
         content,
         window: {
           title: game.i18n.localize("DG.ModifySkillRollDialogue.Title"),

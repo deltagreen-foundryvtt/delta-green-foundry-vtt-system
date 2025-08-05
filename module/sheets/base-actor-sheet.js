@@ -8,6 +8,7 @@ import {
 import DGSheetMixin from "./base-sheet.js";
 
 const { ActorSheetV2 } = foundry.applications.sheets;
+const { DialogV2 } = foundry.applications.api;
 
 export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
   /** @override */
@@ -841,7 +842,7 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
     htmlContent += `     <input type="text" name="new-type-skill-label" value="${currentLabel}" />`;
     htmlContent += `</div>`;
 
-    new foundry.applications.api.DialogV2({
+    new DialogV2({
       content: htmlContent,
       window: {
         title:
@@ -912,7 +913,7 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
     htmlContent += `     <input type="text" name="new-type-skill-label" />`;
     htmlContent += `</div>`;
 
-    new foundry.applications.api.DialogV2({
+    new DialogV2({
       content: htmlContent,
       window: {
         title:
@@ -1079,7 +1080,7 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
     );
 
     // Prepare and render dialog with above template.
-    new foundry.applications.api.DialogV2({
+    new DialogV2({
       content,
       window: {
         title: game.i18n.localize("DG.SpecialTraining.Dialog.Title"),
@@ -1273,12 +1274,12 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
     const { packType } = target.dataset;
     switch (packType) {
       case "weapon": {
-        new foundry.applications.api.DialogV2({
+        new DialogV2({
           window: { title: "Select Compendium" },
           buttons: [
             {
               action: "firearms",
-              label: "Firearms",
+              label: game.i18n.localize("DG.Gear.WeaponTypes.Firearms"),
               icon: '<i class="fas fa-crosshairs"></i>',
               callback: () =>
                 game.packs
@@ -1287,7 +1288,7 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
             },
             {
               action: "melee",
-              label: "Melee",
+              label: game.i18n.localize("DG.Gear.WeaponTypes.Melee"),
               icon: '<i class="far fa-hand-rock"></i>',
               callback: () =>
                 game.packs
