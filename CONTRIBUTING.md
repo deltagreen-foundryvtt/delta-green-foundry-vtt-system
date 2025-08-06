@@ -104,7 +104,7 @@ We recommend [Visual Studio Code](https://code.visualstudio.com/) for working on
 
 Once these extensions are installed, your editor should automatically highlight formatting or linting issues.
 
-Your pull request will automatically be checked for linting and formatting via GitHub Actions. If your changes don't pass, they can't be merged (see [Branching and Pull Requests](#branching-and-pull-requests)).
+Your pull request will automatically be checked for linting and formatting via GitHub Actions. If your changes don't pass, they can't be merged (see [Branching and Pull Requests](#branching-commits-and-pull-requests)).
 
 ### 5. Set Up a Local Foundry VTT Test World
 
