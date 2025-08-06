@@ -192,6 +192,8 @@
   "DG.Mental.Motivations": "Motivation",
   "DG.Mental.Disorders": "Disorder",
 
+  "DG.Gear.WeaponTypes.Firearms": "Firearms",
+  "DG.Gear.WeaponTypes.Melee": "Melee",
   "DG.Gear.Weapons": "WEAPONS",
   "DG.Gear.Armor": "ARMOR",
   "DG.Gear.OtherGear": "OTHER GEAR",

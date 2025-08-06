@@ -214,16 +214,19 @@ export default class DGAgentSheet extends DGActorSheet {
       },
     );
 
-    return Dialog.wait({
+    return foundry.applications.api.DialogV2.wait({
       content,
-      title: game.i18n.localize("DG.Skills.ApplySkillImprovements.Title"),
-      default: "apply",
-      buttons: {
-        apply: {
+      window: {
+        title: game.i18n.localize("DG.Skills.ApplySkillImprovements.Title"),
+      },
+      buttons: [
+        {
+          default: true,
+          action: "apply",
           label: game.i18n.localize("DG.Skills.Apply"),
           icon: "<i class='fas fa-check'></i>",
         },
-      },
+      ],
     });
   }
 

@@ -3,6 +3,7 @@ import DGUtils from "../other/utility-functions.js";
 import DG from "../config.js";
 
 const { renderTemplate } = foundry.applications.handlebars;
+const { DialogV2 } = foundry.applications.api;
 
 export class DGRoll extends Roll {
   /**
@@ -142,7 +143,9 @@ export class DGPercentileRoll extends DGRoll {
         customModifierTarget = parseInt(
           this.actor.system.settings.rolling.defaultPercentileModifier,
         );
-      } catch {}
+      } catch {
+        /* empty */
+      }
     }
 
     const backingData = {
@@ -158,23 +161,48 @@ export class DGPercentileRoll extends DGRoll {
       "systems/deltagreen/templates/dialog/modify-percentile-roll.html";
     const content = await renderTemplate(template, backingData);
     return new Promise((resolve, reject) => {
-      new Dialog({
+      const modButtons = [-40, -20, 20, 40].map((mod) => {
+        const sign = mod > 0 ? "Positive" : "Negative";
+        return {
+          action: `roll${Math.abs(mod)}${sign}`,
+          label: String(mod),
+          callback: (event, button, dialog) => {
+            try {
+              const rollMode =
+                dialog.element.querySelector("[name='rollMode']")?.value;
+              resolve({ targetModifier: mod, rollMode });
+            } catch (ex) {
+              reject(console.log(ex));
+            }
+          },
+        };
+      });
+
+      new DialogV2({
         content,
-        title: DGUtils.localizeWithFallback(
-          "DG.ModifySkillRollDialogue.Title",
-          "Modify Roll",
-        ),
-        default: "roll",
-        buttons: {
-          roll: {
+        window: {
+          title: DGUtils.localizeWithFallback(
+            "DG.ModifySkillRollDialogue.Title",
+            "Modify Roll",
+          ),
+        },
+        buttons: [
+          {
+            default: true,
+            action: "roll",
             label: DGUtils.localizeWithFallback("DG.Roll.Roll", "Roll"),
-            callback: (html) => {
+            callback: (event, button, dialog) => {
               try {
-                let targetModifier = html.find("[name='targetModifier']").val(); // this is text as a heads up
+                let targetModifier = dialog.element.querySelector(
+                  "[name='targetModifier']",
+                )?.value; // this is text as a heads up
 
-                const rollMode = html.find("[name='rollMode']").val();
+                const rollMode =
+                  dialog.element.querySelector("[name='rollMode']")?.value;
 
-                const plusMinus = html.find("[name='plusOrMinus']").val();
+                const plusMinus = dialog.element.querySelector(
+                  "[name='plusOrMinus']",
+                )?.value;
 
                 if (
                   targetModifier.trim() !== "" &&
@@ -200,55 +228,8 @@ export class DGPercentileRoll extends DGRoll {
               }
             },
           },
-          roll40Negative: {
-            label: "-40",
-            callback: (html) => {
-              try {
-                const rollMode = html.find("[name='rollMode']").val();
-                const targetModifier = -40;
-                resolve({ targetModifier, rollMode });
-              } catch (ex) {
-                reject(console.log(ex));
-              }
-            },
-          },
-          roll20Negative: {
-            label: "-20",
-            callback: (html) => {
-              try {
-                const rollMode = html.find("[name='rollMode']").val();
-                const targetModifier = -20;
-                resolve({ targetModifier, rollMode });
-              } catch (ex) {
-                reject(console.log(ex));
-              }
-            },
-          },
-          roll20Positive: {
-            label: "+20",
-            callback: (html) => {
-              try {
-                const rollMode = html.find("[name='rollMode']").val();
-                const targetModifier = 20;
-                resolve({ targetModifier, rollMode });
-              } catch (ex) {
-                reject(console.log(ex));
-              }
-            },
-          },
-          roll40Positive: {
-            label: "+40",
-            callback: (html) => {
-              try {
-                const rollMode = html.find("[name='rollMode']").val();
-                const targetModifier = 40;
-                resolve({ targetModifier, rollMode });
-              } catch (ex) {
-                reject(console.log(ex));
-              }
-            },
-          },
-        },
+          ...modButtons,
+        ],
       }).render(true);
     });
   }
@@ -275,7 +256,7 @@ export class DGPercentileRoll extends DGRoll {
       this.options.rollMode = "blindroll";
     }
 
-    let label = this.createLabel();
+    const label = this.createLabel();
 
     let resultString = "";
     let styleOverride = "";
@@ -288,21 +269,20 @@ export class DGPercentileRoll extends DGRoll {
       } else {
         resultString = `${game.i18n.localize("DG.Roll.Success")}`;
       }
+    } else if (this.isCritical) {
+      resultString = `${game.i18n.localize("DG.Roll.CriticalFailure")}`;
+      resultString = `${resultString.toUpperCase()}`;
+      styleOverride = "color: red";
     } else {
-      if (this.isCritical) {
-        resultString = `${game.i18n.localize("DG.Roll.CriticalFailure")}`;
-        resultString = `${resultString.toUpperCase()}`;
-        styleOverride = "color: red";
-      } else {
-        resultString = `${game.i18n.localize("DG.Roll.Failure")}`;
-      }
+      resultString = `${game.i18n.localize("DG.Roll.Failure")}`;
     }
 
-    const failureMark = !this.isSuccess && this.skillPath
-      && !foundry.utils.getProperty(this.actor, `${this.skillPath}.failure`)
-      && game.settings.get(DG.ID, "skillFailure");
+    const failureMark =
+      !this.isSuccess &&
+      this.skillPath &&
+      !foundry.utils.getProperty(this.actor, `${this.skillPath}.failure`) &&
+      game.settings.get(DG.ID, "skillFailure");
 
-    const { renderTemplate } = foundry.applications.handlebars;
     const html = await renderTemplate(
       "systems/deltagreen/templates/roll/percentile-roll.hbs",
       {
@@ -310,26 +290,32 @@ export class DGPercentileRoll extends DGRoll {
         resultString,
         formula: this.formula,
         total: this.total,
-        failureMark
-      });
+        failureMark,
+      },
+    );
 
-    //TODO: add setting for it?
+    // TODO: add setting for it?
     if (failureMark) {
       const keyForUpdate = `${this.skillPath}.failure`;
 
-      //TODO: auto-update actor or post icon with manual apply
+      // TODO: auto-update actor or post icon with manual apply
       await this.actor.update({
-        [keyForUpdate]: true
-      })
+        [keyForUpdate]: true,
+      });
 
-      return this.toMessage({ flags: { deltagreen: {
-        rollbacks: {
-          [keyForUpdate]: false
-        }
-      } }, content: html, flavor: label });
-    } else {
-      return this.toMessage({ content: html, flavor: label });
+      return this.toMessage({
+        flags: {
+          deltagreen: {
+            rollbacks: {
+              [keyForUpdate]: false,
+            },
+          },
+        },
+        content: html,
+        flavor: label,
+      });
     }
+    return this.toMessage({ content: html, flavor: label });
   }
 
   /**
@@ -383,16 +369,21 @@ export class DGPercentileRoll extends DGRoll {
    * @returns {string}
    */
   createLabel() {
-    const startOfLabel = game.i18n.localize("DG.Roll.Rolling")
-      + ` <b>${this.localizedKey}`
-    const endOfLabel =`${game.i18n.localize("DG.Roll.Target")} ${this.effectiveTarget}`
+    const startOfLabel = `${game.i18n.localize("DG.Roll.Rolling")} <b>${
+      this.localizedKey
+    }`;
+    const endOfLabel = `${game.i18n.localize("DG.Roll.Target")} ${
+      this.effectiveTarget
+    }`;
 
     let label = this.isInhuman
-      // "Inhuman" stat being rolled. See function for details.
-      ? `${startOfLabel} [${game.i18n.localize("DG.Roll.Inhuman").toUpperCase()}]</b> ${endOfLabel}`
+      ? // "Inhuman" stat being rolled. See function for details.
+        `${startOfLabel} [${game.i18n
+          .localize("DG.Roll.Inhuman")
+          .toUpperCase()}]</b> ${endOfLabel}`
       : `${startOfLabel}</b><br> ${endOfLabel}%`;
 
-    const {isExhausted, exhaustedCheckPenalty} = this.exhausted
+    const { isExhausted, exhaustedCheckPenalty } = this.exhausted;
 
     if (this.modifier || isExhausted) {
       label += ` (${this.target}%`;
@@ -429,7 +420,7 @@ export class DGPercentileRoll extends DGRoll {
       exhaustedCheckPenalty = -20;
     }
 
-    return {isExhausted, exhaustedCheckPenalty};
+    return { isExhausted, exhaustedCheckPenalty };
   }
 
   /**
@@ -510,7 +501,7 @@ export class DGPercentileRoll extends DGRoll {
   get effectiveTarget() {
     let target = 1;
 
-    let {isExhausted, exhaustedCheckPenalty} = this.exhausted
+    const { isExhausted, exhaustedCheckPenalty } = this.exhausted;
 
     if (!this.target || Number.isNaN(this.target)) {
       return null;
@@ -715,22 +706,30 @@ export class DGDamageRoll extends DGRoll {
 
     const content = await renderTemplate(template, backingData);
     return new Promise((resolve, reject) => {
-      new Dialog({
+      new DialogV2({
         content,
-        title: game.i18n.localize("DG.ModifySkillRollDialogue.Title"),
-        default: "roll",
-        buttons: {
-          roll: {
+        window: {
+          title: game.i18n.localize("DG.ModifySkillRollDialogue.Title"),
+        },
+        buttons: [
+          {
+            default: true,
             label: game.i18n.translations.DG.Roll.Roll,
-
-            callback: (html) => {
+            action: "roll",
+            callback: (event, button, dialog) => {
               try {
-                const outerModifier = html.find("[name='outerModifier']").val(); // this is text as a heads up
-                let innerModifier = html.find("[name='innerModifier']").val(); // this is text as a heads up
-                const modifiedBaseRoll = html
-                  .find("[name='originalFormula']")
-                  .val(); // this is text as a heads up
-                const rollMode = html.find("[name='targetRollMode']").val();
+                const outerModifier = dialog.element.querySelector(
+                  "[name='outerModifier']",
+                )?.value; // this is text as a heads up
+                let innerModifier = dialog.element.querySelector(
+                  "[name='innerModifier']",
+                )?.value; // this is text as a heads up
+                const modifiedBaseRoll = dialog.element.querySelector(
+                  "[name='originalFormula']",
+                )?.value; // this is text as a heads up
+                const rollMode = dialog.element.querySelector(
+                  "[name='targetRollMode']",
+                )?.value;
 
                 if (innerModifier.replace(" ", "") === "+0") {
                   innerModifier = "";
@@ -749,7 +748,7 @@ export class DGDamageRoll extends DGRoll {
               }
             },
           },
-        },
+        ],
       }).render(true);
     });
   }

@@ -8,9 +8,19 @@
   grid-gap: 10px 15px;
 }
 
-.numeric-label-field {
-  width: 50px !important;
-  text-align: center !important;
+.plusMinusNumberFieldBox {
+
+  display: flex;
+  gap: 10px;
+
+  select[name="plusOrMinus"] {
+    flex: 1;
+  }
+
+  .numeric-label-field {
+    flex: 1;
+    text-align: center !important;
+  }
 }
 
 .damage-modify-label-grid {
