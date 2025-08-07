@@ -1,0 +1,47 @@
+@import url("https://fonts.googleapis.com/css2?family=Martel:wght@400;800&family=Roboto:wght@300;400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Didact+Gothic");
+
+@font-face {
+  font-family: "atwriter";
+  src: url("../assets/font/another-typewriter/atwriter.ttf") format("truetype"); /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
+}
+
+@font-face {
+  font-family: TypeWriterCondensed;
+  src: url("../assets/font/typewriter-condensed/typewcond_regular.otf")
+    format("opentype");
+}
+
+@font-face {
+  font-family: TypeWriterCondensed;
+  font-weight: bold;
+  src: url("../assets/font/typewriter-condensed/typewcond_bold.otf")
+    format("opentype");
+}
+
+@font-face {
+  font-family: TypeWriterCondensed;
+  font-weight: 600;
+  src: url("../assets/font/typewriter-condensed/typewcond_demi.otf")
+    format("opentype");
+}
+
+@font-face {
+  font-family: "SpecialElite";
+  src: url("../assets/font/special_elite/SpecialElite-Regular.ttf")
+    format("truetype"); /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
+}
+
+@font-face {
+  font-family: "PublicSans";
+  src: url("../assets/font/public-sans/PublicSans-VariableFont_wght.ttf")
+    format("truetype"); /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
+}
+
+$typewriter: "TypeWriterCondensed", sans-serif !important;
+$martel: "Martel", sans-serif !important;
+$roboto: "Roboto", sans-serif !important;
+// $didact-gothic: "Didact Gothic", sans-serif !important;
+$atwriter: "atwriter", sans-serif !important;
+$pubic-sans: "PublicSans", sans-serif !important;
+$special-elite: "SpecialElite", sans-serif !important;
