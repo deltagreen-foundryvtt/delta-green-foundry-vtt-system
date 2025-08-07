@@ -174,8 +174,6 @@
   ],
   "manifest": "https://github.com/TheLastScrub/delta-green-foundry-vtt-system/releases/latest/download/system.json",
   "download": "https://github.com/TheLastScrub/delta-green-foundry-vtt-system/releases/latest/download/deltagreen.zip",
-  "gridDistance": 1,
-  "gridUnits": "m",
   "grid": {
     "distance": 1,
     "units": "m"
