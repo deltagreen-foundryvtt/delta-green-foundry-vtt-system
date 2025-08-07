@@ -1,6 +1,7 @@
 @use "fonts" as *;
+@use "vars" as *;
 
-.deltagreen.sheet {
+.#{$system-id}.sheet {
   section.window-content {
     scrollbar-color: #215112 #111 !important;
     padding: 0.5rem;

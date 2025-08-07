@@ -1,3 +1,5 @@
+@use "vars" as *;
+
 @mixin grid-styles($start: 1, $end: 12) {
   .grid {
     display: grid;
@@ -14,7 +16,7 @@
   }
 }
 
-.deltagreen.actor {
+.#{$system-id}.actor {
   @include grid-styles;
 
   // If the user wishes to sort skills by column, we need to
