@@ -1,34 +1,37 @@
-@mixin grid-styles($start: 1, $end: 12) {
-  .grid {
-    display: grid;
-    grid-column: span 2 / span 2;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 3px;
-  }
+@use "fonts" as *;
 
-  @for $i from $start through $end {
-    .grid-#{$i}col {
-      grid-column: span #{$i} / span #{$i};
-      grid-template-columns: repeat(#{$i}, minmax(0, 1fr));
-    }
-  }
-}
-
-.deltagreen {
+.deltagreen.sheet {
   section.window-content {
     scrollbar-color: #215112 #111 !important;
     padding: 0.5rem;
     color: black; /* Override for when in Foundry's dark mode */
 
     &.outlaw-style,
+    &.cowboy-style,
+    &.program-style {
+      background-size: 100% !important;
+    }
+
+    &.outlaw-style,
     &.cowboy-style {
       background: url("../assets/img/StainedPlainPaper10b.webp") !important;
-      background-size: 100% !important;
+    }
+
+    &.outlaw-style,
+    &.program-style {
+      font-family: $public-sans;
+    }
+
+    &.cowboy-style {
+      font-family: $special-elite;
     }
 
     &.program-style {
       background: url("../assets/img/StainedPlainPaper10a.webp") !important;
-      background-size: 100% !important;
+
+      .tabs [data-action="tab"] {
+        background: rgba(138, 136, 133, 0.3);
+      }
     }
 
     input {
@@ -42,16 +45,6 @@
         height: unset;
         line-height: 1.5rem;
       }
-    }
-
-    @include grid-styles;
-
-    // If the user wishes to sort skills by column, we need to
-    // explicitly define a number of rows, rather than columns.
-    .grid-13row {
-      grid-template-rows: repeat(13, minmax(0, auto)) !important;
-      grid-template-columns: repeat(auto-fit, minmax(0, 1fr)) !important;
-      grid-auto-flow: column !important;
     }
   }
 }
