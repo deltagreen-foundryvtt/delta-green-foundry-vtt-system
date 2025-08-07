@@ -14,6 +14,7 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
   /** @override */
   static DEFAULT_OPTIONS = /** @type {const} */ ({
     position: { width: 750, height: 770 },
+    classes: ["actor"],
     actions: {
       // Skill/Item actions.
       itemAction: this._onItemAction,
