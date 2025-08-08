@@ -1,0 +1,85 @@
+.centered {
+  text-align: center !important;
+}
+
+.strike {
+  text-decoration: line-through;
+}
+
+.bottom-margin-5px {
+  margin-bottom: 5px !important;
+}
+
+.flex-group-center,
+.flex-group-left,
+.flex-group-right {
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  text-align: center;
+  padding: 2px;
+}
+
+.flex-thin-border {
+  border: 1px solid #999;
+  border-radius: 2px;
+  border-left-color: darkslategray;
+  border-left-width: 4px;
+}
+
+/* Make sure Special Training boxes are the same height
+   as all other skill boxes */
+.flex-thin-border.special-training-box {
+  min-height: 27px;
+}
+
+.flex-mid-border {
+  border: 1.5px solid rgb(0, 0, 0);
+  border-radius: 2px;
+}
+
+.flex-group-left {
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  text-align: left;
+  padding: 0;
+}
+
+.flex-group-right {
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.flex-center {
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.flex-between {
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+
+.horizontal-flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-left {
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  text-align: left;
+}
