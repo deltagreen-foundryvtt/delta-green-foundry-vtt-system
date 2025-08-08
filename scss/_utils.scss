@@ -83,3 +83,19 @@
   justify-content: flex-start;
   text-align: left;
 }
+
+div .simple-centered-flex-div {
+  display: flex;
+  align-items: center;
+}
+
+div input.fill-remaining-space {
+  flex: 1;
+  margin: 1px;
+  text-align: left;
+}
+
+span.left-aligned-label {
+  justify-content: left;
+  margin-left: 5px;
+}
