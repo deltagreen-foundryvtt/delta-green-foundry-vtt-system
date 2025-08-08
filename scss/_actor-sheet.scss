@@ -68,6 +68,46 @@
           }
         }
       }
+
+      .resources {
+        .resource-outer-grid-1col {
+          display: grid;
+          grid-template-columns: 100%;
+          align-items: center;
+          justify-content: center;
+          border: 1.5px solid #000000;
+          padding: 5px;
+          grid-gap: 3px;
+          text-align: center;
+          border-radius: 2px;
+
+          .resource-label {
+            font-weight: bold;
+          }
+
+          .resource-inner-grid-3col {
+            display: grid;
+            grid-template-columns: 35% 30% 35%;
+            align-items: center;
+            text-align: center;
+
+            input.breaking-point-hit {
+              color: rgb(255, 255, 255);
+              background-color: rgb(117, 0, 0);
+              font-weight: bold;
+            }
+
+            div.max-resource-value {
+              border: 1px solid rgb(122, 121, 113);
+              border-radius: 3px;
+              height: 100%;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            }
+          }
+        }
+      }
     }
 
     @include grid-styles;
