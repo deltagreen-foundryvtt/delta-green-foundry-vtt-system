@@ -10,14 +10,16 @@
 
   @for $i from $start through $end {
     .grid-#{$i}col {
-      grid-column: span #{$i} / span #{$i};
-      grid-template-columns: repeat(#{$i}, minmax(0, 1fr));
+      grid-column: span $i / span $i;
+      grid-template-columns: repeat($i, minmax(0, 1fr));
     }
   }
 }
 
 .#{$system-id}.actor {
   .window-content {
+    @include grid-styles;
+
     .sheet-header {
       display: flex;
       overflow: hidden;
@@ -110,14 +112,153 @@
       }
     }
 
-    @include grid-styles;
+    nav.sheet-tabs {
+      $-height: 1.5rem;
+      height: $-height;
+      line-height: $-height;
+      text-align: center;
+      vertical-align: middle;
 
-    // If the user wishes to sort skills by column, we need to
-    // explicitly define a number of rows, rather than columns.
-    .grid-13row {
-      grid-template-rows: repeat(13, minmax(0, auto)) !important;
-      grid-template-columns: repeat(auto-fit, minmax(0, 1fr)) !important;
-      grid-auto-flow: column !important;
+      border: none;
+      padding-bottom: 0px !important;
+      margin-bottom: 0px !important;
+
+      a[data-action="tab"] {
+        height: inherit;
+        line-height: inherit;
+
+        color: inherit;
+        font-weight: bold;
+
+        border-radius: 5px 5px 0 0;
+        border-color: #000;
+        border-width: 1px 1px 0;
+        border-style: solid;
+        padding-inline: 10px;
+
+        &.active {
+          font-style: italic;
+          text-shadow: none;
+
+          border: #000;
+          border-width: 2px 2px 0;
+          border-style: solid;
+        }
+      }
+    }
+
+    .tab {
+      height: 100%;
+      overflow-y: auto;
+
+      border-color: #000;
+      border-width: 2px;
+      border-style: solid;
+      border-radius: 3px;
+
+      padding: 5px;
+
+      .grid-13row {
+        // If the user wishes to sort skills by column, we need to
+        // explicitly define a number of rows, rather than columns.
+
+        grid-template-rows: repeat(13, minmax(0, auto)) !important;
+        grid-template-columns: repeat(auto-fit, minmax(0, 1fr)) !important;
+        grid-auto-flow: column !important;
+      }
+
+      div.horizontal-bar-section-divider {
+        display: grid;
+        grid-template-columns: 100%;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+
+        margin-bottom: 3px;
+
+        background: #000;
+        color: #fff;
+        height: 30px;
+
+        border-radius: 3px 3px 3px 3px;
+
+        &.skills-header {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+
+          margin-bottom: 3px;
+
+          background: #000;
+          color: #fff;
+          height: 30px;
+
+          border-radius: 3px 3px 3px 3px;
+        }
+
+        .skills-header-title {
+          grid-column: 2;
+        }
+
+        .toggle-untrained {
+          grid-column: 3;
+          padding-right: 0.5rem;
+          justify-self: end;
+        }
+      }
+
+      &.skills {
+        .skill-util-buttons {
+          margin: 5px;
+
+          .typed-skill-add {
+            margin-right: 5px;
+          }
+
+          [data-action="applySkillImprovements"] {
+            float: right;
+          }
+
+          .action-pill {
+            font-size: 0.8rem;
+            font-weight: bold;
+
+            background-color: rgba(0, 0, 0, 0.185);
+
+            border-radius: 2.5px;
+            padding: 2px;
+          }
+        }
+
+        .skill-label {
+          margin: 2px;
+          align-content: flex-start;
+        }
+
+        .skill-type-label {
+          margin: 2px;
+        }
+
+        input.percentile-skill-input {
+          flex: 0 0 40px;
+          margin: 0 5px;
+          height: 1.2rem;
+          align-self: center;
+          text-align: center;
+        }
+
+        input.checkbox-skill-input {
+          flex: 0 0 20px;
+          line-height: 10px;
+          width: 1px;
+        }
+
+        .skill-and-training-controls {
+          flex: 0 0 35px;
+        }
+      }
     }
   }
 }
