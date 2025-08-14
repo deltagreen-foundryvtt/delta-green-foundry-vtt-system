@@ -1,4 +1,4 @@
-import DG from "../config.js";
+import DG, { BASE_TEMPLATE_PATH } from "../config.js";
 import {
   DGDamageRoll,
   DGLethalityRoll,
@@ -650,9 +650,18 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
   }
 
   static _onItemAction(event, target) {
-    const li = target.closest(".item");
-    const { itemId } = li.dataset;
-    const { actionType, itemType } = target.dataset;
+
+    var sheet_type = document.querySelector("form.sheet.deltagreen section.window-content").classList.contains("book-style");
+    var li, itemId, actionType, itemType;
+    if (sheet_type) {
+      li = target.closest("tr");
+    } else{
+      li = target.closest(".item");
+    }
+
+    itemId = li.dataset.itemId;
+    ({actionType, itemType} = target.dataset);
+
 
     switch (actionType) {
       case "create":

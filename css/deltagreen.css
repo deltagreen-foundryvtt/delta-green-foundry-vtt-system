@@ -70,12 +70,18 @@
   background-size: 100% !important;
 }
 
+.window-content.book-style {
+  background: url("../assets/img/CrumpledPlainPaper10.webp") !important;
+  background-size: 100% !important;
+}
+
 .cowboy-style {
   font-family: "SpecialElite", sans-serif !important;
 }
 
 .outlaw-style,
-.program-style {
+.program-style,
+.book-style {
   font-family: "PublicSans", sans-serif !important;
 }
 
@@ -85,6 +91,10 @@
 
 .program-style .tabs [data-action="tab"] {
   background: rgba(138, 136, 133, 0.3);
+}
+
+.book-style .tabs [data-action="tab"] {
+  background: rgba(139, 69, 19, 0.3);
 }
 
 .old-paper-background {
@@ -403,6 +413,11 @@ explicitly define a number of rows, rather than columns. */
 .deltagreen .cowboy-style .tabs [data-action="tab"].active {
   background-color: rgba(156, 115, 18, 0.3);
   color: #000000;
+}
+
+.deltagreen .book-style .tabs [data-action="tab"].active {
+  background-color: rgba(139, 69, 19, 0.8);
+  color: #ffffff;
 }
 
 .deltagreen .items-list {
@@ -1305,4 +1320,205 @@ body:not(.no-theme) #interface:not(.theme-light) #action-bar .slot.full:hover {
 
 .strike {
   text-decoration: line-through;
+}
+
+/* Book Style */
+.deltagreen section.window-content.book-style{
+  overflow-y: auto;
+}
+.book-style section{
+  margin: 5px 0px;
+}
+.book-style .section-2-boxes table tr td:nth-of-type(1), .book-style .section-flex table td:nth-of-type(1)  {
+  border-left: 0px;
+}
+.book-style .m-l-5{
+  margin-left: 5px;
+}
+.book-style .font-size-12{
+  font-size: 12px;
+}
+.book-style .header-top-logo-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 5px;
+}
+.deltagreen .sheet-header{
+  display:block !important;
+}
+.book-style .bg-black{
+  background: #000000;
+}
+.book-style .logo-img{
+  width: auto;
+  height: 55px;
+  margin: auto;
+}
+.deltagreen .book-style .sheet-header .profile-img{
+  width: 120px;
+  height: 120px;
+  min-height: 100px;
+  background-color: #000000;
+  margin: auto;
+}
+.book-style table td.padding-eq15{
+  padding: 15px !important;
+}
+.book-style .section-flex{
+  display: flex;
+}
+.book-style .section-flex .section-flex-header{
+  display:flex;
+}
+.book-style .section-flex .section-flex-header p{
+  writing-mode: sideways-lr;
+  text-transform: uppercase;
+  color: white;
+  padding: 10px 15px;
+  text-align: center;
+}
+.book-style .section-flex .section-flex-content table{
+  margin: 0px;
+  background: none;
+  width: 100%;
+}
+.book-style table tr.col-2 td {
+  width: 50%;
+}
+.book-style .w-10{
+  width: 10%;
+}
+.book-style .w-15 {
+  width: 15%;
+}
+.book-style .w-20 {
+  width: 20%;
+}
+.book-style .w-30 {
+  width: 30%;
+}
+.book-style .w-40 {
+  width: 40%;
+}
+.book-style .w-50 {
+  width: 50%;
+}
+.book-style .w-60 {
+  width: 60%;
+}
+.book-style .cell-center{
+  text-align: center;
+  vertical-align: middle;
+  padding: 10px;
+}
+.book-style table.merged-table tr:first-of-type td {
+  border-top: 0px;
+}
+.book-style table input, .book-style table textarea {
+  background: #e7e7e7;
+  border-radius: 0px;
+  width: 100%;
+  color: #000000;
+  border: 1px solid #cacaca;
+  margin-top: 5px;
+  --input-placeholder-color: #919191;
+}
+.book-style table td{
+  border: 3px solid #000000;
+  padding: 5px 15px 15px 15px;
+}
+.book-style table label {
+  font-size: 10px;
+}
+.book-style section.section-2-boxes {
+  display: flex;
+}
+.book-style section.section-2-boxes > div, .book-style .section-flex-content {
+  flex: 1;
+}
+.book-style .inputs-13 {
+  display: flex;
+}
+.book-style table.skills-table .flexrow{
+  padding: 0px 5px;
+}
+.book-style table.skills-table input.percentile-skill-input{
+  margin-top: 0px;
+  padding: 0px;
+}
+.book-style table.skills-table input.checkbox-skill-input, .book-style input.item-bond-damage {
+  border: 0px;
+  background: none;
+}
+.book-style table.skill-util-buttons td{
+  border:0px;
+  text-align: center;
+  padding: 25px 0px;
+}
+.book-style .skill-util-buttons a{
+  background: #000000;
+  color: white;
+  padding: 10px;
+  margin: auto !important;
+  float: none;
+}
+.book-style .armor-table tr:nth-of-type(n+2) td:nth-of-type(1), .book-style .weapons-table tr:nth-of-type(n+2) td:nth-of-type(1){
+  width:6%;
+  border-right: 3px solid #ff000000;
+}
+.book-style .armor-table tr:nth-of-type(2) td:nth-of-type(2), .book-style .weapons-table tr:nth-of-type(2) td:nth-of-type(2){
+  border-left: 0px;
+}
+.book-style .section-flex .section-flex-content table.weapons-table{
+  margin-top: 15px;
+}
+.book-style a.item-control.action-pill, .book-style a.btn-tiny {
+  background: #000000;
+  color: white;
+  padding: 5px;
+  margin: auto;
+}
+.book-style .input-inline-and-small{
+  max-width: 30px;
+  background: none;
+  border: none;
+}
+.book-style .input-inline-and-small:before{
+  font-size: 15px;
+}
+.book-style input[type="checkbox"]:checked:before{
+  color: #ff000000;
+  font-size: 1px;
+}
+.book-style input[type="checkbox"]:checked:after{
+  color: #215112;
+}
+.book-style .exhaustion-label-second{
+  display:inline-block;
+  margin-right: 20px;
+}
+.book-style .input-exhaustion-penalty{
+  display: inline-block;
+  max-width: 100px;
+}
+.book-style.modal-content input, .book-style.modal-content select {
+  background: #e7e7e7;
+  border-radius: 0px;
+  color: #000000;
+  border: 1px solid #cacaca;
+  margin-top: 5px;
+  --input-placeholder-color: #919191;
+}
+.book-style.modal-content select option {
+  background: #d6d6d6;
+}
+.book-style.modal-content section.sheet-body .tab[data-tab="description"] {
+  background: #e7e7e7;
+  border-radius: 0px;
+  width: 100%;
+  color: #000000;
+  border: 1px solid #cacaca;
+  margin-top: 5px;
+  --input-placeholder-color: #919191;
 }
