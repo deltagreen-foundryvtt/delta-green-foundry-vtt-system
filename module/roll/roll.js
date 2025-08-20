@@ -278,6 +278,7 @@ export class DGPercentileRoll extends DGRoll {
     }
 
     const failureMark =
+      this.actor?.type === "agent" &&
       !this.isSuccess &&
       this.skillPath &&
       !foundry.utils.getProperty(this.actor, `${this.skillPath}.failure`) &&
