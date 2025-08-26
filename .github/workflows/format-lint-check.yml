@@ -1,0 +1,33 @@
+name: Format & Lint Check
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  lint:
+    name: Run ESLint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Node Setup
+        uses: ./.github/actions/setup-node # Set the folder
+
+      - name: Run ESLint
+        run: npm run lint
+
+  format:
+    name: Run Prettier Format Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Node Setup
+        uses: ./.github/actions/setup-node # Set the folder
+
+      - name: Check Prettier formatting
+        run: npm run format:check
+
+defaults:
+  run:
+    shell: bash

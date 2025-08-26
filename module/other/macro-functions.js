@@ -1,5 +1,7 @@
 import * as DGRolls from "../roll/roll.js";
 
+const { fromUuid } = foundry.utils;
+
 /* -------------------------------------------- */
 /*  Hotbar Macros                               */
 /* -------------------------------------------- */
@@ -44,13 +46,11 @@ export async function createDeltaGreenMacro(data, slot) {
     type: "script",
     img: item.img,
     thumbnail: item.img,
-    command: command,
+    command,
     flags: { "deltagreen.itemMacro": true },
   });
 
   await game.user.assignHotbarMacro(macro, slot);
-
-  return;
 }
 
 /**

@@ -1,26 +1,28 @@
+/* eslint-disable import/prefer-default-export */
+
 export async function handleInlineActions(btnWithAction, messageId) {
-  let action = btnWithAction.dataset?.action;
-  let message = game.messages.get(messageId);
-  let actor = message?.speakerActor;
+  const action = btnWithAction.dataset?.action;
+  const message = game.messages.get(messageId);
+  const actor = message?.speakerActor;
   if (!actor) return;
 
-  if (action === 'rollback-skill-failure-state') {
+  if (action === "rollback-skill-failure-state") {
     const rollbackFlag = message.getFlag("deltagreen", "rollbacks");
     await actor.update(foundry.utils.deepClone(rollbackFlag));
 
-    toggleAllSkillFailures(rollbackFlag)
+    // eslint-disable-next-line no-use-before-define
+    toggleAllSkillFailures(rollbackFlag);
 
     const label = btnWithAction
       .closest(".rollback-section")
       ?.querySelector("label");
     const oldHtml = label.outerHTML;
-    label.classList.toggle('strike');
+    label.classList.toggle("strike");
 
     message.update({
       [`flags.deltagreen.rollbacks`]: rollbackFlag,
-      content: message.content
-        .replace(oldHtml, label.outerHTML)
-    })
+      content: message.content.replace(oldHtml, label.outerHTML),
+    });
   }
 }
 

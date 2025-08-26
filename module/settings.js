@@ -256,7 +256,7 @@ class HandlerSettings extends SettingForm {
         type: String,
         choices: DG.skillImprovementFormulas,
         default: "d4",
-      }
+      },
     };
   }
 }

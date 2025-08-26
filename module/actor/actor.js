@@ -49,7 +49,7 @@ export default class DeltaGreenActor extends Actor {
 
     actorData.system.health.protection = protection;
 
-    //console.log(actor);
+    // console.log(actor);
   }
 
   _prepareNpcData(actor) {
@@ -74,7 +74,7 @@ export default class DeltaGreenActor extends Actor {
 
     try {
       system.health.max = Math.ceil(
-        (system.statistics.con.value + system.statistics.str.value) / 2
+        (system.statistics.con.value + system.statistics.str.value) / 2,
       );
     } catch (ex) {
       system.health.max = 10;
@@ -98,7 +98,9 @@ export default class DeltaGreenActor extends Actor {
 
     try {
       delete system.skills.ritual; // try to remove legacy skill for ritual if it exists
-    } catch {}
+    } catch {
+      // do nothing
+    }
 
     system.sanity.ritual = 99 - system.sanity.value;
 
@@ -189,7 +191,9 @@ export default class DeltaGreenActor extends Actor {
 
     try {
       delete system.skills.ritual; // try to remove legacy skill for ritual if it exists
-    } catch {}
+    } catch {
+      // do nothing
+    }
 
     system.sanity.ritual = 99 - system.sanity.value;
 
@@ -227,7 +231,7 @@ export default class DeltaGreenActor extends Actor {
     system.wp.max = system.statistics.pow.value;
 
     system.health.max = Math.ceil(
-      (system.statistics.con.value + system.statistics.str.value) / 2
+      (system.statistics.con.value + system.statistics.str.value) / 2,
     );
 
     // initialize sanity, don't set these afterwards, as they need to be manually edited
@@ -307,7 +311,7 @@ export default class DeltaGreenActor extends Actor {
         -1 * Math.abs(system.physical.exhaustedPenalty);
     }
 
-    //console.log(agent);
+    // console.log(agent);
   }
 
   /** @override */
@@ -319,9 +323,9 @@ export default class DeltaGreenActor extends Actor {
         {
           actorLink: true, // this will make the 'Link Actor Data' option for a token is checked by default. So changes to the token sheet will reflect to the actor sheet.
           sight: { enabled: true },
-          disposition: 1 // friendly, this is a dangerous assumption to make in the agency
+          disposition: 1, // friendly, this is a dangerous assumption to make in the agency
         },
-        { overwrite: false }
+        { overwrite: false },
       );
     }
     return super.create(data, options);
@@ -345,7 +349,7 @@ export default class DeltaGreenActor extends Actor {
       }
 
       const handToHandPack = await game.packs.get(
-        "deltagreen.hand-to-hand-weapons"
+        "deltagreen.hand-to-hand-weapons",
       );
       const itemIndex = await handToHandPack.getIndex();
       const toAdd = []; // createEmbeddedDocument expects an array
@@ -413,16 +417,16 @@ export default class DeltaGreenActor extends Actor {
     description,
     protection,
     isEquipped,
-    expense = "NA"
+    expense = "NA",
   ) {
     const armorData = {
       type: "armor",
-      name: name,
+      name,
       system: {
-        description: description,
-        protection: protection,
+        description,
+        protection,
         equipped: isEquipped,
-        expense: expense,
+        expense,
       },
     };
 
@@ -443,25 +447,25 @@ export default class DeltaGreenActor extends Actor {
     killRadius = "N/A",
     ammo = "",
     expense = "NA",
-    equipped = true
+    equipped = true,
   ) {
     const weaponData = {
       type: "weapon",
-      name: name,
+      name,
       system: {
-        description: description,
-        skill: skill, //custom
-        skillModifier: skillModifier,
-        customSkillTarget: customSkillTarget,
-        range: range,
-        damage: damage,
-        armorPiercing: armorPiercing,
-        lethality: lethality,
-        isLethal: isLethal,
-        killRadius: killRadius,
-        ammo: ammo,
-        expense: expense,
-        equipped: equipped,
+        description,
+        skill, // custom
+        skillModifier,
+        customSkillTarget,
+        range,
+        damage,
+        armorPiercing,
+        lethality,
+        isLethal,
+        killRadius,
+        ammo,
+        expense,
+        equipped,
       },
     };
 

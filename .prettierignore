@@ -7,19 +7,9 @@
 **/assets
 **/documentation/images
 
-# Ignore binary compendia packs.
-packs/armor
-packs/armor*
-packs/firearms
-packs/firearms*
-packs/hand-to-hand-weapons
-packs/hand-to-hand-weapons*
-packs/operation-code-name-generator
-packs/operation-code-name-generator*
-packs/operation-code-name-generator-macro
-packs/operation-code-name-generator-macro*
-packs/pregens
-packs/pregens*
+# everything in the packs dir
+packs/**
 
-# Ignore handlebars files as Prettier cannot handle these currently.
-**/*.html
+# Ignore html/handlebars files as a different formatter is used.
+*.html
+*.hbs
