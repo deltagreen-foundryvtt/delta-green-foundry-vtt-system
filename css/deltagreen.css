@@ -1,121 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Martel:wght@400;800&family=Roboto:wght@300;400;500&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Didact+Gothic");
-
-@font-face {
-  font-family: "atwriter";
-  src: url("../assets/font/another-typewriter/atwriter.ttf") format("truetype"); /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
-}
-
-@font-face {
-  font-family: TypeWriterCondensed;
-  src: url("../assets/font/typewriter-condensed/typewcond_regular.otf")
-    format("opentype");
-}
-
-@font-face {
-  font-family: TypeWriterCondensed;
-  font-weight: bold;
-  src: url("../assets/font/typewriter-condensed/typewcond_bold.otf")
-    format("opentype");
-}
-
-@font-face {
-  font-family: TypeWriterCondensed;
-  font-weight: 600;
-  src: url("../assets/font/typewriter-condensed/typewcond_demi.otf")
-    format("opentype");
-}
-
-@font-face {
-  font-family: "SpecialElite";
-  src: url("../assets/font/special_elite/SpecialElite-Regular.ttf")
-    format("truetype"); /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
-}
-
-@font-face {
-  font-family: "PublicSans";
-  src: url("../assets/font/public-sans/PublicSans-VariableFont_wght.ttf")
-    format("truetype"); /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
-}
-
-/* Global styles */
-
-.deltagreen section.window-content {
-  scrollbar-color: #215112 #111 !important;
-  padding: 0.5rem;
-  color: black; /* Override for when in Foundry's dark mode */
-
-  input[type="checkbox"]:checked::before {
-    color: black; /* Override for when in Foundry's dark mode */
-  }
-
-  input[type="text"],
-  input[type="number"],
-  input[type="password"] {
-    height: unset;
-    line-height: 1.5rem;
-  }
-}
-
-/* Character Sheet Style Options */
-
-.window-content.outlaw-style,
-.window-content.cowboy-style {
-  background: url("../assets/img/StainedPlainPaper10b.webp") !important;
-  background-size: 100% !important;
-}
-
-.window-content.program-style {
-  background: url("../assets/img/StainedPlainPaper10a.webp") !important;
-  background-size: 100% !important;
-}
-
-.cowboy-style {
-  font-family: "SpecialElite", sans-serif !important;
-}
-
-.outlaw-style,
-.program-style {
-  font-family: "PublicSans", sans-serif !important;
-}
-
-.outlaw-style .cowboy-style .tabs [data-action="tab"] {
-  background: rgba(173, 151, 101, 0.3);
-}
-
 .program-style .tabs [data-action="tab"] {
   background: rgba(138, 136, 133, 0.3);
-}
-
-.old-paper-background {
-  background: url("../assets/img/StainedPlainPaper10.webp") !important;
-}
-.default-parchment-background {
-  background: url("/ui/parchment.jpg") repeat !important;
-}
-
-.typewriter-condensed-font {
-  font-family: "TypeWriterCondensed", sans-serif !important;
-}
-
-.martel-font {
-  font-family: "Martel", sans-serif !important;
-}
-
-.signika-font {
-  font-family: "Signika", sans-serif !important;
-}
-
-.atwriter-font {
-  font-family: "atwriter", sans-serif !important;
-}
-
-.special-elite-font {
-  font-family: "SpecialElite", sans-serif !important;
-}
-
-.public-sans-font {
-  font-family: "PublicSans", sans-serif !important;
 }
 
 .rollable:hover,
@@ -129,270 +13,8 @@
   color: #999999;
 }
 
-input.breaking-point-hit {
-  color: rgb(255, 255, 255);
-  background-color: rgb(117, 0, 0);
-  font-weight: bold;
-}
-
 .dg-red {
   color: rgb(117, 0, 0);
-}
-
-.bottom-margin-5px {
-  margin-bottom: 5px !important;
-}
-
-.grid-1col {
-  display: grid;
-  grid-column: span 1 / span 1;
-  gap: 3px;
-}
-
-.grid,
-.grid-2col {
-  display: grid;
-  grid-column: span 2 / span 2;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 3px;
-  margin: 0px 0;
-  padding: 0;
-}
-
-.grid-3col {
-  grid-column: span 3 / span 3;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.grid-4col {
-  grid-column: span 4 / span 4;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-}
-
-.grid-5col {
-  grid-column: span 5 / span 5;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-}
-
-.grid-6col {
-  grid-column: span 5 / span 5;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-}
-
-.grid-7col {
-  grid-column: span 7 / span 7;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
-}
-
-.grid-8col {
-  grid-column: span 8 / span 8;
-  grid-template-columns: repeat(8, minmax(0, 1fr));
-}
-
-.grid-9col {
-  grid-column: span 9 / span 9;
-  grid-template-columns: repeat(9, minmax(0, 1fr));
-}
-
-.grid-10col {
-  grid-column: span 10 / span 10;
-  grid-template-columns: repeat(10, minmax(0, 1fr));
-}
-
-.grid-11col {
-  grid-column: span 11 / span 11;
-  grid-template-columns: repeat(11, minmax(0, 1fr));
-}
-
-.grid-12col {
-  grid-column: span 12 / span 12;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-}
-
-/* If the user wishes to sort skills by column, we need to 
-explicitly define a number of rows, rather than columns. */
-.grid-13row {
-  grid-template-rows: repeat(13, minmax(0, auto)) !important;
-  grid-template-columns: repeat(auto-fit, minmax(0, 1fr)) !important;
-  grid-auto-flow: column !important;
-}
-
-.flex-group-center,
-.flex-group-left,
-.flex-group-right {
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  text-align: center;
-  padding: 2px;
-}
-
-.flex-thin-border {
-  border: 1px solid #999;
-  border-radius: 2px;
-  border-left-color: darkslategray;
-  border-left-width: 4px;
-}
-
-/* Make sure Special Training boxes are the same height
-   as all other skill boxes */
-.flex-thin-border.special-training-box {
-  min-height: 27px;
-}
-
-.flex-mid-border {
-  border: 1.5px solid rgb(0, 0, 0);
-  border-radius: 2px;
-}
-
-.flex-group-left {
-  -webkit-box-pack: start;
-  -ms-flex-pack: start;
-  justify-content: flex-start;
-  text-align: left;
-  padding: 0;
-}
-
-.flex-group-right {
-  -webkit-box-pack: end;
-  -ms-flex-pack: end;
-  justify-content: flex-end;
-  text-align: right;
-}
-
-.flex-center {
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  text-align: center;
-}
-
-.flex-between {
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-}
-
-.horizontal-flex-column {
-  display: flex;
-  flex-direction: column;
-}
-
-.flex-left {
-  -webkit-box-pack: start;
-  -ms-flex-pack: start;
-  justify-content: flex-start;
-  text-align: left;
-}
-
-.deltagreen .sheet-header {
-  -webkit-box-flex: 0;
-  -ms-flex: 0 0 400px;
-  flex: 0 0 auto;
-  overflow: hidden;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
-  -webkit-box-pack: start;
-  -ms-flex-pack: start;
-  justify-content: flex-start;
-  margin-bottom: 8px;
-}
-
-.deltagreen .sheet-header .profile-img {
-  height: 100px;
-  flex: 0 0 100px;
-  -webkit-box-flex: 0;
-  -ms-flex: 0 0 100px;
-
-  cursor: var(--cursor-pointer); /* Variable name from Foundry */
-
-  border: 1px solid black;
-  margin-right: 5px;
-}
-
-.deltagreen .sheet-header .header-fields {
-  -webkit-box-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-}
-
-.deltagreen .sheet-header h1.charname {
-  height: 55px;
-  font-family: inherit;
-  font-size: 2rem;
-  padding: 0px;
-  border-bottom: 0;
-  margin-bottom: 0;
-}
-
-.deltagreen .sheet-header h1.charname input {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-}
-
-.deltagreen .resource-label {
-  font-weight: bold;
-}
-
-.sheet nav.sheet-tabs {
-  border-bottom: transparent !important;
-  border-top: transparent !important;
-}
-.deltagreen .tabs {
-  height: 1.5rem;
-  line-height: 1.5rem;
-  text-align: center;
-  vertical-align: middle;
-  margin-bottom: 0px !important;
-  padding-bottom: 0px !important;
-}
-
-.deltagreen .tabs [data-action="tab"] {
-  font-weight: bold;
-  color: inherit;
-  vertical-align: middle !important;
-  height: inherit;
-  line-height: inherit;
-  padding-inline: 10px;
-  border-radius: 5px 5px 0px 0px;
-  border-color: #000;
-  border: gray;
-  border-width: 1px 1px 0px 1px;
-  border-style: solid;
-}
-
-.deltagreen .tabs [data-action="tab"].active {
-  text-shadow: none;
-  font-style: italic;
-  border: #000;
-  border-width: 2px 2px 0px 2px;
-  border-style: solid;
-}
-
-.deltagreen .tab {
-  height: 100%;
-  overflow-y: auto;
-
-  border-color: #000;
-  border-width: 2px;
-  border-style: solid;
-  border-radius: 3px;
-
-  padding: 5px;
 }
 
 .deltagreen .program-style .tabs [data-action="tab"].active {
@@ -462,18 +84,6 @@ explicitly define a number of rows, rather than columns. */
   text-align: right;
 }
 
-.deltagreen .skill-and-training-controls {
-  flex: 0 0 35px;
-}
-
-.deltagreen .action-pill {
-  padding: 2px;
-  border-radius: 2.5px;
-  font-size: 0.8rem;
-  font-weight: bold;
-  background-color: rgba(0, 0, 0, 0.185);
-}
-
 .deltagreen[id^="dg-settings"] {
   .window-content > div.flexcol {
     gap: 1rem;
@@ -505,11 +115,6 @@ a.btn-tiny {
   text-align: center;
 }
 
-span.left-aligned-label {
-  justify-content: left;
-  margin-left: 5px;
-}
-
 span.max-attribute-value-label {
   border: 1px solid rgb(122, 121, 113);
   border-radius: 3px;
@@ -518,62 +123,6 @@ span.max-attribute-value-label {
   padding-left: 3px;
   padding-right: 3px;
   height: 26px;
-}
-
-.deltagreen .skill-label {
-  margin: 2px;
-  align-content: flex-start;
-}
-
-.deltagreen .skill-type-label {
-  margin: 2px;
-}
-
-input.percentile-skill-input {
-  flex: 0 0 40px;
-  margin: 0 5px;
-  height: 1.2rem;
-  align-self: center;
-  text-align: center;
-}
-
-input.checkbox-skill-input {
-  flex: 0 0 20px;
-  line-height: 10px;
-  width: 1px;
-}
-
-.deltagreen .sheet-header .header-top {
-  margin-bottom: 5px;
-}
-
-.deltagreen .sheet-header .charname input {
-  /* font-family: "SpecialElite", sans-serif; */
-}
-
-.deltagreen .sheet-header h2.profession {
-  font-family: inherit;
-  font-size: 1.5rem;
-  border-bottom: 0;
-  margin-top: 5px;
-  margin-bottom: 0;
-}
-
-.deltagreen .sheet-header h2.profession input {
-  width: 100%;
-  height: 40px;
-  margin: 0;
-}
-
-div .simple-centered-flex-div {
-  display: flex;
-  align-items: center;
-}
-
-div input.fill-remaining-space {
-  flex: 1;
-  margin: 1px;
-  text-align: left;
 }
 
 div span.bio-grid-label {
@@ -606,10 +155,6 @@ div span.bio-grid-label {
   grid-template-columns: auto 50px max-content;
   align-items: center;
   padding-bottom: 10px;
-}
-
-.centered {
-  text-align: center !important;
 }
 
 .breaking-point-grid-3col {
@@ -737,34 +282,6 @@ textarea.wounds {
   width: 100%;
 }
 
-.resource-inner-grid-3col {
-  display: grid;
-  grid-template-columns: 35% 30% 35%;
-  align-items: center;
-  text-align: center;
-}
-
-.resource-outer-grid-1col {
-  display: grid;
-  grid-template-columns: 100%;
-  align-items: center;
-  justify-content: center;
-  border: 1.5px solid #000000;
-  padding: 5px;
-  grid-gap: 3px;
-  text-align: center;
-  border-radius: 2px;
-}
-
-div.max-resource-value {
-  border: 1px solid rgb(122, 121, 113);
-  border-radius: 3px;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .physical-stats-outer-grid-3col {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -782,62 +299,6 @@ div.max-resource-value {
 
 .attributes-wrapper {
   margin-block-end: 12px;
-}
-
-div.horizontal-bar-section-divider {
-  display: grid;
-  grid-template-columns: 100%;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-
-  margin-bottom: 3px;
-
-  background: #000;
-  color: #fff;
-  height: 30px;
-
-  border-radius: 3px 3px 3px 3px;
-}
-
-div.horizontal-bar-section-divider.skills-header {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-
-  margin-bottom: 3px;
-
-  background: #000;
-  color: #fff;
-  height: 30px;
-
-  border-radius: 3px 3px 3px 3px;
-}
-
-.horizontal-bar-section-divider .skills-header-title {
-  grid-column: 2;
-}
-
-.horizontal-bar-section-divider .toggle-untrained {
-  grid-column: 3;
-  padding-right: 0.5rem;
-  justify-self: end;
-}
-
-div.horizontal-bar-section-header {
-  display: grid;
-  grid-template-columns: 100%;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-
-  margin-bottom: 3px;
-
-  background: #000;
-  color: #fff;
-  height: 50px;
 }
 
 .physical-description-label {
@@ -866,36 +327,6 @@ div.motivation-editor-container div.editor {
 .deltagreen .editor .editor-container {
   height: 100% !important;
 }
-
-/* I think all the stuff below is now obsolete
-.editor-host .tox .tox-editor-container {
-  background: none !important;
-}
-
-.deltagreen .editor-host .tox {
-  height: 100% !important;
-  display: block;
-}
-
-.deltagreen .editor-host .tox-tinymce {
-  height: 100% !important;
-  display: block;
-}
-
-.deltagreen .editor-host .tox .tox-edit-area {
-  position: inherit;
-  min-height: 20px;
-  height: 300px;
-}
-
-.deltagreen .tox-editor-header {
-  background: none !important;
-}
-
-.deltagreen .tox .tox-edit-area {
-  padding: 0 8px;
-}
-*/
 
 /*
   Item Sheet Common CSS
@@ -1091,7 +522,7 @@ input.item-sheet-short-input {
   padding-right: 5px;
 }
 
-/* 
+/*
   Tome Item Sheet
 */
 
@@ -1130,18 +561,6 @@ input.item-sheet-short-input {
   padding: 5px;
   grid-gap: 3px;
   text-align: left;
-}
-
-.skill-util-buttons {
-  margin: 5px;
-
-  .typed-skill-add {
-    margin-right: 5px;
-  }
-}
-
-a[data-action="applySkillImprovements"] {
-  float: right;
 }
 
 .yellow-king {
@@ -1301,8 +720,4 @@ body:not(.no-theme) #interface:not(.theme-light) #action-bar .slot.full:hover {
   height: 20px;
   margin-left: 5px;
   font-size: 12px;
-}
-
-.strike {
-  text-decoration: line-through;
 }

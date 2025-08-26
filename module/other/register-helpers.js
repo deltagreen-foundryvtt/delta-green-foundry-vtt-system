@@ -162,50 +162,6 @@ export default function registerHandlebarsHelpers() {
     },
   );
 
-  // looks at system setting for what font to use and returns the class that is then used in the handlebars template that
-  // generates the character sheet.
-  Handlebars.registerHelper("getFontFamilySystemSettingClass", () => {
-    const setting = game.settings.get("deltagreen", "characterSheetFont");
-
-    const characterSheetStyle = game.settings.get(
-      "deltagreen",
-      "characterSheetStyle",
-    );
-
-    /*
-    if(setting === "TypeWriterCondensed"){
-      return "typewriter-condensed-font";
-    }
-    else if(setting === "Martel"){
-      return "martel-font";
-    }
-    else if(setting === "Signika"){
-      return "signika-font";
-    }
-    else if(setting === "atwriter"){
-      return "atwriter-font";
-    }
-    else if(setting === "SpecialElite"){
-      return "special-elite-font";
-    }
-    else if(setting === "PublicSans"){
-      return "public-sans-font";
-    }
-    else{
-      return "martel-font";
-    }
-    */
-
-    /*
-    if(characterSheetStyle === "cowboy"){
-      return "special-elite-font";
-    }
-    else{
-      return "public-sans-font";
-    }
-    */
-  });
-
   Handlebars.registerHelper("getCharacterSheetStyle", () => {
     const characterSheetStyle = game.settings.get(
       "deltagreen",

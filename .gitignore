@@ -15,3 +15,5 @@ deltagreen.lock
 
 # Ignore npm modules
 node_modules
+
+css/style*

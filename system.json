@@ -28,7 +28,7 @@
     }
   },
   "esmodules": ["module/deltagreen.js"],
-  "styles": ["css/deltagreen.css", "css/dialogue.css"],
+  "styles": ["css/styles.css"],
   "languages": [
     {
       "lang": "en",
