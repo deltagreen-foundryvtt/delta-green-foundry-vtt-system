@@ -3,8 +3,7 @@ name: Bug report
 about: Report errors and/or issues
 title: Short & descriptive title
 labels: bug
-assignees: ''
-
+assignees: ""
 ---
 
 ## Bug Description
