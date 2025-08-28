@@ -1,5 +1,9 @@
 ## Release/Patch Notes
 
+### Version 1.6.0 - ????-??-?? (FOUNDRY V13 COMPATIBLE ONLY)
+
+- [PLACEHOLDER]
+
 ### Version 1.5.0 - 2025-05-17 (FOUNDRY V13 COMPATIBLE ONLY)
 
 - Fix/Enhancement [GitHub #186] - A bunch of adjustments to try to better work in Foundry v13. Some of these changes break compatibility with v12.
