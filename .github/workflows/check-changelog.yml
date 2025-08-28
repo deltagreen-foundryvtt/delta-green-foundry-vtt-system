@@ -1,0 +1,37 @@
+name: Check Changelog
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, labeled, unlabeled]
+    branches:
+      - master
+
+jobs:
+  check-changelog:
+    name: Check CHANGELOG.md for updates
+    runs-on: ubuntu-latest
+    if: contains(github.event.pull_request.labels.*.name, 'bug') || contains(github.event.pull_request.labels.*.name, 'enhancement')
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check if CHANGELOG.md was modified
+        run: |
+          # Get the list of changed files
+          CHANGED_FILES=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})
+
+          # Check if CHANGELOG.md is in the list
+          if echo "$CHANGED_FILES" | grep -q "^CHANGELOG\.md$"; then
+            echo "✅ CHANGELOG.md has been modified"
+            exit 0
+          else
+            echo "❌ CHANGELOG.md has not been modified"
+            echo "This PR has a 'bug' or 'enhancement' label and requires CHANGELOG.md to be updated"
+            echo ""
+            echo "Changed files:"
+            echo "$CHANGED_FILES"
+            exit 1
+          fi
