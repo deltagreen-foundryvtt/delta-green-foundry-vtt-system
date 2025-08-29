@@ -39,7 +39,14 @@ jobs:
         run: mkdir dist && cp system.json dist/dev-system.json
 
       - name: Zip
-        run: zip -r dist/deltagreen.zip . -x "packs/source/*" -x "build/*" -x ".*" -x "package.json" -x "package-lock.json"
+        run: |
+          zip -r dist/deltagreen.zip . \
+            -x "packs/source/*" \
+            -x "build/*" \
+            -x ".*" \
+            -x "package.json" \
+            -x "package-lock.json" \
+            -x "node_modules/*"
 
       # Deploy to GitHub Pages (see https://github.com/actions/starter-workflows/blob/main/pages/static.yml)
       - name: Setup Pages
