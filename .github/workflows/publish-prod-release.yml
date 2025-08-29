@@ -1,59 +1,52 @@
 # This is a basic workflow that is manually triggered
-name: Build Packs
+name: Release
 
 # Controls when the action will run. Workflow runs when release is published.
 on:
   release:
     types: [published]
 
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: write
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called buildPacks
-  buildPacks:
+  release:
     # The type of runner that the job will run on. This must be ubuntu for the zip command to work.
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Each step runs a single command using the runners shell.
-      # 1. Checkout our repository so we can do things on it.
       - name: Checkout
         uses: actions/checkout@v4
-        # 2. Make sure node is set up. This may be an unecessary step.
-      - name: Node Setup
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-        # 3. Install the FoundryVTT CLI.
-      - run: npm install -g @foundryvtt/foundryvtt-cli
-        # 4. Configure the datapath as the github workspace variable.
-      - run: fvtt configure set "dataPath" ${GITHUB_WORKSPACE}
-        # 5. Tell the FVTT CLI that we are working on a "system" package.
-      - run: fvtt package workon fvtt package workon "deltagreen" --type "System"
-        # 6-11. Package each folder of source json files into the appropriate LevelDB pack.
-      - run: fvtt package pack "armor" --in "packs/source/armor" --out "packs"
-      - run: fvtt package pack "firearms" --in "packs/source/firearms" --out "packs"
-      - run: fvtt package pack "hand-to-hand-weapons" --in "packs/source/hand-to-hand-weapons" --out "packs"
-      - run: fvtt package pack "operation-code-name-generator" --in "packs/source/operation-code-name-generator" --out "packs"
-      - run: fvtt package pack "operation-code-name-generator-macro" --in "packs/source/operation-code-name-generator-macro" --out "packs"
-      - run: fvtt package pack "pregens" --in "packs/source/pregens" --out "packs"
-      # 12. Get the version number without the leading -v.
+
+      - name: Build Packs
+        uses: ./.github/actions/build-packs
+
       - name: Get Version
         id: get_version
         uses: dhkatz/get-version-action@v3.0.0
-      # 13. Substitute the Manifest and Download URLs in the system.json
+
       - name: Substitute Manifest, Download Links For Versioned Ones
         uses: TomaszKandula/variable-substitution@v1.0.1
         with:
           files: "system.json"
         env:
+          flags: ""
           version: ${{steps.get_version.outputs.version-without-v}}
           download: https://github.com/${{github.repository}}/releases/download/${{github.event.release.tag_name}}/deltagreen.zip
-      # 14. Zip up the branch with the LevelDB packs.
+
       - name: Zip
-        # Exclude the source json files from the final package, as well as any git folders.
-        run: zip -r deltagreen.zip . --exclude="*packs/source/*" --exclude=".*" --exclude="package-lock.json" --exclude="package.json"
-      # 15. Updates the release with the newly zipped branch. See documentation of this action for details.
+        run: |
+          zip -r deltagreen.zip . \
+            -x "packs/source/*" \
+            -x "build/*" \
+            -x ".*" \
+            -x "package.json" \
+            -x "package-lock.json" \
+            -x "node_modules/*"
+
       - name: Update Release with Artifacts
         uses: ncipollo/release-action@v1.13.0
         with:
@@ -63,3 +56,7 @@ jobs:
           body: ${{ github.event.release.body }}
           artifacts: "./deltagreen.zip, ./system.json"
           token: ${{ secrets.GITHUB_TOKEN }}
+
+defaults:
+  run:
+    shell: bash
