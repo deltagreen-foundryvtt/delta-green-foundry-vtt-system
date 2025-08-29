@@ -34,6 +34,7 @@ jobs:
         with:
           files: "system.json"
         env:
+          version: dev
           download: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/dev/deltagreen.zip
 
       - name: Copy system.json
