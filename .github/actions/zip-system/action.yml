@@ -1,0 +1,27 @@
+name: "Zip Project"
+description: "Zips the project for distribution"
+
+inputs:
+  path:
+    description: "Path to output directory for zip file"
+    required: false
+    default: ""
+runs:
+  using: "composite"
+  steps:
+    - name: Zip
+      shell: bash
+      run: |
+        if [[ -z "${{ inputs.path }}" ]]; then
+          OUTPUT_PATH="deltagreen.zip"
+        else
+          OUTPUT_PATH="${{ inputs.path }}/deltagreen.zip"
+        fi
+        zip -r "${OUTPUT_PATH}" . \
+          -x "packs/source/*" \
+          -x "build/*" \
+          -x "dist/*" \
+          -x ".*" \
+          -x "package.json" \
+          -x "package-lock.json" \
+          -x "node_modules/*"

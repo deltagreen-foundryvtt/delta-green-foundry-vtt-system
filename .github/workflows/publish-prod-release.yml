@@ -38,14 +38,7 @@ jobs:
           download: https://github.com/${{github.repository}}/releases/download/${{github.event.release.tag_name}}/deltagreen.zip
 
       - name: Zip
-        run: |
-          zip -r deltagreen.zip . \
-            -x "packs/source/*" \
-            -x "build/*" \
-            -x ".*" \
-            -x "package.json" \
-            -x "package-lock.json" \
-            -x "node_modules/*"
+        uses: ./.github/actions/zip-system
 
       - name: Update Release with Artifacts
         uses: ncipollo/release-action@v1.13.0
