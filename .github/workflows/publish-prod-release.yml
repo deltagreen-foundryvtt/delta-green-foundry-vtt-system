@@ -1,0 +1,62 @@
+# This is a basic workflow that is manually triggered
+name: Release
+
+# Controls when the action will run. Workflow runs when release is published.
+on:
+  release:
+    types: [published]
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: write
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called buildPacks
+  release:
+    # The type of runner that the job will run on. This must be ubuntu for the zip command to work.
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build Packs
+        uses: ./.github/actions/build-packs
+
+      - name: Get Version
+        id: get_version
+        uses: dhkatz/get-version-action@v3.0.0
+
+      - name: Substitute Manifest, Download Links For Versioned Ones
+        uses: TomaszKandula/variable-substitution@v1.0.1
+        with:
+          files: "system.json"
+        env:
+          flags: ""
+          version: ${{steps.get_version.outputs.version-without-v}}
+          download: https://github.com/${{github.repository}}/releases/download/${{github.event.release.tag_name}}/deltagreen.zip
+
+      - name: Zip
+        run: |
+          zip -r deltagreen.zip . \
+            -x "packs/source/*" \
+            -x "build/*" \
+            -x ".*" \
+            -x "package.json" \
+            -x "package-lock.json" \
+            -x "node_modules/*"
+
+      - name: Update Release with Artifacts
+        uses: ncipollo/release-action@v1.13.0
+        with:
+          allowUpdates: true
+          name: ${{ github.event.release.name }}
+          tag: ${{ github.event.release.tag_name }}
+          body: ${{ github.event.release.body }}
+          artifacts: "./deltagreen.zip, ./system.json"
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+defaults:
+  run:
+    shell: bash

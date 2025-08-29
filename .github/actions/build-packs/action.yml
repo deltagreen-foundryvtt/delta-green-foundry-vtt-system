@@ -1,0 +1,11 @@
+name: "Build Compendium Packs"
+description: "Builds the compendium pack binaries from source JSON files"
+runs:
+  using: "composite"
+  steps:
+    - name: Node Setup
+      uses: ./.github/actions/setup-node
+
+    - name: Build Compendium Packs
+      run: ./build/build-packs.sh
+      shell: bash
