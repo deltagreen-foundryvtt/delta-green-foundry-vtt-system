@@ -1,9 +1,42 @@
 ## Release/Patch Notes
 
 ### Version 1.6.0 - ????-??-?? (FOUNDRY V13 COMPATIBLE ONLY)
+Special thanks to these contributers for the latest update:
+- Thanks to [reyzor](https://github.com/reyzor1991)
+- Thanks to [Jalensailing](https://github.com/jalensailin)
+- Thanks to [lozanoje](https://github.com/lozanoje)
+- Thanks to [dairefinn](https://github.com/dairefinn)
+- Thanks to [MrTheBino](https://github.com/MrTheBino)
+- Thanks to [vonv](https://github.com/vonv)
+### **New Features:**
 
-- [PLACEHOLDER]
+- [Github #219](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/pull/219) new settings menu that adds tabs to organise settings for future purposes
+- [Github #217](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/pull/217) converted all the sheets to app v2 inline with foundry v13 ui updates
+- [Github #207](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/pull/207) Now in the settings menu under handler settings you can enable an auto check box on failed skills this will also enable a revert button in the chat card if mistakes are made
+- [Github #216](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/pull/216) Adds a new sheet template for NPCs who are set to limited visibility. This mostly copies from the existing limited actor sheet but removes the "Personal" tab because NPCs don't seem to have a way to configure that
+- [Github #230](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/pull/230) adds tooltips for each skill that keep the spirit of the original skills whilst not pulling directly from the agents handbook and approved by our dg liason
+- [Github #205](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/pull/205) adds an internal mechanic for future applications of active effects. this is the start of active effects to be able to change skill proficiencies with an active effect. (note: active effects are not fully implemented yet)
+- [Github #221](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/pull/221) adds the same internal mechanic from above to npcs and unnatural npcs
+- [Github #225](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/pull/225) changes skill improvement dialogues to appv2
+- [Github #194](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/194) adds a development discord that is fan made and unofficial you can now join this via this link [Discord](https://discord.gg/ETkBpBJKvc) join this to stay informed or be a part of the dev team. also a good base for a DG community.
+- [Github #206](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/206) makes it clearer who can see the impossible landscapes content aswell as hypergeometry
+- [Github #224](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/224) convert all dialogues to app v2
+### **Bug Fixes:**
+- [Github #237](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/pull/237) fixes new auto failure check mark feature to be only for agents as it was checking for all types of actors
+- [Github #220](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/pull/220) fixes CSS for headers for statistics
+- [Github #203](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/203) fixes auto showing art as a skill on new sheets
+- [Github #215](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/215) fixes incorrect calculation of skills when penalties are stacked
+- [Github #235](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/235) fixes foundry default settings on sheet locations.
+- [Github #229](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/229) fixes depreciated warning when creating new worlds with our system
 
+### **Localisation Updates/Lang Changes:**
+- [Github #204](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/pull/204) fixes several lang issues for headers,tooltips,critical failure and success, adds its own compendia folder for delta green
+- [Github #199](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/pull/199) fixes German translations
+- [Github #193](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/pull/193) fixes French translations
+
+### **Backend Changes**
+- [Github #228](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/pull/228) adds a standerdisation for contribution to the system and adds checks to contributed code to make it easier for people to contribute coding to the system going forward: all issues,bugs and feature requests (enchancments) now have their own templates making it easier to track and have a format for. 
+  
 ### Version 1.5.0 - 2025-05-17 (FOUNDRY V13 COMPATIBLE ONLY)
 
 - Fix/Enhancement [GitHub #186] - A bunch of adjustments to try to better work in Foundry v13. Some of these changes break compatibility with v12.
