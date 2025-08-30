@@ -294,6 +294,7 @@ export default function registerSystemSettings() {
       cowboy: game.i18n.localize("DG.Settings.charactersheet.cowboys"),
       outlaw: game.i18n.localize("DG.Settings.charactersheet.outlaws"),
       program: game.i18n.localize("DG.Settings.charactersheet.program"),
+      book: game.i18n.localize("DG.Settings.charactersheet.book"),
     },
     default: "program", // The default value for the setting
     onChange: (value) => {

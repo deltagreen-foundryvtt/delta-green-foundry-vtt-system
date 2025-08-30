@@ -1,0 +1,875 @@
+<header class="sheet-header">
+    <div class="header-top-logo-row bg-black">
+        <img class="logo-img"
+             src="systems/deltagreen/assets/img/dg_logo.webp"
+             height="55"
+             width="auto" />
+    </div>
+    <section class="section-header">
+    <div class="section-flex">
+        <div class="section-flex-header bg-black">
+            <p>{{localize 'DG.Book.Headings.PersonalData'}}</p>
+        </div>
+        <div class="section-flex-content">
+            <table>
+                <tr>
+                    <td rowspan="2" class="padding-eq15">
+                       <img class="profile-img"
+                            src="{{actor.img}}"
+                            data-action="editImage"
+                            data-edit="img"
+                            data-tooltip="{{actor.name}}"
+                            height="150"
+                            width="100" />
+                    </td>
+                    <td class="w-40">
+                        <label for="name">1. {{localize 'DG.Book.Labels.FirstNameLastName'}}</label>
+                         <input name="name"
+                               type="text"
+                               value="{{actor.name}}"
+                               data-tooltip="{{localize 'DG.AgentNameFieldTooltip' }}" />
+                    </td>
+                    <td class="w-40">
+                        <label for="system.biography.profession">2. {{localize 'DG.Book.Labels.ProfessionRank'}}</label>
+                        <input name="system.biography.profession"
+                               type="text"
+                               value="{{actor.system.biography.profession}}"
+                               placeholder="{{localize 'DG.CV.ProfessionPlaceholder'}}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="w-40">
+                        <label for="system.biography.employer">3. {{localize 'DG.Book.Labels.Employer'}}</label>
+                        <input class="fill-remaining-space"
+                            type="text"
+                            name="system.biography.employer"
+                            value="{{actor.system.biography.employer}}"
+                            data-dtype="String"
+                            placeholder="{{localize 'DG.CV.EmployerPlaceholder'}}" />
+                    </td>
+                    <td class="w-40">
+                        <label for="system.biography.nationality">4. {{localize 'DG.Book.Labels.Nationality'}}</label>
+                        <input class="fill-remaining-space"
+                            type="text"
+                            name="system.biography.nationality"
+                            value="{{actor.system.biography.nationality}}"
+                            data-dtype="String"
+                            placeholder="{{localize 'DG.CV.NationalityPlaceholder'}}" />
+                    </td>
+                </tr>
+            </table>
+            <table class="merged-table">
+                <tr>
+                    <td class="w-20">
+                        <label for="system.biography.age">5. {{localize 'DG.Book.Labels.Sex'}}</label>
+                        <input class="fill-remaining-space"
+                            type="text"
+                            name="system.biography.sex"
+                            value="{{actor.system.biography.sex}}"
+                            data-dtype="String"
+                            placeholder="{{localize 'DG.CV.SexPlaceholder'}}" />
+                    </td>
+                    <td class="w-20">
+                        <label for="system.biography.age">6. {{localize 'DG.Book.Labels.AgeAndDoB'}}</label>
+                        <input class="fill-remaining-space"
+                            type="text"
+                            name="system.biography.age"
+                            value="{{actor.system.biography.age}}"
+                            data-dtype="String"
+                            placeholder="{{localize 'DG.CV.AgeAndDoBPlaceholder'}}" />
+                    </td>
+                    <td class="w-60">
+                        <label for="system.biography.education">7. {{localize 'DG.Book.Labels.EducationAndOccupationalHistory'}}</label>
+                            <input class="fill-remaining-space"
+                                type="text"
+                                name="system.biography.education"
+                                value="{{actor.system.biography.education}}"
+                                data-dtype="String"
+                                placeholder="{{localize 'DG.CV.EducationPlaceholder'}}" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    </section>
+    <section class="section-2-boxes">
+        <div class="section-flex">
+        <div class="section-flex-header bg-black">
+            <p>{{localize 'DG.Book.Headings.StatisticalData'}}</p>
+        </div>
+        <div class="section-flex-content">
+            <table>
+                <tr>
+                    <td><label>8. {{localize 'DG.Book.Labels.Statistics'}}</label></td>
+                    <td><label>{{localize 'DG.Book.Labels.Score'}}</label></td>
+                    <td><label>x5</label></td>
+                    <td><label>{{localize 'DG.Book.Labels.DistinguishingFeatures'}}</label></td>
+                </tr>
+            {{#each actor.system.statistics as |statistic key| }}
+            <tr>
+                <td>
+                    <label class="rollable resource-label"
+                            data-action="roll"
+                            data-rolltype="stat"
+                            data-key="{{key}}"
+                            data-tooltip="{{localize (concat 'DG.Attributes.Tooltip.' key)}}"
+                            for="system.statistics.{{key}}.value">
+                            {{localize (concat 'DG.Attributes.Long.' key)}}
+                    </label>
+                </td>
+                <td class="w-15">
+                    <input class="centered"
+                            type="text"
+                            name="system.statistics.{{key}}.value"
+                            value="{{statistic.value}}"
+                            data-dtype="Number" />
+                </td>
+                <td class="w-20">
+                    <span class="rollable font-size-12"
+                              data-action="roll"
+                              data-rolltype="stat"
+                              data-key="{{key}}"
+                              title="{{localize 'DG.Tooltip.x5AttributeLabel'}}">({{numberFormat statistic.x5 decimals=0 sign=false}}%&nbsp;<i class="fas fa-dice"></i>)</span>
+                </td>
+                <td>
+                    <input type="text"
+                            name="system.statistics.{{key}}.distinguishing_feature"
+                            value="{{statistic.distinguishing_feature}}"
+                            data-dtype="String"
+                            title="{{localize 'DG.Tooltip.DistinguishingFeature'}}" />
+                </td>
+            </tr>
+            {{/each}}
+            </table>
+            <table class="merged-table">
+                <tr>
+                    <td><label>9. {{localize 'DG.Book.Labels.DerivedAttributes'}}</label></td>
+                    <td><label>{{localize 'DG.Book.Labels.Maximum'}}</label></td>
+                    <td><label>{{localize 'DG.Book.Labels.Current'}}</label></td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>{{localize 'DG.Attributes.Book.HP'}}</label>
+                    </td>
+                    <td>
+                        <div class="max-resource-value"
+                         data-tooltip="{{localize 'DG.Tooltip.MaximumHP'}}">
+                            <div>{{numberFormat actor.system.health.max decimals=0 sign=false}}</div>
+                        </div>
+                    </td>
+                    <td>
+                         <input class="centered"
+                           type="text"
+                           name="system.health.value"
+                           value="{{actor.system.health.value}}"
+                           data-dtype="Number" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>{{localize 'DG.Attributes.Book.WP'}}</label>
+                    </td>
+                    <td>
+                        <div class="max-resource-value"
+                         data-tooltip="{{localize 'DG.Tooltip.MaximumWP'}}">
+                            <div>{{numberFormat actor.system.wp.max decimals=0 sign=false}}</div>
+                        </div>
+                    </td>
+                    <td>
+                        <input class="centered"
+                               type="text"
+                               name="system.wp.value"
+                               value="{{actor.system.wp.value}}"
+                               data-dtype="Number" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="system.san.value"
+                            class="resource-label rollable"
+                            data-action="roll"
+                            {{#if_eq actor.type 'unnatural' }}
+                            data-rolltype="sanity-damage"
+                            {{else }}
+                            data-rolltype="sanity"
+                            {{/if_eq }}
+                            data-tooltip="{{localize 'DG.Attributes.Tooltip.SAN' }}">
+                            {{localize 'DG.Attributes.Book.SAN' }} <i class="fas fa-dice"></i>
+                        </label>
+                    </td>
+                    <td>
+                        <div class="max-resource-value"
+                            data-tooltip="{{localize 'DG.Tooltip.MaximumSanity'}}">
+                            <div>{{numberFormat actor.system.sanity.max decimals=0 sign=false}}</div>
+                        </div>
+                    </td>
+                    <td>
+                        <input class="centered
+                        {{#if actor.system.sanity.breakingPointHit }}
+                            breaking-point-hit{{/if }}"
+                            type="text"
+                            name="system.sanity.value"
+                            value="{{actor.system.sanity.value }}"
+                            data-dtype="Number"
+                            data-tooltip="{{localize 'DG.Tooltip.CurrentSanityPartOne' }}{{actor.system.sanity.currentBreakingPoint }}{{localize 'DG.Tooltip.CurrentSanityPartTwo' }}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>{{localize 'DG.Attributes.Book.BP'}}</label>
+                    </td>
+                    <td>
+                         <div class="max-resource-value"
+                            data-tooltip="{{localize 'DG.Tooltip.CurrentSanityPartOne' }}{{actor.system.sanity.currentBreakingPoint }}{{localize 'DG.Tooltip.CurrentSanityPartTwo' }}">
+                            <div>{{numberFormat actor.system.sanity.currentBreakingPoint decimals=0 sign=false}}</div>
+                        </div>
+                    </td>
+                    <td class="cell-center">
+                        <a class="btn-tiny"
+                            data-action="resetBreakingPoint"
+                            title="{{localize 'DG.Tooltip.BreakPointReset'}}">{{localize 'DG.Mental.Reset'}}</a>
+                    </td>
+                </tr>
+            </table>
+            <table class="merged-table">
+                <tr>
+                    <td>
+                        <label>10. {{localize 'DG.Book.Labels.PhysicalDescription'}}</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <textarea class="wounds" name="system.physical.description">{{actor.system.physical.description}}</textarea>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        </div>
+        <div class="section-flex">
+        <div class="section-flex-header bg-black m-l-5">
+            <p>{{localize 'DG.Book.Headings.PsychologicalData'}}</p>
+        </div>
+        <div class="section-flex-content">
+            <table>
+                <tr>
+                    <td class="w-10">
+                        <label>
+                            <div class="item-bond-damage">
+                                <a data-action="clearBondDamage" title="{{localizeWithFallback 'DG.Generic.ClearAll' 'Clear All'}}"><i class="fas fa-arrow-rotate-left"></i></a>
+                            </div>
+                        </label>
+                    </td>
+                    <td><label>11. {{localize 'DG.Book.Labels.Bonds'}}</label></td>
+                    <td class="w-20"><label>{{localize 'DG.Bonds.Score'}}</label></td>
+                    <td class="w-20 cell-center">
+                        <label>
+                            <a class="item-control action-pill" data-action="itemAction" data-action-type="create" data-item-type="bond" title="Create item">
+                                <i class="fas fa-plus"></i>
+                                {{localize 'DG.Generic.AddButtonLabel'}}
+                            </a>
+                        </label>
+                    </td>
+                </tr>
+                {{#each actor.items as |item id| }}
+                    {{#if_eq item.type "bond" }}
+                    <tr data-item-id="{{item.id}}">
+                        <td><input class="item-bond-damage"
+                               type="checkbox"
+                               data-action="toggle"
+                               data-prop="system.hasBeenDamagedSinceLastHomeScene"
+                               title="Check if bond has been damaged since last home scene."
+                               {{checked item.system.hasBeenDamagedSinceLastHomeScene}} />
+                        </td>
+                            <td>
+                            <span class="item-name">{{item.name}}</span>
+                        </td>
+                        <td>
+                            <span>{{item.system.score}}</span>
+                        </td>
+                        <td>
+                            <a class="item-control"
+                               data-action="itemAction"
+                               data-action-type="edit"
+                               title="Edit Item">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a class="item-control"
+                               data-action="itemAction"
+                               data-action-type="delete"
+                               title="Delete Item">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                {{/if_eq}}
+            {{/each}}
+            </table>
+            <table class="merged-table">
+                <tr>
+                    <td>
+                        <label>12. {{localize 'DG.Book.Labels.MotivationsAndMentalDisorders'}}</label>
+                    </td>
+                    <td class="w-40 cell-center">
+                        <a class="item-control action-pill"
+                        data-action="itemAction"
+                        data-action-type="create"
+                        data-item-type="motivation"
+                        title="Create item">
+                        <i class="fas fa-plus"></i>
+                        {{localize 'DG.Generic.AddButtonLabel'}}
+                        </a>
+                    </td>
+                </tr>
+            {{#each actor.items as |item id| }}
+                {{#if_eq item.type 'motivation' }}
+
+                    <tr data-item-id="{{item.id}}">
+                        <td>
+                            <span class="item-name"
+                                {{#if item.system.crossedOut }}
+                                style="text-decoration: line-through"
+                                {{/if }}>
+                                {{item.name}}
+                            </span>
+
+                            {{#if item.system.crossedOut }}
+                                <span class="item-name">{{item.system.disorder}}</span>
+                            {{/if}}
+                        </td>
+                        <td>
+                        <div class="item-controls">
+                            <a class="item-control"
+                               data-action="itemAction"
+                               data-action-type="edit"
+                               title="Edit Item">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a class="item-control"
+                               data-action="itemAction"
+                               data-action-type="delete"
+                               title="Delete Item">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </div>
+                        </td>
+                    </tr>
+
+                {{/if_eq}}
+            {{/each}}
+            </table>
+            <table class="merged-table">
+                <tr>
+                    <td colspan="2">
+                        <label>13. {{localize 'DG.Book.Labels.IncidentsOfSanLossWithoutGoingInsane'}}</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>{{localize 'DG.Mental.Violence'}}</label>
+                        <div class="inputs-13">
+                            <input class="labeled-resource-checkbox input-inline-and-small"
+                                type="checkbox"
+                                name="system.sanity.adaptations.violence.incident1"
+                                {{checked actor.system.sanity.adaptations.violence.incident1}}
+                                data-dtype="Boolean" />
+                            <input class="labeled-resource-checkbox input-inline-and-small"
+                                type="checkbox"
+                                name="system.sanity.adaptations.violence.incident2"
+                                {{checked actor.system.sanity.adaptations.violence.incident2}}
+                                data-dtype="Boolean" />
+                            <input class="labeled-resource-checkbox input-inline-and-small"
+                                type="checkbox"
+                                name="system.sanity.adaptations.violence.incident3"
+                                {{checked actor.system.sanity.adaptations.violence.incident3}}
+                                data-dtype="Boolean" />
+
+                            <label class="adapted-label"
+                                data-tooltip="{{localize 'DG.Tooltip.AdaptedToViolence'}}">
+                                {{#if actor.system.sanity.adaptations.violence.isAdapted }}
+                                    {{localize 'DG.Mental.AdaptedToViolence'}}
+                                {{/if}}
+                            </label>
+                        </div>
+                    </td>
+                    <td>
+                        <label>{{localize 'DG.Mental.Helplessness'}}</label>
+                        <div class="inputs-13">
+                            <input class="labeled-resource-checkbox input-inline-and-small"
+                                type="checkbox"
+                                name="system.sanity.adaptations.helplessness.incident1"
+                                {{checked actor.system.sanity.adaptations.helplessness.incident1}}
+                                data-dtype="Boolean" />
+                            <input class="labeled-resource-checkbox input-inline-and-small"
+                                type="checkbox"
+                                name="system.sanity.adaptations.helplessness.incident2"
+                                {{checked actor.system.sanity.adaptations.helplessness.incident2}}
+                                data-dtype="Boolean" />
+                            <input class="labeled-resource-checkbox input-inline-and-small"
+                                type="checkbox"
+                                name="system.sanity.adaptations.helplessness.incident3"
+                                {{checked actor.system.sanity.adaptations.helplessness.incident3}}
+                                data-dtype="Boolean" />
+
+                            <label class="adapted-label"
+                                data-tooltip="{{localize 'DG.Tooltip.AdaptedToHelplessness'}}">
+                                {{#if actor.system.sanity.adaptations.helplessness.isAdapted }}
+                                    {{localize 'DG.Mental.AdaptedToHelplessness'}}
+                                {{/if}}
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        </div>
+    </section>
+    <section class="section-skills">
+        <div class="section-flex">
+            <div class="section-flex-header bg-black">
+                <p>{{localize 'DG.Book.Headings.ApplicableSkillSets'}}</p>
+            </div>   
+            <div class="section-flex-content">
+            <table class="skills-table">
+                <!-- Skills -->
+                {{#each actor.system.sortedSkills as |skill key| }}
+                {{#if (eq (mod @index 4) 0)}}<tr>{{/if}}
+                <td>
+                    <div class="flexrow flex-group-left flex-thin-border">
+                        <label class="{{if_gt skill.targetProficiency 0 'rollable' 'not-rollable'}} skill-label"
+                            data-action="roll"
+                            data-key="{{skill.key}}"
+                            data-rolltype="skill"
+                            for="system.skills.{{skill.key}}.value"
+                            data-tooltip="{{concat (localize (concat 'DG.Skills.Tooltip.' skill.key)) '<br><br>' (localize (ifThen skill.proficiency 'DG.Tooltip.SkillLabel' 'DG.Tooltip.CannotRollSkillLabel')) }}">
+                            {{localizeWithFallback (concat "DG.Skills." skill.key) skill.label }}
+                            <i class="fas fa-dice"></i>
+                        </label>
+
+                        <input class="percentile-skill-input  {{!-- This use of helpers is a bit hacky and should be consolidated in _prepareContext --}}
+                                    {{#if (and (ne skill.proficiency skill.targetProficiency) (eq ../actor.type "agent")) }}
+                                        target-proficiency-mod{{/if }}"
+                            type="text"
+                            name="system.skills.{{skill.key }}.proficiency"
+                            value="{{skill.proficiency }}"
+                            data-dtype="Number"
+                            data-tooltip="{{skill.targetProficiency }}"
+                            {{disabled skill.isCalculatedValue }} />
+                        {{#if (eq ../actor.type "agent") }}
+                            <input class="checkbox-skill-input"
+                                type="checkbox"
+                                name="system.skills.{{skill.key}}.failure"
+                                data-tooltip="{{localize 'DG.Tooltip.SkillFailCheckbox' }}"
+                                {{checked skill.failure}}
+                                {{disabled skill.cannotBeImprovedByFailure }} />
+                        {{/if}}
+                    </div>
+                </td>
+                {{#if (or (eq (mod @index 4) 3) (eq @index (subtract (length ../actor.system.sortedSkills) 1)))}}</tr>{{/if}}
+                {{/each}}
+
+                <!-- Skills -->
+                <!-- Custom Skills -->
+                {{#each actor.system.sortedCustomSkills as |skill| }}
+                {{#if (eq (mod @index 4) 0)}}<tr>{{/if}}
+                <td>
+                    {{#if_eq type "typeSkill" }}
+                    <div class="item flexrow flex-group-left flex-thin-border">
+                        <div class="flexrow">
+                        <label data-tooltip="">
+                            {{skill.group}} ({{skill.label}})
+                        </label>
+                        <label class="{{if_gt skill.proficiency 0 'rollable' 'not-rollable'}} skill-label"
+                                data-action="roll"
+                                data-key="{{skill.key}}"
+                                data-rolltype="skill"
+                                data-roll="d100"
+                                data-target="{{skill.proficiency}}"
+                                data-label="{{skill.label}}"
+                                {{#if skill.proficiency }}
+                                data-tooltip="{{localize 'DG.Tooltip.SkillLabel' }}"
+                                {{/if }}
+                                {{#unless skill.proficiency }}
+                                data-tooltip="{{localize 'DG.Tooltip.CannotRollSkillLabel' }}"
+                                {{/unless }}>
+                            <i class="fas fa-dice"></i>
+                        </label>
+                        <input class="percentile-skill-input"
+                                type="text"
+                                name="system.typedSkills.{{skill.key}}.proficiency"
+                                value="{{skill.proficiency}}"
+                                data-dtype="Number" />
+                        {{#if_eq skill.actorType "agent" }}
+                            <input class="checkbox-skill-input"
+                                type="checkbox"
+                                name="system.typedSkills.{{skill.key}}.failure"
+                                {{checked skill.failure}}
+                                data-dtype="Boolean"
+                                {{#if skill.cannotBeImprovedByFailure }}
+                                disabled
+                                {{/if }} />
+                        {{/if_eq}}
+                        </div>
+                        <div class="item-controls skill-and-training-controls">
+                        <a class="item-control"
+                            data-action="typedSkillAction"
+                            data-action-type="edit"
+                            data-typedskill="{{skill.key}}"
+                            title="Edit Skill">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a class="item-control"
+                            data-action="typedSkillAction"
+                            data-action-type="delete"
+                            data-typedskill="{{skill.key}}"
+                            title="Delete Skill">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                        </div>
+                    </div>
+                    {{/if_eq}}
+
+                    {{#if_eq type "training" }}
+
+                    <div class="item flexrow flex-group-left flex-thin-border special-training-box">
+                        <div class="flexrow">
+                        {{#if_not_eq (localize (concat 'DG.Attributes.' skill.key)) (concat "DG.Attributes." skill.key) }}
+                            <label data-tooltip="{{localize (concat 'DG.Attributes.Tooltip.' skill.key)}}">
+                            {{skill.name}} ({{localize (concat 'DG.Attributes.' skill.key)}}, {{skill.targetNumber}}%)
+                            </label>
+                        {{else}}
+                            {{#if_not_eq (localize (concat 'DG.Skills.' skill.key)) (concat "DG.Skills." skill.key) }}
+                            <label data-tooltip="{{localize (concat 'DG.Skills.Tooltip.' skill.key)}}">
+                                {{skill.name}} ({{localize (concat 'DG.Skills.' skill.key)}}, {{skill.targetNumber}}%)
+                            </label>
+                            {{else}}
+                            <label>{{skill.name}} ({{skill.attribute}}, {{skill.targetNumber}}%)</label>
+                            {{/if_not_eq}}
+                        {{/if_not_eq}}
+                        <label class="{{if_gt skill.targetNumber 0 'rollable' 'not-rollable'}}"
+                                data-action="roll"
+                                data-key="{{skill.key}}"
+                                data-name="{{skill.name}}"
+                                data-rolltype="special-training">
+                            <i class="fas fa-dice"></i>
+                        </label>
+                        <div class="item-controls skill-and-training-controls">
+                            <a class="item-control"
+                            data-action="specialTrainingAction"
+                            data-action-type="edit"
+                            data-id="{{skill.id}}"
+                            title="Edit Training"><i class="fas fa-edit"></i></a>
+                            <a class="item-control"
+                            data-action="specialTrainingAction"
+                            data-action-type="delete"
+                            title="Delete Training"
+                            data-id="{{skill.id}}"><i class="fas fa-trash"></i></a>
+                        </div>
+                        </div>
+                    </div>
+
+                    {{/if_eq}}
+                </td>
+                {{#if (or (eq (mod @index 4) 3) (eq @index (subtract (length ../actor.system.sortedCustomSkills) 1)))}}</tr>{{/if}}
+                {{/each}}
+                <!-- Custom Skills -->
+            </table>
+            <table class="skill-util-buttons">
+                <tr>
+                    <td> 
+                        <a class="item-control typed-skill-add action-pill"
+                            data-action="typedSkillAction"
+                            data-action-type="create">
+                            <i class="fas fa-plus"></i>
+                            {{localize 'DG.Skills.AddTypedOrCustomSkill'}}
+                        </a>
+                    </td>
+                    <td>
+                        <a class="item-control action-pill"
+                            data-action="specialTrainingAction"
+                            data-action-type="create">
+                            <i class="fas fa-plus"></i>
+                            {{localize 'DG.SpecialTraining.Dialog.CreateSpecialTraining'}}
+                        </a>
+                    </td>
+                    {{#if_eq actor.type "agent" }}
+                    <td>
+                        <a class="item-control action-pill" data-action="applySkillImprovements">
+                            {{localize 'DG.Skills.ApplySkillImprovements.Title'}}
+                            <i class="fas fa-dice"></i>
+                        </a>
+                    </td>
+                    {{/if_eq}}
+                </tr>
+            </table>
+            </div>
+        </div>
+    </section>
+    <section class="wounds">
+    <div class="section-flex">
+        <div class="section-flex-header bg-black">
+            <p>{{localize 'DG.Book.Headings.Injuries'}}</p>
+        </div>
+        <div class="section-flex-content">
+            <table class="wounds-table">
+                <tr>
+                    <td colspan="2">
+                        <label>14. {{localize 'DG.Book.Headings.Injuries'}}</label>
+                        <textarea class="wounds" name="system.physical.wounds">{{actor.system.physical.wounds}}</textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="bolded-label first-aid-label" title="{{localize 'DG.Tooltip.FirstAidAttempted'}}">
+                            {{localize 'DG.Physical.FirstAidLabel'}}
+                        </label>
+                        <input class="labeled-resource-checkbox input-inline-and-small"
+                            type="checkbox"
+                            name="system.physical.firstAidAttempted"
+                            {{checked actor.system.physical.firstAidAttempted}}
+                            data-dtype="Boolean"
+                            title="{{localize 'DG.Tooltip.FirstAidAttempted'}}" />
+                    </td>
+                    <td>
+                        <label class="bolded-label exhaustion-label"
+                            title="{{localize 'DG.Tooltip.Exhaustion'}}">
+                            {{localize 'DG.Physical.Exhausted'}}
+                        </label>
+                        <input class="labeled-resource-checkbox input-inline-and-small"
+                        type="checkbox"
+                        name="system.physical.exhausted"
+                        {{checked actor.system.physical.exhausted}}
+                        data-dtype="Boolean"
+                        title="{{localize 'DG.Tooltip.Exhaustion'}}" />
+
+                    {{#if actor.system.physical.exhausted }}
+
+                        <label class="bolded-label exhaustion-label exhaustion-label-second"
+                            title="{{localize 'DG.Tooltip.Exhaustion'}}">
+                            {{localize 'DG.Physical.ExhaustionPenalty'}}
+                        </label>
+                        <input class="input-exhaustion-penalty" type="number"
+                            name="system.physical.exhaustedPenalty"
+                            value="{{actor.system.physical.exhaustedPenalty}}"
+                            data-dtype="Number"
+                            title="{{localize 'DG.Tooltip.Exhaustion'}}"
+                            min="-99"
+                            max="0" />
+
+                    {{/if}}
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    </section>
+    <section class="equipment">
+        <div class="section-flex">
+            <div class="section-flex-header bg-black">
+                <p>{{localize 'DG.Book.Headings.Equipment'}}</p>
+            </div>
+            <div class="section-flex-content">
+                <table class="armor-table">
+                    <tr>
+                        <td colspan="2">
+                            <label>15. {{localize 'DG.Book.Labels.ArmorAndGear'}}</label>
+                        </td>
+                        <td class="w-20">
+                            <label>{{localize 'DG.Book.Labels.ArmorRating'}}</label>
+                        </td>
+                        <td class="w-20">
+                            <label>{{localize 'DG.Book.Labels.Equipped'}}</label>
+                        </td>
+                        <td class="w-10 cell-center">
+                            <label>
+                                <a class="item-control action-pill"
+                                    data-action="itemAction"
+                                    data-action-type="create"
+                                    title="Create item"
+                                    data-item-type="armor"><i class="fas fa-plus"></i> {{localize 'DG.Generic.AddButtonLabel'}}</a>
+                            </label>
+                        </td>
+                    </tr>
+                {{#each actor.armor as |item id| }}
+
+                    <tr data-item-id="{{item._id}}">
+
+                        <td class="item-image">
+                            <img src="{{item.img}}" title="{{item.name}}" width="24" height="24" />
+                        </td>
+
+                        <td>
+                            <label>{{item.name}}</label>
+                        </td>
+
+                        <td>
+                            <label>{{item.system.protection}}</label>
+                        </td>
+
+                        <td>
+                            <a class="centered-item-property"
+                        data-action="toggle"
+                        data-prop="system.equipped"
+                        data-item-id="{{item._id}}"
+                        title="{{localize 'DG.Tooltip.ToggleEquippedState'}}">
+                            {{#if item.system.equipped }}
+                                <i class="fas fa-check"></i>
+                            {{else}}
+                                <i class="fas fa-times"></i>
+                            {{/if}}
+                            </a>
+                        </td>
+
+                        <td>
+                            <div class="item-controls">
+                                <a class="item-control"
+                                data-action="itemAction"
+                                data-action-type="edit"
+                                title="Edit Item">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a class="item-control"
+                                data-action="itemAction"
+                                data-action-type="delete"
+                                title="Delete Item">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                {{/each}}
+                </table>
+                <table class="weapons-table">
+                    <tr>
+                        <td colspan="2">
+                            <label>16. {{localize 'DG.Book.Headings.Weapons'}}</label>
+                        </td>
+                        <td class="w-20">
+                            <label>{{localize 'DG.Gear.DamageOrLethality'}}</label>
+                        </td>
+                        <td class="w-20">
+                            <label>{{localize 'DG.Gear.ArmorPiercing'}}</label>
+                        </td>
+                        <td class="w-10 cell-center">
+                            <a class="item-control action-pill"
+                                data-action="itemAction"
+                                data-action-type="create"
+                                title="Create item"
+                                data-item-type="weapon"><i class="fas fa-plus"></i> {{localize 'DG.Generic.AddButtonLabel'}}</a>
+                        </td>
+                    </tr>
+                {{#each actor.weapons as |item id| }}
+                <tr data-item-id="{{item._id}}">
+                    <td>
+                        <img class="item-image weapon-name-flexitem"
+                             src="{{item.img}}"
+                             width="24"
+                             height="24" />
+                    </td>
+                    <td>
+                            <label>{{item.name}}</label>
+                            <label class="rollable"
+                                  data-action="roll"
+                                  data-iid="{{item._id}}"
+                                  data-rolltype="weapon"
+                                  data-key="{{item.system.skill}}"
+                                  title="{{localize 'DG.Tooltip.SkillLabel'}} ({{localizeWeaponSkill item.system.skill}})">
+                                <i class="fas fa-dice"></i>
+                            </label>
+                    </td>
+                    <td>
+                    <label class="centered-item-property">
+                        {{#if item.system.lethality }}
+                            {{#if item.system.isLethal }}
+                                <a class="item-control dg-red"
+                                   data-action="toggle"
+                                   data-prop="system.isLethal"
+                                   data-item-id="{{item._id}}"
+                                   title="Toggle Lethality (Current Lethality: {{item.system.lethality}}%)">
+                                    <i class="fas fa-skull-crossbones"></i>
+                                </a>
+                            {{else}}
+                                <a class="item-control"
+                                   data-action="toggle"
+                                   data-prop="system.isLethal"
+                                   data-item-id="{{item._id}}"
+                                   title="Toggle Lethality (Currently No Lethality)">
+                                    <i class="fas fa-user-injured"></i>
+                                </a>
+                            {{/if}}
+                        {{/if}}
+                        {{#unless item.system.isLethal}}
+                            <label class="rollable"
+                                  data-action="roll"
+                                  data-rolltype="damage"
+                                  data-iid="{{item._id}}">
+                                {{toUpperCase item.system.damage}}
+                                {{#if_eq item.system.skill 'unarmed_combat' }}
+                                    {{actor.system.statistics.str.meleeDamageBonusFormula}}
+                                {{/if_eq}}
+                                {{#if_eq item.system.skill 'melee_weapons' }}
+                                    {{actor.system.statistics.str.meleeDamageBonusFormula}}
+                                {{/if_eq}}
+                                <i class="fas fa-dice"></i>
+                            </label>
+                        {{/unless}}
+
+                        {{#if item.system.isLethal }}
+                            <label class="rollable"
+                                  data-action="roll"
+                                  data-rolltype="lethality"
+                                  data-iid="{{item._id}}"
+                                  title="{{localize 'DG.ItemWindow.Weapons.LethalityTooltip'}}">
+                                {{item.system.lethality}}%
+                                <i class="fas fa-dice"></i>
+                            </label>
+                        {{/if}}
+
+                    </label>
+                    </td>
+                    <td>
+                        <label class="centered-item-property">{{item.system.armorPiercing}}</label>
+                    </td>
+                    <td>
+                    <div class="item-controls">
+                        <a class="item-control"
+                           data-action="itemAction"
+                           data-action-type="edit"
+                           title="Edit Item">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a class="item-control"
+                           data-action="itemAction"
+                           data-action-type="delete"
+                           title="Delete Item">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </div>
+                    </td>
+                </tr>
+                {{/each}}
+                </table>
+            </div>
+        </div>
+    </section>
+    <section class="remarks">
+        <div class="section-flex">
+            <div class="section-flex-header bg-black">
+                <p>{{localize 'DG.Book.Headings.Remarks'}}</p>
+            </div>
+            <div class="section-flex-content">
+                <table class="remarks-table">
+                    <tr>
+                        <td>
+                            <label>17. {{localize 'DG.Book.Labels.PersonalDetailsAndNotes'}}</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <textarea class="playernotes" name="system.playerNotes">{{actor.system.playerNotes}}</textarea>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </section>
+</header>

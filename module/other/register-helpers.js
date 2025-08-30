@@ -218,6 +218,9 @@ export default function registerHandlebarsHelpers() {
     if (characterSheetStyle === "outlaw") {
       return "outlaw-style";
     }
+    if (characterSheetStyle === "book") {
+      return "book-style";
+    }
     return "program-style";
   });
 
@@ -253,5 +256,17 @@ export default function registerHandlebarsHelpers() {
     }
 
     return result;
+  });
+
+  Handlebars.registerHelper("mod", (a, b) => {
+    return a % b;
+  });
+
+  Handlebars.registerHelper("length", (array) => {
+    return array ? array.length : 0;
+  });
+  
+  Handlebars.registerHelper("subtract", (a, b) => {
+    return a - b;
   });
 }

@@ -223,3 +223,15 @@ Hooks.on("renderChatLog", async (app, element, context, options) => {
     }
   });
 });
+
+
+Hooks.on("renderItemSheet", (app, html) => {
+  const characterSheetStyle = game.settings.get(DG.ID, "characterSheetStyle");
+  if (characterSheetStyle === "book") {
+    const container = html.closest(".app.window-app.deltagreen").find("section.window-content");
+
+    if (!container.hasClass("book-style")) {
+      container.addClass("book-style modal-content");
+    }
+  }
+});
