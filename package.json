@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/TheLastScrub/delta-green-foundry-vtt-system.git"
+    "url": "git+https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system.git"
   },
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/TheLastScrub/delta-green-foundry-vtt-system/issues"
+    "url": "https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues"
   },
-  "homepage": "https://github.com/TheLastScrub/delta-green-foundry-vtt-system#readme",
+  "homepage": "https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system#readme",
   "dependencies": {
     "eslint": "^8.50.0",
     "eslint-config-airbnb-base": "^15.0.0",
