@@ -2,7 +2,7 @@
   "id": "deltagreen",
   "title": "Delta Green: The Role-Playing Game",
   "description": "Fan-made Foundry VTT system for Delta Green: The Role-Playing Game. Based on the rules in the Agent's Handbook (https://www.drivethrurpg.com/product/181674/Delta-Green-Agents-Handbook) [*NOT* Call of Cthulu]. Made with the permission of but neither affiliated with nor endorsed by Arc Dream Publishing or the Delta Green Partnership.",
-  "url": "https://github.com/TheLastScrub/delta-green-foundry-vtt-system",
+  "url": "https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system",
   "license": "LICENSE.txt",
   "background": "systems/deltagreen/assets/img/burned_delta_green_logo_on_form_splash_page.webp",
   "authors": [
@@ -180,8 +180,8 @@
       }
     }
   ],
-  "manifest": "https://github.com/TheLastScrub/delta-green-foundry-vtt-system/releases/latest/download/system.json",
-  "download": "https://github.com/TheLastScrub/delta-green-foundry-vtt-system/releases/latest/download/deltagreen.zip",
+  "manifest": "https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/releases/latest/download/system.json",
+  "download": "https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/releases/latest/download/deltagreen.zip",
   "grid": {
     "distance": 1,
     "units": "m"
