@@ -18,7 +18,7 @@ http://www.delta-green.com/
 
 # System Overview
 
-Whatever system documentation currently exists can be found [here.](https://github.com/TheLastScrub/delta-green-foundry-vtt-system/blob/master/documentation/home.md)
+Whatever system documentation currently exists can be found [here.](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/blob/master/documentation/home.md)
 
 _NOTE_ - There is a system setting that controls the styling of the sheets. The current default is "Program" which gives a more modern look. To look more like the way the system looked prior to v1.3.0, choose the 'Cowboys' option.
 
@@ -48,7 +48,7 @@ There are also some compendiums currently available with some of the more common
 
 The system is now largely stable and publicably available in Foundry as an official system! There will still be tweaks here and there, but no major changes are currently planned.
 
-If there is specific functionality you would like incorporated in the system, please open an issue on the [Issues](https://github.com/TheLastScrub/delta-green-foundry-vtt-system/issues) tab in Github.
+If there is specific functionality you would like incorporated in the system, please open an issue on the [Issues](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues) tab in Github.
 
 # Installation Guide
 
@@ -56,7 +56,7 @@ The system is now included in the list of official Foundry VTT game systems, and
 
 If there is a need to manually install the system, go to _Game Systems_ and click _Install System_. Then in the _Manifest URL_ input field, paste the following link and then click _Install_:
 
-https://github.com/TheLastScrub/delta-green-foundry-vtt-system/raw/master/system.json
+https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/raw/master/system.json
 
 # Foundry VTT License
 
