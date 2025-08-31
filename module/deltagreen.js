@@ -53,6 +53,14 @@ Hooks.once("init", async () => {
   CONFIG.Actor.documentClass = DeltaGreenActor;
   CONFIG.Item.documentClass = DeltaGreenItem;
 
+  // Preload Handlebars Templates
+  preloadHandlebarsTemplates();
+
+  // Add Handlebars helpers
+  registerHandlebarsHelpers();
+});
+
+Hooks.once("setup", async () => {
   // Unregister core sheets.
   Actors.unregisterSheet("core", foundry.appv1.sheets.ActorSheet);
   Items.unregisterSheet("core", foundry.appv1.sheets.ItemSheet);
@@ -65,9 +73,11 @@ Hooks.once("init", async () => {
     vehicle: DGVehicleSheet,
   };
   Object.entries(sheetClassMap).forEach(([actorType, SheetClass]) => {
+    const localizedType = game.i18n.localize(`TYPES.Actor.${actorType}`);
     Actors.registerSheet(DG.ID, SheetClass, {
       makeDefault: true,
       themes: null,
+      label: game.i18n.format("DG.TypedSheet", { type: localizedType }),
       types: [actorType],
     });
   });
@@ -77,12 +87,6 @@ Hooks.once("init", async () => {
     makeDefault: true,
     themes: null,
   });
-
-  // Preload Handlebars Templates
-  preloadHandlebarsTemplates();
-
-  // Add Handlebars helpers
-  registerHandlebarsHelpers();
 });
 
 Hooks.once("ready", async () => {
