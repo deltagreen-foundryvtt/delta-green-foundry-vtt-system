@@ -1,25 +1,40 @@
-# System Documentation
+# System Documentation: Delta Green for Foundry VTT
 
 ## Table of Contents
 
-1. [Frequently Asked Questions](./faqs.md)
-1. [Rolling Checks](#rolling-checks)
-2. [Modifying Rolls on the Fly](#modifying-rolls)
-3. [Type Skills Such as Art or Piloting](#type-skills)
-4. [Lethality Rolls and Damage](#lethality)
-5. [Breaking Point](#breaking-point)
-6. [Inhuman Rules (Stat Tests Over 100%)](#inhuman-rules)
-7. [Ritual Skill](#ritual-skill)
-8. [Protection Rating (e.g. the Shield Icon)](#protection-rating-calculation)
-9. [Item Macros](#item-macros)
+1. [Agent Sheeet](#agent-sheet)
+2. [Rolls](#rolls)
+3. [Compendia](#compendia)
+4. [Item Macros](#item-macros)
+5. [Frequently Asked Questions](./faqs.md)
 
-<a name="rolling=checks"></a>
+## Agent Sheet
 
-## Rolling Checks
+The Agent sheet is divided into several tabs. For more information on the Agent sheet and examples of each tab, [see here](./agent_sheet_sample.md).
 
-Most labels can be clicked to roll a check or test of some kind. If they can be clicked, they should glow red when the mouse is hovered over them.
+![Character Sheet Skills Section Screenshot](./images/agent_sheet_program_skills_tab.webp)
 
-![Sanity Roll](./images/sanity_roll.webp)
+The system automates most of the calculations on the sheet such as maximum HP/WP/SAN. Recalculating break points can be done by clicking a button.
+
+### Sheet Themes
+
+There is a system setting that controls the styling of the sheets. The current default is "Program" which gives a more modern look. To look more like the way the system looked prior to v1.3.0, choose the 'Cowboys' option.
+
+![Config Screenshot](./images/system-settings.webp)
+
+## Rolls
+
+Clicking on labels for skills, sanity, x5 skill tests or weapon damage/lethality will automatically roll those tests or damage.
+
+![Example Rolls In Chat Window](./images/chat_rolls.webp)
+
+### Modifying Rolls
+
+Right-clicking or shift-clicking on a field will bring up a dialogue to modify that roll (default: +20%).
+
+![Modify Roll Window](./images/modify_roll_dialogue.webp)
+
+### Types of Rolls
 
 - Click on _SAN_ (label above current/max sanity) to roll a Sanity check.
 - Click on any of the skill labels (such as _Accounting_) to roll a skill test.
@@ -27,15 +42,17 @@ Most labels can be clicked to roll a check or test of some kind. If they can be 
 - Click on a weapon name (on the _Gear_ tab) to roll the skill test associated with it (e.g. _Firearms_).
 - Click on the Damage/Lethality associated with a weapon to roll it.
 
-<a name="modifying-rolls"></a>
+![Sanity Roll](./images/sanity_roll.webp)
 
-## Modifying Rolls on the Fly
+## Compendia
 
-Shift-clicking or right-clicking will bring up a dialogue to allow modifying the roll.
+There is a compendium with numerous sample agents (parsed from the work of _jets_or_chasm_ and _morlock_) of all the professions. These can be used to get players started quickly if they do not wish to build an Agent themselves, or quickly need a replacement:
 
-![Modify Roll Window](./images/modify_roll_dialogue.webp)
+![Pregenerated Agent Compendium](./images/pregen-compendium.webp)
 
-<a name="item-macros"></a>
+There are also compendia which contain some of the more commonly used Items. These Items can be dragged directly onto a character sheet (and then be modified as necessary).
+
+![Available Compendium Items](./images/compendiums.webp)
 
 ## Item Macros
 
@@ -53,4 +70,8 @@ You can get a macro that rolls the appropriate skill check instead however with 
 game.deltagreen.rollItemSkillCheckMacro("Combat Dagger");
 ```
 
-Note that both of these macros search **the currently selected token** for the first instance of an item matching the indicated name passed to the function.
+**Note:** Both of these macros search **_the currently selected token_** for the first instance of an Item matching the indicated name passed to the function.
+
+## Frequently Asked Questions
+
+[FAQs](./faqs.md)
