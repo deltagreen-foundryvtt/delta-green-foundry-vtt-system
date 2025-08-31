@@ -13,6 +13,7 @@
 - [#216](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/pull/216) - Added a new sheet template for NPCs who are set to limited visibility.
 - [#219](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/pull/219) - Organized some settings into new menus: Automation Settings and Handler Settings.
 - [#230](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/pull/230) - Added tooltips for each skill, keeping in the spirit of their descriptions in the book.
+- [#247](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/247) - Lightly organized and updated the system's documentation; more documentation improvements to come.
 
 ### **Bug Fixes:**
 
