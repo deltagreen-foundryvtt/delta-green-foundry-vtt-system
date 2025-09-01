@@ -68,6 +68,7 @@ Hooks.once("init", async () => {
     Actors.registerSheet(DG.ID, SheetClass, {
       makeDefault: true,
       themes: null,
+      label: `DG.Sheet.class.${actorType}`,
       types: [actorType],
     });
   });
@@ -75,6 +76,7 @@ Hooks.once("init", async () => {
   // Register item sheet.
   Items.registerSheet(DG.ID, DeltaGreenItemSheet, {
     makeDefault: true,
+    label: "DG.Sheet.class.item",
     themes: null,
   });
 
