@@ -343,7 +343,11 @@
   "DG.ItemWindow.Weapons.SkillModifier": "Skill Modifier",
   "DG.ItemWindow.Custom": "Custom",
 
-  "DG.TypedSheet": "{type} Sheet",
+  "DG.Sheet.class.item": "Item Sheet",
+  "DG.Sheet.class.agent": "Agent Sheet",
+  "DG.Sheet.class.npc": "NPC Sheet",
+  "DG.Sheet.class.unnatural": "Unnatural Sheet",
+  "DG.Sheet.class.vehicle": "Vehicle Sheet",
 
   "TYPES.Actor.agent": "Agent",
   "TYPES.Actor.npc": "NPC",
