@@ -85,7 +85,9 @@ Hooks.once("setup", async () => {
   // Register item sheet.
   Items.registerSheet(DG.ID, DeltaGreenItemSheet, {
     makeDefault: true,
-    label: game.i18n.format("DG.TypedSheet", { type: "Item" }),
+    label: game.i18n.format("DG.TypedSheet", {
+      type: game.i18n.localize("DOCUMENT.Item"),
+    }),
     themes: null,
   });
 });
