@@ -164,18 +164,18 @@ Hooks.on("preCreateActor", async (actor, creationData, options, userId) => {
   // If creationData has `system` then the new actor is either duplicated or imported,
   // We only want to translate the sample Typed Skill on brand new actors,
   // thus we return early if creationData has the `system` property so we do not override anything.
-  if (creationData?.system) return;
-
-  // Only translate for actor types with a default Typed Skill (agents and NPCs)
-  if (!["agent", "npc"].includes(actor.type)) return;
+  // Also, only translate actor types with a default Typed Skill (agents and NPCs)
+  if (creationData?.system || !["agent", "npc"].includes(actor.type)) return;
 
   // Translate the default typed skill for brand new actors.
-  const artLabel = game.i18n.translations.DG?.TypeSkills?.Art ?? "Art";
-  const paintingLabel =
-    game.i18n.translations.DG?.TypeSkills?.Subskills?.Painting ?? "Painting";
-
-  actor.updateSource({ "system.typedSkills.tskill_01.group": artLabel });
-  actor.updateSource({ "system.typedSkills.tskill_01.label": paintingLabel });
+  actor.updateSource({
+    "system.typedSkills.tskill_01": {
+      label: game.i18n.localize("DG.TypeSkills.Subskills.Painting"),
+      group: game.i18n.localize("DG.TypeSkills.Art"),
+      proficiency: 0,
+      failure: false,
+    },
+  });
 });
 
 // Note - this event is fired on ALL connected clients...
