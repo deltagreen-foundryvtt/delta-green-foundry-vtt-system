@@ -11,6 +11,10 @@ jobs:
   copy-issue-labels:
     name: Copy labels from addressed issue(s) to PR
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: read
+      pull-requests: write
     steps:
       - name: copy-labels
         uses: michalvankodev/copy-issue-labels@v1.3.0
