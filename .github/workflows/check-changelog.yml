@@ -5,6 +5,7 @@ on:
     types: [opened, reopened, synchronize, labeled, unlabeled]
     branches:
       - master
+      - hotfix/**
 
 jobs:
   check-changelog:
