@@ -182,9 +182,9 @@ If you’re new to rebasing, GitLab has a solid primer:
 
 If you run into conflicts, Git will guide you through resolving them. After a successful rebase, you'll need to force-push:
 
-- ```bash
-  git push --force-with-lease`
-  ```
+```bash
+  git push --force-with-lease
+```
 
 ```text
 ⚠️ Never force-push to a shared branch without coordinating with the other contributor(s) to that branch.
