@@ -17,6 +17,7 @@
 
 ### **Bug Fixes:**
 
+- [#203](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/203) - Fixed default "Art (Painting)" custom skill from persisting despite deletion.
 - [#229](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/229) - Fixed deprecation warning related to gridDistance and gridUnits.
 
 ### **Localization:**

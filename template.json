@@ -241,14 +241,7 @@
             "proficiency": 0
           }
         },
-        "typedSkills": {
-          "tskill_01": {
-            "label": "Painting",
-            "group": "Art",
-            "proficiency": 0,
-            "failure": false
-          }
-        },
+        "typedSkills": {},
         "specialTraining": []
       },
       "unnatural_skills": {
