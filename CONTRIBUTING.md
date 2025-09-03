@@ -171,22 +171,24 @@ If there's no GitHub issue yet, you can omit the number:
 
 We prefer a **rebase** workflow to keep history clean and avoid merge commits. If changes have been made to `master` while you've been working:
 
-````bash
+```bash
 git checkout your-branch-name
 git fetch origin
 git rebase origin/master
-```every developer is going to
+```
 
 If you’re new to rebasing, GitLab has a solid primer:
 [About Git rebase](https://docs.gitlab.com/topics/git/git_rebase/)
 
 If you run into conflicts, Git will guide you through resolving them. After a successful rebase, you'll need to force-push:
 
-- `git push --force-with-lease`
+```bash
+  git push --force-with-lease
+```
 
 ```text
 ⚠️ Never force-push to a shared branch without coordinating with the other contributor(s) to that branch.
-````
+```
 
 ### Before Opening a Pull Request
 
