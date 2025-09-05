@@ -312,6 +312,16 @@ export default function registerSystemSettings() {
     default: false,
   });
 
+  game.settings.register("deltagreen", "hideSkillTooltips", {
+    name: game.i18n.localize("DG.Settings.hideSkillTooltips.name"),
+    hint: game.i18n.localize("DG.Settings.hideSkillTooltips.hint"),
+    scope: "client",
+    config: true,
+    requiresReload: true,
+    type: Boolean,
+    default: false,
+  });
+
   // obsolete - will be removed at some point
   game.settings.register("deltagreen", "characterSheetFont", {
     name: "World Font Choice",

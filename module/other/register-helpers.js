@@ -254,4 +254,8 @@ export default function registerHandlebarsHelpers() {
 
     return result;
   });
+
+  Handlebars.registerHelper("hideSkillTooltips", () => {
+    return game.settings.get("deltagreen", "hideSkillTooltips");
+  });
 }
