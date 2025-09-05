@@ -1,6 +1,6 @@
 # Release/Patch Notes
 
-## Version 1.6.0 - 2025-??-??
+## Version 1.6.0 - 2025-09-04
 
 > Thanks to the following new contributors: [reyzor](https://github.com/reyzor1991), [lozanoje](https://github.com/lozanoje), [dairefinn](https://github.com/dairefinn), [MrTheBino](https://github.com/MrTheBino), & [vonv](https://github.com/vonv).
 
