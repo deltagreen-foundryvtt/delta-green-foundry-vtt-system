@@ -25,7 +25,7 @@
                        data-rolltype="skill"
                        for="system.skills.{{skill.key}}.value"
                        {{#unless (hideSkillTooltips) }}
-                         data-tooltip="{{concat (localize (concat 'DG.Skills.Tooltip.' skill.key)) '<br><br>' (localize (ifThen skill.proficiency 'DG.Tooltip.SkillLabel' 'DG.Tooltip.CannotRollSkillLabel')) }}"
+                       data-tooltip="{{ skill.tooltip }}"
                        {{/unless }}
                 >
                     {{localizeWithFallback (concat "DG.Skills." skill.key) skill.label }}

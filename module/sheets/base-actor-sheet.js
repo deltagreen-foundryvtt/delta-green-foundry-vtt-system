@@ -83,6 +83,9 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
     this._sortSkills();
     this._sortCustomSkills();
 
+    // Setup tooltips
+    this._prepareSkillTooltips();
+
     // Set sanity block per actor type.
     context.sanityInputs = await foundry.applications.handlebars.renderTemplate(
       `${DGActorSheet.TEMPLATE_PATH}/partials/sanity-${this.actor.type}.html`,
@@ -388,6 +391,27 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
     } else {
       this.actor.system.sortedCustomSkills = sortedCustomSkills;
     }
+  }
+
+  /**
+   * Sets up the list of sorted skills with their respective tooltips.
+   *
+   * @returns {void}
+   */
+  _prepareSkillTooltips() {
+    const skillsWithTooltips = [];
+    for (const [_, skill] of Object.entries(this.actor.system.sortedSkills)) {
+      skill.tooltip = game.i18n.localize(`DG.Skills.Tooltip.${skill.key}`);
+      if (!skill.proficiency) {
+        skill.tooltip = skill.tooltip.concat(
+          skill.tooltip,
+          "<br><br>",
+          game.i18n.localize("DG.Tooltip.CannotRollSkillLabel"),
+        );
+      }
+      skillsWithTooltips.push(skill);
+    }
+    this.actor.system.sortedSkills = skillsWithTooltips;
   }
 
   /**
