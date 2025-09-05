@@ -6,15 +6,25 @@ const { renderTemplate } = foundry.applications.handlebars;
 /** @extends {DGActorSheet} */
 export default class DGAgentSheet extends DGActorSheet {
   /** @override */
-  static DEFAULT_OPTIONS = /** @type {const} */ ({
-    actions: {
-      // Resets.
-      clearBondDamage: DGAgentSheet._clearBondDamage,
-      resetBreakingPoint: DGAgentSheet._resetBreakingPoint,
-      // Other actions.
-      applySkillImprovements: DGAgentSheet._processSkillImprovements,
-    },
-  });
+  static get DEFAULT_OPTIONS() {
+    // Get the character sheet style setting
+    const characterSheetStyle = game.settings.get(DG.ID, "characterSheetStyle");
+    
+    // Only change width for book style, keep default for everything else
+    const defaultWidth = characterSheetStyle === "book" ? 1025 : 750;
+    const defaultHeight = 770;
+    
+    return {
+      position: { width: defaultWidth, height: defaultHeight },
+      actions: {
+        // Resets.
+        clearBondDamage: DGAgentSheet._clearBondDamage,
+        resetBreakingPoint: DGAgentSheet._resetBreakingPoint,
+        // Other actions.
+        applySkillImprovements: DGAgentSheet._processSkillImprovements,
+      },
+    };
+  }
 
   /** @override */
   static TABS = /** @type {const} */ ({
@@ -33,33 +43,50 @@ export default class DGAgentSheet extends DGActorSheet {
     },
   });
 
+
+
   /** @override */
-  static PARTS = /** @type {const} */ ({
-    header: this.BASE_PARTS.header,
-    tabs: this.BASE_PARTS.tabs,
-    skills: this.BASE_PARTS.skills,
-    physical: {
-      template: `${this.TEMPLATE_PATH}/parts/physical-tab.html`,
-      templates: [
-        `${this.TEMPLATE_PATH}/partials/attributes-grid-partial.html`,
-      ],
-      scrollable: [""],
-    },
-    motivations: {
-      template: `${this.TEMPLATE_PATH}/parts/motivations-tab.html`,
-    },
-    gear: this.BASE_PARTS.gear,
-    bio: {
-      template: `${this.TEMPLATE_PATH}/parts/bio-tab.html`,
-      templates: [`${this.TEMPLATE_PATH}/partials/notes-partial.html`],
-      scrollable: [""],
-    },
-    bonds: {
-      template: `${this.TEMPLATE_PATH}/parts/bonds-tab.html`,
-      scrollable: [""],
-    },
-    about: this.BASE_PARTS.about,
-  });
+  static get PARTS() {
+    // Check if game.settings is available and get the character sheet style
+    if (typeof game !== 'undefined' && game.settings) {
+      const characterSheetStyle = game.settings.get(DG.ID, "characterSheetStyle");
+      if (characterSheetStyle === "book") {
+        return {
+          header: {
+            template: `${BASE_TEMPLATE_PATH}/book-style-actor/header.html`
+          }
+        };
+      }
+    }
+    
+    // Default PARTS (for program style)
+    return {
+      header: this.BASE_PARTS.header,
+      tabs: this.BASE_PARTS.tabs,
+      skills: this.BASE_PARTS.skills,
+      physical: {
+        template: `${this.TEMPLATE_PATH}/parts/physical-tab.html`,
+        templates: [
+          `${this.TEMPLATE_PATH}/partials/attributes-grid-partial.html`,
+        ],
+        scrollable: [""],
+      },
+      motivations: {
+        template: `${this.TEMPLATE_PATH}/parts/motivations-tab.html`,
+      },
+      gear: this.BASE_PARTS.gear,
+      bio: {
+        template: `${this.TEMPLATE_PATH}/parts/bio-tab.html`,
+        templates: [`${this.TEMPLATE_PATH}/partials/notes-partial.html`],
+        scrollable: [""],
+      },
+      bonds: {
+        template: `${this.TEMPLATE_PATH}/parts/bonds-tab.html`,
+        scrollable: [""],
+      },
+      about: this.BASE_PARTS.about,
+    };
+  }
 
   /* -------------------------------------------- */
 
@@ -85,6 +112,13 @@ export default class DGAgentSheet extends DGActorSheet {
 
     return context;
   }
+
+  /** @override */
+  _configureRenderOptions(options) {
+    super._configureRenderOptions(options);
+  }
+
+
 
   /* -------------------------------------------- */
 
