@@ -399,8 +399,7 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
    * @returns {void}
    */
   _prepareSkillTooltips() {
-    const skillsWithTooltips = [];
-    for (const [_, skill] of Object.entries(this.actor.system.sortedSkills)) {
+    for (const skill of Object.values(this.actor.system.sortedSkills)) {
       skill.tooltip = game.i18n.localize(`DG.Skills.Tooltip.${skill.key}`);
       if (!skill.proficiency) {
         skill.tooltip = skill.tooltip.concat(
@@ -409,9 +408,7 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
           game.i18n.localize("DG.Tooltip.CannotRollSkillLabel"),
         );
       }
-      skillsWithTooltips.push(skill);
     }
-    this.actor.system.sortedSkills = skillsWithTooltips;
   }
 
   /**
