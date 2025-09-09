@@ -71,7 +71,9 @@
 
         {{!-- Description Tab --}}
         <div class="tab top-div-border" data-group="primary" data-tab="description">
-            {{editor enrichedDescription target="system.description" engine="prosemirror" button=true owner=owner editable=editable}}
+            <div class="editor-host">
+                {{editor enrichedDescription target="system.description" engine="prosemirror" button=true owner=owner editable=editable}}
+            </div>
         </div>
 
         {{!-- Handler Notes Tab --}}
