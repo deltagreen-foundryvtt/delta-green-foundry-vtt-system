@@ -395,6 +395,8 @@
   "DG.Settings.charactersheet.program": "The Program",
   "DG.Settings.sortskills.name": "Sort Skills By Column?",
   "DG.Settings.sortskills.hint": "Checked sorts by column. Unchecked sorts by row.",
+  "DG.Settings.hideSkillTooltips.name": "Hide Skill Tooltips",
+  "DG.Settings.hideSkillTooltips.hint": "Do not display skill tooltips in Agent sheets.",
   "DG.Settings.keepSanityPrivate.name": "Keep Sanity Private",
   "DG.Settings.keepSanityPrivate.hint": "Hide sanity from players in both Agent sheets and rolls.",
   "DG.Settings.skillImprovementFormula.name": "Default Skill Improvement Roll",

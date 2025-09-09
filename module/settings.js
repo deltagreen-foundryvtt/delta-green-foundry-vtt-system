@@ -1,5 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import DG, { BASE_TEMPLATE_PATH } from "./config.js";
+import DGActorSheet from "./sheets/base-actor-sheet.js";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
@@ -310,6 +311,22 @@ export default function registerSystemSettings() {
     requiresReload: true,
     type: Boolean,
     default: false,
+  });
+
+  game.settings.register("deltagreen", "hideSkillTooltips", {
+    name: game.i18n.localize("DG.Settings.hideSkillTooltips.name"),
+    hint: game.i18n.localize("DG.Settings.hideSkillTooltips.hint"),
+    scope: "client",
+    config: true,
+    type: Boolean,
+    default: false,
+    onChange: () => {
+      foundry.applications.instances.forEach((app) => {
+        if (app instanceof DGActorSheet) {
+          app.render();
+        }
+      });
+    },
   });
 
   // obsolete - will be removed at some point
