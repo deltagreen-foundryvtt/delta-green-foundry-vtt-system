@@ -83,8 +83,16 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
     this._sortSkills();
     this._sortCustomSkills();
 
-    // Setup tooltips
-    this._prepareSkillTooltips();
+    // Wether to hide skill tooltips
+    context.hideSkillTooltips = game.settings.get(
+      "deltagreen",
+      "hideSkillTooltips",
+    );
+
+    if (!context.hideSkillTooltips) {
+      // Setup tooltips
+      this._prepareSkillTooltips();
+    }
 
     // Set sanity block per actor type.
     context.sanityInputs = await foundry.applications.handlebars.renderTemplate(

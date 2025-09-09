@@ -24,7 +24,7 @@
                        data-key="{{skill.key}}"
                        data-rolltype="skill"
                        for="system.skills.{{skill.key}}.value"
-                       {{#unless (hideSkillTooltips) }}
+                       {{#unless ../hideSkillTooltips }}
                        data-tooltip="{{ skill.tooltip }}"
                        {{/unless }}
                 >
