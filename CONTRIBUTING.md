@@ -244,6 +244,13 @@ It is difficult to create a one-size-fits-all procedure for testing, because eac
 
    > You only need to test the subsets below which are relevant to the changes you are testing. When unsure or being particularly thorough, do the full pass.
 
+   - Player (non-GM) Perspective Tests
+
+     - Enable the "Hide Sanity from Players" Setting.
+     - Make sure Sanity on sheets and in rolls is obscured from players.
+     - Enable the "Hide Impossible Landscape content" Setting
+     - Make sure the Impossible Landscapes fields on the character sheet are not visible from a player's perspective.
+
    - Character basics
 
      - Create an Agent, fill in stats, skills, and add a couple of custom skills, special trainings, bonds, and pieces of equipment.
