@@ -6,16 +6,14 @@
 
                 <span class="resource-label">{{localize 'DG.Bonds.Name'}}:</span>
                 <input name="name" type="text" value="{{item.name}}" placeholder="{{localize 'DG.Bonds.Name'}}" />
-                                
-                <!-- <label class="resource-label">{{localize 'DG.Bonds.Score'}}</label> -->
+
                 <span class="resource-label">{{localize 'DG.Bonds.Score'}}:</span>
                 <input type="text" name="system.score" value="{{item.system.score}}" data-dtype="Number"
-                    title="{{localize 'DG.ItemWindow.Bonds.ScoreTooltip'}}"
-                />            
-            
+                       title="{{localize 'DG.ItemWindow.Bonds.ScoreTooltip'}}" />
+
                 <span class="resource-label">{{localize 'DG.Bonds.Relationship'}}:</span>
                 <input type="text" name="system.relationship" value="{{item.system.relationship}}" data-dtype="String" />
-                
+
             </div>
         </div>
     </header>
@@ -27,10 +25,11 @@
 
     {{!-- Sheet Body --}}
     <section class="sheet-body">
-
         {{!-- Description Tab --}}
         <div class="tab top-div-border" data-group="primary" data-tab="description">
-            {{editor enrichedDescription target="system.description" engine="prosemirror" button=true owner=owner editable=editable}}
+            <div class="editor-host">
+                {{editor enrichedDescription target="system.description" engine="prosemirror" button=true owner=owner editable=editable}}
+            </div>
         </div>
     </section>
 </form>
