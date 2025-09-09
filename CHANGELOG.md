@@ -1,5 +1,11 @@
 # Release/Patch Notes
 
+## Version 1.7.0 - ????-??-??
+
+### **Tech Debt**
+
+- [#267](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/pull/267) - Moved private sanity logic out of templates.
+
 ## Version 1.6.1 - 2025-09-09
 
 > Thanks to the following new contributor: [Tobifroe](https://github.com/tobifroe).
