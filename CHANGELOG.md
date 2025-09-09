@@ -1,17 +1,19 @@
 # Release/Patch Notes
 
-## Version 1.6.1 - ????-??-??
+## Version 1.6.1 - 2025-09-09
+
+> Thanks to the following new contributor: [Tobifroe](https://github.com/tobifroe).
 
 ### **Features:**
 
-- [#255](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/255) - Added option to toggle display of tooltips per client
+- [#255](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/255) - Added option to toggle display of tooltips per client.
 
 ### **Bug Fixes:**
 
+- [#252](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/252) - Removed redundant lines in skill tooltip text.
+- [#253](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/253) - Close "Automation Menu" & "Handler Settings" when settings are saved.
 - [#259](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/259) - Fixed "Keep Sanity Private" setting in agent sheets.
 - [#263](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/263) - Fixed inability to edit item descriptions.
-- [#253](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/253) - Close "Automation Menu" & "Handler Settings" when settings are saved.
-- [#252](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/252) - Removed redundant lines in tooltip texts
 
 ## Version 1.6.0 - 2025-09-04
 
