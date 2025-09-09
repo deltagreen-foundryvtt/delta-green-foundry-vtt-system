@@ -1,9 +1,9 @@
 <form class="{{cssClass}} {{getCharacterSheetStyle}}" autocomplete="off">
     <header class="">
         <div class="gear-sheet-grid-2col">
-            <img class="item-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/> 
-            
-            <div class="tome-sheet-horizontal-grid-2col">                
+            <img class="item-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
+
+            <div class="tome-sheet-horizontal-grid-2col">
                 {{#if item.system.revealed}}
                     <span class="resource-label">
                         {{#if (playerHasGamemasterPrivileges)}}<a class="tome-show-hide-info"><i class="far fa-eye"></i></a>{{/if}}
@@ -53,9 +53,9 @@
                     {{/if}}
                 {{/if}}
             </div>
-            
+
         </div>
-        
+
     </header>
 
     {{!-- Sheet Tab Navigation --}}
@@ -63,7 +63,7 @@
         <a class="item" data-tab="description">{{localize 'DG.ItemWindow.Tome.Description'}}</a>
         {{#if (playerHasGamemasterPrivileges)}}
         <a class="item" data-tab="handler">{{localize 'DG.ItemWindow.Tome.HandlerOnlyTabHeader'}}</a>
-        {{/if}}       
+        {{/if}}
     </nav>
 
     {{!-- Sheet Body --}}
@@ -77,7 +77,7 @@
         {{!-- Handler Notes Tab --}}
         {{#if (playerHasGamemasterPrivileges)}}
         <div class="tab" data-group="primary" data-tab="handler">
-            <div class="tome-sheet-handler-info-horizontal-grid-2col"> 
+            <div class="tome-sheet-handler-info-horizontal-grid-2col">
                 <span class="resource-label">{{localize 'DG.ItemWindow.Tome.UnnaturalIncrease'}}:</span>
                 <input class="item-sheet-short-input" name="system.unnaturalSkillIncrease" type="text" value="{{item.system.unnaturalSkillIncrease}}" type="integer" data-dtype="Number"/>
 
@@ -86,7 +86,7 @@
                     <input class="item-sheet-short-input" name="system.learnedSanity.successLoss" type="text" value="{{item.system.learnedSanity.successLoss}}" type="text" />
                     /
                     <input class="item-sheet-short-input" name="system.learnedSanity.failedLoss" type="text" value="{{item.system.learnedSanity.failedLoss}}" type="text" />
-                    <i class="fas fa-dice rollable" data-rolltype="sanity-damage"></i>            
+                    <i class="fas fa-dice rollable" data-rolltype="sanity-damage"></i>
                 </span>
 
                 <span class="resource-label">{{localize 'DG.ItemWindow.Ritual.ActivationSanityDamage'}}:</span>
@@ -94,16 +94,18 @@
                     <input class="item-sheet-short-input" name="system.sanity.successLoss" type="text" value="{{item.system.sanity.successLoss}}" type="text" />
                     /
                     <input class="item-sheet-short-input" name="system.sanity.failedLoss" type="text" value="{{item.system.sanity.failedLoss}}" type="text" />
-                    <i class="fas fa-dice rollable" data-rolltype="sanity-damage"></i>            
+                    <i class="fas fa-dice rollable" data-rolltype="sanity-damage"></i>
                 </span>
             </div>
 
             <span class="resource-label">{{localize 'DG.ItemWindow.Tome.HandlerNotes'}}:</span>
-        
+
             <div class="tab top-div-border">
-                {{editor enrichedHandlerNotes target="system.handlerNotes" engine="prosemirror" button=true owner=owner editable=editable}}
-            </div>            
-        </div>   
-        {{/if}}      
+                <div class="editor-host">
+                    {{editor enrichedHandlerNotes target="system.handlerNotes" engine="prosemirror" button=true owner=owner editable=editable}}
+                </div>
+            </div>
+        </div>
+        {{/if}}
     </section>
 </form>

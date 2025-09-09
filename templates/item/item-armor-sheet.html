@@ -1,14 +1,14 @@
 <form class="{{cssClass}} {{getCharacterSheetStyle}}" autocomplete="off">
     <header class="">
-      <div class="armor-sheet-grid-2col">
+        <div class="armor-sheet-grid-2col">
 
-        <img class="item-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
+            <img class="item-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
 
-        <div class="armor-sheet-horizontal-grid-2col">
+            <div class="armor-sheet-horizontal-grid-2col">
 
           <span class="resource-label">{{localize 'DG.Bonds.Name'}}:</span>
           <input name="name" type="text" value="{{item.name}}" placeholder="{{localize 'DG.ItemWindow.Armor.NamePlaceholder'}}"/></h1>
-                        
+
           <span class="resource-label">{{localize 'DG.ItemWindow.Armor.Expense'}}:</span>
           <select name="system.expense" >
             <option {{#if_eq item.system.expense 'NA'}}selected{{/if_eq}} value="NA">{{localize 'DG.Gear.Expense.NA'}}</option>
@@ -18,18 +18,18 @@
             <option {{#if_eq item.system.expense 'Major'}}selected{{/if_eq}} value="Major">{{localize 'DG.Gear.Expense.Major'}}</option>
             <option {{#if_eq item.system.expense 'Extreme'}}selected{{/if_eq}} value="Extreme">{{localize 'DG.Gear.Expense.Extreme'}}</option>
           </select>
-        
+
           <span class="resource-label">{{localize 'DG.ItemWindow.Armor.Equipped'}}:</span>
-          <input class="labeled-resource-checkbox" type="checkbox" name="system.equipped" {{checked item.system.equipped}} data-dtype="Boolean" />          
-              
+          <input class="labeled-resource-checkbox" type="checkbox" name="system.equipped" {{checked item.system.equipped}} data-dtype="Boolean" />
+
         </div>
       </div>
-      
+
       <div class="armor-sheet-secondary-grid-2col">
         <span class="resource-label">{{localize 'DG.ItemWindow.Armor.ArmorRating'}}:</span>
         <input class="item-sheet-short-input" type="text" name="system.protection" value="{{item.system.protection}}" data-dtype="Number"/>
       </div>
-      
+
     </header>
 
     {{!-- Sheet Tab Navigation --}}
@@ -42,7 +42,9 @@
 
         {{!-- Description Tab --}}
         <div class="tab top-div-border" data-group="primary" data-tab="description">
-            {{editor enrichedDescription target="system.description" engine="prosemirror" button=true owner=owner editable=editable}}
+            <div class="editor-host">
+                {{editor enrichedDescription target="system.description" engine="prosemirror" button=true owner=owner editable=editable}}
+            </div>
         </div>
     </section>
 </form>

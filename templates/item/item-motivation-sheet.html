@@ -1,5 +1,5 @@
 <form class="{{cssClass}} {{getCharacterSheetStyle}}" autocomplete="off">
-    
+
     {{!-- Sheet Tab Navigation --}}
     <nav class="sheet-tabs tabs" data-group="primary">
         <a class="item item-toggle" data-tab="attributes">{{localize 'DG.ItemWindow.Motivations.Attributes'}}</a>
@@ -10,53 +10,55 @@
     <section class="sheet-body">
 
         <div class="tab attributes top-div-border" data-group="primary" data-tab="attributes">
-            
+
             <div class="motivation-sheet-horizontal-grid-2col">
                 <span class="resource-label">{{localize 'DG.ItemWindow.Motivations.IsDisorder'}}:</span>
-                <input type="checkbox" name="system.crossedOut" {{checked item.system.crossedOut}} data-dtype="Boolean" 
+                <input type="checkbox" name="system.crossedOut" {{checked item.system.crossedOut}} data-dtype="Boolean"
                     title="{{localize 'DG.ItemWindow.Motivations.IsDisorderTooltip'}}"
                 />
-           
 
-            
+
+
                 <span class="resource-label">{{localize 'DG.ItemWindow.Motivations.Motivation'}}:</span>
                 <input type="text" name="name" value="{{item.name}}" placeholder="" data-dtype="String"
-                    
+
                      title="{{localize 'DG.ItemWindow.Motivations.MotivationNameTooltip'}}"
-                    
+
                     {{!-- If a motivation has been crossed off after a breaking point, do a strikeout on it and disable it. --}}
                     {{#if item.system.crossedOut}}
                         style="text-decoration: line-through;"
                         disabled
                     {{/if}}
                 />
-            
+
 
             {{!-- Only Show the Disorders Section if Motivation Lost Checked --}}
             {{#if item.system.crossedOut}}
-            
+
                 <span class="resource-label">{{localize 'DG.ItemWindow.Motivations.Disorder'}}:</span>
                 <input type="text" name="system.disorder" value="{{item.system.disorder}}" data-dtype="String"
-                    
+
                     title="{{localize 'DG.ItemWindow.Motivations.DisorderNameTooltip'}}"
                 />
-            
-            
+
+
                 <span class="resource-label">{{localize 'DG.ItemWindow.Motivations.DisorderHasBeenCured'}}: </span>
-                <input class="labeled-resource-checkbox" type="checkbox" name="system.disorderCured" {{checked item.system.disorderCured}} data-dtype="Boolean" 
+                <input class="labeled-resource-checkbox" type="checkbox" name="system.disorderCured" {{checked item.system.disorderCured}} data-dtype="Boolean"
                     title="{{localize 'DG.ItemWindow.Motivations.DisorderHasBeenCuredTooltip'}}"
                 />
-            
+
 
             {{/if}}
-            
+
             </div>
         </div>
 
         <div class="tab attributes top-div-border" data-group="primary" data-tab="description">
-            {{editor enrichedDescription target="system.description" engine="prosemirror" button=true owner=owner editable=editable}}
+            <div class="editor-host">
+                {{editor enrichedDescription target="system.description" engine="prosemirror" button=true owner=owner editable=editable}}
+            </div>
         </div>
-        
+
     </section>
-    
+
 </form>
