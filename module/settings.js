@@ -64,7 +64,7 @@ const SettingForm = class extends HandlebarsApplicationMixin(ApplicationV2) {
     form: {
       handler: this.onSubmit,
       submitOnChange: false,
-      closeOnSubmit: false,
+      closeOnSubmit: true,
     },
   };
 
