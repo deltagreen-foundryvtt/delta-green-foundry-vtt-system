@@ -3,9 +3,7 @@
                   breaking-point-hit{{/if }}"
        type="text"
        name="system.sanity.value"
-       {{#if keepSanityPrivate }}
-       readonly
-       {{/if }}
+       {{disabled keepSanityPrivate}}
        value="{{ currentSan }}"
        data-dtype="Number"
        data-tooltip="{{localize 'DG.Tooltip.CurrentSanityPartOne' }}{{actor.system.sanity.currentBreakingPoint }}{{localize 'DG.Tooltip.CurrentSanityPartTwo' }}" />

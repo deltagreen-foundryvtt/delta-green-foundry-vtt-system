@@ -780,94 +780,110 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
     const currentGroup = typedSkills[targetSkill].group;
 
     let htmlContent = `<div>`;
-    htmlContent += `     <label>${game.i18n.translations.DG?.Skills?.SkillGroup ?? "Skill Group"
-      }:</label>`;
+    htmlContent += `     <label>${
+      game.i18n.translations.DG?.Skills?.SkillGroup ?? "Skill Group"
+    }:</label>`;
     htmlContent += `     <select name="new-type-skill-group" />`;
 
     if (currentGroup === game.i18n.translations.DG?.TypeSkills?.Art ?? "Art") {
-      htmlContent += `          <option value="Art" selected>${game.i18n.translations.DG?.TypeSkills?.Art ?? "Art"
-        }</option>`;
+      htmlContent += `          <option value="Art" selected>${
+        game.i18n.translations.DG?.TypeSkills?.Art ?? "Art"
+      }</option>`;
     } else {
-      htmlContent += `          <option value="Art">${game.i18n.translations.DG?.TypeSkills?.Art ?? "Art"
-        }</option>`;
+      htmlContent += `          <option value="Art">${
+        game.i18n.translations.DG?.TypeSkills?.Art ?? "Art"
+      }</option>`;
     }
 
     if (
       currentGroup === game.i18n.translations.DG?.TypeSkills?.Craft ??
       "Craft"
     ) {
-      htmlContent += `          <option value="Craft" selected>${game.i18n.translations.DG?.TypeSkills?.Craft ?? "Craft"
-        }</option>`;
+      htmlContent += `          <option value="Craft" selected>${
+        game.i18n.translations.DG?.TypeSkills?.Craft ?? "Craft"
+      }</option>`;
     } else {
-      htmlContent += `          <option value="Craft">${game.i18n.translations.DG?.TypeSkills?.Craft ?? "Craft"
-        }</option>`;
+      htmlContent += `          <option value="Craft">${
+        game.i18n.translations.DG?.TypeSkills?.Craft ?? "Craft"
+      }</option>`;
     }
 
     if (
       currentGroup === game.i18n.translations.DG?.TypeSkills?.ForeignLanguage ??
       "Foreign Language"
     ) {
-      htmlContent += `          <option value="ForeignLanguage" selected>${game.i18n.translations.DG?.TypeSkills?.ForeignLanguage ??
+      htmlContent += `          <option value="ForeignLanguage" selected>${
+        game.i18n.translations.DG?.TypeSkills?.ForeignLanguage ??
         "Foreign Language"
-        }</option>`;
+      }</option>`;
     } else {
-      htmlContent += `          <option value="ForeignLanguage">${game.i18n.translations.DG?.TypeSkills?.ForeignLanguage ??
+      htmlContent += `          <option value="ForeignLanguage">${
+        game.i18n.translations.DG?.TypeSkills?.ForeignLanguage ??
         "Foreign Language"
-        }</option>`;
+      }</option>`;
     }
 
     if (
       currentGroup === game.i18n.translations.DG?.TypeSkills?.MilitaryScience ??
       "Military Science"
     ) {
-      htmlContent += `          <option value="MilitaryScience" selected>${game.i18n.translations.DG?.TypeSkills?.MilitaryScience ??
+      htmlContent += `          <option value="MilitaryScience" selected>${
+        game.i18n.translations.DG?.TypeSkills?.MilitaryScience ??
         "Military Science"
-        }</option>`;
+      }</option>`;
     } else {
-      htmlContent += `          <option value="MilitaryScience">${game.i18n.translations.DG?.TypeSkills?.MilitaryScience ??
+      htmlContent += `          <option value="MilitaryScience">${
+        game.i18n.translations.DG?.TypeSkills?.MilitaryScience ??
         "Military Science"
-        }</option>`;
+      }</option>`;
     }
 
     if (
       currentGroup === game.i18n.translations.DG?.TypeSkills?.Pilot ??
       "Pilot"
     ) {
-      htmlContent += `          <option value="Pilot" selected>${game.i18n.translations.DG?.TypeSkills?.Pilot ?? "Pilot"
-        }</option>`;
+      htmlContent += `          <option value="Pilot" selected>${
+        game.i18n.translations.DG?.TypeSkills?.Pilot ?? "Pilot"
+      }</option>`;
     } else {
-      htmlContent += `          <option value="Pilot">${game.i18n.translations.DG?.TypeSkills?.Pilot ?? "Pilot"
-        }</option>`;
+      htmlContent += `          <option value="Pilot">${
+        game.i18n.translations.DG?.TypeSkills?.Pilot ?? "Pilot"
+      }</option>`;
     }
 
     if (
       currentGroup === game.i18n.translations.DG?.TypeSkills?.Science ??
       "Science"
     ) {
-      htmlContent += `          <option value="Science" selected>${game.i18n.translations.DG?.TypeSkills?.Science ?? "Science"
-        }</option>`;
+      htmlContent += `          <option value="Science" selected>${
+        game.i18n.translations.DG?.TypeSkills?.Science ?? "Science"
+      }</option>`;
     } else {
-      htmlContent += `          <option value="Science">${game.i18n.translations.DG?.TypeSkills?.Science ?? "Science"
-        }</option>`;
+      htmlContent += `          <option value="Science">${
+        game.i18n.translations.DG?.TypeSkills?.Science ?? "Science"
+      }</option>`;
     }
 
     if (
       currentGroup === game.i18n.translations.DG?.TypeSkills?.Other ??
       "Other"
     ) {
-      htmlContent += `          <option value="Other" selected>${game.i18n.translations.DG?.TypeSkills?.Other ?? "Other"
-        }</option>`;
+      htmlContent += `          <option value="Other" selected>${
+        game.i18n.translations.DG?.TypeSkills?.Other ?? "Other"
+      }</option>`;
     } else {
-      htmlContent += `          <option value="Other">${game.i18n.translations.DG?.TypeSkills?.Other ?? "Other"
-        }</option>`;
+      htmlContent += `          <option value="Other">${
+        game.i18n.translations.DG?.TypeSkills?.Other ?? "Other"
+      }</option>`;
     }
 
     htmlContent += `     </select>`;
     htmlContent += `</div>`;
 
     htmlContent += `<div>`;
-    htmlContent += `     <label>${game.i18n.translations.DG?.Skills.SkillName ?? "Skill Name"
-      }</label>`;
+    htmlContent += `     <label>${
+      game.i18n.translations.DG?.Skills.SkillName ?? "Skill Name"
+    }</label>`;
     htmlContent += `     <input type="text" name="new-type-skill-label" value="${currentLabel}" />`;
     htmlContent += `</div>`;
 
@@ -905,31 +921,40 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
     let htmlContent = "";
 
     htmlContent += `<div>`;
-    htmlContent += `     <label>${game.i18n.translations.DG?.Skills?.SkillGroup ?? "Skill Group"
-      }:</label>`;
+    htmlContent += `     <label>${
+      game.i18n.translations.DG?.Skills?.SkillGroup ?? "Skill Group"
+    }:</label>`;
     htmlContent += `     <select name="new-type-skill-group" />`;
-    htmlContent += `          <option value="Art">${game.i18n.translations.DG?.TypeSkills?.Art ?? "Art"
-      }</option>`;
-    htmlContent += `          <option value="Craft">${game.i18n.translations.DG?.TypeSkills?.Craft ?? "Craft"
-      }</option>`;
-    htmlContent += `          <option value="ForeignLanguage">${game.i18n.translations.DG?.TypeSkills?.ForeignLanguage ??
+    htmlContent += `          <option value="Art">${
+      game.i18n.translations.DG?.TypeSkills?.Art ?? "Art"
+    }</option>`;
+    htmlContent += `          <option value="Craft">${
+      game.i18n.translations.DG?.TypeSkills?.Craft ?? "Craft"
+    }</option>`;
+    htmlContent += `          <option value="ForeignLanguage">${
+      game.i18n.translations.DG?.TypeSkills?.ForeignLanguage ??
       "Foreign Language"
-      }</option>`;
-    htmlContent += `          <option value="MilitaryScience">${game.i18n.translations.DG?.TypeSkills?.MilitaryScience ??
+    }</option>`;
+    htmlContent += `          <option value="MilitaryScience">${
+      game.i18n.translations.DG?.TypeSkills?.MilitaryScience ??
       "Military Science"
-      }</option>`;
-    htmlContent += `          <option value="Pilot">${game.i18n.translations.DG?.TypeSkills?.Pilot ?? "Pilot"
-      }</option>`;
-    htmlContent += `          <option value="Science">${game.i18n.translations.DG?.TypeSkills?.Science ?? "Science"
-      }</option>`;
-    htmlContent += `          <option value="Other">${game.i18n.translations.DG?.TypeSkills?.Other ?? "Other"
-      }</option>`;
+    }</option>`;
+    htmlContent += `          <option value="Pilot">${
+      game.i18n.translations.DG?.TypeSkills?.Pilot ?? "Pilot"
+    }</option>`;
+    htmlContent += `          <option value="Science">${
+      game.i18n.translations.DG?.TypeSkills?.Science ?? "Science"
+    }</option>`;
+    htmlContent += `          <option value="Other">${
+      game.i18n.translations.DG?.TypeSkills?.Other ?? "Other"
+    }</option>`;
     htmlContent += `     </select>`;
     htmlContent += `</div>`;
 
     htmlContent += `<div>`;
-    htmlContent += `     <label>${game.i18n.translations.DG?.Skills.SkillName ?? "Skill Name"
-      }</label>`;
+    htmlContent += `     <label>${
+      game.i18n.translations.DG?.Skills.SkillName ?? "Skill Name"
+    }</label>`;
     htmlContent += `     <input type="text" name="new-type-skill-label" />`;
     htmlContent += `</div>`;
 
@@ -1067,8 +1092,9 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
       ([key, skill]) => ({
         value: key,
         group: optionGroups.typedSkills,
-        label: `${game.i18n.localize(`DG.TypeSkills.${skill.group}`)} (${skill.label
-          })`,
+        label: `${game.i18n.localize(`DG.TypeSkills.${skill.group}`)} (${
+          skill.label
+        })`,
         targetNumber: skill.proficiency,
       }),
     );
