@@ -94,6 +94,17 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
       this._prepareSkillTooltips();
     }
 
+    // Handle private sanity setting, override for GMs.
+    const keepSanityPrivate = game.settings.get(
+      "deltagreen",
+      "keepSanityPrivate",
+    );
+    const hideSan = keepSanityPrivate && !game.user.isGM;
+
+    context.maxSan = hideSan ? "???" : this.actor.system.sanity.max;
+    context.currentSan = hideSan ? "???" : this.actor.system.sanity.value;
+    context.keepSanityPrivate = keepSanityPrivate;
+
     // Set sanity block per actor type.
     context.sanityInputs = await foundry.applications.handlebars.renderTemplate(
       `${DGActorSheet.TEMPLATE_PATH}/partials/sanity-${this.actor.type}.html`,
