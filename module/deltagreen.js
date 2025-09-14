@@ -190,7 +190,7 @@ Hooks.on("renderGamePause", function (_, html, options) {
   }
 });
 
-Hooks.on("renderChatLog", async (app, element, context, options) => {
+Hooks.on("renderChatMessageHTML", async (app, element, context, options) => {
   element.addEventListener("click", (event) => {
     const btnWithAction = event.target.closest("button[data-action]");
     const message = event.target.closest("li[data-message-id]");
