@@ -1,5 +1,11 @@
 # Release/Patch Notes
 
+## Version ?.?.? - ????-??-??
+
+### **Bug Fixes:**
+
+- [#272](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/pull/273) - Fixed auto-marked skill failure rollbacks in chat bubbles.
+
 ## Version 1.6.1 - 2025-09-09
 
 > Thanks to the following new contributor: [Tobifroe](https://github.com/tobifroe).
