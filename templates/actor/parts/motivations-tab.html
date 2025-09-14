@@ -9,14 +9,20 @@
         <div class="breaking-point-grid-3col">
             <label class="bolded-label">{{localize 'DG.Mental.BreakingPoint'}}</label>
             <input class="centered"
+                   {{#unless (eq skillTooltipDisplay "never") }}
                    title="{{localize 'DG.Tooltip.BreakPoint'}}"
+                   {{/unless }}
                    type="text"
                    name="system.sanity.currentBreakingPoint"
                    value="{{actor.system.sanity.currentBreakingPoint}}"
                    data-dtype="Number" />
             <a class="btn-tiny"
                data-action="resetBreakingPoint"
-               title="{{localize 'DG.Tooltip.BreakPointReset'}}">{{localize 'DG.Mental.Reset'}}</a>
+               {{#unless (eq skillTooltipDisplay "never") }}
+               title="{{localize 'DG.Tooltip.BreakPointReset'}}"
+               {{/unless }}>
+               {{localize 'DG.Mental.Reset'}}
+            </a>
         </div>
 
         <div>
@@ -41,7 +47,9 @@
                        data-dtype="Boolean" />
 
                 <label class="adapted-label"
-                       data-tooltip="{{localize 'DG.Tooltip.AdaptedToViolence'}}">
+                       {{#unless (eq skillTooltipDisplay "never") }}
+                       data-tooltip="{{localize 'DG.Tooltip.AdaptedToViolence'}}"
+                       {{/unless }}>
                     {{#if actor.system.sanity.adaptations.violence.isAdapted }}
                         {{localize 'DG.Mental.AdaptedToViolence'}}
                     {{/if}}
@@ -65,7 +73,9 @@
                        data-dtype="Boolean" />
 
                 <label class="adapted-label"
-                       data-tooltip="{{localize 'DG.Tooltip.AdaptedToHelplessness'}}">
+                       {{#unless (eq skillTooltipDisplay "never") }}
+                       data-tooltip="{{localize 'DG.Tooltip.AdaptedToHelplessness'}}"
+                       {{/unless }}>
                     {{#if actor.system.sanity.adaptations.helplessness.isAdapted }}
                         {{localize 'DG.Mental.AdaptedToHelplessness'}}
                     {{/if}}

@@ -313,13 +313,18 @@ export default function registerSystemSettings() {
     default: false,
   });
 
-  game.settings.register("deltagreen", "hideSkillTooltips", {
-    name: game.i18n.localize("DG.Settings.hideSkillTooltips.name"),
-    hint: game.i18n.localize("DG.Settings.hideSkillTooltips.hint"),
+  game.settings.register("deltagreen", "skillTooltipDisplay", {
+    name: game.i18n.localize("DG.Settings.skillTooltipDisplay.name"),
+    hint: game.i18n.localize("DG.Settings.skillTooltipDisplay.hint"),
     scope: "client",
     config: true,
-    type: Boolean,
-    default: false,
+    type: String,
+    choices: {
+      hover: game.i18n.localize("DG.Settings.skillTooltipDisplay.hover"),
+      never: game.i18n.localize("DG.Settings.skillTooltipDisplay.never"),
+      hoverShift: game.i18n.localize("DG.Settings.skillTooltipDisplay.hoverShift"),
+    },
+    default: "hover",
     onChange: () => {
       foundry.applications.instances.forEach((app) => {
         if (app instanceof DGActorSheet) {

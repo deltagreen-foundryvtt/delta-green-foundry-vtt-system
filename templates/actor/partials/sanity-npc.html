@@ -3,11 +3,15 @@
        name="system.sanity.value"
        value="{{actor.system.sanity.value}}"
        data-dtype="Number"
-       data-tooltip="{{localize 'DG.Tooltip.CurrentSanityPartOne'}}{{actor.system.sanity.currentBreakingPoint}}{{localize 'DG.Tooltip.CurrentSanityPartTwo'}}" />
+       {{#unless (eq skillTooltipDisplay "never") }}
+       data-tooltip="{{localize 'DG.Tooltip.CurrentSanityPartOne'}}{{actor.system.sanity.currentBreakingPoint}}{{localize 'DG.Tooltip.CurrentSanityPartTwo'}}"
+       {{/unless }} />
 <span>{{localize 'DG.NPCSheet.BreakPointAbbreviation'}}:</span>
 <input class="centered"
        type="text"
        name="system.sanity.currentBreakingPoint"
        value="{{actor.system.sanity.currentBreakingPoint}}"
        data-dtype="Number"
-       data-tooltip="{{localize 'DG.Tooltip.BreakPoint'}}" />
+       {{#unless (eq skillTooltipDisplay "never") }}
+       data-tooltip="{{localize 'DG.Tooltip.BreakPoint'}}"
+       {{/unless }} />

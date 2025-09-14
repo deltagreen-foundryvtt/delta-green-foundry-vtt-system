@@ -24,7 +24,7 @@
                        data-key="{{skill.key}}"
                        data-rolltype="skill"
                        for="system.skills.{{skill.key}}.value"
-                       {{#unless ../hideSkillTooltips }}
+                       {{#unless (eq ../skillTooltipDisplay "never") }}
                        data-tooltip="{{ skill.tooltip }}"
                        {{/unless }}
                 >
@@ -39,7 +39,6 @@
                        name="system.skills.{{skill.key }}.proficiency"
                        value="{{skill.proficiency }}"
                        data-dtype="Number"
-                       data-tooltip="{{skill.targetProficiency }}"
                        {{disabled skill.isCalculatedValue }} />
                 {{#if (eq ../actor.type "agent") }}
                     <input class="checkbox-skill-input"
