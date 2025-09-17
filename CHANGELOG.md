@@ -1,5 +1,11 @@
 # Release/Patch Notes
 
+## Version 1.6.2 - ????-??-??
+
+### **Bug Fixes:**
+
+-
+
 ## Version 1.6.1 - 2025-09-09
 
 > Thanks to the following new contributor: [Tobifroe](https://github.com/tobifroe).
