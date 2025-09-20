@@ -67,7 +67,7 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
     this._prepareCharacterItems(context);
 
     context.showHyperGeometrySection = this.shouldShowHyperGeometrySection(
-      this.actor,
+      this.actor
     );
 
     // Prepare subname info placeholder.
@@ -86,7 +86,7 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
     // Skill tooltip display setting
     context.skillTooltipDisplay = game.settings.get(
       "deltagreen",
-      "skillTooltipDisplay",
+      "skillTooltipDisplay"
     );
 
     if (context.skillTooltipDisplay !== "never") {
@@ -97,12 +97,12 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
     // Set sanity block per actor type.
     context.sanityInputs = await foundry.applications.handlebars.renderTemplate(
       `${DGActorSheet.TEMPLATE_PATH}/partials/sanity-${this.actor.type}.html`,
-      context,
+      context
     );
 
     // Set title for Physical Attributes.
     context.physicalAttributesTitle = game.i18n.localize(
-      "DG.Sheet.BlockHeaders.Statistics",
+      "DG.Sheet.BlockHeaders.Statistics"
     );
 
     // Whether to append the notes section to the skills.
@@ -159,7 +159,9 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
       li.addEventListener("dragstart", handler, false);
     });
 
-    if (game.settings.get("deltagreen", "skillTooltipDisplay") == "hoverShift") {
+    if (
+      game.settings.get("deltagreen", "skillTooltipDisplay") == "hoverShift"
+    ) {
       this._installShiftHoverTooltips(this.element);
     }
   }
@@ -282,7 +284,7 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
 
     const descriptionValue = foundry.utils.getProperty(
       this.actor,
-      descriptionPath,
+      descriptionPath
     );
 
     const enrichedDescription =
@@ -291,7 +293,7 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
         {
           rollData: this.document.getRollData(),
           relativeTo: this.document,
-        },
+        }
       );
     const { HTMLProseMirrorElement } = foundry.applications.elements;
     return HTMLProseMirrorElement.create({
@@ -396,7 +398,7 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
     if (game.settings.get("deltagreen", "sortSkills")) {
       const columnSortedSkills = this.reorderForColumnSorting(
         sortedCustomSkills,
-        2,
+        2
       );
 
       this.actor.system.sortedCustomSkills = columnSortedSkills;
@@ -417,7 +419,7 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
         skill.tooltip = skill.tooltip.concat(
           skill.tooltip,
           "<br><br>",
-          game.i18n.localize("DG.Tooltip.CannotRollSkillLabel"),
+          game.i18n.localize("DG.Tooltip.CannotRollSkillLabel")
         );
       }
     }
@@ -477,7 +479,7 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
     element.addEventListener("contextmenu", (event) => {
       event.preventDefault();
       const target = event.target.closest(
-        "[data-action='roll'],[data-action='rollLuck']",
+        "[data-action='roll'],[data-action='rollLuck']"
       );
       if (!target) return;
 
@@ -504,7 +506,7 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
     if (
       game.settings.get(
         "deltagreen",
-        "alwaysShowHypergeometrySectionForPlayers",
+        "alwaysShowHypergeometrySectionForPlayers"
       )
     ) {
       return true;
@@ -722,7 +724,7 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
       game.i18n.translations.DOCUMENT?.New || "DG.FallbackText.newItem",
       {
         type: game.i18n.localize(`TYPES.Item.${type}`),
-      },
+      }
     );
 
     // Prepare the item object.
@@ -894,15 +896,15 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
           label: game.i18n.translations.DG?.Skills?.EditSkill ?? "Edit Skill",
           callback: (event, button, dialog) => {
             const newTypeSkillLabel = dialog.element.querySelector(
-              "[name='new-type-skill-label']",
+              "[name='new-type-skill-label']"
             )?.value;
             const newTypeSkillGroup = dialog.element.querySelector(
-              "[name='new-type-skill-group']",
+              "[name='new-type-skill-group']"
             )?.value;
             this._updateTypedSkill(
               targetSkill,
               newTypeSkillLabel,
-              newTypeSkillGroup,
+              newTypeSkillGroup
             );
           },
         },
@@ -966,10 +968,10 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
           label: game.i18n.translations.DG?.Skills?.AddSkill ?? "Add Skill",
           callback: (event, button, dialog) => {
             const newTypeSkillLabel = dialog.element.querySelector(
-              "[name='new-type-skill-label']",
+              "[name='new-type-skill-label']"
             )?.value;
             const newTypeSkillGroup = dialog.element.querySelector(
-              "[name='new-type-skill-group']",
+              "[name='new-type-skill-group']"
             )?.value;
             this._addNewTypedSkill(newTypeSkillLabel, newTypeSkillGroup);
           },
@@ -1026,12 +1028,12 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
       case "delete":
         {
           const specialTrainingArray = foundry.utils.duplicate(
-            this.actor.system.specialTraining,
+            this.actor.system.specialTraining
           );
 
           // Get the index of the training to be deleted
           const index = specialTrainingArray.findIndex(
-            (training) => training.id === id,
+            (training) => training.id === id
           );
 
           specialTrainingArray.splice(index, 1);
@@ -1046,17 +1048,17 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
 
   async _showSpecialTrainingDialog(action, targetID) {
     const specialTraining = this.actor.system.specialTraining.find(
-      (training) => training.id === targetID,
+      (training) => training.id === targetID
     );
 
     // Define the option groups for our drop-down menu.
     const optionGroups = {
       stats: game.i18n.localize(
-        "DG.SpecialTraining.Dialog.DropDown.Statistics",
+        "DG.SpecialTraining.Dialog.DropDown.Statistics"
       ),
       skills: game.i18n.localize("DG.SpecialTraining.Dialog.DropDown.Skills"),
       typedSkills: game.i18n.localize(
-        "DG.SpecialTraining.Dialog.DropDown.CustomSkills",
+        "DG.SpecialTraining.Dialog.DropDown.CustomSkills"
       ),
     };
 
@@ -1067,7 +1069,7 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
         group: optionGroups.stats,
         label: game.i18n.localize(`DG.Attributes.${key}`),
         targetNumber: stat.value * 5,
-      }),
+      })
     );
 
     // Prepare simplified skill list
@@ -1077,7 +1079,7 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
         group: optionGroups.skills,
         label: game.i18n.localize(`DG.Skills.${key}`),
         targetNumber: skill.proficiency,
-      }),
+      })
     );
 
     // Prepare simplified typed/custom skill list
@@ -1089,7 +1091,7 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
           skill.label
         })`,
         targetNumber: skill.proficiency,
-      }),
+      })
     );
 
     // Prepare the Select element
@@ -1110,11 +1112,11 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
         statList,
         skillList,
         typedSkillList,
-      },
+      }
     );
 
     const buttonLabel = game.i18n.localize(
-      `DG.SpecialTraining.Dialog.${action.capitalize()}SpecialTraining`,
+      `DG.SpecialTraining.Dialog.${action.capitalize()}SpecialTraining`
     );
 
     // Prepare and render dialog with above template.
@@ -1131,21 +1133,21 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
           label: buttonLabel,
           callback: (event, button, dialog) => {
             const specialTrainingLabel = dialog.element.querySelector(
-              "[name='special-training-label']",
+              "[name='special-training-label']"
             )?.value;
             const specialTrainingAttribute = dialog.element.querySelector(
-              "[name='special-training-skill']",
+              "[name='special-training-skill']"
             )?.value;
             if (action === "create")
               this._createSpecialTraining(
                 specialTrainingLabel,
-                specialTrainingAttribute,
+                specialTrainingAttribute
               );
             if (action === "edit")
               this._editSpecialTraining(
                 specialTrainingLabel,
                 specialTrainingAttribute,
-                targetID,
+                targetID
               );
           },
         },
@@ -1155,7 +1157,7 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
 
   _createSpecialTraining(label, attribute) {
     const specialTrainingArray = foundry.utils.duplicate(
-      this.actor.system.specialTraining,
+      this.actor.system.specialTraining
     );
     specialTrainingArray.push({
       name: label,
@@ -1167,10 +1169,10 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
 
   _editSpecialTraining(label, attribute, id) {
     const specialTrainingArray = foundry.utils.duplicate(
-      this.actor.system.specialTraining,
+      this.actor.system.specialTraining
     );
     const specialTraining = specialTrainingArray.find(
-      (training) => training.id === id,
+      (training) => training.id === id
     );
     specialTraining.name = label;
     specialTraining.attribute = attribute;
@@ -1331,7 +1333,7 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
               callback: () =>
                 game.packs
                   .find(
-                    (k) => k.collection === "deltagreen.hand-to-hand-weapons",
+                    (k) => k.collection === "deltagreen.hand-to-hand-weapons"
                   )
                   .render(true),
             },
@@ -1361,71 +1363,66 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
     targetDoc.update({ [prop]: !currentVal });
   }
 
-/**
- * Require Shift while hovering to show tooltips.
- * Supports either data-tooltip (preferred, may contain HTML) or title (plain text).
- */
-_installShiftHoverTooltips(root) {
-  // Query elements with either data-tooltip OR title
-  const nodes = root.querySelectorAll("[data-tooltip],[title]");
-  nodes.forEach((el) => {
-    if (el.dataset.shiftTooltipInstalled === "true") return;
+  /**
+   * Require Shift while hovering to show tooltips.
+   * Supports either data-tooltip (preferred, may contain HTML) or title (plain text).
+   */
+  _installShiftHoverTooltips(root) {
+    // Query elements with either data-tooltip OR title
+    const nodes = root.querySelectorAll("[data-tooltip],[title]");
+    nodes.forEach((el) => {
+      if (el.dataset.shiftTooltipInstalled === "true") return;
 
-    // Prefer data-tooltip, else use title
-    let html = el.getAttribute("data-tooltip");
-    let isHtml = true;
+      // Prefer data-tooltip, else use title
+      let html = el.getAttribute("data-tooltip");
+      let isHtml = true;
 
-    if (!html) {
-      const title = el.getAttribute("title");
-      if (title) {
-        html = foundry.utils.escapeHTML(title); // treat title as plain text
-        isHtml = false;
+      if (!html) {
+        const title = el.getAttribute("title");
+        if (title) {
+          html = foundry.utils.escapeHTML(title); // treat title as plain text
+          isHtml = false;
+        }
       }
-    }
 
-    if (!html) return; // nothing usable
+      if (!html) return; // nothing usable
 
-    // Remove native attributes so default tooltips don’t trigger
-    el.removeAttribute("data-tooltip");
-    el.removeAttribute("title");
-    el.dataset.shiftTooltipInstalled = "true";
+      // Remove native attributes so default tooltips don’t trigger
+      el.removeAttribute("data-tooltip");
+      el.removeAttribute("title");
+      el.dataset.shiftTooltipInstalled = "true";
 
-    // Always pass through { html } so <br> etc. render
-    const opts = isHtml ? { html } : { text: html };
+      // Always pass through { html } so <br> etc. render
+      const opts = isHtml ? { html } : { text: html };
 
-    const show = () => game.tooltip.activate(el, opts);
-    const hide = () => game.tooltip.deactivate();
+      const show = () => game.tooltip.activate(el, opts);
+      const hide = () => game.tooltip.deactivate();
 
-    const onKey = (ev) => {
-      if (ev.key !== "Shift") return;
-      if (!document.body.contains(el)) {
+      const onKey = (ev) => {
+        if (ev.key !== "Shift") return;
+        if (!document.body.contains(el)) {
+          window.removeEventListener("keydown", onKey);
+          window.removeEventListener("keyup", onKey);
+          return;
+        }
+        if (ev.type === "keydown") show();
+        else hide();
+      };
+
+      const onEnter = (ev) => {
+        if (ev.shiftKey) show();
+        window.addEventListener("keydown", onKey);
+        window.addEventListener("keyup", onKey);
+      };
+
+      const onLeave = () => {
+        hide();
         window.removeEventListener("keydown", onKey);
         window.removeEventListener("keyup", onKey);
-        return;
-      }
-      if (ev.type === "keydown") show();
-      else hide();
-    };
+      };
 
-    const onEnter = (ev) => {
-      if (ev.shiftKey) show();
-      window.addEventListener("keydown", onKey);
-      window.addEventListener("keyup", onKey);
-    };
-
-    const onLeave = () => {
-      hide();
-      window.removeEventListener("keydown", onKey);
-      window.removeEventListener("keyup", onKey);
-    };
-
-    el.addEventListener("pointerenter", onEnter, { passive: true });
-    el.addEventListener("pointerleave", onLeave, { passive: true });
-  });
-}
-
-
-
-
-
+      el.addEventListener("pointerenter", onEnter, { passive: true });
+      el.addEventListener("pointerleave", onLeave, { passive: true });
+    });
+  }
 }
