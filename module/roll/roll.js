@@ -256,7 +256,9 @@ export class DGPercentileRoll extends DGRoll {
       this.options.rollMode = "blindroll";
     }
 
-    const diceSoNice = game.modules.has("dice-so-nice");
+    const diceSoNice =
+      game.modules.has("dice-so-nice") &&
+      game.modules.get("dice-so-nice").active;
 
     const label = this.createLabel();
 
