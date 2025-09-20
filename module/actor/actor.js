@@ -10,8 +10,6 @@ export default class DeltaGreenActor extends Actor {
     super.prepareData();
 
     const actorData = this;
-    const { system } = actorData;
-    const { flags } = actorData;
 
     // console.log('actor.js prepareData');
     // console.log(this);
@@ -74,7 +72,7 @@ export default class DeltaGreenActor extends Actor {
 
     try {
       system.health.max = Math.ceil(
-        (system.statistics.con.value + system.statistics.str.value) / 2
+        (system.statistics.con.value + system.statistics.str.value) / 2,
       );
     } catch (ex) {
       system.health.max = 10;
@@ -86,7 +84,7 @@ export default class DeltaGreenActor extends Actor {
       proficiency: 99 - system.sanity.value,
       cannotBeImprovedByFailure: true,
       failure: false,
-    };    
+    };
 
     if (system.skills.ritual.proficiency > 99) {
       system.skills.ritual.proficiency = 99;
@@ -179,7 +177,7 @@ export default class DeltaGreenActor extends Actor {
       proficiency: 99 - system.sanity.value,
       cannotBeImprovedByFailure: true,
       failure: false,
-    };    
+    };
 
     if (system.skills.ritual.proficiency > 99) {
       system.skills.ritual.proficiency = 99;
@@ -231,7 +229,7 @@ export default class DeltaGreenActor extends Actor {
     system.wp.max = system.statistics.pow.value;
 
     system.health.max = Math.ceil(
-      (system.statistics.con.value + system.statistics.str.value) / 2
+      (system.statistics.con.value + system.statistics.str.value) / 2,
     );
 
     // initialize sanity, don't set these afterwards, as they need to be manually edited
@@ -325,7 +323,7 @@ export default class DeltaGreenActor extends Actor {
           sight: { enabled: true },
           disposition: 1, // friendly, this is a dangerous assumption to make in the agency
         },
-        { overwrite: false }
+        { overwrite: false },
       );
     }
     return super.create(data, options);
@@ -349,7 +347,7 @@ export default class DeltaGreenActor extends Actor {
       }
 
       const handToHandPack = await game.packs.get(
-        "deltagreen.hand-to-hand-weapons"
+        "deltagreen.hand-to-hand-weapons",
       );
       const itemIndex = await handToHandPack.getIndex();
       const toAdd = []; // createEmbeddedDocument expects an array
@@ -417,7 +415,7 @@ export default class DeltaGreenActor extends Actor {
     description,
     protection,
     isEquipped,
-    expense = "NA"
+    expense = "NA",
   ) {
     const armorData = {
       type: "armor",
@@ -447,7 +445,7 @@ export default class DeltaGreenActor extends Actor {
     killRadius = "N/A",
     ammo = "",
     expense = "NA",
-    equipped = true
+    equipped = true,
   ) {
     const weaponData = {
       type: "weapon",

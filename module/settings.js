@@ -186,7 +186,7 @@ const SettingForm = class extends HandlebarsApplicationMixin(ApplicationV2) {
           label: settingConfig.name,
           localize: true,
           rootId: this.options.id,
-        })
+        }),
       );
     }
 
@@ -323,7 +323,7 @@ export default function registerSystemSettings() {
       hover: game.i18n.localize("DG.Settings.skillTooltipDisplay.hover"),
       never: game.i18n.localize("DG.Settings.skillTooltipDisplay.never"),
       hoverShift: game.i18n.localize(
-        "DG.Settings.skillTooltipDisplay.hoverShift"
+        "DG.Settings.skillTooltipDisplay.hoverShift",
       ),
     },
     default: "hover",
