@@ -88,7 +88,6 @@ We recommend [Visual Studio Code](https://code.visualstudio.com/) for working on
 - [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) – Code formatter
 - [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) – JavaScript linter
 - [DJLint](https://marketplace.visualstudio.com/items?itemName=monosans.djlint) – Handlebars linter/formatter
-
   - If you used a Python virtual environment to install DJLint, make sure to set the VSCode extension's setting `djlint.pythonPath` to the path to your virtual environment. For example:
 
     ```bash
@@ -109,15 +108,12 @@ Your pull request will automatically be checked for linting and formatting via G
 ### 5. Set Up a Local Foundry VTT Test Instance
 
 1. We **highly** recommend setting up a separate instance of Foundry from your main installation. This way you are not at risk of breaking things in live worlds.
-
    - There are several ways to do this, but the easiest is to download the NodeJS version of Foundry (make sure to replace `<your-username>` in the following link): `https://foundryvtt.com/community/<your-username>/licenses`
    - Follow the rest of the instructions in [this youtube video](https://youtu.be/B74ZAp3xx3o) to get it up and running (make sure to look at the csomment there by `@Makofueled` because Foundry's folder structure has changed slightly since the video was posted).
 
 2. [Symlink](https://en.wikipedia.org/wiki/Symbolic_link) the cloned system folder to Foundry’s `Data/systems` directory.
-
    - This is the folder you chose to store your data in the previous step.
    - Otherwise, if you are not using the NodeJS version of Foundry, this directory is likely located at:
-
      - **Windows**: `%localappdata%/FoundryVTT/Data/systems/`
      - **macOS**: `~/Library/Application Support/FoundryVTT/Data/systems/`
      - **Linux**: `~/.local/share/FoundryVTT/Data/systems/`
@@ -215,7 +211,6 @@ Screenshots or gifs are **highly encouraged** for visual/UI changes!
 It is difficult to create a one-size-fits-all procedure for testing, because each issue or feature has its own requirements. However, the steps below attempt to provide a baseline you can follow for most changes. If a PR includes specific test instructions, follow those and then complete the general checks here.
 
 1. Prepare your environment
-
    - Test in a safe environment (**HIGHLY RECOMMENDED**):
      - We highly recommend [setting up an installation of Foundry separate from your main instance](#5-set-up-a-local-foundry-vtt-test-instance).
      - This way, you are never at risk of breaking anything in your main worlds.
@@ -233,7 +228,6 @@ It is difficult to create a one-size-fits-all procedure for testing, because eac
    - Keep the browser's dev console (F12) open during testing, and note any errors (red text in the console), especially if they arise in response to something you did/tested. Screenshot errors rather than copy/pasting them.
 
 2. Quick test
-
    - Ensure there are no red errors on load.
    - Create a new Agent (character) and open its sheet. Click through all tabs to ensure they render without errors.
    - Create one of each relevant Item type used by the change (e.g., weapon, armor, equipment) and open their sheets.
@@ -243,21 +237,17 @@ It is difficult to create a one-size-fits-all procedure for testing, because eac
 3. Functional checks by area
 
    > You only need to test the subsets below which are relevant to the changes you are testing. When unsure or being particularly thorough, do the full pass.
-
    - Player (non-GM) Perspective Tests
-
      - Enable the "Hide Sanity from Players" Setting.
      - Make sure Sanity on sheets and in rolls is obscured from players.
      - Enable the "Hide Impossible Landscape content" Setting
      - Make sure the Impossible Landscapes fields on the character sheet are not visible from a player's perspective.
 
    - Character basics
-
      - Create an Agent, fill in stats, skills, and add a couple of custom skills, special trainings, bonds, and pieces of equipment.
      - Close, and reopen the sheet; confirm data persists and renders correctly.
 
    - Rolling and chat cards
-
      - Roll a few skills (with and without modifiers). Confirm success/failure logic and result styling.
      - Perform a Sanity roll.
      - Perform a Sanity damage roll (Unnatural sheet).
@@ -268,33 +258,27 @@ It is difficult to create a one-size-fits-all procedure for testing, because eac
      - Test modifying all above rolls (right-click or shift-click) and ensure the final result matches expectations.
 
    - Weapons and armor
-
      - Create a Weapon, add it to the Agent, and roll an attack; verify the damage roll and chat output.
      - Equip armor; confirm that armor stat is calculated and displayed correctly (next to HP).
 
    - Items and drag/drop
-
      - Drag items from a compendium and sidebar into the Actor. Ensure sheets open and data is valid.
      - Delete and re-add items to confirm no orphaned data or console errors.
 
    - Compendia integrity
-
      - Open compendia (e.g., pregens, equipment) and scan for missing images, broken icons, or malformed data.
      - Drag entries into a world and open them; verify sheets render as expected.
      - If you are actively editing packs, see “[Working with Compendia](#working-with-compendia)” below for FVTT CLI export/extract workflow.
 
    - System settings
-
      - Toggle/change each relevant setting to verify it works as expected.
      - Confirm the setting takes effect immediately or after reload, as intended.
 
    - Localization
-
      - Switch Foundry’s language to a non-English language, refresh, and re-run a quick UI pass.
      - Confirm no literal keys like “DG.Skills.\*” appear in UI or chat cards, and strings fall back to English where not translated.
 
    - Layout and styling
-
      - Look for inconsistent, inaccessible, or just plain ugly visual elements in styling that the system controls.
      - Confirm icons load and are visually consistent.
      - Toggle between Foundry's light and dark modes and check for visual inconsistencies.
@@ -306,7 +290,6 @@ It is difficult to create a one-size-fits-all procedure for testing, because eac
      - Feel free to also get creative when testing, going beyond what one might expect and noting what you find.
 
 4. Cross-browser sanity (optional but helpful)
-
    - If possible, quickly verify in one Chromium-based browser (Chrome/Edge) and Firefox.
    - Report any browser-specific issues you encounter.
 
