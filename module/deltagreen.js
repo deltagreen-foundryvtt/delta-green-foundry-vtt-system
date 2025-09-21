@@ -20,10 +20,19 @@ import { handleInlineActions } from "./other/inline.js";
 import DGNPCSheet from "./sheets/npc-sheet.js";
 import DGUnnaturalSheet from "./sheets/unnatural-sheet.js";
 import DGVehicleSheet from "./sheets/vehicle-sheet.js";
+import { AgentData, NPCData, UnnaturalData, VehicleData } from "./data/actor";
 
 const { Actors, Items } = foundry.documents.collections;
 
 Hooks.once("init", async () => {
+  Object.assign(CONFIG.Actor.dataModels, {
+    // The keys are the types defined in our template.json
+    agent: AgentData,
+    unnatural: UnnaturalData,
+    npc: NPCData,
+    vehicle: VehicleData,
+  });
+
   game.deltagreen = {
     DeltaGreenActor,
     DeltaGreenItem,
