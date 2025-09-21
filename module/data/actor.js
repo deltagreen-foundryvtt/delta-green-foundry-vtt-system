@@ -1,77 +1,75 @@
 const fields = foundry.data.fields;
 
 function resourceField(initialValue, initialMax) {
-  return {
+  return new fields.SchemaField({
     min: new fields.NumberField({ initial: 0 }),
     value: new fields.NumberField({ initial: initialValue }),
     max: new fields.NumberField({ initial: initialMax }),
-  };
+  });
 }
 
 function statisticsField(initialValue) {
-  return {
+  return new fields.SchemaField({
     value: new fields.NumberField({ initial: initialValue }),
     distinguishing_feature: new fields.StringField({ initial: "" }),
-  };
+  });
 }
 
 function skillField(initialValue, label) {
-  return {
-    value: new fields.NumberField({ initial: initialValue }),
+  return new fields.SchemaField({
+    proficiency: new fields.NumberField({ initial: initialValue }),
     label: new fields.StringField({ initial: label }),
     failure: new fields.BooleanField({ initial: false }),
-  };
+  });
 }
 
 class UnnaturalSkillsActorData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {
-      unnatural_skills: new fields.SchemaField({
-        skills: new fields.SchemaField({
-          accounting: skillField(0, "Accounting"),
-          alertness: skillField(50, "Alertness"),
-          anthropology: skillField(0, "Anthropology"),
-          archeology: skillField(0, "Archeology"),
-          artillery: skillField(0, "Artillery"),
-          athletics: skillField(50, "Athletics"),
-          bureaucracy: skillField(0, "Bureaucracy"),
-          computer_science: skillField(0, "Computer Science"),
-          criminology: skillField(0, "Criminology"),
-          demolitions: skillField(0, "Demolitions"),
-          disguise: skillField(0, "Disguise"),
-          dodge: skillField(50, "Dodge"),
-          drive: skillField(0, "Drive"),
-          firearms: skillField(0, "Firearms"),
-          first_aid: skillField(0, "First Aid"),
-          forensics: skillField(0, "Forensics"),
-          heavy_machiner: skillField(0, "Heavy Machinery"),
-          heavy_weapons: skillField(0, "Heavy Weapons"),
-          history: skillField(0, "History"),
-          humint: skillField(0, "HUMINT"),
-          law: skillField(0, "Law"),
-          medicine: skillField(0, "Medicine"),
-          melee_weapons: skillField(50, "Melee Weapons"),
-          navigate: skillField(0, "Navigate"),
-          occult: skillField(0, "Occult"),
-          persuade: skillField(0, "Persuade"),
-          pharmacy: skillField(0, "Pharmacy"),
-          psychotherapy: skillField(0, "Psychotherapy"),
-          ride: skillField(0, "Ride"),
-          search: skillField(0, "Search"),
-          sigint: skillField(0, "SIGINT"),
-          stealth: skillField(50, "Stealth"),
-          surgery: skillField(0, "Surgery"),
-          survival: skillField(0, "Survival"),
-          swim: skillField(0, "Swim"),
-          unarmed_combat: skillField(50, "Unarmed Combat"),
-          unnatural: {
-            value: new fields.NumberField({ initial: 0 }),
-            label: new fields.StringField({ initial: "Unnatural" }),
-          },
+      skills: new fields.SchemaField({
+        accounting: skillField(0, "Accounting"),
+        alertness: skillField(50, "Alertness"),
+        anthropology: skillField(0, "Anthropology"),
+        archeology: skillField(0, "Archeology"),
+        artillery: skillField(0, "Artillery"),
+        athletics: skillField(50, "Athletics"),
+        bureaucracy: skillField(0, "Bureaucracy"),
+        computer_science: skillField(0, "Computer Science"),
+        criminology: skillField(0, "Criminology"),
+        demolitions: skillField(0, "Demolitions"),
+        disguise: skillField(0, "Disguise"),
+        dodge: skillField(50, "Dodge"),
+        drive: skillField(0, "Drive"),
+        firearms: skillField(0, "Firearms"),
+        first_aid: skillField(0, "First Aid"),
+        forensics: skillField(0, "Forensics"),
+        heavy_machiner: skillField(0, "Heavy Machinery"),
+        heavy_weapons: skillField(0, "Heavy Weapons"),
+        history: skillField(0, "History"),
+        humint: skillField(0, "HUMINT"),
+        law: skillField(0, "Law"),
+        medicine: skillField(0, "Medicine"),
+        melee_weapons: skillField(50, "Melee Weapons"),
+        navigate: skillField(0, "Navigate"),
+        occult: skillField(0, "Occult"),
+        persuade: skillField(0, "Persuade"),
+        pharmacy: skillField(0, "Pharmacy"),
+        psychotherapy: skillField(0, "Psychotherapy"),
+        ride: skillField(0, "Ride"),
+        search: skillField(0, "Search"),
+        sigint: skillField(0, "SIGINT"),
+        stealth: skillField(50, "Stealth"),
+        surgery: skillField(0, "Surgery"),
+        survival: skillField(0, "Survival"),
+        swim: skillField(0, "Swim"),
+        unarmed_combat: skillField(50, "Unarmed Combat"),
+        unnatural: new fields.SchemaField({
+          proficiency: new fields.NumberField({ initial: 0 }),
+          label: new fields.StringField({ initial: "Unnatural" }),
         }),
-        typedSkills: new fields.SchemaField({}),
-        specialTraining: new fields.ArrayField({}),
       }),
+      typedSkills: new fields.SchemaField({}),
+      specialTraining: new fields.ArrayField(new fields.StringField()),
     };
   }
 }
@@ -79,52 +77,50 @@ class UnnaturalSkillsActorData extends foundry.abstract.TypeDataModel {
 class HumanSkillsActorData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {
-      human_skills: new fields.SchemaField({
-        skills: new fields.SchemaField({
-          accounting: skillField(10, "Accounting"),
-          alertness: skillField(20, "Alertness"),
-          anthropology: skillField(0, "Anthropology"),
-          archeology: skillField(0, "Archeology"),
-          artillery: skillField(0, "Artillery"),
-          athletics: skillField(30, "Athletics"),
-          bureaucracy: skillField(10, "Bureaucracy"),
-          computer_science: skillField(0, "Computer Science"),
-          criminology: skillField(10, "Criminology"),
-          demolitions: skillField(0, "Demolitions"),
-          disguise: skillField(10, "Disguise"),
-          dodge: skillField(30, "Dodge"),
-          drive: skillField(20, "Drive"),
-          firearms: skillField(20, "Firearms"),
-          first_aid: skillField(10, "First Aid"),
-          forensics: skillField(0, "Forensics"),
-          heavy_machiner: skillField(10, "Heavy Machinery"),
-          heavy_weapons: skillField(0, "Heavy Weapons"),
-          history: skillField(10, "History"),
-          humint: skillField(10, "HUMINT"),
-          law: skillField(0, "Law"),
-          medicine: skillField(0, "Medicine"),
-          melee_weapons: skillField(30, "Melee Weapons"),
-          navigate: skillField(10, "Navigate"),
-          occult: skillField(10, "Occult"),
-          persuade: skillField(20, "Persuade"),
-          pharmacy: skillField(0, "Pharmacy"),
-          psychotherapy: skillField(10, "Psychotherapy"),
-          ride: skillField(10, "Ride"),
-          search: skillField(20, "Search"),
-          sigint: skillField(0, "SIGINT"),
-          stealth: skillField(10, "Stealth"),
-          surgery: skillField(0, "Surgery"),
-          survival: skillField(10, "Survival"),
-          swim: skillField(20, "Swim"),
-          unarmed_combat: skillField(40, "Unarmed Combat"),
-          unnatural: {
-            value: new fields.NumberField({ initial: 0 }),
-            label: new fields.StringField({ initial: "Unnatural" }),
-          },
+      skills: new fields.SchemaField({
+        accounting: skillField(10, "Accounting"),
+        alertness: skillField(20, "Alertness"),
+        anthropology: skillField(0, "Anthropology"),
+        archeology: skillField(0, "Archeology"),
+        artillery: skillField(0, "Artillery"),
+        athletics: skillField(30, "Athletics"),
+        bureaucracy: skillField(10, "Bureaucracy"),
+        computer_science: skillField(0, "Computer Science"),
+        criminology: skillField(10, "Criminology"),
+        demolitions: skillField(0, "Demolitions"),
+        disguise: skillField(10, "Disguise"),
+        dodge: skillField(30, "Dodge"),
+        drive: skillField(20, "Drive"),
+        firearms: skillField(20, "Firearms"),
+        first_aid: skillField(10, "First Aid"),
+        forensics: skillField(0, "Forensics"),
+        heavy_machiner: skillField(10, "Heavy Machinery"),
+        heavy_weapons: skillField(0, "Heavy Weapons"),
+        history: skillField(10, "History"),
+        humint: skillField(10, "HUMINT"),
+        law: skillField(0, "Law"),
+        medicine: skillField(0, "Medicine"),
+        melee_weapons: skillField(30, "Melee Weapons"),
+        navigate: skillField(10, "Navigate"),
+        occult: skillField(10, "Occult"),
+        persuade: skillField(20, "Persuade"),
+        pharmacy: skillField(0, "Pharmacy"),
+        psychotherapy: skillField(10, "Psychotherapy"),
+        ride: skillField(10, "Ride"),
+        search: skillField(20, "Search"),
+        sigint: skillField(0, "SIGINT"),
+        stealth: skillField(10, "Stealth"),
+        surgery: skillField(0, "Surgery"),
+        survival: skillField(10, "Survival"),
+        swim: skillField(20, "Swim"),
+        unarmed_combat: skillField(40, "Unarmed Combat"),
+        unnatural: new fields.SchemaField({
+          proficiency: new fields.NumberField({ initial: 0 }),
+          label: new fields.StringField({ initial: "Unnatural" }),
         }),
-        typedSkills: new fields.SchemaField({}),
-        specialTraining: new fields.ArrayField({}),
       }),
+      typedSkills: new fields.SchemaField({}),
+      specialTraining: new fields.ArrayField(new fields.StringField()),
     };
   }
 }
@@ -132,7 +128,7 @@ class HumanSkillsActorData extends foundry.abstract.TypeDataModel {
 class SheetSettingsActorData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {
-      "sheet-settings": new fields.SchemaField({
+      settings: new fields.SchemaField({
         sorting: new fields.SchemaField({
           weaponSortAlphabetical: new fields.BooleanField({ initial: false }),
           armorSortAlphabetical: new fields.BooleanField({ initial: false }),
@@ -151,17 +147,15 @@ class SheetSettingsActorData extends foundry.abstract.TypeDataModel {
 class BaseActorData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {
-      base: new fields.SchemaField({
-        health: new fields.SchemaField(resourceField(10, 10)),
-        wp: new fields.SchemaField(resourceField(10, 10)),
-        statistics: new fields.SchemaField({
-          str: statisticsField(10),
-          con: statisticsField(10),
-          dex: statisticsField(10),
-          int: statisticsField(10),
-          pow: statisticsField(10),
-          cha: statisticsField(10),
-        }),
+      health: resourceField(10, 10),
+      wp: resourceField(10, 10),
+      statistics: new fields.SchemaField({
+        str: statisticsField(10),
+        con: statisticsField(10),
+        dex: statisticsField(10),
+        int: statisticsField(10),
+        pow: statisticsField(10),
+        cha: statisticsField(10),
       }),
     };
   }
@@ -280,7 +274,7 @@ export class VehicleData extends foundry.abstract.TypeDataModel {
       }),
       speed: new fields.StringField({ initial: "" }),
       expense: new fields.StringField({ initial: "Standard" }),
-      passengers: new fields.ArrayField({}),
+      passengers: new fields.ArrayField(new fields.StringField()),
     };
   }
 }
