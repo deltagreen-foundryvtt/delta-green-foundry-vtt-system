@@ -20,12 +20,10 @@ import { handleInlineActions } from "./other/inline.js";
 import DGNPCSheet from "./sheets/npc-sheet.js";
 import DGUnnaturalSheet from "./sheets/unnatural-sheet.js";
 import DGVehicleSheet from "./sheets/vehicle-sheet.js";
-import {
-  AgentData,
-  NPCData,
-  UnnaturalData,
-  VehicleData,
-} from "./data/actor.js";
+import AgentData from "./data/actor/agent.js";
+import UnnaturalData from "./data/actor/unnatural.js";
+import NPCData from "./data/actor/npc.js";
+import VehicleData from "./data/actor/vehicle.js";
 
 const { Actors, Items } = foundry.documents.collections;
 
