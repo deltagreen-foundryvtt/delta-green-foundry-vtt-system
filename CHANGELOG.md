@@ -1,5 +1,11 @@
 # Release/Patch Notes
 
+## Version 1.7.0 - 2025-09-26
+
+### **Bug Fixes:**
+
+- [#269](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/269) - Added calculation for max HP and max WP for unnatural and allow to edit them.
+
 ## Version 1.6.1 - 2025-09-09
 
 > Thanks to the following new contributor: [Tobifroe](https://github.com/tobifroe).
