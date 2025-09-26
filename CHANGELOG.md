@@ -11,6 +11,7 @@
 
 ### **Bug Fixes:**
 
+- [#269](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/269) - Added calculation for max HP and max WP for unnatural and allow to edit them.
 - [#274](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/274) - Automated fail marking now works after dice so nice resolve roll.
 - [#268](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/268) - Removed unnecessary tooltips.
 - [#278](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/278) - It shows the tooltip only once for skills without proficiency.
