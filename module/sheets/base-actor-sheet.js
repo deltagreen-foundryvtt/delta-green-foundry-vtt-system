@@ -36,7 +36,11 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
   static BASE_PARTS = /** @type {const} */ ({
     header: {
       template: `${this.TEMPLATE_PATH}/parts/header.html`,
-      templates: [`${this.TEMPLATE_PATH}/partials/sanity-partial.html`],
+      templates: [
+        `${this.TEMPLATE_PATH}/partials/health-partial.html`,
+        `${this.TEMPLATE_PATH}/partials/willpower-partial.html`,
+        `${this.TEMPLATE_PATH}/partials/sanity-partial.html`,
+      ],
     },
     tabs: {
       template: `templates/generic/tab-navigation.hbs`, // From FoundryVTT
@@ -58,6 +62,25 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
       scrollable: [""],
     },
   });
+
+  /** @override */
+  async _processSubmitData(event, form, submitData, options) {
+    const submittedData = foundry.utils.expandObject(submitData);
+
+    // we need to update max WP if POW has changed (only for unnatural, but doesn't hurt others)
+    submittedData.system.wp.maxNeedsUpdate =
+      submittedData.system?.statistics.pow.value !==
+      this.actor.system.statistics.pow.value;
+
+    // we need to update max HP if STR or CON have changed (only for unnatural, but doesn't hurt others)
+    submittedData.system.health.maxNeedsUpdate =
+      submittedData.system?.statistics.str.value !==
+        this.actor.system.statistics.str.value ||
+      submittedData.system?.statistics.con.value !==
+        this.actor.system.statistics.con.value;
+
+    return super._processSubmitData(event, form, submittedData, options);
+  }
 
   /** @override */
   async _prepareContext(options) {

@@ -126,14 +126,18 @@ export default class DeltaGreenActor extends Actor {
       statistic.x5 = statistic.value * 5;
     }
 
-    system.wp.max = system.statistics.pow.value;
+    if (system.wp.maxNeedsUpdate) {
+      system.wp.max = system.statistics.pow.value;
+    }
 
-    try {
-      system.health.max = Math.ceil(
-        (system.statistics.con.value + system.statistics.str.value) / 2,
-      );
-    } catch {
-      system.health.max = 10;
+    if (system.health.maxNeedsUpdate) {
+      try {
+        system.health.max = Math.ceil(
+          (system.statistics.con.value + system.statistics.str.value) / 2,
+        );
+      } catch {
+        system.health.max = 10;
+      }
     }
 
     // calculate total armor rating
