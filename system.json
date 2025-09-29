@@ -187,5 +187,13 @@
     "units": "m"
   },
   "primaryTokenAttribute": "health",
-  "secondaryTokenAttribute": "wp"
+  "secondaryTokenAttribute": "wp",
+  "documentTypes": {
+    "Actor": {
+      "agent": {},
+      "unnatural": {},
+      "npc": {},
+      "vehicle": {}
+    }
+  }
 }
