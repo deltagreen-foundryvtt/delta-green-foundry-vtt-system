@@ -1,6 +1,6 @@
 import { skillField } from "./general.js";
 
-const { SchemaField, NumberField, StringField, ArrayField } =
+const { SchemaField, NumberField, StringField, ArrayField, ObjectField } =
   foundry.data.fields;
 const { TypeDataModel } = foundry.abstract;
 
@@ -49,8 +49,14 @@ export default class HumanSkillsActorData extends TypeDataModel {
           label: new StringField({ initial: "Unnatural" }),
         }),
       }),
-      typedSkills: new SchemaField({}),
-      specialTraining: new ArrayField(new StringField()),
+      typedSkills: new ObjectField({}),
+      specialTraining: new ArrayField(
+        new SchemaField({
+          attribute: new StringField(),
+          id: new StringField(),
+          name: new StringField(),
+        }),
+      ),
     };
   }
 }
