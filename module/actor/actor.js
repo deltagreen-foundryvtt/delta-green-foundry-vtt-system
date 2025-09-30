@@ -54,7 +54,7 @@ export default class DeltaGreenActor extends Actor {
     const { system } = actor;
 
     // Loop through ability scores, and add their modifiers to our sheet output.
-    for (const [key, statistic] of Object.entries(system.statistics)) {
+    for (const statistic of Object.values(system.statistics)) {
       // the x5 is just whatever the raw statistic is x 5 to turn it into a d100 percentile
       statistic.x5 = statistic.value * 5;
     }
@@ -74,25 +74,13 @@ export default class DeltaGreenActor extends Actor {
       system.health.max = Math.ceil(
         (system.statistics.con.value + system.statistics.str.value) / 2,
       );
-    } catch (ex) {
+    } catch {
       system.health.max = 10;
     }
 
-    /*
-    system.skills.ritual = {
-      label: "Ritual",
-      proficiency: 99 - system.sanity.value,
-      cannotBeImprovedByFailure: true,
-      failure: false,
-    };
-
-    if (system.skills.ritual.proficiency > 99) {
-      system.skills.ritual.proficiency = 99;
-    } else if (system.skills.ritual.proficiency < 1) {
-      system.skills.ritual.proficiency = 1;
-    }
-
-    */
+    const strength = system.statistics.str;
+    system.statistics.str.meleeDamageBonusFormula =
+      this._calculateMeleeDamageBonusFormula(strength.value);
 
     try {
       delete system.skills.ritual; // try to remove legacy skill for ritual if it exists
@@ -120,7 +108,7 @@ export default class DeltaGreenActor extends Actor {
 
     system.health.protection = protection;
 
-    for (const [_key, skill] of Object.entries(system.skills)) {
+    for (const skill of Object.values(system.skills)) {
       skill.targetProficiency = skill.proficiency;
     }
   }
@@ -164,28 +152,10 @@ export default class DeltaGreenActor extends Actor {
     // Make modifications to data here. For example:
 
     // Loop through ability scores, and add their modifiers to our sheet output.
-    for (const [key, statistic] of Object.entries(system.statistics)) {
+    for (const statistic of Object.values(system.statistics)) {
       // the x5 is just whatever the raw statistic is x 5 to turn it into a d100 percentile
       statistic.x5 = statistic.value * 5;
     }
-
-    // The ritual skill is from the Handler's Guide, it is for activating a ritual and is always equal to 99 - current sanity.
-    // The rules can be found on page 166, under 'Ritual Activation'.
-    /*
-    system.skills.ritual = {
-      label: "Ritual",
-      proficiency: 99 - system.sanity.value,
-      cannotBeImprovedByFailure: true,
-      failure: false,
-    };
-
-    if (system.skills.ritual.proficiency > 99) {
-      system.skills.ritual.proficiency = 99;
-    } else if (system.skills.ritual.proficiency < 1) {
-      system.skills.ritual.proficiency = 1;
-    }
-
-    */
 
     try {
       delete system.skills.ritual; // try to remove legacy skill for ritual if it exists
@@ -282,34 +252,31 @@ export default class DeltaGreenActor extends Actor {
 
     system.health.protection = protection;
 
-    // Damage Bonus/Malus From Strength in Hand-to-hand Combat (melee/unarmed)
-    let bonus = 0;
-    let sbonus = "";
     const strength = system.statistics.str;
-
-    if (strength.value < 5) {
-      sbonus = "-2";
-      bonus = -2;
-    } else if (strength.value < 9) {
-      sbonus = "-1";
-      bonus = -1;
-    } else if (strength.value > 12 && strength.value < 17) {
-      sbonus = "+1";
-      bonus = 1;
-    } else if (strength.value > 16) {
-      sbonus = "+2";
-      bonus = 2;
-    }
-
-    system.statistics.str.meleeDamageBonus = bonus;
-    system.statistics.str.meleeDamageBonusFormula = sbonus;
+    system.statistics.str.meleeDamageBonusFormula =
+      this._calculateMeleeDamageBonusFormula(strength.value);
 
     if (system.physical.exhaustedPenalty > 0) {
       system.physical.exhaustedPenalty =
         -1 * Math.abs(system.physical.exhaustedPenalty);
     }
+  }
 
-    // console.log(agent);
+  // Returns Bonus From Strength in Hand-to-hand Combat (melee/unarmed)
+  _calculateMeleeDamageBonusFormula(strengthValue) {
+    if (strengthValue < 5) {
+      return "-2";
+    }
+    if (strengthValue < 9) {
+      return "-1";
+    }
+    if (strengthValue > 12 && strengthValue < 17) {
+      return "+1";
+    }
+    if (strengthValue > 16) {
+      return "+2";
+    }
+    return "";
   }
 
   /** @override */
