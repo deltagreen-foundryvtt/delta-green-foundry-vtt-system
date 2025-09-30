@@ -5,6 +5,7 @@
 ### **Features:**
 
 - [#258](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/258) - Added a keybind option for hovering tooltips and option to hide all.
+- [#245](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/245) - Automate damage from STR score to melee and unarmed attacks for NPCs. Agents were already doing it.
 
 ### **Bug Fixes:**
 

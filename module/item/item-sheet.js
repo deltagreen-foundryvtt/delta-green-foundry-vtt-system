@@ -136,7 +136,7 @@ export default class DeltaGreenItemSheet extends foundry.appv1.sheets
         let diceFormula = this.item.system.damage;
         const { skill } = this.item.system;
         if (
-          this.actor.type === "agent" &&
+          (this.actor.type === "agent" || this.actor.type === "npc") &&
           (skill === "unarmed_combat" || skill === "melee_weapons")
         ) {
           diceFormula +=

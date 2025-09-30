@@ -1212,7 +1212,7 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
         let diceFormula = item.system.damage;
         const { skill } = item.system;
         if (
-          this.actor.type === "agent" &&
+          (this.actor.type === "agent" || this.actor.type === "npc") &&
           (skill === "unarmed_combat" || skill === "melee_weapons")
         ) {
           diceFormula +=
