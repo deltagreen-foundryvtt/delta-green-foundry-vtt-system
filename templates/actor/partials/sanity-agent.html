@@ -7,9 +7,7 @@
            data-dtype="Number" />
     <span>/</span>
     <div class="max-resource-value"
-         {{#unless (eq skillTooltipDisplay "never") }}
-         data-tooltip="{{localize 'DG.Tooltip.MaximumSanity'}}"
-         {{/unless }}>
+         data-tooltip="{{localize 'DG.Tooltip.MaximumSanity'}}">
         <div>???</div>
     </div>
 {{else}}
@@ -20,14 +18,10 @@
            name="system.sanity.value"
            value="{{actor.system.sanity.value }}"
            data-dtype="Number"
-           {{#unless (eq skillTooltipDisplay "never") }}
-           data-tooltip="{{localize 'DG.Tooltip.CurrentSanityPartOne' }}{{actor.system.sanity.currentBreakingPoint }}{{localize 'DG.Tooltip.CurrentSanityPartTwo' }}"
-           {{/unless }} />
+           data-tooltip="{{localize 'DG.Tooltip.CurrentSanityPartOne' }}{{actor.system.sanity.currentBreakingPoint }}{{localize 'DG.Tooltip.CurrentSanityPartTwo' }}" />
     <span>/</span>
     <div class="max-resource-value"
-         {{#unless (eq skillTooltipDisplay "never") }}
-         data-tooltip="{{localize 'DG.Tooltip.MaximumSanity'}}"
-         {{/unless }}>
+         data-tooltip="{{localize 'DG.Tooltip.MaximumSanity'}}">
         <div>{{numberFormat actor.system.sanity.max decimals=0 sign=false}}</div>
     </div>
 {{/if}}

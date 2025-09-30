@@ -15,9 +15,7 @@
                         <input name="name"
                                type="text"
                                value="{{actor.name}}"
-                               {{#unless (eq skillTooltipDisplay "never") }}
-                               data-tooltip="{{localize 'DG.AgentNameFieldTooltip' }}"
-                               {{/unless }} />
+                               data-tooltip="{{localize 'DG.AgentNameFieldTooltip' }}" />
                     </h1>
                 </div>
                 <div class="profession">
@@ -35,9 +33,7 @@
             <div class="resource-outer-grid-1col">
                 <label for="actor.system.health.value"
                        class="resource-label"
-                       {{#unless (eq skillTooltipDisplay "never") }}
-                       data-tooltip="{{localize 'DG.Attributes.Tooltip.HP'}}"
-                       {{/unless }}>
+                       data-tooltip="{{localize 'DG.Attributes.Tooltip.HP'}}">
                     {{localize 'DG.Attributes.HP' }} (<span>{{actor.system.health.protection}} <i class="fas fa-shield-alt"></i></span>)
                 </label>
                 <div class="resource-inner-grid-3col">
@@ -48,9 +44,7 @@
                            data-dtype="Number" />
                     <span>/</span>
                     <div class="max-resource-value"
-                         {{#unless (eq skillTooltipDisplay "never") }}
-                         data-tooltip="{{localize 'DG.Tooltip.MaximumHP'}}"
-                         {{/unless }}>
+                         data-tooltip="{{localize 'DG.Tooltip.MaximumHP'}}">
                         <div>{{numberFormat actor.system.health.max decimals=0 sign=false}}</div>
                     </div>
                 </div>
@@ -60,9 +54,7 @@
                 <div class="resource-outer-grid-1col">
                     <label for="system.wp.value"
                            class="resource-label"
-                           {{#unless (eq skillTooltipDisplay "never") }}
-                           data-tooltip="{{localize 'DG.Attributes.Tooltip.WP'}}"
-                           {{/unless }}>
+                           data-tooltip="{{localize 'DG.Attributes.Tooltip.WP'}}">
                         {{localize 'DG.Attributes.WP' }}
                     </label>
                     <div class="resource-inner-grid-3col">
@@ -73,9 +65,7 @@
                                data-dtype="Number" />
                         <span>/</span>
                         <div class="max-resource-value"
-                             {{#unless (eq skillTooltipDisplay "never") }}
-                             data-tooltip="{{localize 'DG.Tooltip.MaximumWP'}}"
-                             {{/unless }}>
+                             data-tooltip="{{localize 'DG.Tooltip.MaximumWP'}}">
                             <div>{{numberFormat actor.system.wp.max decimals=0 sign=false}}</div>
                         </div>
                     </div>

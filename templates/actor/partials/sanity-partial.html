@@ -7,9 +7,7 @@
        {{else }}
        data-rolltype="sanity"
        {{/if_eq }}
-       {{#unless (eq skillTooltipDisplay "never") }}
-       data-tooltip="{{localize 'DG.Attributes.Tooltip.SAN' }}"
-       {{/unless }}>
+       data-tooltip="{{localize 'DG.Attributes.Tooltip.SAN' }}">
     {{localize 'DG.Attributes.SAN' }} <i class="fas fa-dice"></i>
 </label>
 <div class="resource-inner-grid-3col">{{{ sanityInputs }}}</div>

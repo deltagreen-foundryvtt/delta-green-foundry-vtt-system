@@ -11,9 +11,7 @@
                                data-action="roll"
                                data-rolltype="stat"
                                data-key="{{key}}"
-                               {{#unless (eq ../skillTooltipDisplay "never") }}
                                data-tooltip="{{localize (concat 'DG.Attributes.Tooltip.' key)}}"
-                               {{/unless }}
                                for="system.statistics.{{key}}.value">
                             {{localize (concat 'DG.Attributes.' key)}}
                         </label>
@@ -33,9 +31,7 @@
                                name="system.statistics.{{key}}.distinguishing_feature"
                                value="{{statistic.distinguishing_feature}}"
                                data-dtype="String"
-                               {{#unless (eq ../skillTooltipDisplay "never") }}
-                               title="{{localize 'DG.Tooltip.DistinguishingFeature'}}"
-                               {{/unless }} />
+                               title="{{localize 'DG.Tooltip.DistinguishingFeature'}}" />
                     </div>
                 </div>
             </div>

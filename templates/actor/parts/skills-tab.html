@@ -24,9 +24,7 @@
                        data-key="{{skill.key}}"
                        data-rolltype="skill"
                        for="system.skills.{{skill.key}}.value"
-                       {{#unless (eq ../skillTooltipDisplay "never") }}
-                       data-tooltip="{{ skill.tooltip }}"
-                       {{/unless }}>
+                       data-tooltip="{{ skill.tooltip }}">
                     {{localizeWithFallback (concat "DG.Skills." skill.key) skill.label }}
                     <i class="fas fa-dice"></i>
                 </label>

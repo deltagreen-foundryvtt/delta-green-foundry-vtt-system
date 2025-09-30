@@ -159,11 +159,7 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
       li.addEventListener("dragstart", handler, false);
     });
 
-    if (
-      game.settings.get("deltagreen", "skillTooltipDisplay") === "hoverShift"
-    ) {
-      this._installShiftHoverTooltips(this.element);
-    }
+    this._tooltipsSettings(this.element);
   }
 
   /** @override - Add buttons to the header controls. */
@@ -1367,9 +1363,27 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
    * Require Shift while hovering to show tooltips.
    * Supports either data-tooltip (preferred, may contain HTML) or title (plain text).
    */
-  _installShiftHoverTooltips(root) {
+  _tooltipsSettings(root) {
+    const mode = game.settings.get("deltagreen", "skillTooltipDisplay");
+
+    // If not explicitly hoverShift or never, do nothing.
+    if (mode !== "hoverShift" && mode !== "never") return;
+
     // Query elements with either data-tooltip OR title
     const nodes = root.querySelectorAll("[data-tooltip],[title]");
+
+    // If mode is "never": strip native attributes so no tooltips (native or custom) can appear.
+    if (mode === "never") {
+      nodes.forEach((el) => {
+        if (el.dataset.shiftTooltipInstalled === "true") return;
+        el.removeAttribute("data-tooltip");
+        el.removeAttribute("title");
+        el.dataset.shiftTooltipInstalled = "true";
+      });
+      return;
+    }
+
+    // mode === "hoverShift": install Shift-to-show behavior using Foundry's tooltip
     nodes.forEach((el) => {
       if (el.dataset.shiftTooltipInstalled === "true") return;
 
