@@ -12,9 +12,7 @@
     <div>
         <div class="first-aid-received-section resource">
             <label class="bolded-label first-aid-label"
-                   {{#unless (eq skillTooltipDisplay "never") }}
-                   title="{{localize 'DG.Tooltip.FirstAidAttempted'}}"
-                   {{/unless }}>
+                   title="{{localize 'DG.Tooltip.FirstAidAttempted'}}">
                 {{localize 'DG.Physical.FirstAidLabel'}}
             </label>
             <input class="labeled-resource-checkbox"
@@ -22,16 +20,12 @@
                    name="system.physical.firstAidAttempted"
                    {{checked actor.system.physical.firstAidAttempted}}
                    data-dtype="Boolean"
-                   {{#unless (eq skillTooltipDisplay "never") }}
-                   title="{{localize 'DG.Tooltip.FirstAidAttempted'}}"
-                   {{/unless }} />
+                   title="{{localize 'DG.Tooltip.FirstAidAttempted'}}" />
         </div>
         <div class="exhausted-section resource">
 
             <label class="bolded-label exhaustion-label"
-                   {{#unless (eq skillTooltipDisplay "never") }}
-                   title="{{localize 'DG.Tooltip.Exhaustion'}}"
-                   {{/unless }}>
+                   title="{{localize 'DG.Tooltip.Exhaustion'}}">
                 {{localize 'DG.Physical.Exhausted'}}
             </label>
             <input class="labeled-resource-checkbox"
@@ -39,25 +33,19 @@
                    name="system.physical.exhausted"
                    {{checked actor.system.physical.exhausted}}
                    data-dtype="Boolean"
-                   {{#unless (eq skillTooltipDisplay "never") }}
-                   title="{{localize 'DG.Tooltip.Exhaustion'}}"
-                   {{/unless }} />
+                   title="{{localize 'DG.Tooltip.Exhaustion'}}" />
 
             {{#if actor.system.physical.exhausted }}
 
                 <label class="bolded-label exhaustion-label"
-                       {{#unless (eq skillTooltipDisplay "never") }}
-                       title="{{localize 'DG.Tooltip.Exhaustion'}}"
-                       {{/unless }}>
+                       title="{{localize 'DG.Tooltip.Exhaustion'}}">
                     {{localize 'DG.Physical.ExhaustionPenalty'}}
                 </label>
                 <input type="number"
                        name="system.physical.exhaustedPenalty"
                        value="{{actor.system.physical.exhaustedPenalty}}"
                        data-dtype="Number"
-                       {{#unless (eq skillTooltipDisplay "never") }}
                        title="{{localize 'DG.Tooltip.Exhaustion'}}"
-                       {{/unless }}
                        min="-99"
                        max="0" />
 
