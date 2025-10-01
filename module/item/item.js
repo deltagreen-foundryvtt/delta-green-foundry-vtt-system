@@ -13,8 +13,21 @@ export default class DeltaGreenItem extends Item {
 
     // Get the Item's data
     const itemData = this;
-    const actorData = this.actor || {};
     const { system } = itemData;
+
+    if (itemData.type === "tome" || itemData.type === "ritual") {
+      system.formattedName = this._prepareFormattedName();
+    }
+  }
+
+  _prepareFormattedName() {
+    const itemData = this;
+    const { system } = itemData;
+    if (system.revealed) {
+      return itemData.name;
+    }
+
+    return `??? ${game.user.isGM ? `(${itemData.name})` : ""}`;
   }
 
   /**
