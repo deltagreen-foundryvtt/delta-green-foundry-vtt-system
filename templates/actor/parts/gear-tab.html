@@ -3,7 +3,6 @@
 <div class="tab gear {{tabs.gear.cssClass}}"
      data-group="primary"
      data-tab="gear">
-
     <div>
         <div class="horizontal-bar-section-divider">
             <span>{{localize 'DG.Gear.Weapons'}}</span>
@@ -46,7 +45,14 @@
                              width="24"
                              height="24" />
                         <span>
-                            <span style="display: inline;" class="item-name">{{item.name}}</span>
+                            {{#if item.system.description }}
+                                <a style="display: inline"
+                                   class="item-name bolded-label"
+                                   data-action="updateDescriptionVisibility"
+                                   title="{{localize 'DG.Tooltip.ShowItemDescription'}}">{{item.name}}</a>
+                            {{else}}
+                                <span style="display: inline" class="item-name">{{item.name}}</span>
+                            {{/if}}
                             <span class="rollable"
                                   data-action="roll"
                                   data-iid="{{item._id}}"
@@ -124,6 +130,8 @@
                             <i class="fas fa-trash"></i>
                         </a>
                     </div>
+
+                    <span class="description">{{editor item.system.description engine="prosemirror"}}</span>
                 </li>
             {{/each}}
         </ol>
@@ -171,7 +179,13 @@
                         <img src="{{item.img}}" title="{{item.name}}" width="24" height="24" />
                     </div>
 
-                    <span class="item-name">{{item.name}}</span>
+                    {{#if item.system.description }}
+                        <a class="item-name bolded-label"
+                           data-action="updateDescriptionVisibility"
+                           title="{{localize 'DG.Tooltip.ShowItemDescription'}}">{{item.name}}</a>
+                    {{else}}
+                        <span class="item-name">{{item.name}}</span>
+                    {{/if}}
 
                     <span class="centered-item-property">{{item.system.protection}}</span>
 
@@ -201,6 +215,8 @@
                             <i class="fas fa-trash"></i>
                         </a>
                     </div>
+
+                    <span class="description">{{editor item.system.description engine="prosemirror"}}</span>
                 </li>
             {{/each}}
         </ol>
@@ -248,7 +264,14 @@
                         <img src="{{item.img}}" title="{{item.name}}" width="24" height="24" />
                     </div>
 
-                    <span style="min-width: 55%;" class="item-name">{{item.name}}</span>
+                    {{#if item.system.description }}
+                        <a style="min-width: 55%"
+                           class="item-name bolded-label"
+                           data-action="updateDescriptionVisibility"
+                           title="{{localize 'DG.Tooltip.ShowItemDescription'}}">{{item.name}}</a>
+                    {{else}}
+                        <span style="min-width: 55%;" class="item-name">{{item.name}}</span>
+                    {{/if}}
 
                     <a class="centered-item-property"
                        data-action="toggle"
@@ -276,6 +299,8 @@
                             <i class="fas fa-trash"></i>
                         </a>
                     </div>
+
+                    <span class="description">{{editor item.system.description engine="prosemirror"}}</span>
                 </li>
             {{/each}}
         </ol>
@@ -330,16 +355,14 @@
                             <img src="{{item.img}}" title="{{item.name}}" width="24" height="24" />
                         </div>
 
-                        <span style="min-width: 55%;" class="item-name">
-                            {{#if item.system.revealed }}
-                                {{item.name}}
-                            {{else}}
-                                ???
-                                {{#if (playerHasGamemasterPrivileges) }}
-                                    ({{item.name}})
-                                {{/if}}
-                            {{/if}}
-                        </span>
+                        {{#if item.system.description }}
+                            <a style="min-width: 55%"
+                               class="item-name bolded-label"
+                               data-action="updateDescriptionVisibility"
+                               title="{{localize 'DG.Tooltip.ShowItemDescription'}}">{{item.system.formattedName}}</a>
+                        {{else}}
+                            <span style="min-width: 55%;" class="item-name">{{item.system.formattedName}}</span>
+                        {{/if}}
 
                         <div class="item-controls">
                             <a class="item-control"
@@ -356,6 +379,7 @@
                             </a>
                         </div>
 
+                        <span class="description">{{editor item.system.description engine="prosemirror"}}</span>
                     </li>
 
                 {{/each}}
@@ -418,16 +442,14 @@
                             <img src="{{item.img}}" title="{{item.name}}" width="24" height="24" />
                         </div>
 
-                        <span style="min-width: 55%;" class="item-name">
-                            {{#if item.system.revealed }}
-                                {{item.name}}
-                            {{else}}
-                                ???
-                                {{#if (playerHasGamemasterPrivileges) }}
-                                    ({{item.name}})
-                                {{/if}}
-                            {{/if}}
-                        </span>
+                        {{#if item.system.description }}
+                            <a style="min-width: 55%"
+                               class="item-name bolded-label"
+                               data-action="updateDescriptionVisibility"
+                               title="{{localize 'DG.Tooltip.ShowItemDescription'}}">{{item.system.formattedName}}</a>
+                        {{else}}
+                            <span style="min-width: 55%;" class="item-name">{{item.system.formattedName}}</span>
+                        {{/if}}
 
                         <div class="item-controls">
                             <a class="item-control"
@@ -444,6 +466,7 @@
                             </a>
                         </div>
 
+                        <span class="description">{{editor item.system.description engine="prosemirror"}}</span>
                     </li>
 
                 {{/each}}

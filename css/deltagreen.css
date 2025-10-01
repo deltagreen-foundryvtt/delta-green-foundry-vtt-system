@@ -464,6 +464,15 @@ explicitly define a number of rows, rather than columns. */
   text-align: right;
 }
 
+.deltagreen .items-list .item .description {
+  min-width: 100%;
+}
+
+/* collapsed */
+.deltagreen .items-list .item:not(.expanded) .description {
+  display: none;
+}
+
 .deltagreen .skill-and-training-controls {
   flex: 0 0 35px;
 }

@@ -236,6 +236,7 @@
   "DG.Tooltip.AdaptedToHelplessness": "Being adapted to helplessness means your Agent’s personal drive suffers as they pull back from the world around them. As soon as your Agent becomes adapted to helplessness, agent permanently loses 1D6 POW.",
   "DG.Tooltip.ToggleEquippedState": "Click to toggle whether this item is equipped or not.",
   "DG.Tooltip.Exhaustion": "An Agent who works too long or faces extreme danger and injury without resting becomes exhausted. When this comes into play is up to the Handler, but a good rule of thumb is that going a night without sleep or refusing to rest after losing SAN or Hit Points leads to exhaustion.",
+  "DG.Tooltip.ShowItemDescription": "Click to show/hide the description.",
 
   "DG.Gear.Expense.NA": "N/A or None",
   "DG.Gear.Expense.Incidental": "Incidental",

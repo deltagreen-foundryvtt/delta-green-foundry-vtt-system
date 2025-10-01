@@ -26,6 +26,7 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
       toggleItemSortMode: this._toggleItemSortMode,
       // Other actions.
       browsePack: this._browsePack,
+      updateDescriptionVisibility: this._updateDescriptionVisibility,
     },
   });
 
@@ -1376,6 +1377,17 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
           .render(true);
         break;
     }
+  }
+
+  static _updateDescriptionVisibility(_event, target) {
+    const item = target.closest(".item");
+    if (!item) return;
+
+    if (item.classList.contains("expanded")) {
+      item.classList.remove("expanded");
+      return;
+    }
+    item.classList.add("expanded");
   }
 
   /**
