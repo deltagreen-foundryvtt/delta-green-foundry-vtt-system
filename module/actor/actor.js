@@ -10,8 +10,6 @@ export default class DeltaGreenActor extends Actor {
     super.prepareData();
 
     const actorData = this;
-    const { system } = actorData;
-    const { flags } = actorData;
 
     // console.log('actor.js prepareData');
     // console.log(this);
@@ -86,7 +84,7 @@ export default class DeltaGreenActor extends Actor {
       proficiency: 99 - system.sanity.value,
       cannotBeImprovedByFailure: true,
       failure: false,
-    };    
+    };
 
     if (system.skills.ritual.proficiency > 99) {
       system.skills.ritual.proficiency = 99;
@@ -179,7 +177,7 @@ export default class DeltaGreenActor extends Actor {
       proficiency: 99 - system.sanity.value,
       cannotBeImprovedByFailure: true,
       failure: false,
-    };    
+    };
 
     if (system.skills.ritual.proficiency > 99) {
       system.skills.ritual.proficiency = 99;
