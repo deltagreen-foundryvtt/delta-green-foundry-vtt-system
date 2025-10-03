@@ -1,27 +1,14 @@
-{{#if (keepSanityPrivate)}}
-<input class="centered"
-       type="text"
-       name="system.sanity.value"
-       value="???"
-       readonly
-       data-dtype="Number" />
-<span>/</span>
-<div class="max-resource-value"
-     data-tooltip="{{localize 'DG.Tooltip.MaximumSanity'}}">
-    <div>???</div>
-</div>
-{{else}}
 <input class="centered
               {{#if actor.system.sanity.breakingPointHit }}
                   breaking-point-hit{{/if }}"
        type="text"
        name="system.sanity.value"
-       value="{{actor.system.sanity.value }}"
+       {{disabled keepSanityPrivate}}
+       value="{{ currentSan }}"
        data-dtype="Number"
        data-tooltip="{{localize 'DG.Tooltip.CurrentSanityPartOne' }}{{actor.system.sanity.currentBreakingPoint }}{{localize 'DG.Tooltip.CurrentSanityPartTwo' }}" />
 <span>/</span>
 <div class="max-resource-value"
      data-tooltip="{{localize 'DG.Tooltip.MaximumSanity'}}">
-    <div>{{numberFormat actor.system.sanity.max decimals=0 sign=false}}</div>
+    <div>{{ maxSan }}</div>
 </div>
-{{/if}}
