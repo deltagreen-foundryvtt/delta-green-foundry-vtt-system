@@ -1,0 +1,28 @@
+<div class="resource-outer-grid-1col">
+    <label for="system.wp.value"
+           class="resource-label"
+           data-tooltip="{{localize 'DG.Attributes.Tooltip.WP'}}">
+        {{localize 'DG.Attributes.WP' }}
+    </label>
+    <div class="resource-inner-grid-3col">
+        <input class="centered"
+               type="text"
+               name="system.wp.value"
+               value="{{actor.system.wp.value}}"
+               data-dtype="Number" />
+        <span>/</span>
+        {{#if (ne actor.type "unnatural") }}
+            <div class="max-resource-value"
+                 data-tooltip="{{localize 'DG.Tooltip.MaximumWP'}}">
+                <div>{{numberFormat actor.system.wp.max decimals=0 sign=false}}</div>
+            </div>
+        {{else}}
+            <input class="centered"
+                   type="text"
+                   name="system.wp.max"
+                   value="{{actor.system.wp.max}}"
+                   data-dtype="Number"
+                   data-tooltip="{{localize 'DG.Tooltip.MaximumWP'}}" />
+        {{/if}}
+    </div>
+</div>
