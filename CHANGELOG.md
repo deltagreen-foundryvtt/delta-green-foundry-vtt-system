@@ -1,5 +1,11 @@
 # Release/Patch Notes
 
+## Version 1.7.0 - ???
+
+### **Features:**
+
+- [#245](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/245) - Automate damage from STR score to melee and unarmed attacks for NPCs. Agents were already doing it.
+
 ## Version 1.6.1 - 2025-09-09
 
 > Thanks to the following new contributor: [Tobifroe](https://github.com/tobifroe).
