@@ -1,5 +1,11 @@
 # Release/Patch Notes
 
+## Version 1.6.2 - 2025-xx-xx
+
+### **Bug Fixes:**
+
+- [#274] (<https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/274>) - Automated fail marking now works after dice so nice resolve roll.
+
 ## Version 1.6.1 - 2025-09-09
 
 > Thanks to the following new contributor: [Tobifroe](https://github.com/tobifroe).
