@@ -1,5 +1,15 @@
 # Release/Patch Notes
 
+## Version 1.6.2 - 2025-xx-xx
+
+### **Features:**
+
+- [#258](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/258) - Added a keybind option for hovering tooltips and option to hide all.
+
+### **Bug Fixes:**
+
+- [#268] (<https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/268>) - Removed unnecessary tooltips.
+
 ## Version 1.6.1 - 2025-09-09
 
 > Thanks to the following new contributor: [Tobifroe](https://github.com/tobifroe).
