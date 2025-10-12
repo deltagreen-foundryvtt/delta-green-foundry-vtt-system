@@ -209,7 +209,7 @@ input.breaking-point-hit {
   grid-template-columns: repeat(12, minmax(0, 1fr));
 }
 
-/* If the user wishes to sort skills by column, we need to 
+/* If the user wishes to sort skills by column, we need to
 explicitly define a number of rows, rather than columns. */
 .grid-13row {
   grid-template-rows: repeat(13, minmax(0, auto)) !important;
@@ -1091,7 +1091,7 @@ input.item-sheet-short-input {
   padding-right: 5px;
 }
 
-/* 
+/*
   Tome Item Sheet
 */
 
@@ -1305,4 +1305,71 @@ body:not(.no-theme) #interface:not(.theme-light) #action-bar .slot.full:hover {
 
 .strike {
   text-decoration: line-through;
+}
+
+.actor-sheet-v2 {
+  .window-content {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    grid-template-rows: auto;
+    width: 100%;
+    height: 100%;
+  }
+
+  .left-bar {
+    grid-column: 1;
+    grid-row: 1 / -1;
+    padding: 10px;
+  }
+
+  .window-content > :not(.left-bar) {
+    grid-column: 2;
+    grid-row: 1;
+    width: 100%;
+    box-sizing: border-box;
+    padding-right: 0;
+    margin-right: 0;
+  }
+
+  .profile-img {
+    width: 100%;
+    height: auto;
+  }
+
+  .physical-stats-outer-grid-3col {
+    display: contents;
+  }
+
+  .physical-stats-outer-grid-3col,
+  .resources {
+    font-size: 12px;
+  }
+
+  .resource-inner-grid-3col input{
+    padding: 1px;
+  }
+
+  .tab.active {
+    padding-top: 20px;
+  }
+
+  .breaking-point {
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+
+    input {
+      width: 40px;
+    }
+  }
+
+  .stats {
+    input {
+      margin: 1px;
+    }
+  }
+
+  .luck {
+    margin-top: 5px;
+  }
 }

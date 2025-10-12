@@ -20,6 +20,7 @@ import { handleInlineActions } from "./other/inline.js";
 import DGNPCSheet from "./sheets/npc-sheet.js";
 import DGUnnaturalSheet from "./sheets/unnatural-sheet.js";
 import DGVehicleSheet from "./sheets/vehicle-sheet.js";
+import DGAgentSheetV2 from "./sheets/agent-sheet-v2.js";
 import AgentData from "./data/actor/agent.js";
 import UnnaturalData from "./data/actor/unnatural.js";
 import NPCData from "./data/actor/npc.js";
@@ -83,6 +84,13 @@ Hooks.once("init", async () => {
       label: `DG.Sheet.class.${actorType}`,
       types: [actorType],
     });
+  });
+
+  Actors.registerSheet(DG.ID, DGAgentSheetV2, {
+    makeDefault: false,
+    themes: null,
+    label: `Agent Sheet V2`,
+    types: ["agent"],
   });
 
   // Register item sheet.
