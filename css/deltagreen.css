@@ -90,6 +90,7 @@
 .old-paper-background {
   background: url("../assets/img/StainedPlainPaper10.webp") !important;
 }
+
 .default-parchment-background {
   background: url("/ui/parchment.jpg") repeat !important;
 }
@@ -352,6 +353,7 @@ explicitly define a number of rows, rather than columns. */
   border-bottom: transparent !important;
   border-top: transparent !important;
 }
+
 .deltagreen .tabs {
   height: 1.5rem;
   line-height: 1.5rem;
@@ -1345,7 +1347,7 @@ body:not(.no-theme) #interface:not(.theme-light) #action-bar .slot.full:hover {
     font-size: 12px;
   }
 
-  .resource-inner-grid-3col input{
+  .resource-inner-grid-3col input {
     padding: 1px;
   }
 
