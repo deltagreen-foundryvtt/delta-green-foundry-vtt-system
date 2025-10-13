@@ -24,10 +24,7 @@
                        data-key="{{skill.key}}"
                        data-rolltype="skill"
                        for="system.skills.{{skill.key}}.value"
-                       {{#unless ../hideSkillTooltips }}
-                       data-tooltip="{{ skill.tooltip }}"
-                       {{/unless }}
-                >
+                       data-tooltip="{{ skill.tooltip }}">
                     {{localizeWithFallback (concat "DG.Skills." skill.key) skill.label }}
                     <i class="fas fa-dice"></i>
                 </label>
@@ -39,7 +36,6 @@
                        name="system.skills.{{skill.key }}.proficiency"
                        value="{{skill.proficiency }}"
                        data-dtype="Number"
-                       data-tooltip="{{skill.targetProficiency }}"
                        {{disabled skill.isCalculatedValue }} />
                 {{#if (eq ../actor.type "agent") }}
                     <input class="checkbox-skill-input"

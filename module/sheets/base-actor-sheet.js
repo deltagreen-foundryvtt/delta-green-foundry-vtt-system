@@ -83,13 +83,13 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
     this._sortSkills();
     this._sortCustomSkills();
 
-    // Wether to hide skill tooltips
-    context.hideSkillTooltips = game.settings.get(
+    // Skill tooltip display setting
+    context.skillTooltipDisplay = game.settings.get(
       "deltagreen",
-      "hideSkillTooltips",
+      "skillTooltipDisplay",
     );
 
-    if (!context.hideSkillTooltips) {
+    if (context.skillTooltipDisplay !== "never") {
       // Setup tooltips
       this._prepareSkillTooltips();
     }
@@ -158,6 +158,8 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
       li.setAttribute("draggable", true);
       li.addEventListener("dragstart", handler, false);
     });
+
+    this._tooltipsSettings(this.element);
   }
 
   /** @override - Add buttons to the header controls. */
@@ -1355,5 +1357,86 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
 
     const currentVal = foundry.utils.getProperty(targetDoc, prop);
     targetDoc.update({ [prop]: !currentVal });
+  }
+
+  /**
+   * Require Shift while hovering to show tooltips.
+   * Supports either data-tooltip (preferred, may contain HTML) or title (plain text).
+   */
+  _tooltipsSettings(root) {
+    const mode = game.settings.get("deltagreen", "skillTooltipDisplay");
+
+    // If not explicitly hoverShift or never, do nothing.
+    if (mode !== "hoverShift" && mode !== "never") return;
+
+    // Query elements with either data-tooltip OR title
+    const nodes = root.querySelectorAll("[data-tooltip],[title]");
+
+    // If mode is "never": strip native attributes so no tooltips (native or custom) can appear.
+    if (mode === "never") {
+      nodes.forEach((el) => {
+        if (el.dataset.shiftTooltipInstalled === "true") return;
+        el.removeAttribute("data-tooltip");
+        el.removeAttribute("title");
+        el.dataset.shiftTooltipInstalled = "true";
+      });
+      return;
+    }
+
+    // mode === "hoverShift": install Shift-to-show behavior using Foundry's tooltip
+    nodes.forEach((el) => {
+      if (el.dataset.shiftTooltipInstalled === "true") return;
+
+      // Prefer data-tooltip, else use title
+      let html = el.getAttribute("data-tooltip");
+      let isHtml = true;
+
+      if (!html) {
+        const title = el.getAttribute("title");
+        if (title) {
+          html = foundry.utils.escapeHTML(title); // treat title as plain text
+          isHtml = false;
+        }
+      }
+
+      if (!html) return; // nothing usable
+
+      // Remove native attributes so default tooltips don’t trigger
+      el.removeAttribute("data-tooltip");
+      el.removeAttribute("title");
+      el.dataset.shiftTooltipInstalled = "true";
+
+      // Always pass through { html } so <br> etc. render
+      const opts = isHtml ? { html } : { text: html };
+
+      const show = () => game.tooltip.activate(el, opts);
+      const hide = () => game.tooltip.deactivate();
+
+      const onKey = (ev) => {
+        if (ev.key !== "Shift") return;
+        if (!document.body.contains(el)) {
+          window.removeEventListener("keydown", onKey);
+          window.removeEventListener("keyup", onKey);
+          return;
+        }
+        if (ev.type === "keydown") show();
+        else hide();
+      };
+
+      const onEnter = (ev) => {
+        if (ev.shiftKey) show();
+        window.addEventListener("keydown", onKey);
+        window.addEventListener("keyup", onKey);
+      };
+
+      const onLeave = () => {
+        hide();
+        window.removeEventListener("keydown", onKey);
+        window.removeEventListener("keyup", onKey);
+      };
+
+      el.addEventListener("pointerenter", onEnter, { passive: true });
+      el.addEventListener("pointerleave", onLeave, { passive: true });
+    });
   }
 }
