@@ -413,7 +413,6 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
       skill.tooltip = game.i18n.localize(`DG.Skills.Tooltip.${skill.key}`);
       if (!skill.proficiency) {
         skill.tooltip = skill.tooltip.concat(
-          skill.tooltip,
           "<br><br>",
           game.i18n.localize("DG.Tooltip.CannotRollSkillLabel"),
         );
