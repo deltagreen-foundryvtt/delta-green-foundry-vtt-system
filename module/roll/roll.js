@@ -256,6 +256,10 @@ export class DGPercentileRoll extends DGRoll {
       this.options.rollMode = "blindroll";
     }
 
+    const diceSoNice =
+      game.modules.has("dice-so-nice") &&
+      game.modules.get("dice-so-nice").active;
+
     const label = this.createLabel();
 
     let resultString = "";
@@ -299,12 +303,7 @@ export class DGPercentileRoll extends DGRoll {
     if (failureMark) {
       const keyForUpdate = `${this.skillPath}.failure`;
 
-      // TODO: auto-update actor or post icon with manual apply
-      await this.actor.update({
-        [keyForUpdate]: true,
-      });
-
-      return this.toMessage({
+      const message = await this.toMessage({
         flags: {
           deltagreen: {
             rollbacks: {
@@ -315,7 +314,19 @@ export class DGPercentileRoll extends DGRoll {
         content: html,
         flavor: label,
       });
+
+      if (diceSoNice) {
+        await game.dice3d.waitFor3DAnimationByMessageID(message.id);
+      }
+
+      // TODO: auto-update actor or post icon with manual apply
+      await this.actor.update({
+        [keyForUpdate]: true,
+      });
+
+      return message;
     }
+
     return this.toMessage({ content: html, flavor: label });
   }
 
@@ -434,9 +445,9 @@ export class DGPercentileRoll extends DGRoll {
    * @returns {Boolean}
    */
   get isInhuman() {
-    /* 
+    /*
       Changing this to only consider the base x5 stat target for whether something is 'inhuman'
-      because I do not think the intent was an Agent with a high strength getting a +40% bonus to be considered 'inhuman' 
+      because I do not think the intent was an Agent with a high strength getting a +40% bonus to be considered 'inhuman'
       and therefore benefit from the increased crit threshold, although could be wrong about this.
     */
     if (this.target > 99 && this.type === "stat") {
