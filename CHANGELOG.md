@@ -12,7 +12,8 @@
 
 - [#274](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/274) - Automated fail marking now works after dice so nice resolve roll.
 - [#268](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/268) - Removed unnecessary tooltips.
-- [#278](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/278) - Shows the tooltip only once for skills without proficiency.
+- [#278](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/278) - It shows the tooltip only once for skills without proficiency.
+- [#281](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/281) - Add tooltips to adaptation area.
 
 ## Version 1.6.1 - 2025-09-09
 
