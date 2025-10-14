@@ -15,6 +15,7 @@
 - [#268](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/268) - Removed unnecessary tooltips.
 - [#278](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/278) - It shows the tooltip only once for skills without proficiency.
 - [#281](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/281) - Add tooltips to adaptation area.
+- [#298](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/298) - Don't add art skill in actor creation.
 
 ## Version 1.6.1 - 2025-09-09
 
