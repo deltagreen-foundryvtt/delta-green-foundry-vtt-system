@@ -2,15 +2,17 @@
 
 ## Version 1.6.2 - 2025-xx-xx
 
+> Thanks to [delgar89](https://github.com/delgar89) for updating the Polish translation.
+
 ### **Features:**
 
 - [#258](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/258) - Added a keybind option for hovering tooltips and option to hide all.
 
 ### **Bug Fixes:**
 
-- [#274] (<https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/274>) - Automated fail marking now works after dice so nice resolve roll.
-- [#268] (<https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/268>) - Removed unnecessary tooltips.
-- [#278] (<https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/278>) - Shows the tooltip only once for skills without proficiency.
+- [#274](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/274) - Automated fail marking now works after dice so nice resolve roll.
+- [#268](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/268) - Removed unnecessary tooltips.
+- [#278](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/278) - Shows the tooltip only once for skills without proficiency.
 
 ## Version 1.6.1 - 2025-09-09
 
