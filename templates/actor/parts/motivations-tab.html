@@ -23,7 +23,9 @@
             <label class="bolded-label">{{localize 'DG.Mental.SanityLossIncidentsLabel'}}</label>
             <div class="adaptation-grid-5col">
 
-                <label>{{localize 'DG.Mental.Violence'}}</label>
+                <label data-tooltip="{{localize 'DG.Mental.Tooltip.Violence'}}">
+                    {{localize 'DG.Mental.Violence'}}
+                </label>
                 <input class="labeled-resource-checkbox"
                        type="checkbox"
                        name="system.sanity.adaptations.violence.incident1"
@@ -47,7 +49,9 @@
                     {{/if}}
                 </label>
 
-                <label>{{localize 'DG.Mental.Helplessness'}}</label>
+                <label data-tooltip="{{localize 'DG.Mental.Tooltip.Helplessness'}}">
+                    {{localize 'DG.Mental.Helplessness'}}
+                </label>
                 <input class="labeled-resource-checkbox"
                        type="checkbox"
                        name="system.sanity.adaptations.helplessness.incident1"
