@@ -1,5 +1,11 @@
 # Release/Patch Notes
 
+## Version 1.7.0 - 2025-xx-xx
+
+### **Features:**
+
+- [#211](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/211) - Move macros to System macros folder in compendium.
+
 ## Version 1.6.1 - 2025-09-09
 
 > Thanks to the following new contributor: [Tobifroe](https://github.com/tobifroe).
