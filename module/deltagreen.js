@@ -190,7 +190,7 @@ Hooks.on("renderGamePause", function (_, html, options) {
   }
 });
 
-Hooks.on("renderChatMessageHTML", async (app, element, context, options) => {
+function addEventListenerToChatMessage(element) {
   element.addEventListener("click", (event) => {
     const btnWithAction = event.target.closest("button[data-action]");
     const message = event.target.closest("li[data-message-id]");
@@ -200,4 +200,14 @@ Hooks.on("renderChatMessageHTML", async (app, element, context, options) => {
       handleInlineActions(btnWithAction, messageId);
     }
   });
+}
+
+Hooks.on("renderChatLog", async (app, element) => {
+  addEventListenerToChatMessage(element);
+});
+
+Hooks.on("renderChatMessageHTML", async (app, element, context) => {
+  // ignore non chat card notifications
+  if (!context.canClose) return;
+  addEventListenerToChatMessage(element);
 });
