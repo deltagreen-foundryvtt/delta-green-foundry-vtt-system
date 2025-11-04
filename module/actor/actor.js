@@ -121,9 +121,23 @@ export default class DeltaGreenActor extends Actor {
     const { system } = actor;
 
     // Loop through ability scores, and add their modifiers to our sheet output.
-    for (const [key, statistic] of Object.entries(system.statistics)) {
+    for (const statistic of Object.values(system.statistics)) {
       // the x5 is just whatever the raw statistic is x 5 to turn it into a d100 percentile
       statistic.x5 = statistic.value * 5;
+    }
+
+    if (system.wp.maxNeedsUpdate) {
+      system.wp.max = system.statistics.pow.value;
+    }
+
+    if (system.health.maxNeedsUpdate) {
+      try {
+        system.health.max = Math.ceil(
+          (system.statistics.con.value + system.statistics.str.value) / 2,
+        );
+      } catch {
+        system.health.max = 10;
+      }
     }
 
     // calculate total armor rating
@@ -138,7 +152,7 @@ export default class DeltaGreenActor extends Actor {
 
     system.health.protection = protection;
 
-    for (const [_key, skill] of Object.entries(system.skills)) {
+    for (const skill of Object.values(system.skills)) {
       skill.targetProficiency = skill.proficiency;
     }
   }
