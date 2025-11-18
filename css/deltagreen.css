@@ -1377,8 +1377,5 @@ body:not(.no-theme) #interface:not(.theme-light) #action-bar .slot.full:hover {
 
   .horizontal-bar-section-divider.skills-header {
     display: flex;
-    .skills-header-title {
-
-    }
   }
 }
