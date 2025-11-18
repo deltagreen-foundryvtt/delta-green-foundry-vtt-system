@@ -369,7 +369,7 @@ explicitly define a number of rows, rather than columns. */
   vertical-align: middle !important;
   height: inherit;
   line-height: inherit;
-  padding-inline: 10px;
+  padding-inline: 5px;
   border-radius: 5px 5px 0px 0px;
   border-color: #000;
   border: gray;
@@ -1373,5 +1373,12 @@ body:not(.no-theme) #interface:not(.theme-light) #action-bar .slot.full:hover {
 
   .luck {
     margin-top: 5px;
+  }
+
+  .horizontal-bar-section-divider.skills-header {
+    display: flex;
+    .skills-header-title {
+
+    }
   }
 }
