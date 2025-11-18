@@ -1,0 +1,128 @@
+<div class="left-bar">
+    <div class="header-top flexcol">
+        <img class="profile-img"
+             src="{{actor.img}}"
+             data-action="editImage"
+             data-edit="img"
+             data-tooltip="{{actor.name}}"
+             height="150"
+             width="100" />
+        <div>
+            <input class="fill-remaining-space"
+                   name="name"
+                   type="text"
+                   value="{{actor.name}}"
+                   data-tooltip="{{localize 'DG.AgentNameFieldTooltip' }}" />
+            <input class="fill-remaining-space"
+                   name="system.biography.profession"
+                   type="text"
+                   value="{{actor.system.biography.profession}}"
+                   placeholder="{{subnameInfoPlaceholder}}" />
+            <input class="fill-remaining-space"
+                   type="text"
+                   name="system.biography.age"
+                   value="{{actor.system.biography.age}}"
+                   data-dtype="String"
+                   placeholder="{{localize 'DG.CV.AgeAndDoBPlaceholder'}}" />
+        </div>
+    </div>
+
+    <div class="grid grid-3col stats">
+        {{#each actor.system.statistics as |statistic key| }}
+        <div class="flex-group-center flex-mid-border">
+            <div>
+                <div class="physical-stats-outer-grid-3col">
+                    <label class="rollable resource-label"
+                           data-action="roll"
+                           data-rolltype="stat"
+                           data-key="{{key}}"
+                           data-tooltip="{{localize (concat 'DG.Attributes.Tooltip.' key)}}"
+                           for="system.statistics.{{key}}.value">
+                        {{localize (concat 'DG.Attributes.' key)}}
+                    </label>
+                    <input class="centered"
+                           type="text"
+                           name="system.statistics.{{key}}.value"
+                           value="{{statistic.value}}"
+                           data-dtype="Number" />
+                </div>
+                <div>
+                    <input type="text"
+                           name="system.statistics.{{key}}.distinguishing_feature"
+                           value="{{statistic.distinguishing_feature}}"
+                           data-dtype="String"
+                           title="{{localize 'DG.Tooltip.DistinguishingFeature'}}" />
+                </div>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+
+    <br/>
+
+    <div class="resources grid grid-3col">
+        {{!-- HP --}}
+        <div class="resource-outer-grid-1col">
+            <label for="actor.system.health.value"
+                   class="resource-label"
+                   data-tooltip="{{localize 'DG.Attributes.Tooltip.HP'}}">
+                {{localize 'DG.Attributes.HP' }} (<span>{{actor.system.health.protection}} <i class="fas fa-shield-alt"></i></span>)
+            </label>
+            <div class="resource-inner-grid-3col">
+                <input class="centered"
+                       type="text"
+                       name="system.health.value"
+                       value="{{actor.system.health.value}}"
+                       data-dtype="Number" />
+                <span>/</span>
+                <div class="max-resource-value"
+                     data-tooltip="{{localize 'DG.Tooltip.MaximumHP'}}">
+                    <div>{{numberFormat actor.system.health.max decimals=0 sign=false}}</div>
+                </div>
+            </div>
+        </div>
+        {{#if (ne actor.type "vehicle") }}
+        {{!-- WP --}}
+        <div class="resource-outer-grid-1col">
+            <label for="system.wp.value"
+                   class="resource-label"
+                   data-tooltip="{{localize 'DG.Attributes.Tooltip.WP'}}">
+                {{localize 'DG.Attributes.WP' }}
+            </label>
+            <div class="resource-inner-grid-3col">
+                <input class="centered"
+                       type="text"
+                       name="system.wp.value"
+                       value="{{actor.system.wp.value}}"
+                       data-dtype="Number" />
+                <span>/</span>
+                <div class="max-resource-value"
+                     data-tooltip="{{localize 'DG.Tooltip.MaximumWP'}}">
+                    <div>{{numberFormat actor.system.wp.max decimals=0 sign=false}}</div>
+                </div>
+            </div>
+        </div>
+        {{!-- Sanity --}}
+        {{> "systems/deltagreen/templates/actor/partials/sanity-partial.html" }}
+        {{/if}}
+    </div>
+
+    <br/>
+
+    <div class="breaking-point">
+        <label class="bolded-label">{{localize 'DG.Mental.BreakingPoint'}}</label>
+        <input class="centered"
+               title="{{localize 'DG.Tooltip.BreakPoint'}}"
+               type="text"
+               name="system.sanity.currentBreakingPoint"
+               value="{{actor.system.sanity.currentBreakingPoint}}"
+               data-dtype="Number" />
+        <a class="fa fa-refresh" data-action="resetBreakingPoint" title="Reset breaking point to be current SAN - WP."></a>
+    </div>
+
+    <div class="luck">
+        <label class="bolded-label">{{localize 'DG.RollLuck'}}</label>
+        <a class="fas fa-dice" data-action="rollLuck"></a>
+    </div>
+
+</div>
