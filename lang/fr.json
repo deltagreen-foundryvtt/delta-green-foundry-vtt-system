@@ -369,10 +369,10 @@
   "DG.Ritual.Name": "Nom",
 
   "DG.Tome.Name": "Titre",
-  "DG.Tome.Language": "Language",
+  "DG.Tome.Language": "Langage",
   "DG.Tome.StudyTime": "Temps d'Étude",
   "DG.ItemWindow.Tome.Description": "Description",
-  "DG.ItemWindow.Tome.LanguagePlaceholder": "Language",
+  "DG.ItemWindow.Tome.LanguagePlaceholder": "Langage",
   "DG.ItemWindow.Tome.StudyTime": "Temps d'Étude",
   "DG.ItemWindow.Tome.OccultIncrease": "Augmentation en Occultisme",
   "DG.ItemWindow.Tome.UnnaturalIncrease": "Augmentation en Inconcevable",
