@@ -101,8 +101,15 @@
         "armor",
         "hand-to-hand-weapons",
         "agent-pregens",
-        "operation-code-name-generator-tables",
-        "operation-code-name-generator-macro"
+        "operation-code-name-generator-tables"
+      ],
+      "folders": [
+        {
+          "name": "System macros",
+          "sorting": "a",
+          "color": "#67b1e0",
+          "packs": ["operation-code-name-generator-macro"]
+        }
       ]
     }
   ],
@@ -187,5 +194,13 @@
     "units": "m"
   },
   "primaryTokenAttribute": "health",
-  "secondaryTokenAttribute": "wp"
+  "secondaryTokenAttribute": "wp",
+  "documentTypes": {
+    "Actor": {
+      "agent": {},
+      "unnatural": {},
+      "npc": {},
+      "vehicle": {}
+    }
+  }
 }
