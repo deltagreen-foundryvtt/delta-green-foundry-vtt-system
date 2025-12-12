@@ -1,6 +1,6 @@
 # Release/Patch Notes
 
-## Version 1.6.2 - 2025-xx-xx
+## Version 1.6.2 - 2025-12-12
 
 > Thanks to [delgar89](https://github.com/delgar89) for updating the Polish translation.
 
