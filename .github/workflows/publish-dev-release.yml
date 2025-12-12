@@ -1,19 +1,15 @@
-name: Dev Build (GitHub Pages)
-
 on:
   push:
     branches:
       - master
+      - hotfix/**
   workflow_dispatch:
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
 concurrency:
   group: "pages"
   cancel-in-progress: false
@@ -23,37 +19,73 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      # -------------------------------
+      # 1. Checkout SOURCE code
+      # -------------------------------
+      - name: Checkout source repo
         uses: actions/checkout@v4
 
+      # -------------------------------
+      # 2. Create useful variables/output.
+      # -------------------------------
+      - name: Compute branch folder
+        id: vars
+        shell: bash
+        run: |
+          BRANCH="${GITHUB_REF#refs/heads/}"
+
+          if [[ "$BRANCH" == "master" ]]; then
+            TARGET="dev"
+            NON_TARGET="hotfix"
+          else
+            TARGET="hotfix"
+            NON_TARGET="dev"
+          fi
+
+          echo "target=$TARGET" >> $GITHUB_OUTPUT
+          echo "non_target=$NON_TARGET" >> $GITHUB_OUTPUT
+
+      # -------------------------------
+      # 3. Build and Zip the system
+      # -------------------------------
       - name: Build Packs
         uses: ./.github/actions/build-packs
 
       - name: Substitute Download Link
         uses: TomaszKandula/variable-substitution@v1.0.1
         with:
-          files: "system.json"
+          files: system.json
         env:
-          version: dev
-          download: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/dev/deltagreen.zip
-
-      - name: Copy system.json
-        run: mkdir -p dist/dev && cp system.json dist/dev/dev-system.json
+          version: ${{ steps.vars.outputs.target }}
+          download: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/${{ steps.vars.outputs.target }}/deltagreen.zip
 
       - name: Zip
         uses: ./.github/actions/zip-system
-        with:
-          path: "dist/dev"
 
-      # Deploy to GitHub Pages (see https://github.com/actions/starter-workflows/blob/main/pages/static.yml)
+      # -------------------------------
+      # 4. Deploy to Github Pages
+      # -------------------------------
+      - name: Create Site Structure
+        shell: bash
+        run: |
+          # Create site directories.
+          mkdir -p site/dev site/hotfix
+
+          # Download files from non-target build.
+          URL="https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/${{ steps.vars.outputs.non_target }}"
+          wget -O site/${{ steps.vars.outputs.non_target }}/deltagreen.zip "$URL"/deltagreen.zip
+          wget -O site/${{ steps.vars.outputs.non_target }}/system.json "$URL"/system.json
+
+          # Copy files from current build.
+          cp system.json deltagreen.zip site/${{ steps.vars.outputs.target }}/
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: "dist"
+          path: site
 
-      - name: Deploy to GitHub Pages
-        id: deployment
+      - name: Deploy
         uses: actions/deploy-pages@v4
