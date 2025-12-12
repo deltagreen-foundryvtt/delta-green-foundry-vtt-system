@@ -1,6 +1,10 @@
 # Release/Patch Notes
 
-## Version 1.6.2 - 2025-12-12
+## Version 1.6.3 - 2025-12-12
+
+> Skips v1.6.2 due to a mistake in the release process. Oops.
+
+\---
 
 > Thanks to [delgar89](https://github.com/delgar89) for updating the Polish translation.
 
