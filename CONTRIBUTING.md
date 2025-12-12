@@ -222,7 +222,8 @@ It is difficult to create a one-size-fits-all procedure for testing, because eac
      - If you do not follow the above advice, be aware that opening your main world while you have an in-progress (non-release) version of the system installed **will almost certainly break things in a way that cannot be fixed**. To go back to the release version of the system, uninstall the test build, and reinstall from the in-Foundry system browser.
    - Update to the target build:
      - Development setup: `git checkout` the target branch (or `master` for merged work), then restart Foundry.
-     - No dev setup: Install or update the system from the dev manifest: <https://deltagreen-foundryvtt.github.io/delta-green-foundry-vtt-system/dev/dev-system.json>
+     - No dev setup: Install or update the system from the dev manifest: <https://deltagreen-foundryvtt.github.io/delta-green-foundry-vtt-system/dev/system.json>
+       - **Note**: Testing a **hotfix** branch? Use the hotfix manifest instead: <https://deltagreen-foundryvtt.github.io/delta-green-foundry-vtt-system/hotfix/system.json>
    - Use a clean test world:
      - Create a fresh world
        - Note, this is a good practice, but is not always strictly necessary. If you run into anything weird, a completely fresh world is always a good rule-out test.
