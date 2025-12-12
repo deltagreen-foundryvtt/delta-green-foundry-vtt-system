@@ -6,6 +6,30 @@
 
 - [#211](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/211) - Move macros to System macros folder in compendium.
 
+## Version 1.6.3 - 2025-12-12
+
+> Skips v1.6.2 due to a mistake in the release process. Oops.
+
+\---
+
+> Thanks to [delgar89](https://github.com/delgar89) for updating the Polish translation.
+
+### **Features:**
+
+- [#258](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/258) - Added a keybind option for hovering tooltips and option to hide all.
+- [#245](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/245) - Automate damage from STR score to melee and unarmed attacks for NPCs. Agents were already doing it.
+
+### **Bug Fixes:**
+
+- [#269](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/269) - Added calculation for max HP and max WP for unnatural and allow to edit them.
+- [#274](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/274) - Automated fail marking now works after dice so nice resolve roll.
+- [#268](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/268) - Removed unnecessary tooltips.
+- [#278](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/278) - It shows the tooltip only once for skills without proficiency.
+- [#281](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/281) - Add tooltips to adaptation area.
+- [#298](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/298) - Don't add art skill in actor creation.
+- [#301](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/301) - SAN doesn't zero out when player updates sheet and the sanity is private.
+- [#272](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/272) - Fixed auto-marked skill failure rollbacks in chat bubbles.
+
 ## Version 1.6.1 - 2025-09-09
 
 > Thanks to the following new contributor: [Tobifroe](https://github.com/tobifroe).
