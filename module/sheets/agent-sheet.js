@@ -101,9 +101,21 @@ export default class DGAgentSheet extends DGActorSheet {
       0,
     );
 
-    this.actor.update({
+    const dataToUpdate = {
       "system.sanity.currentBreakingPoint": currentBreakingPoint,
-    });
+    };
+    if (!this.actor.system.sanity.adaptations.violence.isAdapted) {
+      dataToUpdate["system.sanity.adaptations.violence.incident1"] = false;
+      dataToUpdate["system.sanity.adaptations.violence.incident2"] = false;
+      dataToUpdate["system.sanity.adaptations.violence.incident3"] = false;
+    }
+    if (!this.actor.system.sanity.adaptations.helplessness.isAdapted) {
+      dataToUpdate["system.sanity.adaptations.helplessness.incident1"] = false;
+      dataToUpdate["system.sanity.adaptations.helplessness.incident2"] = false;
+      dataToUpdate["system.sanity.adaptations.helplessness.incident3"] = false;
+    }
+
+    this.actor.update(dataToUpdate);
   }
 
   /**
