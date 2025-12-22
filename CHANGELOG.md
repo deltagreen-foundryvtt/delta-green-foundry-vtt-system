@@ -8,6 +8,10 @@
 
 - [#312](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/312) - Add tooltip to Breaking point.
 
+### **Bug Fixes:**
+
+- [#316](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/316) - Remove the custom border from pressed, toggle and action buttons.
+
 ## Version 1.6.3 - 2025-12-12
 
 > Skips v1.6.2 due to a mistake in the release process. Oops.
