@@ -1,5 +1,13 @@
 # Release/Patch Notes
 
+## Version 1.6.4 - 2025-xx-xx
+
+> Thanks to [666f78](https://github.com/666f78) for adding the Ukrainian translation.
+
+### **Bug Fixes:**
+
+- [#316](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/316) - Remove the custom border from pressed, toggle and action buttons.
+
 ## Version 1.6.3 - 2025-12-12
 
 > Skips v1.6.2 due to a mistake in the release process. Oops.
