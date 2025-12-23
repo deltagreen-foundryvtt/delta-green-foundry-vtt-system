@@ -209,7 +209,7 @@ input.breaking-point-hit {
   grid-template-columns: repeat(12, minmax(0, 1fr));
 }
 
-/* If the user wishes to sort skills by column, we need to 
+/* If the user wishes to sort skills by column, we need to
 explicitly define a number of rows, rather than columns. */
 .grid-13row {
   grid-template-rows: repeat(13, minmax(0, auto)) !important;
@@ -1091,7 +1091,7 @@ input.item-sheet-short-input {
   padding-right: 5px;
 }
 
-/* 
+/*
   Tome Item Sheet
 */
 
@@ -1268,7 +1268,9 @@ a[data-action="applySkillImprovements"] {
   padding-bottom: 10px;
 }
 
-body:not(.no-theme) #interface:not(.theme-light) .ui-control {
+body:not(.no-theme)
+  #interface:not(.theme-light)
+  .ui-control:not([aria-pressed="true"], .button, .toggle) {
   border: 2px solid #215112;
 }
 
