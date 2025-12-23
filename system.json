@@ -89,6 +89,12 @@
       "name": "polski",
       "path": "lang/pl.json",
       "flags": {}
+    },
+    {
+      "lang": "uk",
+      "name": "Українська",
+      "path": "lang/uk.json",
+      "flags": {}
     }
   ],
   "packFolders": [
