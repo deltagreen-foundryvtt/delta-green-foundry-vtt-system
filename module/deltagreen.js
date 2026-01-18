@@ -222,8 +222,96 @@ function addEventListenerToChatMessage(element) {
   });
 }
 
+/**
+ * Helper function to apply CSS class to a message element
+ * @param {string} messageId - The message ID
+ */
+function applyMessageCssClass(messageId) {
+  const messageElement = document.querySelector(
+    `li[data-message-id="${messageId}"]`,
+  );
+  if (messageElement) {
+    const message = game.messages.get(messageId);
+    if (message) {
+      const cssClass =
+        message.getFlag?.("deltagreen", "cssClass") ||
+        message.flags?.deltagreen?.cssClass;
+      if (cssClass && !messageElement.classList.contains(cssClass)) {
+        messageElement.classList.add(cssClass);
+      }
+
+      // For GM-only messages, hide from non-GM users
+      if (cssClass === "gmonly-hideunnaturalresults") {
+        if (!game.user.isGM) {
+          messageElement.classList.add("hide-from-players");
+        } else {
+          messageElement.classList.remove("hide-from-players");
+        }
+      }
+    }
+  }
+}
+
 Hooks.on("renderChatLog", async (app, element) => {
   addEventListenerToChatMessage(element);
+
+  // Apply custom CSS class to messages with the flag (on the <li> element)
+  const messageElements = element.querySelectorAll("li[data-message-id]");
+  for (const msgElement of messageElements) {
+    const { messageId } = msgElement.dataset;
+    const message = game.messages.get(messageId);
+    if (message) {
+      const cssClass =
+        message.getFlag?.("deltagreen", "cssClass") ||
+        message.flags?.deltagreen?.cssClass;
+      if (cssClass && !msgElement.classList.contains(cssClass)) {
+        msgElement.classList.add(cssClass);
+      }
+
+      // For GM-only messages, hide from non-GM users
+      if (cssClass === "gmonly-hideunnaturalresults") {
+        if (!game.user.isGM) {
+          msgElement.classList.add("hide-from-players");
+        } else {
+          msgElement.classList.remove("hide-from-players");
+        }
+      }
+    }
+  }
+});
+
+// Hook into message creation to apply class for new messages
+Hooks.on("createChatMessage", async (message) => {
+  const cssClass =
+    message.getFlag?.("deltagreen", "cssClass") ||
+    message.flags?.deltagreen?.cssClass;
+  if (cssClass) {
+    // Use requestAnimationFrame to wait for DOM to be ready (more reliable than setTimeout)
+    requestAnimationFrame(() => {
+      applyMessageCssClass(message.id);
+    });
+  }
+});
+
+Hooks.on("renderChatMessage", async (message, html, data) => {
+  const cssClass =
+    message.getFlag?.("deltagreen", "cssClass") ||
+    message.flags?.deltagreen?.cssClass;
+  if (cssClass) {
+    const messageElement = html.closest("li[data-message-id]");
+    if (messageElement && !messageElement.classList.contains(cssClass)) {
+      messageElement.classList.add(cssClass);
+    }
+
+    // For GM-only messages, hide from non-GM users
+    if (cssClass === "gmonly-hideunnaturalresults") {
+      if (!game.user.isGM) {
+        messageElement.classList.add("hide-from-players");
+      } else {
+        messageElement.classList.remove("hide-from-players");
+      }
+    }
+  }
 });
 
 Hooks.on("renderChatMessageHTML", async (app, element, context) => {
