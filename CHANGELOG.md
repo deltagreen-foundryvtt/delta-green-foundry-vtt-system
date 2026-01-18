@@ -7,6 +7,7 @@
 - [#211](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/211) - Move macros to System macros folder in compendium.
 - [#283](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/283) - Added new actor sheet with left hand Sidebar RFC
 - [#291](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/291) - Moving Luck button from three dots to left hand panel
+- [#238](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/238) - Added option to hide unnatural percentages
 
 ## Version 1.6.3 - 2025-12-12
 
