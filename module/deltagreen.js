@@ -293,29 +293,34 @@ Hooks.on("createChatMessage", async (message) => {
   }
 });
 
-Hooks.on("renderChatMessage", async (message, html, data) => {
-  const cssClass =
-    message.getFlag?.("deltagreen", "cssClass") ||
-    message.flags?.deltagreen?.cssClass;
-  if (cssClass) {
-    const messageElement = html.closest("li[data-message-id]");
-    if (messageElement && !messageElement.classList.contains(cssClass)) {
-      messageElement.classList.add(cssClass);
-    }
-
-    // For GM-only messages, hide from non-GM users
-    if (cssClass === "gmonly-hideunnaturalresults") {
-      if (!game.user.isGM) {
-        messageElement.classList.add("hide-from-players");
-      } else {
-        messageElement.classList.remove("hide-from-players");
-      }
-    }
-  }
-});
-
 Hooks.on("renderChatMessageHTML", async (app, element, context) => {
   // ignore non chat card notifications
   if (!context.canClose) return;
   addEventListenerToChatMessage(element);
+
+  // Apply custom CSS class to messages with the flag
+  const messageElement = element.closest("li[data-message-id]");
+  if (messageElement) {
+    const { messageId } = messageElement.dataset;
+    if (messageId) {
+      const message = game.messages.get(messageId);
+      if (message) {
+        const cssClass =
+          message.getFlag?.("deltagreen", "cssClass") ||
+          message.flags?.deltagreen?.cssClass;
+        if (cssClass && !messageElement.classList.contains(cssClass)) {
+          messageElement.classList.add(cssClass);
+        }
+
+        // For GM-only messages, hide from non-GM users
+        if (cssClass === "gmonly-hideunnaturalresults") {
+          if (!game.user.isGM) {
+            messageElement.classList.add("hide-from-players");
+          } else {
+            messageElement.classList.remove("hide-from-players");
+          }
+        }
+      }
+    }
+  }
 });
