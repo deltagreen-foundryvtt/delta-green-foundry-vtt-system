@@ -299,6 +299,74 @@ export class DGPercentileRoll extends DGRoll {
       },
     );
 
+    // if hiding unnatural percentages, send dual messages (public minimal + GM whisper)
+    const hideUnnaturalSetting = game.settings.get(
+      "deltagreen",
+      "hideUnnaturalPercentages",
+    );
+    if (hideUnnaturalSetting && this.actor?.type === "unnatural") {
+      // Minimal label for players (no percentages)
+      const minimalLabel = `${game.i18n.localize("DG.Roll.Rolling")} <b>${
+        this.localizedKey
+      }</b>`;
+      // Minimal HTML for players (using template with hideDetails)
+      const minimalHtml = await renderTemplate(
+        "systems/deltagreen/templates/roll/percentile-roll.hbs",
+        {
+          styleOverride,
+          resultString,
+          formula: this.formula,
+          total: this.total,
+          failureMark: false,
+          hideDetails: true,
+        },
+      );
+
+      // Send public message (minimal) and whispered message to GM (full)
+      const publicMessage = await ChatMessage.create({
+        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+        content: minimalHtml,
+        flavor: minimalLabel,
+        rolls: [this],
+        flags: {
+          deltagreen: {
+            cssClass: "player-hideunnaturalresults",
+          },
+        },
+      });
+
+      const gmUsers = game.users.filter((u) => u.isGM && u.active);
+      if (gmUsers.length > 0) {
+        // Create details-only template for GM whisper
+        const detailsHtml = await renderTemplate(
+          "systems/deltagreen/templates/roll/roll-hideunnaturalresults-gmdetails.hbs",
+          {
+            formula: this.formula,
+            total: this.total,
+            target: this.effectiveTarget,
+          },
+        );
+
+        await ChatMessage.create({
+          speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+          content: detailsHtml,
+          whisper: gmUsers.map((u) => u.id),
+          rolls: [this],
+          flags: {
+            deltagreen: {
+              cssClass: "gmonly-hideunnaturalresults",
+            },
+          },
+        });
+      }
+
+      if (diceSoNice) {
+        await game.dice3d.waitFor3DAnimationByMessageID(publicMessage.id);
+      }
+
+      return publicMessage;
+    }
+
     // TODO: add setting for it?
     if (failureMark) {
       const keyForUpdate = `${this.skillPath}.failure`;

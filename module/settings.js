@@ -253,6 +253,11 @@ class HandlerSettings extends SettingForm {
         type: Boolean,
         default: false,
       },
+      hideUnnaturalPercentages: {
+        requiresReload: true,
+        type: Boolean,
+        default: false,
+      },
       skillImprovementFormula: {
         type: String,
         choices: DG.skillImprovementFormulas,
