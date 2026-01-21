@@ -1,9 +1,12 @@
 # Release/Patch Notes
 
-## Version 1.7.0 - 2025-xx-xx
+## Version 1.7.0 - 2026-xx-xx
+
+> Thanks to [hknmtt](https://github.com/hknmtt) for updating the Brazilian translation.
 
 ### **Features:**
 
+- [#296](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/296) - Remove adaptation checks if not adapted.
 - [#281](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/281) - Add tooltips to checkboxes in adaptation area.
 - [#211](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/211) - Move macros to System macros folder in compendium.
 - [#283](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/283) - Added new actor sheet with left hand Sidebar RFC
