@@ -7,6 +7,7 @@
 ### **Features:**
 
 - [#312](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/312) - Add tooltip to Breaking point.
+- [#328](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/328) - Exclude Unnatural from Marked Failed Checks
 
 ### **Bug Fixes:**
 
