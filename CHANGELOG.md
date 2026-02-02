@@ -1,5 +1,13 @@
 # Release/Patch Notes
 
+## Version 1.6.4 - 2026-xx-xx
+
+> Thanks to [666f78](https://github.com/666f78) for adding the Ukrainian translation.
+
+### **Features:**
+
+- [#312](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/312) - Add tooltip to Breaking point.
+
 ## Version 1.6.3 - 2025-12-12
 
 > Skips v1.6.2 due to a mistake in the release process. Oops.
