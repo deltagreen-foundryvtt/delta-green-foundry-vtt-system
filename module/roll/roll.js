@@ -285,6 +285,7 @@ export class DGPercentileRoll extends DGRoll {
       this.actor?.type === "agent" &&
       !this.isSuccess &&
       this.skillPath &&
+      this.key !== "unnatural" &&
       !foundry.utils.getProperty(this.actor, `${this.skillPath}.failure`) &&
       game.settings.get(DG.ID, "skillFailure");
 
