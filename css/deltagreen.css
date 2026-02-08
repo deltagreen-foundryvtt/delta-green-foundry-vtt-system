@@ -1380,8 +1380,6 @@ body:not(.no-theme) #interface:not(.theme-light) #action-bar .slot.full:hover {
   }
 }
 
-
-
 .stats-wrapper {
   position: relative;
 }
@@ -1407,7 +1405,9 @@ body:not(.no-theme) #interface:not(.theme-light) #action-bar .slot.full:hover {
 
   cursor: pointer;
   opacity: 0;
-  transition: opacity 0.15s ease, transform 0.15s ease;
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
 }
 
 /* Show on hover of whole stats block */
