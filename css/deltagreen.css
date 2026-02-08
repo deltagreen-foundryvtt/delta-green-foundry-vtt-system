@@ -1379,3 +1379,60 @@ body:not(.no-theme) #interface:not(.theme-light) #action-bar .slot.full:hover {
     display: flex;
   }
 }
+
+
+
+.stats-wrapper {
+  position: relative;
+}
+
+/* Edit icon */
+.stats-edit-btn {
+  position: absolute;
+  top: -10px;
+  right: 0;
+
+  width: 24px;
+  height: 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+  background: var(--color-border-dark, #444);
+  color: #fff;
+
+  font-size: 12px;
+
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+/* Show on hover of whole stats block */
+.stats-wrapper:hover .stats-edit-btn {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+/* Hover feedback */
+.stats-edit-btn:hover {
+  background: var(--color-border-highlight, #c9a227);
+}
+
+.edit-stat-form {
+  label {
+    color: var(--color-text-primary);
+  }
+}
+
+.physical-stats-outer-grid-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 5px;
+  grid-gap: 5px;
+}
