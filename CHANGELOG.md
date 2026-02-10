@@ -7,7 +7,8 @@
 ### **Features:**
 
 - [#312](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/312) - Add tooltip to Breaking point.
-- [#328](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/328) - Exclude Unnatural from Marked Failed Checks
+- [#328](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/328) - Exclude Unnatural from Marked Failed Checks.
+- [#338](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/338) - Remove checkbox for unnatural skill.
 
 ### **Bug Fixes:**
 

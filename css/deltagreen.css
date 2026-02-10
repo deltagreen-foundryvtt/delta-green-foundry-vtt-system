@@ -543,6 +543,10 @@ input.checkbox-skill-input {
   width: 1px;
 }
 
+input.checkbox-skill-input:disabled {
+  visibility: hidden;
+}
+
 .deltagreen .sheet-header .header-top {
   margin-bottom: 5px;
 }

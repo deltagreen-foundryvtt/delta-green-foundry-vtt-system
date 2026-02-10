@@ -115,9 +115,11 @@ export default class DGAgentSheet extends DGActorSheet {
   static async _processSkillImprovements() {
     const { skills, typedSkills } = this.actor.system;
 
-    const failedSkills = Object.values(skills).filter((skill) => skill.failure);
+    const failedSkills = Object.values(skills).filter(
+      (skill) => skill.failure && !skill.cannotBeImprovedByFailure,
+    );
     const failedTypedSkills = Object.values(typedSkills).filter(
-      (skill) => skill.failure,
+      (skill) => skill.failure && !skill.cannotBeImprovedByFailure,
     );
 
     if (failedSkills.length + failedTypedSkills.length === 0) {
