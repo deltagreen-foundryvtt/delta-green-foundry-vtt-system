@@ -21,6 +21,7 @@ export default class DGVehicleSheet extends DGActorSheet {
     tabs: this.BASE_PARTS.tabs,
     notes: {
       template: `${this.TEMPLATE_PATH}/parts/notes-tab.html`,
+      templates: [`${this.TEMPLATE_PATH}/partials/notes-partial.html`],
     },
     gear: this.BASE_PARTS.gear,
     about: this.BASE_PARTS.about,

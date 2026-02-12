@@ -13,6 +13,7 @@
 ### **Bug Fixes:**
 
 - [#316](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/316) - Remove the custom border from pressed, toggle and action buttons.
+- [#340](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/340) - Allows to open a vehicle sheet without opening an agent first.
 
 ## Version 1.6.3 - 2025-12-12
 
