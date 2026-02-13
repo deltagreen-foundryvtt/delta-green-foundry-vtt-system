@@ -12,6 +12,21 @@
 - [#283](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/283) - Added new actor sheet with left hand Sidebar RFC
 - [#291](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/291) - Moving Luck button from three dots to left hand panel
 
+## Version 1.6.4 - 2026-02-12
+
+> Thanks to [666f78](https://github.com/666f78) for adding the Ukrainian translation.
+
+### **Features:**
+
+- [#312](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/312) - Add tooltip to Breaking point.
+- [#328](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/328) - Exclude Unnatural from Marked Failed Checks.
+- [#338](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/338) - Remove checkbox for unnatural skill.
+
+### **Bug Fixes:**
+
+- [#316](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/316) - Remove the custom border from pressed, toggle and action buttons.
+- [#340](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/340) - Allows to open a vehicle sheet without opening an agent first.
+
 ## Version 1.6.3 - 2025-12-12
 
 > Skips v1.6.2 due to a mistake in the release process. Oops.
