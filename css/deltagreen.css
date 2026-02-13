@@ -90,6 +90,7 @@
 .old-paper-background {
   background: url("../assets/img/StainedPlainPaper10.webp") !important;
 }
+
 .default-parchment-background {
   background: url("/ui/parchment.jpg") repeat !important;
 }
@@ -352,6 +353,7 @@ explicitly define a number of rows, rather than columns. */
   border-bottom: transparent !important;
   border-top: transparent !important;
 }
+
 .deltagreen .tabs {
   height: 1.5rem;
   line-height: 1.5rem;
@@ -367,7 +369,7 @@ explicitly define a number of rows, rather than columns. */
   vertical-align: middle !important;
   height: inherit;
   line-height: inherit;
-  padding-inline: 10px;
+  padding-inline: 5px;
   border-radius: 5px 5px 0px 0px;
   border-color: #000;
   border: gray;
@@ -1306,4 +1308,75 @@ a[data-action="applySkillImprovements"] {
 
 .strike {
   text-decoration: line-through;
+}
+
+.actor-sheet-v2 {
+  .window-content {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    grid-template-rows: auto;
+    width: 100%;
+    height: 100%;
+  }
+
+  .left-bar {
+    grid-column: 1;
+    grid-row: 1 / -1;
+    padding: 10px;
+  }
+
+  .window-content > :not(.left-bar) {
+    grid-column: 2;
+    grid-row: 1;
+    width: 100%;
+    box-sizing: border-box;
+    padding-right: 0;
+    margin-right: 0;
+  }
+
+  .profile-img {
+    width: 100%;
+    height: auto;
+  }
+
+  .physical-stats-outer-grid-3col {
+    display: contents;
+  }
+
+  .physical-stats-outer-grid-3col,
+  .resources {
+    font-size: 12px;
+  }
+
+  .resource-inner-grid-3col input {
+    padding: 1px;
+  }
+
+  .tab.active {
+    padding-top: 20px;
+  }
+
+  .breaking-point {
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+
+    input {
+      width: 40px;
+    }
+  }
+
+  .stats {
+    input {
+      margin: 1px;
+    }
+  }
+
+  .luck {
+    margin-top: 5px;
+  }
+
+  .horizontal-bar-section-divider.skills-header {
+    display: flex;
+  }
 }
