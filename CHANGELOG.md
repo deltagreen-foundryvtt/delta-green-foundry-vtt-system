@@ -1,5 +1,11 @@
 # Release/Patch Notes
 
+## Version 1.6.5 - 2026-XX-XX
+
+### **Features:**
+
+- French translation added by [Hrunh](https://github.com/hrunh)
+
 ## Version 1.6.4 - 2026-02-12
 
 > Thanks to [666f78](https://github.com/666f78) for adding the Ukrainian translation.
