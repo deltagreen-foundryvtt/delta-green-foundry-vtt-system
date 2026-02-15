@@ -23,7 +23,7 @@ export default class DGAgentSheet extends DGActorSheet {
       labelPrefix: "DG.Navigation.Agent",
       tabs: [
         { id: "skills" },
-        { id: "physical" },
+        {id: "physical" },
         { id: "motivations" },
         { id: "gear" },
         { id: "bio" },
