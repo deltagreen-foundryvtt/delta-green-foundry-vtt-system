@@ -4,7 +4,8 @@
 
 ### **Features:**
 
-- French translation added by [Hrunh](https://github.com/hrunh)
+- French translation updated by [Hrunh](https://github.com/hrunh)
+- Spanish translation updated by [lozanoje](https://github.com/lozanoje)
 
 ## Version 1.6.4 - 2026-02-12
 
