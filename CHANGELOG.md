@@ -12,6 +12,13 @@
 - [#283](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/283) - Added new actor sheet with left hand Sidebar RFC
 - [#291](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/291) - Moving Luck button from three dots to left hand panel
 
+## Version 1.6.5 - 2026-02-17
+
+### **Features:**
+
+- French translation updated by [Hrunh](https://github.com/hrunh)
+- Spanish translation updated by [lozanoje](https://github.com/lozanoje)
+
 ## Version 1.6.4 - 2026-02-12
 
 > Thanks to [666f78](https://github.com/666f78) for adding the Ukrainian translation.
