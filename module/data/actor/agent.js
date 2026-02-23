@@ -30,7 +30,7 @@ export default class AgentData extends CharacterData {
       }),
       physical: new SchemaField({
         description: new StringField({
-          initial: "(Physical description of agent)",
+          initial: "",
         }),
         wounds: new StringField({ initial: "" }),
         firstAidAttempted: new BooleanField({ initial: false }),
