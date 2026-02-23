@@ -63,31 +63,6 @@ export default class DGAgentSheet extends DGActorSheet {
 
   /* -------------------------------------------- */
 
-  /** @override */
-  async _prepareContext(options) {
-    const context = await super._prepareContext(options);
-
-    const enrichedDescription =
-      await foundry.applications.ux.TextEditor.implementation.enrichHTML(
-        this.actor.system.physicalDescription,
-        {
-          rollData: this.document.getRollData(),
-          relativeTo: this.document,
-        },
-      );
-    const { HTMLProseMirrorElement } = foundry.applications.elements;
-    context.descriptionField = HTMLProseMirrorElement.create({
-      name: "system.physicalDescription",
-      value: this.actor.system.physicalDescription,
-      enriched: enrichedDescription,
-      toggled: true,
-    }).outerHTML;
-
-    return context;
-  }
-
-  /* -------------------------------------------- */
-
   /**
    * Resets the actor's current breaking point by recalculating it as the difference
    * between the actor's sanity value and POW value, ensuring it is non-negative,

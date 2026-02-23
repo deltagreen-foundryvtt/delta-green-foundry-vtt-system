@@ -299,7 +299,7 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
 
     switch (this.actor.type) {
       case "agent":
-        descriptionPath = "system.physicalDescription";
+        descriptionPath = "system.physical.description";
         break;
       case "npc":
       case "unnatural":
