@@ -173,6 +173,15 @@
   "DG.Roll.RollingDamageFor": "Rolling DAMAGE for",
   "DG.Roll.Or": "Or",
   "DG.Roll.Roll": "Roll",
+  "DG.Roll.Cancel": "Cancel",
+
+  "DG.SanityRoll.DialogTitle": "Sanity Roll",
+  "DG.SanityRoll.DialogPrompt": "Choose the source of this sanity roll:",
+  "DG.SanityRoll.Violence": "Violence",
+  "DG.SanityRoll.Helplessness": "Helplessness",
+  "DG.SanityRoll.Unnatural": "Unnatural",
+  "DG.SanityRoll.None": "None",
+  "DG.SanityRoll.SelectedChoice": "Selected: {choice}",
 
   "DG.Physical.Wounds": "Wounds",
   "DG.Physical.FirstAidLabel": "First Aid Has Already Been Attempted: ",
@@ -429,5 +438,11 @@
   "DG.SettingsMenu.handler.title": "Handler-only Settings",
 
   "DG.Messages.Skillsmark.Marked": "This skill is marked",
-  "DG.Messages.Skillsmark.Tooltip": "See p. 29 Agent's Handbook"
+  "DG.Messages.Skillsmark.Tooltip": "See p. 29 Agent's Handbook",
+
+  "DG.Messages.AdaptedToSanity": "{adaptationType}.",
+
+  "DG.Messages.BecameTemporaryInsane": "{name} became temporarily insane.",
+
+  "DG.Messages.HitBreakingPoint": "{name} hit their breaking point."
 }

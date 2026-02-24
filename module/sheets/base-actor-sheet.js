@@ -1209,6 +1209,53 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
   }
 
   /**
+   * Show a modal with three sanity roll choice buttons. Resolves with the selected
+   * { value, label } or null if cancelled.
+   *
+   * @returns {Promise<{ value: string, label: string } | null>}
+   * @private
+   */
+  static _showSanityChoiceDialog() {
+    const choices = [
+      {
+        value: "Violence",
+        label: game.i18n.localize("DG.SanityRoll.Violence"),
+      },
+      {
+        value: "Helplessness",
+        label: game.i18n.localize("DG.SanityRoll.Helplessness"),
+      },
+      {
+        value: "Unnatural",
+        label: game.i18n.localize("DG.SanityRoll.Unnatural"),
+      },
+      {
+        value: "None",
+        label: game.i18n.localize("DG.SanityRoll.None"),
+      },
+    ];
+
+    return new Promise((resolve) => {
+      const buttons = choices.map((choice) => ({
+        action: `sanity-choice-${choice.value}`,
+        label: choice.label,
+        callback: () => resolve(choice),
+      }));
+
+      new DialogV2({
+        classes: ["sanity-roll-dialog"],
+        window: {
+          title: game.i18n.localize("DG.SanityRoll.DialogTitle"),
+        },
+        content: `<p class="sanity-roll-dialog-prompt">${game.i18n.localize(
+          "DG.SanityRoll.DialogPrompt",
+        )}</p>`,
+        buttons,
+      }).render(true);
+    });
+  }
+
+  /**
    * Handle clickable rolls.
    *
    * @param {Event} event   The originating click event
@@ -1227,6 +1274,13 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
       specialTrainingName: dataset?.name || null, // Only applies to Special Training Rolls
       item,
     };
+
+    // Sanity roll: show choice modal first, then roll with selected value.
+    if (dataset.rolltype === "sanity") {
+      const sanityChoice = await this.constructor._showSanityChoiceDialog();
+      if (!sanityChoice) return;
+      rollOptions.sanityChoice = sanityChoice;
+    }
 
     // Create a default 1d100 roll just in case.
     let roll = new Roll("1d100", {});
@@ -1320,6 +1374,61 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
     }
     // Evaluate the roll.
     await roll.evaluate();
+
+    // Actual success (before any treatAsSuccess override) for adaptation tracking
+    const actualSuccess =
+      roll.total != null &&
+      roll.total !== 100 &&
+      roll.effectiveTarget != null &&
+      roll.total <= roll.effectiveTarget;
+
+    // Sanity roll: if agent is adapted to the chosen source (violence/helplessness), auto-succeed.
+    if (
+      roll.type === "sanity" &&
+      roll.sanityChoice?.value &&
+      roll.actor?.system?.sanity?.adaptations
+    ) {
+      const { value } = roll.sanityChoice;
+      const { adaptations } = roll.actor.system.sanity;
+      const isViolence = value === "Violence";
+      const isHelplessness = value === "Helplessness";
+
+      const adaptedToViolence = isViolence && adaptations.violence?.isAdapted;
+      const adaptedToHelplessness =
+        isHelplessness && adaptations.helplessness?.isAdapted;
+      if (adaptedToViolence || adaptedToHelplessness) {
+        roll.treatAsSuccess = true;
+      }
+
+      // On real success for Violence or Helplessness, check first free incident if not adapted.
+      if (actualSuccess && (isViolence || isHelplessness)) {
+        const adaptation = isViolence
+          ? adaptations.violence
+          : adaptations.helplessness;
+        const sourceKey = isViolence ? "violence" : "helplessness";
+        if (!adaptation.isAdapted) {
+          const nextIncident = adaptation.incident1
+            ? adaptation.incident2
+              ? "incident3"
+              : "incident2"
+            : "incident1";
+          await roll.actor.update({
+            [`system.sanity.adaptations.${sourceKey}.${nextIncident}`]: true,
+          });
+        }
+      }
+
+      // Store last sanity roll source for temp insanity / breaking point handling.
+      const sourceKey = isViolence
+        ? "violence"
+        : isHelplessness
+        ? "helplessness"
+        : value === "Unnatural"
+        ? "unnatural"
+        : "none";
+      await roll.actor.setFlag(DG.ID, "lastSanityRollSource", sourceKey);
+    }
+
     // Send the roll to chat.
     roll.toChat();
   }

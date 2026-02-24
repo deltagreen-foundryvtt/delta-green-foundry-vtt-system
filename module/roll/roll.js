@@ -106,6 +106,7 @@ export class DGPercentileRoll extends DGRoll {
       case "sanity":
         this.target = this.actor.system.sanity.value;
         this.localizedKey = game.i18n.localize("DG.Attributes.SAN");
+        this.sanityChoice = options.sanityChoice ?? null;
         break;
       case "luck":
         this.target = 50;
@@ -289,6 +290,22 @@ export class DGPercentileRoll extends DGRoll {
       !foundry.utils.getProperty(this.actor, `${this.skillPath}.failure`) &&
       game.settings.get(DG.ID, "skillFailure");
 
+    const sanityChoiceValue = this.sanityChoice?.value;
+    const adaptedKey =
+      this.treatAsSuccess && sanityChoiceValue
+        ? {
+            Violence: "DG.Mental.AdaptedToViolence",
+            Helplessness: "DG.Mental.AdaptedToHelplessness",
+          }[sanityChoiceValue]
+        : null;
+    // Adaptation label takes precedence over source; otherwise show sanity roll source (but hide "None").
+    const sanityChoiceLabel =
+      adaptedKey != null
+        ? game.i18n.localize(adaptedKey)
+        : sanityChoiceValue === "None"
+        ? null
+        : this.sanityChoice?.label ?? null;
+
     const html = await renderTemplate(
       "systems/deltagreen/templates/roll/percentile-roll.hbs",
       {
@@ -297,6 +314,7 @@ export class DGPercentileRoll extends DGRoll {
         formula: this.formula,
         total: this.total,
         failureMark,
+        sanityChoiceLabel,
       },
     );
 
@@ -496,6 +514,9 @@ export class DGPercentileRoll extends DGRoll {
     if (!this.total) {
       return null;
     }
+
+    // Adapted to sanity source (violence/helplessness): treat as success but keep roll normal.
+    if (this.treatAsSuccess) return true;
 
     // A roll of 100 always (critically) fails, even for inhuman rolls.
     if (this.total === 100) return false;
