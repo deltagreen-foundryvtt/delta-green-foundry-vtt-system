@@ -1380,3 +1380,13 @@ a[data-action="applySkillImprovements"] {
     display: flex;
   }
 }
+.dice-sanity-choice {
+  font-size: 12px;
+  text-align: center;
+  margin-bottom: 4px;
+  opacity: 0.95;
+}
+.sanity-roll-dialog .form-footer button {
+  flex-basis: 45%;
+  flex-grow: 1;
+}

@@ -174,6 +174,58 @@ Hooks.on("renderActorDirectory", (app, html, data) => {
   }
 });
 
+// Store previous adaptation state for agent updates (used by preUpdateActor/updateActor)
+const _adaptationStateBeforeUpdate = new Map();
+// Store previous sanity value when sanity is updated (for temporary-insane notification)
+const _sanityValueBeforeUpdate = new Map();
+
+function _wasAdapted(adaptations, source) {
+  const a =
+    source === "violence" ? adaptations.violence : adaptations.helplessness;
+  return a?.incident1 && a?.incident2 && a?.incident3;
+}
+
+/**
+ * Send a sanity-related chat message (adaptation, temp insanity, breaking point).
+ * Uses the user's roll visibility setting. Message is formatted with
+ * { name: actor.name, ...formatData }.
+ */
+async function _notifySanityChat(actor, messageKey, formatData = {}) {
+  const content = game.i18n.format(messageKey, {
+    name: actor.name,
+    ...formatData,
+  });
+  const rollMode = game.settings.get("core", "rollMode");
+  const chatData = {
+    speaker: ChatMessage.getSpeaker({
+      actor,
+      alias: actor.name,
+    }),
+    content,
+  };
+  ChatMessage.applyRollMode(chatData, rollMode);
+  await ChatMessage.create(chatData);
+}
+
+/**
+ * If the agent hit temp insanity or breaking point, clear adaptation incident
+ * checkboxes for the last sanity roll source (violence/helplessness) when not
+ * yet adapted to that source.
+ */
+async function _clearAdaptationCheckboxesForLastSanitySourceIfNotAdapted(
+  actor,
+) {
+  const lastSource = actor.getFlag(DG.ID, "lastSanityRollSource");
+  if (lastSource !== "violence" && lastSource !== "helplessness") return;
+  const { adaptations } = actor.system.sanity ?? {};
+  if (!adaptations || _wasAdapted(adaptations, lastSource)) return;
+  await actor.update({
+    [`system.sanity.adaptations.${lastSource}.incident1`]: false,
+    [`system.sanity.adaptations.${lastSource}.incident2`]: false,
+    [`system.sanity.adaptations.${lastSource}.incident3`]: false,
+  });
+}
+
 // Note - this event is fired on ALL connected clients...
 Hooks.on("createActor", async (actor, options, userId) => {
   try {
@@ -190,6 +242,89 @@ Hooks.on("createActor", async (actor, options, userId) => {
     }
   } catch (ex) {
     console.log(ex);
+  }
+});
+
+function _changeTouchesAdaptations(change) {
+  // Flat keys (e.g. from direct update with "system.sanity.adaptations.violence.incident3")
+  if (
+    Object.keys(change).some((k) => k.startsWith("system.sanity.adaptations."))
+  )
+    return true;
+  // Nested (e.g. from form submit via expandObject)
+  return foundry.utils.getProperty(change, "system.sanity.adaptations") != null;
+}
+
+function _changeTouchesSanity(change) {
+  if (Object.keys(change).some((k) => k.startsWith("system.sanity")))
+    return true;
+  return foundry.utils.getProperty(change, "system.sanity") != null;
+}
+
+Hooks.on("preUpdateActor", (actor, change) => {
+  if (actor.type !== "agent") return;
+  if (_changeTouchesSanity(change)) {
+    const { value, currentBreakingPoint } = actor.system.sanity ?? {};
+    if (typeof value === "number")
+      _sanityValueBeforeUpdate.set(actor.id, {
+        value,
+        aboveBreakingPoint:
+          typeof currentBreakingPoint === "number"
+            ? value > currentBreakingPoint
+            : true,
+      });
+  }
+  if (!_changeTouchesAdaptations(change)) return;
+  const { adaptations } = actor.system.sanity ?? {};
+  if (!adaptations) return;
+  _adaptationStateBeforeUpdate.set(actor.id, {
+    violence: _wasAdapted(adaptations, "violence"),
+    helplessness: _wasAdapted(adaptations, "helplessness"),
+  });
+});
+
+Hooks.on("updateActor", async (actor, _change) => {
+  if (actor.type !== "agent") return;
+  const adaptationBefore = _adaptationStateBeforeUpdate.get(actor.id);
+  _adaptationStateBeforeUpdate.delete(actor.id);
+  const sanityBefore = _sanityValueBeforeUpdate.get(actor.id);
+  _sanityValueBeforeUpdate.delete(actor.id);
+
+  if (adaptationBefore) {
+    const { adaptations } = actor.system.sanity ?? {};
+    if (adaptations) {
+      const nowViolence = _wasAdapted(adaptations, "violence");
+      const nowHelplessness = _wasAdapted(adaptations, "helplessness");
+      if (!adaptationBefore.violence && nowViolence)
+        await _notifySanityChat(actor, "DG.Messages.AdaptedToSanity", {
+          adaptationType: game.i18n.localize("DG.Mental.AdaptedToViolence"),
+        });
+      if (!adaptationBefore.helplessness && nowHelplessness)
+        await _notifySanityChat(actor, "DG.Messages.AdaptedToSanity", {
+          adaptationType: game.i18n.localize("DG.Mental.AdaptedToHelplessness"),
+        });
+    }
+  }
+
+  if (sanityBefore && actor.system.sanity?.value != null) {
+    const { value: valueBefore, aboveBreakingPoint } =
+      typeof sanityBefore === "number"
+        ? { value: sanityBefore, aboveBreakingPoint: true }
+        : sanityBefore;
+    const valueNow = actor.system.sanity.value;
+    const drop = valueBefore - valueNow;
+    const { currentBreakingPoint } = actor.system.sanity;
+    const hitBreakingPoint =
+      aboveBreakingPoint &&
+      typeof currentBreakingPoint === "number" &&
+      valueNow <= currentBreakingPoint;
+    if (drop >= 5 || hitBreakingPoint) {
+      await _clearAdaptationCheckboxesForLastSanitySourceIfNotAdapted(actor);
+      if (drop >= 5)
+        await _notifySanityChat(actor, "DG.Messages.BecameTemporaryInsane");
+      if (hitBreakingPoint)
+        await _notifySanityChat(actor, "DG.Messages.HitBreakingPoint");
+    }
   }
 });
 
