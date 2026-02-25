@@ -27,35 +27,35 @@
         </div>
     </div>
 
-    <div class="grid grid-3col stats">
-        {{#each actor.system.statistics as |statistic key| }}
-        <div class="flex-group-center flex-mid-border">
-            <div>
-                <div class="physical-stats-outer-grid-3col">
-                    <label class="rollable resource-label"
-                           data-action="roll"
-                           data-rolltype="stat"
-                           data-key="{{key}}"
-                           data-tooltip="{{localize (concat 'DG.Attributes.Tooltip.' key)}}"
-                           for="system.statistics.{{key}}.value">
-                        {{localize (concat 'DG.Attributes.' key)}}
-                    </label>
-                    <input class="centered"
-                           type="text"
-                           name="system.statistics.{{key}}.value"
-                           value="{{statistic.value}}"
-                           data-dtype="Number" />
-                </div>
+    <div class="stats-wrapper">
+        <a class="stats-edit-btn" title="{{localize 'Edit Stats'}}" data-action="openStatsEdit">
+            <i class="fas fa-pen"></i>
+        </a>
+
+        <div class="grid grid-3col stats">
+            {{#each actor.system.statistics as |statistic key| }}
+            <div class="flex-group-center flex-mid-border">
                 <div>
-                    <input type="text"
-                           name="system.statistics.{{key}}.distinguishing_feature"
-                           value="{{statistic.distinguishing_feature}}"
-                           data-dtype="String"
-                           title="{{localize 'DG.Tooltip.DistinguishingFeature'}}" />
+                    <div class="physical-stats-outer-grid-3col">
+                        <label class="rollable resource-label"
+                               data-action="roll"
+                               data-rolltype="stat"
+                               data-key="{{key}}"
+                               data-tooltip="{{localize (concat 'DG.Attributes.Tooltip.' key)}}"
+                               for="system.statistics.{{key}}.value">
+                            {{localize (concat 'DG.Attributes.' key)}}
+                        </label>
+                        <input class="centered"
+                               type="text"
+                               name="system.statistics.{{key}}.value"
+                               value="{{statistic.value}}"
+                               disabled
+                               data-dtype="Number" />
+                    </div>
                 </div>
             </div>
+            {{/each}}
         </div>
-        {{/each}}
     </div>
 
     <br/>
