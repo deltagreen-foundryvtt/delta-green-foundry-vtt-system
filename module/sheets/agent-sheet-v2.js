@@ -4,7 +4,7 @@ import DGAgentSheet from "./agent-sheet.js";
 export default class DGAgentSheetV2 extends DGAgentSheet {
   static DEFAULT_OPTIONS = /** @type {const} */ ({
     classes: ["actor-sheet-v2"],
-    position: { width: 950, height: 665 },
+    position: { width: 950, height: 750 },
   });
 
   /** @override */
