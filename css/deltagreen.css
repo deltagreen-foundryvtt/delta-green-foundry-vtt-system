@@ -1366,6 +1366,10 @@ a[data-action="applySkillImprovements"] {
     }
   }
 
+  .mb-10 {
+    margin-bottom: 10px;
+  }
+
   .stats {
     input {
       margin: 1px;
@@ -1378,5 +1382,20 @@ a[data-action="applySkillImprovements"] {
 
   .horizontal-bar-section-divider.skills-header {
     display: flex;
+  }
+
+  .adaptation-grid-4col {
+    display: grid;
+    grid-template-columns: 50% 25px 25px 25px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    align-content: center;
+    justify-content: left;
+    align-items: center;
+    padding-bottom: 5px;
+    border-bottom: 0px solid #aaa;
+  }
+  .adapted-label {
+    grid-column: 1 / -1;
   }
 }

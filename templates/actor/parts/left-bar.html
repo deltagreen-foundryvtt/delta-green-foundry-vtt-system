@@ -27,7 +27,7 @@
         </div>
     </div>
 
-    <div class="grid grid-3col stats">
+    <div class="grid grid-3col stats mb-10">
         {{#each actor.system.statistics as |statistic key| }}
         <div class="flex-group-center flex-mid-border">
             <div>
@@ -58,9 +58,7 @@
         {{/each}}
     </div>
 
-    <br/>
-
-    <div class="resources grid grid-3col">
+    <div class="resources grid grid-3col mb-10">
         {{!-- HP --}}
         <div class="resource-outer-grid-1col">
             <label for="actor.system.health.value"
@@ -107,9 +105,7 @@
         {{/if}}
     </div>
 
-    <br/>
-
-    <div class="breaking-point">
+    <div class="breaking-point mb-10">
         <label class="bolded-label">{{localize 'DG.Mental.BreakingPoint'}}</label>
         <input class="centered"
                title="{{localize 'DG.Tooltip.BreakPoint'}}"
@@ -118,6 +114,58 @@
                value="{{actor.system.sanity.currentBreakingPoint}}"
                data-dtype="Number" />
         <a class="fa fa-refresh" data-action="resetBreakingPoint" title="Reset breaking point to be current SAN - WP."></a>
+    </div>
+
+    <div class="adaptation-grid-4col mb-10">
+
+        <label>{{localize 'DG.Mental.Violence'}}</label>
+        <input class="labeled-resource-checkbox"
+               type="checkbox"
+               name="system.sanity.adaptations.violence.incident1"
+               {{checked actor.system.sanity.adaptations.violence.incident1}}
+               data-dtype="Boolean" />
+        <input class="labeled-resource-checkbox"
+               type="checkbox"
+               name="system.sanity.adaptations.violence.incident2"
+               {{checked actor.system.sanity.adaptations.violence.incident2}}
+               data-dtype="Boolean" />
+        <input class="labeled-resource-checkbox"
+               type="checkbox"
+               name="system.sanity.adaptations.violence.incident3"
+               {{checked actor.system.sanity.adaptations.violence.incident3}}
+               data-dtype="Boolean" />
+
+        <label class="adapted-label"
+               data-tooltip="{{localize 'DG.Tooltip.AdaptedToViolence'}}">
+            {{#if actor.system.sanity.adaptations.violence.isAdapted }}
+            {{localize 'DG.Mental.AdaptedToViolence'}}
+            {{/if}}
+        </label>
+
+        <label>{{localize 'DG.Mental.Helplessness'}}</label>
+        <input class="labeled-resource-checkbox"
+               type="checkbox"
+               name="system.sanity.adaptations.helplessness.incident1"
+               {{checked actor.system.sanity.adaptations.helplessness.incident1}}
+               data-dtype="Boolean" />
+        <input class="labeled-resource-checkbox"
+               type="checkbox"
+               name="system.sanity.adaptations.helplessness.incident2"
+               {{checked actor.system.sanity.adaptations.helplessness.incident2}}
+               data-dtype="Boolean" />
+        <input class="labeled-resource-checkbox"
+               type="checkbox"
+               name="system.sanity.adaptations.helplessness.incident3"
+               {{checked actor.system.sanity.adaptations.helplessness.incident3}}
+               data-dtype="Boolean" />
+
+        <label class="adapted-label"
+               data-tooltip="{{localize 'DG.Tooltip.AdaptedToHelplessness'}}">
+            {{#if actor.system.sanity.adaptations.helplessness.isAdapted }}
+            {{localize 'DG.Mental.AdaptedToHelplessness'}}
+            {{/if}}
+        </label>
+
     </div>
 
     <div class="luck">
