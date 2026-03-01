@@ -553,10 +553,6 @@ input.checkbox-skill-input:disabled {
   margin-bottom: 5px;
 }
 
-.deltagreen .sheet-header .charname input {
-  /* font-family: "SpecialElite", sans-serif; */
-}
-
 .deltagreen .sheet-header h2.profession {
   font-family: inherit;
   font-size: 1.5rem;
@@ -1347,6 +1343,24 @@ a[data-action="applySkillImprovements"] {
   .resources {
     font-size: 12px;
   }
+}
+
+/* Style roll-details to appear as part of the same message */
+.deltagreen .dice-roll-details {
+  margin-top: -0.5rem;
+  padding-top: 0;
+}
+
+.chat-message .dice-roll-details {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* Make whispered roll-details messages appear connected to previous message */
+.chat-message[data-whisper-to-user] .dice-roll-details {
+  border-top: none;
+  margin-top: -0.25rem;
+  padding-top: 0.25rem;
 
   .resource-inner-grid-3col input {
     padding: 1px;
@@ -1379,4 +1393,30 @@ a[data-action="applySkillImprovements"] {
   .horizontal-bar-section-divider.skills-header {
     display: flex;
   }
+}
+
+/* Hide GM-only message from players - hide unnatural percentages from players setting */
+.chat-message.gmonly-hideunnaturalresults.hide-from-players {
+  display: none;
+}
+
+.chat-message.gmonly-hideunnaturalresults {
+  margin-top: -6px;
+  border-top: 0px;
+  border-top-right-radius: 0px;
+  border-top-left-radius: 0px;
+}
+.chat-message.gmonly-hideunnaturalresults .message-header {
+  order: 2;
+  margin-top: 5px;
+}
+.chat-message.gmonly-hideunnaturalresults .message-sender {
+  display: none;
+}
+.chat-message.gmonly-hideunnaturalresults .message-content {
+  order: 1;
+}
+.chat-message.player-hideunnaturalresults {
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
 }
