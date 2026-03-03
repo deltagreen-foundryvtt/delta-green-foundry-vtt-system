@@ -226,6 +226,33 @@ async function _clearAdaptationCheckboxesForLastSanitySourceIfNotAdapted(
   });
 }
 
+/**
+ * When sanity decreases due to a sanity roll, tick the next free
+ * adaptation checkbox for the last sanity roll source (violence/helplessness),
+ * but only if the agent is not already adapted.
+ */
+async function _tickAdaptationForLastSanitySourceIfNotAdapted(actor) {
+  const lastSource = actor.getFlag(DG.ID, "lastSanityRollSource");
+  if (lastSource !== "violence" && lastSource !== "helplessness") return;
+
+  const { adaptations } = actor.system.sanity ?? {};
+  if (!adaptations) return;
+
+  const adaptation =
+    lastSource === "violence" ? adaptations.violence : adaptations.helplessness;
+  if (!adaptation || adaptation.isAdapted) return;
+
+  const nextIncident = adaptation.incident1
+    ? adaptation.incident2
+      ? "incident3"
+      : "incident2"
+    : "incident1";
+
+  await actor.update({
+    [`system.sanity.adaptations.${lastSource}.${nextIncident}`]: true,
+  });
+}
+
 // Note - this event is fired on ALL connected clients...
 Hooks.on("createActor", async (actor, options, userId) => {
   try {
@@ -324,6 +351,15 @@ Hooks.on("updateActor", async (actor, _change) => {
         await _notifySanityChat(actor, "DG.Messages.BecameTemporaryInsane");
       if (hitBreakingPoint)
         await _notifySanityChat(actor, "DG.Messages.HitBreakingPoint");
+    } else if (drop > 0) {
+      await _tickAdaptationForLastSanitySourceIfNotAdapted(actor);
+    }
+
+    // After reacting to a sanity drop once (adaptation tick or reset),
+    // clear the last sanity roll source so repeated SAN changes for the
+    // same roll do not trigger additional adaptation changes.
+    if (drop > 0) {
+      await actor.setFlag(DG.ID, "lastSanityRollSource", "none");
     }
   }
 });

@@ -1390,3 +1390,8 @@ a[data-action="applySkillImprovements"] {
   flex-basis: 45%;
   flex-grow: 1;
 }
+.card-bp {
+  color: #0e5989;
+  margin-left: 2%;
+  font-weight: 600;
+}

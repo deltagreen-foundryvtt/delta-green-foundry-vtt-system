@@ -249,6 +249,7 @@ export class DGPercentileRoll extends DGRoll {
       "deltagreen",
       "keepSanityPrivate",
     );
+
     if (
       privateSanSetting &&
       (this.type === "sanity" || this.key === "ritual") &&
@@ -261,7 +262,11 @@ export class DGPercentileRoll extends DGRoll {
       game.modules.has("dice-so-nice") &&
       game.modules.get("dice-so-nice").active;
 
-    const label = this.createLabel();
+    let mode = "none";
+    if (this.type === "sanity") {
+      mode = "sanity";
+    }
+    const label = this.createLabel(mode);
 
     let resultString = "";
     let styleOverride = "";
@@ -399,11 +404,11 @@ export class DGPercentileRoll extends DGRoll {
    *
    * @returns {string}
    */
-  createLabel() {
+  createLabel(mode = "none") {
     const startOfLabel = `${game.i18n.localize("DG.Roll.Rolling")} <b>${
       this.localizedKey
     }`;
-    const endOfLabel = `${game.i18n.localize("DG.Roll.Target")} ${
+    let endOfLabel = `${game.i18n.localize("DG.Roll.Target")} ${
       this.effectiveTarget
     }`;
 
@@ -413,6 +418,24 @@ export class DGPercentileRoll extends DGRoll {
           .localize("DG.Roll.Inhuman")
           .toUpperCase()}]</b> ${endOfLabel}`
       : `${startOfLabel}</b><br> ${endOfLabel}%`;
+
+    if (mode === "sanity") {
+      let sanPointsTillBP =
+        this.actor.system.sanity.value -
+        this.actor.system.sanity.currentBreakingPoint;
+      if (sanPointsTillBP <= 0) {
+        sanPointsTillBP = 0;
+      }
+      endOfLabel = `${this.localizedKey}: <b>${this.effectiveTarget}</b>
+      <span class="card-bp">BP: <b>${sanPointsTillBP}</b></span>`;
+
+      label = this.isInhuman
+        ? // "Inhuman" stat being rolled. See function for details.
+          `${startOfLabel} [${game.i18n
+            .localize("DG.Roll.Inhuman")
+            .toUpperCase()}]</b> ${endOfLabel}`
+        : `${endOfLabel}`;
+    }
 
     const { isExhausted, exhaustedCheckPenalty } = this.exhausted;
 

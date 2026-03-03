@@ -1375,13 +1375,6 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
     // Evaluate the roll.
     await roll.evaluate();
 
-    // Actual success (before any treatAsSuccess override) for adaptation tracking
-    const actualSuccess =
-      roll.total != null &&
-      roll.total !== 100 &&
-      roll.effectiveTarget != null &&
-      roll.total <= roll.effectiveTarget;
-
     // Sanity roll: if agent is adapted to the chosen source (violence/helplessness), auto-succeed.
     if (
       roll.type === "sanity" &&
@@ -1400,25 +1393,7 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
         roll.treatAsSuccess = true;
       }
 
-      // On real success for Violence or Helplessness, check first free incident if not adapted.
-      if (actualSuccess && (isViolence || isHelplessness)) {
-        const adaptation = isViolence
-          ? adaptations.violence
-          : adaptations.helplessness;
-        const sourceKey = isViolence ? "violence" : "helplessness";
-        if (!adaptation.isAdapted) {
-          const nextIncident = adaptation.incident1
-            ? adaptation.incident2
-              ? "incident3"
-              : "incident2"
-            : "incident1";
-          await roll.actor.update({
-            [`system.sanity.adaptations.${sourceKey}.${nextIncident}`]: true,
-          });
-        }
-      }
-
-      // Store last sanity roll source for temp insanity / breaking point handling.
+      // Store last sanity roll source for adaptation / temp insanity / breaking point handling.
       const sourceKey = isViolence
         ? "violence"
         : isHelplessness
