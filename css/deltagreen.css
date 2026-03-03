@@ -1387,8 +1387,6 @@ a[data-action="applySkillImprovements"] {
   .adaptation-grid-4col {
     display: grid;
     grid-template-columns: 50% 25px 25px 25px;
-    margin-top: 10px;
-    margin-bottom: 10px;
     align-content: center;
     justify-content: left;
     align-items: center;
@@ -1397,6 +1395,11 @@ a[data-action="applySkillImprovements"] {
   }
   .adapted-label {
     grid-column: 1 / -1;
+  }
+
+  .adaptation-block {
+    border: 1px solid black;
+    padding: 3px;
   }
 }
 
