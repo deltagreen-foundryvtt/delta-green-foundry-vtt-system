@@ -67,6 +67,9 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
   async _processSubmitData(event, form, submitData, options) {
     const submittedData = foundry.utils.expandObject(submitData);
 
+    if (this.actor.type !== "unnatural")
+      return super._processSubmitData(event, form, submittedData, options);
+
     // we need to update max WP if POW has changed (only for unnatural, but doesn't hurt others)
     submittedData.system.wp.maxNeedsUpdate =
       submittedData.system?.statistics.pow.value !==

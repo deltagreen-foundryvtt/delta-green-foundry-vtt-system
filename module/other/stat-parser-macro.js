@@ -460,7 +460,7 @@ async function RegexParseNpcStatBlock(inputStr, actorType) {
     failure: false,
   };
   actorData.system.skills.first_aid = {
-    label: "First Adi",
+    label: "First Aid",
     proficiency: GetSkillRatingsFromInput(inputStr, "FIRST AID"),
     failure: false,
   };
@@ -641,7 +641,7 @@ async function GetUserInput() {
             <div class="form-group">
                 <label>Output Actor Type: </label>
                 <div class="form-fields">
-                    <select name="actor-type">                        
+                    <select name="actor-type">
                         <option value="npc" selected>NPC</option>
                         <option value="unnatural">Unnatural</option>
                         <option value="agent">Agent</option>
