@@ -215,6 +215,8 @@ async function _notifySanityChat(actor, messageKey, formatData = {}) {
 async function _clearAdaptationCheckboxesForLastSanitySourceIfNotAdapted(
   actor,
 ) {
+  if (!game.settings.get(DG.ID, "automateAdaptationTicks")) return;
+
   const lastSource = actor.getFlag(DG.ID, "lastSanityRollSource");
   if (lastSource !== "violence" && lastSource !== "helplessness") return;
   const { adaptations } = actor.system.sanity ?? {};
@@ -232,6 +234,8 @@ async function _clearAdaptationCheckboxesForLastSanitySourceIfNotAdapted(
  * but only if the agent is not already adapted.
  */
 async function _tickAdaptationForLastSanitySourceIfNotAdapted(actor) {
+  if (!game.settings.get(DG.ID, "automateAdaptationTicks")) return;
+
   const lastSource = actor.getFlag(DG.ID, "lastSanityRollSource");
   if (lastSource !== "violence" && lastSource !== "helplessness") return;
 

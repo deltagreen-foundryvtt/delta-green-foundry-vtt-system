@@ -411,6 +411,8 @@
   "DG.Settings.showImpossibleLandscapesContent.hint": "Pokaż pola specyficzne dla Impossible Landscapes na kartach Agentów. Pola te są zawsze widoczne tylko dla Oficera prowadzącego, nawet jeśli ta opcja jest zaznaczona.",
   "DG.Settings.skillFailure.name": "Automatyczne zaznaczanie niepowodzenia w umiejętności",
   "DG.Settings.skillFailure.hint": "Aktywuj tę opcję, aby zawsze zaznaczać pole niepowodzenia po nieudanym teście umiejętności. Oficer prowadzący może cofnąć tę akcję z wiadomości na czacie dotyczącej rzutu.",
+  "DG.Settings.automateAdaptationTicks.name": "Automatyczne zaznaczanie adaptacji",
+  "DG.Settings.automateAdaptationTicks.hint": "Gdy ta opcja jest włączona, adaptacje na karcie postaci automatycznie zaznaczają się i czyszczą. Po wyłączeniu musisz zarządzać adaptacją ręcznie.",
   "DG.Settings.Saved": "Bieżące ustawienia zostały zapisane.",
 
   "DG.SettingsMenu.automation.name": "Menu automatyzacji",

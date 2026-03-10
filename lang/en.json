@@ -427,6 +427,8 @@
   "DG.Settings.showImpossibleLandscapesContent.hint": "Show Impossible Landscapes-specific fields in Agent sheets. These fields are only ever visible to the Handler, even if this setting is checked.",
   "DG.Settings.skillFailure.name": "Auto-mark Skill Failure",
   "DG.Settings.skillFailure.hint": "Activate this setting to always mark a failure checkbox upon failing a skill. The Handler can undo the action from the chat message for the roll.",
+  "DG.Settings.automateAdaptationTicks.name": "Automate adaptation ticks",
+  "DG.Settings.automateAdaptationTicks.hint": "When enabled, adaptation incidents on the character sheet will automatically tick and clear. When disabled, you have to manage adaptation incidents manually.",
   "DG.Settings.Saved": "The current settings have been saved.",
 
   "DG.SettingsMenu.automation.name": "Automation Menu",
