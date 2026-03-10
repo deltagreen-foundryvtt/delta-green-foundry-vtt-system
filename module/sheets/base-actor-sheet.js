@@ -1275,8 +1275,11 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
       item,
     };
 
-    // Sanity roll: show choice modal first, then roll with selected value.
-    if (dataset.rolltype === "sanity") {
+    // Sanity roll: show choice modal only when adaptation automation is enabled.
+    if (
+      dataset.rolltype === "sanity" &&
+      game.settings.get(DG.ID, "automateAdaptationTicks")
+    ) {
       const sanityChoice = await this.constructor._showSanityChoiceDialog();
       if (!sanityChoice) return;
       rollOptions.sanityChoice = sanityChoice;
