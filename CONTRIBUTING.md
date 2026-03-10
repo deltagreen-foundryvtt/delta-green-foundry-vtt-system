@@ -143,9 +143,256 @@ Your pull request will automatically be checked for linting and formatting via G
 
 ## Branching, Commits, and Pull Requests
 
-Work should always happen on a new branch, i.e., not `master`.
+### Git Branching Strategy
+
+Our branching strategy is related to our release process. To make a release, we also have to create a **_Tag_**, which is just a **named reference to a specific commit**. Whenever we feel that we are ready for release (either on `master`, or a `hotfix` branch), we make a release in Github, which will create a tag off of the latest commit on the appropriate branch. Although we mostly talk about "making a release" it is important to understand git tags, because a release is always associated with a tag (and they are typically created at the same time).
+
+#### Quick Summary
+
+- `master` is the main development branch.
+- **Major and minor releases** are tagged directly from `master`.
+- **Patch releases** are created from a `hotfix/vX.Y.Z` branch.
+- Hotfix branches are created from the **most recent release tag**, not from `master`.
+- After the patch release is tagged, the hotfix branch must be **merged back into `master`**.
+
+---
+
+### Branch Roles
+
+#### `master`
+
+`master` is the primary development branch. It is where _most_ Pull Requests get merged to.
+
+Responsibilities:
+
+- Ongoing development
+- Feature work
+- Non-urgent bug fixes
+- Source of **major and minor releases**
+
+All major/minor releases are tagged directly from this branch.
+
+---
+
+#### `hotfix/vX.Y.Z`
+
+Hotfix branches are used **only for patch releases**.
+
+Naming convention:
+
+```sh
+hotfix/v<major>.<minor>.<patch>
+```
+
+Example:
+
+```sh
+hotfix/v1.6.1
+```
+
+Responsibilities:
+
+- Created from the **most recent release tag**
+- Contains only targeted bug fixes
+- Used to produce a patch release tag
+- Merged back into `master` after release
+
+---
+
+### Minor and Major Release Workflow
+
+This is the **_typical_** workflow when _not_ targeting a hotfix release.
+
+1. Create a feature branch from `master` (see [Branch Naming](#branch-naming)).
+2. Apply feature work via Pull Requests to the `master` branch.
+3. Merge the feature branch into `master`.
+4. Repeat Steps 1-3 until ready for the release.
+5. Create a release in Github, which includes making a Tag named `vX.Y.Z` (where `X` or `Y` is the number that should increment, and all following numbers turn back to `0`, i.e. `X.0.0` or `X.Y.0`).
+
+```mermaid
+---
+config:
+  gitGraph:
+    mainBranchName: master
+---
+gitGraph
+    commit id: "Commit A"
+    commit id: "Commit B" tag: "v1.6.0"
+
+    branch a-feature-branch
+
+    checkout a-feature-branch
+    commit id: "Commit C"
+    commit id: "Commit D"
+
+    checkout master
+    merge a-feature-branch id: "Merge Commit 1"
+    commit id: "Update Changelog" tag: "v1.7.0"
+
+    branch another-feature-branch
+    checkout another-feature-branch
+    commit id: "Commit E"
+    commit id: "Commit F"
+
+    checkout master
+    merge another-feature-branch id: "Merge Commit 2"
+    commit id: "Update Changelog Again" tag: "v2.0.0"
+```
+
+### Patch Release Workflow
+
+When a production bug requires a patch release:
+
+1. Create a hotfix branch from the most recent release tag (see [Hotfix Branch Naming](#hotfix-branches)).
+2. Apply the necessary bug fixes via Pull Requests to the hotfix branch.
+3. Repeat Steps 1-2 until the hotfix branch is ready for release.
+4. Create a release in Github, which includes making a Tag named `vX.Y.Z` (`Z` is the number that should increment, and all other numbers remain the same).
+5. Merge the hotfix branch back into `master`.
+
+```mermaid
+---
+config:
+  gitGraph:
+    mainBranchName: master
+---
+gitGraph
+    commit id: "Feature A"
+    commit id: "Feature B" tag: "v1.6.0"
+
+    branch hotfix/v1.6.1
+    checkout hotfix/v1.6.1
+
+    branch fix-critical-bug
+    checkout fix-critical-bug
+
+    commit id: "Fix bug"
+
+    checkout hotfix/v1.6.1
+    merge fix-critical-bug id: "Merge into Hotfix" tag: "v1.6.1"
+
+    checkout master
+
+    commit id: "Feature C"
+
+    merge hotfix/v1.6.1 id: "Merge into Master"
+
+    commit id: "Feature D"
+    commit id: "Feature E" tag: "v1.7.0"
+```
+
+#### Patch release example workflow
+
+Let's pretend the current release is `v1.6.0` and it has a bug. Our next release will be the hotfix `v1.6.1`.
+
+##### 1. Creating a hotfix branch
+
+```sh
+# Start from the last release
+git switch --detached v1.6.0
+
+# Create hotfix branch
+git switch --create hotfix/v1.6.1
+```
+
+##### 2. Applying a bug fix to a new branch
+
+```sh
+# Create a new branch from the hotfix branch
+git switch --create fix-critical-bug
+
+# Apply fixes, push, and open a PR
+git commit -am "Fix critical bug" && git push
+```
+
+##### 3. Creating a release
+
+> Note: This step is usually performed by a maintainer or a long-time dev. Feel free to ask a maintainer to do this step, or for help.
+
+Once all PRs to the hotfix branch are merged, and the branch is ready to go:
+
+1. In Github, navigate to the Releases page.
+2. Create a new Release.
+3. Title the Release with the version number, (e.g. `v1.6.1`, to use our example from above).
+4. Create a tag of the same name (a required step during Release creation).
+5. Include _this_ Release's changelog in the description. See past releases for examples.
+6. Publish the Release.
+7. Wait for the automatic Github Actions to finish. The Release will be prepared programmatically.
+8. Finally, we need to update Foundry's Package Page. Currently, only @TheLastScrub can do this, so contact him or ask someone to contact him.
+
+##### 4. Merging the hotfix branch back into master
+
+1. In Github, open a pull request from the hotfix branch to master (e.g. from `hotfix/v1.6.1` to `master`).
+2. Resolve any conflicts. There will almost certainly be conflicts, at the very least, in `CHANGELOG.md`.
+3. Ask another dev to double-check your work and have them merge the Pull Request.
+
+This workflow ensures that patch releases remain **minimal and stable**, while ensuring all fixes are preserved in future development on `master`.
+
+### Putting It All Together
+
+This graph puts it all together, combining the major/minor and patch release workflows. Admittedly, this graph is kind of a doozy. I strongly encourage you to look at the simpler graphs above before trying to make sense of this one. Ultimately, it's not _that_ important that you understand this graph; it's more important that you read the rest of the document :).
+
+```mermaid
+---
+config:
+  gitGraph:
+    mainBranchName: master
+---
+gitGraph
+    commit id: "Commit A" tag: "v1.5.0"
+    commit id: "Commit B"
+
+    branch a-feature-branch
+
+    checkout a-feature-branch
+    commit id: "Commit C"
+    commit id: "Commit D"
+
+    checkout master
+    merge a-feature-branch id: "Merge Commit" tag: "v1.6.0"
+
+    branch hotfix/v1.6.1
+    checkout hotfix/v1.6.1
+
+    branch fix-critical-bug
+    checkout fix-critical-bug
+    commit id: "Fix bug"
+
+    checkout hotfix/v1.6.1
+    merge fix-critical-bug id: "Merge into Hotfix" tag: "v1.6.1"
+
+    branch hotfix/v1.6.2
+
+    checkout master
+    commit id: "Commit E"
+
+    checkout hotfix/v1.6.2
+
+    branch another-critical-bugfix
+    checkout another-critical-bugfix
+    commit id: "Fix another bug"
+
+    checkout hotfix/v1.6.2
+    merge another-critical-bugfix id: "Merge into hotfix/v1.6.2" tag: "v1.6.2"
+
+
+    checkout master
+    merge hotfix/v1.6.1 id: "Merge Hotfix into Master"
+
+    merge hotfix/v1.6.2 id: "Merge Hotfixx into Master"
+
+    branch another-feature-branch
+    checkout another-feature-branch
+    commit id: "Commit F"
+    commit id: "Commit G"
+
+    checkout master
+    merge another-feature-branch id: "Merge Commit 2"
+    commit id: "Update Changelog Again" tag: "v1.7.0"
+```
 
 ### Branch Naming
+
+Work should always happen on a new branch, i.e., not `master`.
 
 Branch names should conform to the following format:
 
@@ -161,6 +408,10 @@ Examples:
 
 If there's no GitHub issue yet, you can omit the number:
 `author-identifier/short-description` is acceptable. However, it is usually best to make a GitHub issue first to track its progress and leave it open for comment.
+
+#### Hotfix Branches
+
+If you are the one creating a Hotfix branch, it should be named like so: `hotfix/v<major>.<minor>.<patch>`. Any branches that open PRs _to_ the hotfix branch should follow the naming conventions above.
 
 ### Commit Messages
 
