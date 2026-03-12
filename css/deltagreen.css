@@ -1322,7 +1322,7 @@ a[data-action="applySkillImprovements"] {
   .left-bar {
     grid-column: 1;
     grid-row: 1 / -1;
-    padding: 10px;
+    padding: 3px;
   }
 
   .window-content > :not(.left-bar) {
