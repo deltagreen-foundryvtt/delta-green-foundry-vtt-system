@@ -2,65 +2,6 @@
 <div class="tab motivations {{tabs.motivations.cssClass}}"
      data-group="primary"
      data-tab="motivations">
-    <div class="horizontal-bar-section-divider">
-        <span>{{localize "DG.Sheet.BlockHeaders.BreakingPointAndAdaptations"}}</span>
-    </div>
-    <div>
-        <div>
-            <label class="bolded-label">{{localize 'DG.Mental.SanityLossIncidentsLabel'}}</label>
-            <div class="adaptation-grid-5col">
-
-                <label>{{localize 'DG.Mental.Violence'}}</label>
-                <input class="labeled-resource-checkbox"
-                       type="checkbox"
-                       name="system.sanity.adaptations.violence.incident1"
-                       {{checked actor.system.sanity.adaptations.violence.incident1}}
-                       data-dtype="Boolean" />
-                <input class="labeled-resource-checkbox"
-                       type="checkbox"
-                       name="system.sanity.adaptations.violence.incident2"
-                       {{checked actor.system.sanity.adaptations.violence.incident2}}
-                       data-dtype="Boolean" />
-                <input class="labeled-resource-checkbox"
-                       type="checkbox"
-                       name="system.sanity.adaptations.violence.incident3"
-                       {{checked actor.system.sanity.adaptations.violence.incident3}}
-                       data-dtype="Boolean" />
-
-                <label class="adapted-label"
-                       data-tooltip="{{localize 'DG.Tooltip.AdaptedToViolence'}}">
-                    {{#if actor.system.sanity.adaptations.violence.isAdapted }}
-                        {{localize 'DG.Mental.AdaptedToViolence'}}
-                    {{/if}}
-                </label>
-
-                <label>{{localize 'DG.Mental.Helplessness'}}</label>
-                <input class="labeled-resource-checkbox"
-                       type="checkbox"
-                       name="system.sanity.adaptations.helplessness.incident1"
-                       {{checked actor.system.sanity.adaptations.helplessness.incident1}}
-                       data-dtype="Boolean" />
-                <input class="labeled-resource-checkbox"
-                       type="checkbox"
-                       name="system.sanity.adaptations.helplessness.incident2"
-                       {{checked actor.system.sanity.adaptations.helplessness.incident2}}
-                       data-dtype="Boolean" />
-                <input class="labeled-resource-checkbox"
-                       type="checkbox"
-                       name="system.sanity.adaptations.helplessness.incident3"
-                       {{checked actor.system.sanity.adaptations.helplessness.incident3}}
-                       data-dtype="Boolean" />
-
-                <label class="adapted-label"
-                       data-tooltip="{{localize 'DG.Tooltip.AdaptedToHelplessness'}}">
-                    {{#if actor.system.sanity.adaptations.helplessness.isAdapted }}
-                        {{localize 'DG.Mental.AdaptedToHelplessness'}}
-                    {{/if}}
-                </label>
-
-            </div>
-        </div>
-    </div>
 
     <div class="horizontal-bar-section-divider">
         <span>{{localize "DG.Sheet.BlockHeaders.MotivationsAndDisorders"}}</span>

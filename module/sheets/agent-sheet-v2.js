@@ -5,7 +5,7 @@ import ActorEditStatForm from "./edit-stats.js";
 export default class DGAgentSheetV2 extends DGAgentSheet {
   static DEFAULT_OPTIONS = /** @type {const} */ ({
     classes: ["actor-sheet-v2"],
-    position: { width: 950, height: 665 },
+    position: { width: 950, height: 700 },
     actions: {
       openStatsEdit: this._openStatsEdit,
     },
