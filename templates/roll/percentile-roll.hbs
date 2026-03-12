@@ -1,5 +1,8 @@
 <div class="dice-roll">
   <div class="dice-result">
+    {{#if sanityChoiceLabel}}
+    <div class="dice-sanity-choice">{{sanityChoiceLabel}}</div>
+    {{/if}}
     <div style="{{styleOverride}}" class="dice-formula">{{resultString}}</div>
     <div class="dice-tooltip">
       <section class="tooltip-part">
