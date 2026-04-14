@@ -553,10 +553,6 @@ input.checkbox-skill-input:disabled {
   margin-bottom: 5px;
 }
 
-.deltagreen .sheet-header .charname input {
-  /* font-family: "SpecialElite", sans-serif; */
-}
-
 .deltagreen .sheet-header h2.profession {
   font-family: inherit;
   font-size: 1.5rem;
@@ -1394,6 +1390,7 @@ a[data-action="applySkillImprovements"] {
   color: #0e5989;
   margin-left: 2%;
   font-weight: 600;
+}
 
 .stats-wrapper {
   position: relative;
