@@ -1395,7 +1395,6 @@ a[data-action="applySkillImprovements"] {
   }
 }
 
-<<<<<<< budzyn0/238/hide-unnatural-percentages
 /* Hide GM-only message from players - hide unnatural percentages from players setting */
 .chat-message.gmonly-hideunnaturalresults.hide-from-players {
   display: none;
@@ -1420,7 +1419,7 @@ a[data-action="applySkillImprovements"] {
 .chat-message.player-hideunnaturalresults {
   border-bottom-right-radius: 0px;
   border-bottom-left-radius: 0px;
-=======
+}
 .stats-wrapper {
   position: relative;
 }
@@ -1476,5 +1475,4 @@ a[data-action="applySkillImprovements"] {
   text-align: center;
   padding: 5px;
   grid-gap: 5px;
->>>>>>> master
 }
