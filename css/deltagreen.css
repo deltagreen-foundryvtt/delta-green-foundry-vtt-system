@@ -545,6 +545,10 @@ input.checkbox-skill-input {
   width: 1px;
 }
 
+input.checkbox-skill-input:disabled {
+  visibility: hidden;
+}
+
 .deltagreen .sheet-header .header-top {
   margin-bottom: 5px;
 }
@@ -1257,6 +1261,11 @@ a[data-action="applySkillImprovements"] {
   scrollbar-color: var(--color-text-dark-header) #111 !important;
 }
 
+#interface:not(.theme-light) * {
+  --control-border-color: #215112;
+  --control-hover-border-color: #215112;
+}
+
 /* The logo is defunct as of v13 */
 #logo {
   content: url("../assets/img/Delta_Green_Logo.webp");
@@ -1264,14 +1273,6 @@ a[data-action="applySkillImprovements"] {
   height: auto;
   padding-top: 10px;
   padding-bottom: 10px;
-}
-
-body:not(.no-theme) #interface:not(.theme-light) .ui-control {
-  border: 2px solid #215112;
-}
-
-body:not(.no-theme) #interface:not(.theme-light) #action-bar .slot.full:hover {
-  border: 2px solid #215112;
 }
 
 .target-proficiency-mod {
@@ -1394,6 +1395,7 @@ body:not(.no-theme) #interface:not(.theme-light) #action-bar .slot.full:hover {
   }
 }
 
+<<<<<<< budzyn0/238/hide-unnatural-percentages
 /* Hide GM-only message from players - hide unnatural percentages from players setting */
 .chat-message.gmonly-hideunnaturalresults.hide-from-players {
   display: none;
@@ -1418,4 +1420,61 @@ body:not(.no-theme) #interface:not(.theme-light) #action-bar .slot.full:hover {
 .chat-message.player-hideunnaturalresults {
   border-bottom-right-radius: 0px;
   border-bottom-left-radius: 0px;
+=======
+.stats-wrapper {
+  position: relative;
+}
+
+/* Edit icon */
+.stats-edit-btn {
+  position: absolute;
+  top: -10px;
+  right: 0;
+
+  width: 24px;
+  height: 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+  background: var(--color-border-dark, #444);
+  color: #fff;
+
+  font-size: 12px;
+
+  cursor: pointer;
+  opacity: 0;
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
+}
+
+/* Show on hover of whole stats block */
+.stats-wrapper:hover .stats-edit-btn {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+/* Hover feedback */
+.stats-edit-btn:hover {
+  background: var(--color-border-highlight, #c9a227);
+}
+
+.edit-stat-form {
+  label {
+    color: var(--color-text-primary);
+  }
+}
+
+.physical-stats-outer-grid-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 5px;
+  grid-gap: 5px;
+>>>>>>> master
 }

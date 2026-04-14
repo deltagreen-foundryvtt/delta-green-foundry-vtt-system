@@ -12,3 +12,6 @@ trim_trailing_whitespace = true
 # four spaces for html files
 [*.{html,hbs}]
 indent_size = 4
+
+[*.sh]
+indent_size = 4

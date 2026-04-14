@@ -1,10 +1,14 @@
 import DGAgentSheet from "./agent-sheet.js";
+import ActorEditStatForm from "./edit-stats.js";
 
 /** @extends {DGAgentSheet} */
 export default class DGAgentSheetV2 extends DGAgentSheet {
   static DEFAULT_OPTIONS = /** @type {const} */ ({
     classes: ["actor-sheet-v2"],
     position: { width: 950, height: 665 },
+    actions: {
+      openStatsEdit: this._openStatsEdit,
+    },
   });
 
   /** @override */
@@ -29,4 +33,11 @@ export default class DGAgentSheetV2 extends DGAgentSheet {
     },
     tabs: this.BASE_PARTS.tabs,
   });
+
+  static _openStatsEdit() {
+    const form = new ActorEditStatForm({
+      actor: this.actor,
+    });
+    form.render(true);
+  }
 }

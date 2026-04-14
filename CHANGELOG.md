@@ -1,13 +1,39 @@
 # Release/Patch Notes
 
-## Version 1.7.0 - 2025-xx-xx
+## Version 1.7.0 - 2026-xx-xx
+
+> Thanks to [hknmtt](https://github.com/hknmtt) for updating the Brazilian translation.
 
 ### **Features:**
 
+- [#296](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/296) - Remove adaptation checks if not adapted.
+- [#281](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/281) - Add tooltips to checkboxes in adaptation area.
 - [#211](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/211) - Move macros to System macros folder in compendium.
 - [#283](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/283) - Added new actor sheet with left hand Sidebar RFC
 - [#291](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/291) - Moving Luck button from three dots to left hand panel
 - [#238](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/238) - Added option to hide unnatural percentages
+
+## Version 1.6.5 - 2026-02-17
+
+### **Features:**
+
+- French translation updated by [Hrunh](https://github.com/hrunh)
+- Spanish translation updated by [lozanoje](https://github.com/lozanoje)
+
+## Version 1.6.4 - 2026-02-12
+
+> Thanks to [666f78](https://github.com/666f78) for adding the Ukrainian translation.
+
+### **Features:**
+
+- [#312](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/312) - Add tooltip to Breaking point.
+- [#328](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/328) - Exclude Unnatural from Marked Failed Checks.
+- [#338](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/338) - Remove checkbox for unnatural skill.
+
+### **Bug Fixes:**
+
+- [#316](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/316) - Remove the custom border from pressed, toggle and action buttons.
+- [#340](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/340) - Allows to open a vehicle sheet without opening an agent first.
 
 ## Version 1.6.3 - 2025-12-12
 

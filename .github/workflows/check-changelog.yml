@@ -11,7 +11,10 @@ jobs:
   check-changelog:
     name: Check CHANGELOG.md for updates
     runs-on: ubuntu-latest
-    if: contains(github.event.pull_request.labels.*.name, 'bug') || contains(github.event.pull_request.labels.*.name, 'enhancement')
+    if: |
+      contains(github.event.pull_request.labels.*.name, 'bug')
+      || contains(github.event.pull_request.labels.*.name, 'enhancement')
+      || contains(github.event.pull_request.labels.*.name, 'localization')
 
     steps:
       - name: Checkout code
