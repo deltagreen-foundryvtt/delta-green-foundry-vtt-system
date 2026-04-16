@@ -4,6 +4,7 @@
 
 ### **Bug Fixes:**
 
+- [#382](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/382) - Fix rituals not respecting damage from learning.
 - [#355](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/355) - Save the physical description of an agent.
 - [#359](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/359) - Save the profession of an NPC.
 - [#363](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/363) - First Aid misspelled in stat-parser-macro.js
