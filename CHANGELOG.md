@@ -1,6 +1,6 @@
 # Release/Patch Notes
 
-## Version 1.6.6 - 2026-03-XX
+## Version 1.6.6 - 2026-04-15
 
 ### **Bug Fixes:**
 
