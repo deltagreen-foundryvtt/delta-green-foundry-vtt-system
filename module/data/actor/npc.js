@@ -16,6 +16,9 @@ export default class NPCData extends CharacterData {
         value: new NumberField({ initial: 100 }),
         currentBreakingPoint: new NumberField({ initial: 101 }),
       }),
+      biography: new SchemaField({
+        profession: new StringField({ initial: "" }),
+      }),
       notes: new StringField({ initial: "" }),
       shortDescription: new StringField({ initial: "" }),
       showUntrainedSkills: new BooleanField({ initial: true }),
