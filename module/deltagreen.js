@@ -86,12 +86,13 @@ Hooks.once("init", async () => {
     });
   });
 
-  Actors.registerSheet(DG.ID, DGAgentSheetV2, {
-    makeDefault: false,
-    themes: null,
-    label: `Agent Sheet V2`,
-    types: ["agent"],
-  });
+  // Don't register new sheet yet.
+  // Actors.registerSheet(DG.ID, DGAgentSheetV2, {
+  //   makeDefault: false,
+  //   themes: null,
+  //   label: `Agent Sheet V2`,
+  //   types: ["agent"],
+  // });
 
   // Register item sheet.
   Items.registerSheet(DG.ID, DeltaGreenItemSheet, {

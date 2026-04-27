@@ -64,6 +64,28 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
   });
 
   /** @override */
+  async _processSubmitData(event, form, submitData, options) {
+    const submittedData = foundry.utils.expandObject(submitData);
+
+    if (this.actor.type !== "unnatural")
+      return super._processSubmitData(event, form, submittedData, options);
+
+    // we need to update max WP if POW has changed (only for unnatural, but doesn't hurt others)
+    submittedData.system.wp.maxNeedsUpdate =
+      submittedData.system?.statistics.pow.value !==
+      this.actor.system.statistics.pow.value;
+
+    // we need to update max HP if STR or CON have changed (only for unnatural, but doesn't hurt others)
+    submittedData.system.health.maxNeedsUpdate =
+      submittedData.system?.statistics.str.value !==
+        this.actor.system.statistics.str.value ||
+      submittedData.system?.statistics.con.value !==
+        this.actor.system.statistics.con.value;
+
+    return super._processSubmitData(event, form, submittedData, options);
+  }
+
+  /** @override */
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
 
@@ -280,7 +302,7 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
 
     switch (this.actor.type) {
       case "agent":
-        descriptionPath = "system.physicalDescription";
+        descriptionPath = "system.physical.description";
         break;
       case "npc":
       case "unnatural":

@@ -146,7 +146,12 @@ export default class DeltaGreenItemSheet extends foundry.appv1.sheets
         break;
       }
       case "sanity-damage": {
-        const { successLoss, failedLoss } = this.item.system.sanity;
+        // Applies only to rituals, as far as Jalen can tell. Tomes have "study damage", but it just uses `sanity`.
+        const isLearntDamage = element.hasAttribute("data-san-on-learn");
+
+        const { successLoss, failedLoss } = isLearntDamage
+          ? this.item.system.learnedSanity
+          : this.item.system.sanity;
         const combinedFormula = `{${successLoss}, ${failedLoss}}`;
 
         roll = new DGSanityDamageRoll(combinedFormula, {}, rollOptions);
