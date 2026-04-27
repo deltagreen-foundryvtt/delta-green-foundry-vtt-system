@@ -553,10 +553,6 @@ input.checkbox-skill-input:disabled {
   margin-bottom: 5px;
 }
 
-.deltagreen .sheet-header .charname input {
-  /* font-family: "SpecialElite", sans-serif; */
-}
-
 .deltagreen .sheet-header h2.profession {
   font-family: inherit;
   font-size: 1.5rem;
@@ -1379,6 +1375,21 @@ a[data-action="applySkillImprovements"] {
   .horizontal-bar-section-divider.skills-header {
     display: flex;
   }
+}
+.dice-sanity-choice {
+  font-size: 12px;
+  text-align: center;
+  margin-bottom: 4px;
+  opacity: 0.95;
+}
+.sanity-roll-dialog .form-footer button {
+  flex-basis: 45%;
+  flex-grow: 1;
+}
+.card-bp {
+  color: #0e5989;
+  margin-left: 2%;
+  font-weight: 600;
 }
 
 .stats-wrapper {

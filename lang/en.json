@@ -173,6 +173,15 @@
   "DG.Roll.RollingDamageFor": "Rolling DAMAGE for",
   "DG.Roll.Or": "Or",
   "DG.Roll.Roll": "Roll",
+  "DG.Roll.Cancel": "Cancel",
+
+  "DG.SanityRoll.DialogTitle": "Sanity Roll",
+  "DG.SanityRoll.DialogPrompt": "Choose the source of this sanity roll:",
+  "DG.SanityRoll.Violence": "Violence",
+  "DG.SanityRoll.Helplessness": "Helplessness",
+  "DG.SanityRoll.Unnatural": "Unnatural",
+  "DG.SanityRoll.None": "None",
+  "DG.SanityRoll.SelectedChoice": "Selected: {choice}",
 
   "DG.Physical.Wounds": "Wounds",
   "DG.Physical.FirstAidLabel": "First Aid Has Already Been Attempted: ",
@@ -418,6 +427,8 @@
   "DG.Settings.showImpossibleLandscapesContent.hint": "Show Impossible Landscapes-specific fields in Agent sheets. These fields are only ever visible to the Handler, even if this setting is checked.",
   "DG.Settings.skillFailure.name": "Auto-mark Skill Failure",
   "DG.Settings.skillFailure.hint": "Activate this setting to always mark a failure checkbox upon failing a skill. The Handler can undo the action from the chat message for the roll.",
+  "DG.Settings.automateAdaptationTicks.name": "Automate adaptation ticks",
+  "DG.Settings.automateAdaptationTicks.hint": "When enabled, adaptation incidents on the character sheet will automatically tick and clear. When disabled, you have to manage adaptation incidents manually.",
   "DG.Settings.Saved": "The current settings have been saved.",
 
   "DG.SettingsMenu.automation.name": "Automation Menu",
@@ -429,5 +440,11 @@
   "DG.SettingsMenu.handler.title": "Handler-only Settings",
 
   "DG.Messages.Skillsmark.Marked": "This skill is marked",
-  "DG.Messages.Skillsmark.Tooltip": "See p. 29 Agent's Handbook"
+  "DG.Messages.Skillsmark.Tooltip": "See p. 29 Agent's Handbook",
+
+  "DG.Messages.AdaptedToSanity": "{adaptationType}.",
+
+  "DG.Messages.BecameTemporaryInsane": "{name} became temporarily insane.",
+
+  "DG.Messages.HitBreakingPoint": "{name} hit their breaking point."
 }

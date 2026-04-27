@@ -106,6 +106,7 @@ export class DGPercentileRoll extends DGRoll {
       case "sanity":
         this.target = this.actor.system.sanity.value;
         this.localizedKey = game.i18n.localize("DG.Attributes.SAN");
+        this.sanityChoice = options.sanityChoice ?? null;
         break;
       case "luck":
         this.target = 50;
@@ -248,6 +249,7 @@ export class DGPercentileRoll extends DGRoll {
       "deltagreen",
       "keepSanityPrivate",
     );
+
     if (
       privateSanSetting &&
       (this.type === "sanity" || this.key === "ritual") &&
@@ -260,7 +262,11 @@ export class DGPercentileRoll extends DGRoll {
       game.modules.has("dice-so-nice") &&
       game.modules.get("dice-so-nice").active;
 
-    const label = this.createLabel();
+    let mode = "none";
+    if (this.type === "sanity") {
+      mode = "sanity";
+    }
+    const label = this.createLabel(mode);
 
     let resultString = "";
     let styleOverride = "";
@@ -289,6 +295,22 @@ export class DGPercentileRoll extends DGRoll {
       !foundry.utils.getProperty(this.actor, `${this.skillPath}.failure`) &&
       game.settings.get(DG.ID, "skillFailure");
 
+    const sanityChoiceValue = this.sanityChoice?.value;
+    const adaptedKey =
+      this.treatAsSuccess && sanityChoiceValue
+        ? {
+            Violence: "DG.Mental.AdaptedToViolence",
+            Helplessness: "DG.Mental.AdaptedToHelplessness",
+          }[sanityChoiceValue]
+        : null;
+    // Adaptation label takes precedence over source; otherwise show sanity roll source (but hide "None").
+    const sanityChoiceLabel =
+      adaptedKey != null
+        ? game.i18n.localize(adaptedKey)
+        : sanityChoiceValue === "None"
+        ? null
+        : this.sanityChoice?.label ?? null;
+
     const html = await renderTemplate(
       "systems/deltagreen/templates/roll/percentile-roll.hbs",
       {
@@ -297,6 +319,7 @@ export class DGPercentileRoll extends DGRoll {
         formula: this.formula,
         total: this.total,
         failureMark,
+        sanityChoiceLabel,
       },
     );
 
@@ -381,11 +404,11 @@ export class DGPercentileRoll extends DGRoll {
    *
    * @returns {string}
    */
-  createLabel() {
+  createLabel(mode = "none") {
     const startOfLabel = `${game.i18n.localize("DG.Roll.Rolling")} <b>${
       this.localizedKey
     }`;
-    const endOfLabel = `${game.i18n.localize("DG.Roll.Target")} ${
+    let endOfLabel = `${game.i18n.localize("DG.Roll.Target")} ${
       this.effectiveTarget
     }`;
 
@@ -395,6 +418,24 @@ export class DGPercentileRoll extends DGRoll {
           .localize("DG.Roll.Inhuman")
           .toUpperCase()}]</b> ${endOfLabel}`
       : `${startOfLabel}</b><br> ${endOfLabel}%`;
+
+    if (mode === "sanity") {
+      let sanPointsTillBP =
+        this.actor.system.sanity.value -
+        this.actor.system.sanity.currentBreakingPoint;
+      if (sanPointsTillBP <= 0) {
+        sanPointsTillBP = 0;
+      }
+      endOfLabel = `${this.localizedKey}: <b>${this.effectiveTarget}</b>
+      <span class="card-bp">BP: <b>${sanPointsTillBP}</b></span>`;
+
+      label = this.isInhuman
+        ? // "Inhuman" stat being rolled. See function for details.
+          `${startOfLabel} [${game.i18n
+            .localize("DG.Roll.Inhuman")
+            .toUpperCase()}]</b> ${endOfLabel}`
+        : `${endOfLabel}`;
+    }
 
     const { isExhausted, exhaustedCheckPenalty } = this.exhausted;
 
@@ -496,6 +537,9 @@ export class DGPercentileRoll extends DGRoll {
     if (!this.total) {
       return null;
     }
+
+    // Adapted to sanity source (violence/helplessness): treat as success but keep roll normal.
+    if (this.treatAsSuccess) return true;
 
     // A roll of 100 always (critically) fails, even for inhuman rolls.
     if (this.total === 100) return false;

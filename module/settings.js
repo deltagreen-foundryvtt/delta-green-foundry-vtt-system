@@ -216,6 +216,10 @@ class AutomationSettings extends SettingForm {
         default: false,
         type: Boolean,
       },
+      automateAdaptationTicks: {
+        default: true,
+        type: Boolean,
+      },
     };
   }
 }
