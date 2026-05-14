@@ -399,6 +399,8 @@
   "DG.Settings.hideSkillTooltips.hint": "Nie wyświetlaj podpowiedzi umiejętności na kartach Agenta.",
   "DG.Settings.keepSanityPrivate.name": "Ukryj Poczytalność",
   "DG.Settings.keepSanityPrivate.hint": "Ukryj Poczytalność przed graczami zarówno na kartach Agentów, jak i w rzutach.",
+  "DG.Settings.hideUnnaturalPercentages.name": "Ukryj procenty dla Nadnaturalnych?",
+  "DG.Settings.hideUnnaturalPercentages.hint": "Ukryj procenty umiejętności Nadnaturalnych w rzutach.",
   "DG.Settings.skillImprovementFormula.name": "Domyślny rzut na rozwój umiejętności",
   "DG.Settings.skillImprovementFormula.hint": "Domyślnie 1k4. Istniało kilka errat w tej kwestii — wybierz tę opcję, która najlepiej pasuje do tempa twojej gry.",
   "DG.Settings.skillImprovementFormula.1": "Stałe +1%",
