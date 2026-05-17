@@ -594,10 +594,11 @@ export class DGLethalityRoll extends DGPercentileRoll {
     }
 
     let html = "";
-    html += `<div class="dice-roll">`;
+    html += `<div class="dice-roll" data-action="expandRoll">`;
     html += `     <div class="dice-result">`;
     html += `     <div style="${styleOverride}" class="dice-formula">${resultString}</div>`;
     html += `     <div class="dice-tooltip">`;
+    html += `          <div class="wrapper">`;
     html += `          <section class="tooltip-part">`;
     html += `               <div class="dice">`;
     html += `                    <header class="part-header flexrow">`;
@@ -626,10 +627,12 @@ export class DGLethalityRoll extends DGPercentileRoll {
     html += `                    </ol>`;
     html += `               </div>`;
     html += `          </section>`;
+    html += `          </div>`;
     html += `     </div>`;
     html += `     <h4 class="dice-total">${this.total} (${
       nonLethalDamage.total
     } ${game.i18n.localize("DG.Roll.Damage")})</h4>`;
+    html += `     </div>`;
     html += `</div>`;
 
     return this.toMessage({ content: html, flavor: label });
@@ -788,10 +791,11 @@ export class DGSanityDamageRoll extends DGRoll {
     )}</b> For <b>${lowDie.formula} / ${highDie.formula}</b>`;
 
     let html = "";
-    html += `<div class="dice-roll">`;
+    html += `<div class="dice-roll" data-action="expandRoll">`;
     html += `     <div class="dice-result">`;
     html += `     <div class="dice-formula">${lowDie.formula} / ${highDie.formula}</div>`;
     html += `     <div class="dice-tooltip">`;
+    html += `          <div class="wrapper">`;
     html += `          <section class="tooltip-part">`;
     html += `               <div class="dice">`;
     html += `                    <header class="part-header flexrow">`;
@@ -819,8 +823,10 @@ export class DGSanityDamageRoll extends DGRoll {
     html += `                    </ol>`;
     html += `               </div>`;
     html += `          </section>`;
+    html += `          </div>`;
     html += `     </div>`;
     html += `     <h4 class="dice-total">${lowResult} / ${highResult}</h4>`;
+    html += `     </div>`;
     html += `</div>`;
     return this.toMessage({ content: html, flavor });
   }
