@@ -1,18 +1,20 @@
-<div class="dice-roll">
+<div class="dice-roll" data-action="expandRoll">
   <div class="dice-result">
     <div style="{{styleOverride}}" class="dice-formula">{{resultString}}</div>
     <div class="dice-tooltip">
-      <section class="tooltip-part">
-        <div class="dice">
-          <header class="part-header flexrow">
-            <span class="part-formula">{{formula}}</span>
-            <span class="part-total">{{total}}</span>
-          </header>
-          <ol class="dice-rolls">
-            <li class="roll die {{formula}}">{{total}}</li>
-          </ol>
-        </div>
-      </section>
+      <div class="wrapper">
+        <section class="tooltip-part">
+          <div class="dice">
+            <header class="part-header flexrow">
+              <span class="part-formula">{{formula}}</span>
+              <span class="part-total">{{total}}</span>
+            </header>
+            <ol class="dice-rolls">
+              <li class="roll die {{formula}}">{{total}}</li>
+            </ol>
+          </div>
+        </section>
+      </div>
     </div>
     <h4 class="dice-total">{{total}}</h4>
   </div>
