@@ -18,8 +18,8 @@
   "version": "dev",
   "compatibility": {
     "minimum": "13",
-    "verified": "13",
-    "maximum": "13"
+    "verified": "14",
+    "maximum": "14"
   },
   "flags": {
     "hotReload": {
@@ -207,6 +207,15 @@
       "unnatural": {},
       "npc": {},
       "vehicle": {}
+    },
+    "Item": {
+      "weapon": {},
+      "armor": {},
+      "motivation": {},
+      "bond": {},
+      "gear": {},
+      "tome": {},
+      "ritual": {}
     }
   }
 }

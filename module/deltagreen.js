@@ -25,16 +25,33 @@ import AgentData from "./data/actor/agent.js";
 import UnnaturalData from "./data/actor/unnatural.js";
 import NPCData from "./data/actor/npc.js";
 import VehicleData from "./data/actor/vehicle.js";
+import WeaponItemData from "./data/item/weapon.js";
+import ArmorItemData from "./data/item/armor.js";
+import MotivationItemData from "./data/item/motivation.js";
+import BondItemData from "./data/item/bond.js";
+import GearItemData from "./data/item/gear.js";
+import TomeItemData from "./data/item/tome.js";
+import RitualItemData from "./data/item/ritual.js";
 
 const { Actors, Items } = foundry.documents.collections;
 
 Hooks.once("init", async () => {
   Object.assign(CONFIG.Actor.dataModels, {
-    // The keys are the types defined in our template.json
+    // The keys are the types defined in system.json documentTypes.Actor
     agent: AgentData,
     unnatural: UnnaturalData,
     npc: NPCData,
     vehicle: VehicleData,
+  });
+
+  Object.assign(CONFIG.Item.dataModels, {
+    weapon: WeaponItemData,
+    armor: ArmorItemData,
+    motivation: MotivationItemData,
+    bond: BondItemData,
+    gear: GearItemData,
+    tome: TomeItemData,
+    ritual: RitualItemData,
   });
 
   game.deltagreen = {
