@@ -92,23 +92,13 @@
 
             <div class="item flexrow flex-group-left flex-thin-border special-training-box">
                 <div class="flexrow">
-                    {{#if_not_eq (localize (concat 'DG.Attributes.' skill.key)) (concat "DG.Attributes." skill.key) }}
-                        <label {{#unless (eq ../../skillTooltipDisplay "never") }}
-                               data-tooltip="{{localize (concat 'DG.Attributes.Tooltip.' skill.key)}}"
-                               {{/unless }}>
-                            {{skill.name}} ({{localize (concat 'DG.Attributes.' skill.key)}}, {{skill.targetNumber}}%)
-                        </label>
-                    {{else}}
-                        {{#if_not_eq (localize (concat 'DG.Skills.' skill.key)) (concat "DG.Skills." skill.key) }}
-                            <label {{#unless (eq ../../skillTooltipDisplay "never") }}
-                                   data-tooltip="{{localize (concat 'DG.Skills.Tooltip.' skill.key)}}"
-                                   {{/unless }}>
-                                {{skill.name}} ({{localize (concat 'DG.Skills.' skill.key)}}, {{skill.targetNumber}}%)
-                            </label>
-                        {{else}}
-                            <label>{{skill.name}} ({{skill.attribute}}, {{skill.targetNumber}}%)</label>
-                        {{/if_not_eq}}
-                    {{/if_not_eq}}
+                    <label {{#if skill.attributeTooltip }}
+                           {{#unless (eq ../../skillTooltipDisplay "never") }}
+                           data-tooltip="{{localize skill.attributeTooltip}}"
+                           {{/unless }}
+                           {{/if }}>
+                        {{skill.displayLabel}}
+                    </label>
                     <label class="{{if_gt skill.targetNumber 0 'rollable' 'not-rollable'}}"
                            data-action="roll"
                            data-key="{{skill.key}}"

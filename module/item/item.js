@@ -10,11 +10,6 @@ export default class DeltaGreenItem extends Item {
    */
   prepareData() {
     super.prepareData();
-
-    // Get the Item's data
-    const itemData = this;
-    const actorData = this.actor || {};
-    const { system } = itemData;
   }
 
   /**

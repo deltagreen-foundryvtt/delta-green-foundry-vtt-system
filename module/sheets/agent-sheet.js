@@ -1,5 +1,12 @@
 import DG, { BASE_TEMPLATE_PATH } from "../config.js";
+import { packSkillGroupsIntoColumns } from "../utils/skill-layout.js";
+import {
+  createSkillImprovementChatMessage,
+  evaluateSkillImprovementRolls,
+  getSkillImprovementFormulaAsPercent,
+} from "../roll/skill-improvement-roll.js";
 import DGActorSheet from "./base-actor-sheet.js";
+import ActorEditStatForm from "../applications/edit-stats.js";
 
 const { renderTemplate } = foundry.applications.handlebars;
 
@@ -7,14 +14,27 @@ const { renderTemplate } = foundry.applications.handlebars;
 export default class DGAgentSheet extends DGActorSheet {
   /** @override */
   static DEFAULT_OPTIONS = /** @type {const} */ ({
+    classes: ["agent-sheet"],
+    position: { width: 958, height: 700 },
     actions: {
       // Resets.
       clearBondDamage: DGAgentSheet._clearBondDamage,
       resetBreakingPoint: DGAgentSheet._resetBreakingPoint,
       // Other actions.
       applySkillImprovements: DGAgentSheet._processSkillImprovements,
+      openStatsEdit: DGAgentSheet._openStatsEdit,
+      toggleCustomSkillsEdit: function toggleCustomSkillsEdit(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        this._customSkillsEditMode = !this._customSkillsEditMode;
+        this._syncCustomSkillsEditModeUi();
+        return this.render();
+      },
     },
   });
+
+  /** @type {boolean} */
+  _customSkillsEditMode = false;
 
   /** @override */
   static TABS = /** @type {const} */ ({
@@ -23,11 +43,10 @@ export default class DGAgentSheet extends DGActorSheet {
       labelPrefix: "DG.Navigation.Agent",
       tabs: [
         { id: "skills" },
-        { id: "physical" },
+        { id: "combat" },
         { id: "motivations" },
         { id: "gear" },
-        { id: "bio" },
-        { id: "bonds" },
+        { id: "personal" },
         { id: "about", icon: "fas fa-question-circle", label: "" },
       ],
     },
@@ -35,33 +54,88 @@ export default class DGAgentSheet extends DGActorSheet {
 
   /** @override */
   static PARTS = /** @type {const} */ ({
-    header: this.BASE_PARTS.header,
+    leftBar: {
+      template: `${this.TEMPLATE_PATH}/parts/left-bar.html`,
+      templates: [`${this.TEMPLATE_PATH}/partials/sanity-partial.html`],
+    },
     tabs: this.BASE_PARTS.tabs,
-    skills: this.BASE_PARTS.skills,
-    physical: {
-      template: `${this.TEMPLATE_PATH}/parts/physical-tab.html`,
+    rightBar: {
+      template: `${this.TEMPLATE_PATH}/parts/right-bar.html`,
       templates: [
-        `${this.TEMPLATE_PATH}/partials/attributes-grid-partial.html`,
+        `${this.TEMPLATE_PATH}/parts/skills-tab-agent.html`,
+        `${this.TEMPLATE_PATH}/parts/combat-tab-agent.html`,
+        `${this.TEMPLATE_PATH}/parts/motivations-tab-agent.html`,
+        `${this.TEMPLATE_PATH}/parts/gear-tab-agent.html`,
+        `${this.TEMPLATE_PATH}/parts/personal-tab-agent.html`,
+        `${this.TEMPLATE_PATH}/parts/about-tab.html`,
+        `${this.TEMPLATE_PATH}/partials/custom-skills-partial-agent.html`,
+        `${this.TEMPLATE_PATH}/partials/bonds-section-partial.html`,
+        `${this.TEMPLATE_PATH}/partials/weapons-section-partial.html`,
+        `${this.TEMPLATE_PATH}/partials/armor-section-partial.html`,
+        `${this.TEMPLATE_PATH}/partials/injuries-section-partial.html`,
+        `${this.TEMPLATE_PATH}/partials/other-gear-section-partial.html`,
+        `${this.TEMPLATE_PATH}/partials/notes-partial.html`,
       ],
-      scrollable: [""],
     },
-    motivations: {
-      template: `${this.TEMPLATE_PATH}/parts/motivations-tab.html`,
-    },
-    gear: this.BASE_PARTS.gear,
-    bio: {
-      template: `${this.TEMPLATE_PATH}/parts/bio-tab.html`,
-      templates: [`${this.TEMPLATE_PATH}/partials/notes-partial.html`],
-      scrollable: [""],
-    },
-    bonds: {
-      template: `${this.TEMPLATE_PATH}/parts/bonds-tab.html`,
-      scrollable: [""],
-    },
-    about: this.BASE_PARTS.about,
   });
 
-  /* -------------------------------------------- */
+  /** @override */
+  _configureRenderOptions(options) {
+    super._configureRenderOptions(options);
+
+    if (!this.actor.limited) return;
+
+    options.parts = ["leftBar", "tabs", "rightBar"];
+  }
+
+  /** @override */
+  _prepareTabs(group) {
+    const tabs = super._prepareTabs(group);
+
+    if (!this.actor.limited || this.actor.type !== "agent") return tabs;
+
+    return {
+      personal: { ...tabs.personal, active: true, cssClass: "active" },
+    };
+  }
+
+  /** @override */
+  async _prepareContext(options) {
+    const context = await super._prepareContext(options);
+
+    if (this.actor.type !== "agent") return context;
+
+    context.typedSkillColumns = this._prepareTypedSkillColumns();
+    context.customSkillsEditMode = this._customSkillsEditMode;
+
+    return context;
+  }
+
+  /** @override */
+  _sortCustomSkills() {
+    // Agent sheet uses typedSkillColumns instead of sortedCustomSkills.
+  }
+
+  /** @override */
+  async _onRender(context, options) {
+    await super._onRender(context, options);
+    this._syncCustomSkillsEditModeUi();
+  }
+
+  /** @returns {void} */
+  _syncCustomSkillsEditModeUi() {
+    this.element?.classList.toggle(
+      "custom-skills-edit-mode",
+      Boolean(this._customSkillsEditMode),
+    );
+  }
+
+  static _clearBondDamage() {
+    for (const bond of this.actor.itemTypes.bond) {
+      if (!bond.system.hasBeenDamagedSinceLastHomeScene) continue;
+      bond.update({ "system.hasBeenDamagedSinceLastHomeScene": false });
+    }
+  }
 
   /**
    * Resets the actor's current breaking point by recalculating it as the difference
@@ -91,6 +165,86 @@ export default class DGAgentSheet extends DGActorSheet {
     }
 
     this.actor.update(dataToUpdate);
+  }
+
+  /**
+   * Builds grouped typed-skill columns for the skills tab.
+   *
+   * @returns {object[][]}
+   */
+  _prepareTypedSkillColumns() {
+    const groupsMap = new Map();
+
+    for (const [key, skill] of Object.entries(this.actor.system.typedSkills)) {
+      const groupKey = skill.group;
+      if (!groupsMap.has(groupKey)) {
+        groupsMap.set(groupKey, {
+          group: groupKey,
+          label: game.i18n.localize(`DG.TypeSkills.${groupKey}`),
+          skills: [],
+          rowCount: 0,
+        });
+      }
+
+      groupsMap.get(groupKey).skills.push({
+        ...skill,
+        key,
+        actorType: this.actor.type,
+      });
+    }
+
+    const groups = [...groupsMap.values()].map((group) => {
+      group.skills.sort((a, b) =>
+        a.label.localeCompare(b.label, game.i18n.lang),
+      );
+      group.rowCount = 1 + group.skills.length;
+      return group;
+    });
+
+    groups.sort((a, b) => a.label.localeCompare(b.label, game.i18n.lang));
+
+    const trainings = this._prepareSpecialTrainingBlocks();
+    if (trainings.length > 0) {
+      groups.push({
+        group: "specialTraining",
+        isSpecialTraining: true,
+        label: game.i18n.localize("DG.Sheet.BlockHeaders.SpecialTraining"),
+        skills: trainings,
+        rowCount: 1 + trainings.length,
+      });
+    }
+
+    return packSkillGroupsIntoColumns(
+      groups,
+      3,
+      game.settings.get("deltagreen", "sortSkills"),
+    );
+  }
+
+  /**
+   * Sorted special-training blocks for the skills tab (single-column list).
+   *
+   * @returns {object[]}
+   */
+  _prepareSpecialTrainingBlocks() {
+    const trainings = this._prepareSpecialTrainings().map((training) => ({
+      ...training,
+      sortLabel: training.name.toUpperCase(),
+      actorType: this.actor.type,
+    }));
+
+    trainings.sort((a, b) =>
+      a.sortLabel.localeCompare(b.sortLabel, game.i18n.lang),
+    );
+
+    return trainings;
+  }
+
+  static _openStatsEdit() {
+    const form = new ActorEditStatForm({
+      actor: this.actor,
+    });
+    form.render(true);
   }
 
   /**
@@ -126,18 +280,21 @@ export default class DGAgentSheet extends DGActorSheet {
 
     if (!prompt) return null;
 
-    const resultObj = await this._createSkillImprovementRolls(
+    const resultObj = await evaluateSkillImprovementRolls(
+      this.actor,
       baseRollFormula,
       failedSkills,
       failedTypedSkills,
     );
 
-    await this._createSkillImprovementChatCard(
-      baseRollFormula,
+    await createSkillImprovementChatMessage({
+      actor: this.actor,
+      token: this.token,
+      baseFormula: baseRollFormula,
       failedSkills,
       failedTypedSkills,
       resultObj,
-    );
+    });
 
     return this._applySkillImprovements(
       failedSkills,
@@ -198,8 +355,7 @@ export default class DGAgentSheet extends DGActorSheet {
       `${BASE_TEMPLATE_PATH}/dialog/apply-skill-improvements.html`,
       {
         failedSkillNames,
-        baseFormula:
-          DGAgentSheet._getSkillImprovementFormulaAsPercent(baseFormula),
+        baseFormula: getSkillImprovementFormulaAsPercent(baseFormula),
       },
     );
 
@@ -219,110 +375,6 @@ export default class DGAgentSheet extends DGActorSheet {
     });
   }
 
-  /**
-   * Generates and evaluates the rolls for skill improvements based on failed skills.
-   *
-   * @param {SkillImprovementFormula} baseFormula - The formula used to calculate skill improvements.
-   * @param {FailedSkill[]} failedSkills - An array of failed skills.
-   * @param {FailedTypedSkill[]} failedTypedSkills - An array of failed typed skills.
-   *
-   * @returns {Promise<{roll: Roll|undefined, resultObj: ResultObj}>} - An object containing the roll result and a map of skill keys to improvement values.
-   *
-   * @throws {Error} - Throws an error if the baseFormula is unknown.
-   */
-  async _createSkillImprovementRolls(
-    baseFormula,
-    failedSkills,
-    failedTypedSkills,
-  ) {
-    const totalFailures = failedSkills.length + failedTypedSkills.length;
-
-    if (!Object.keys(DG.skillImprovementFormulas).includes(baseFormula)) {
-      throw new Error(`Unknown roll formula: ${baseFormula}`);
-    }
-
-    const rollPromises = [];
-    const resultObj = {};
-    if (baseFormula !== "1") {
-      for (let i = 0; i < totalFailures; i++) {
-        rollPromises.push(new Roll(baseFormula, this.actor.system).evaluate());
-      }
-      const rolls = await Promise.all(rollPromises);
-
-      [...failedSkills, ...failedTypedSkills].forEach((skill, index) => {
-        resultObj[skill.key] = rolls[index].total;
-      });
-    }
-
-    return resultObj;
-  }
-
-  /**
-   * Create a chat card to record skill improvements.
-   *
-   * @param {FailedSkill[]} failedSkills - array of failed skills
-   * @param {FailedTypedSkill[]} failedTypedSkills - array of failed typed skills
-   * @param {Roll|undefined} roll - the improvement roll
-   * @param {ResultObj} resultObj
-   *
-   * @returns {Promise<ChatMessage>}
-   */
-  _createSkillImprovementChatCard(
-    baseFormula,
-    failedSkills,
-    failedTypedSkills,
-    resultObj,
-  ) {
-    const localizeFailedSkills = (skillsArray) => {
-      return skillsArray.map((skill) => {
-        const increment = resultObj[skill.key] ?? 1;
-        const label =
-          skill.label ?? game.i18n.localize(`DG.Skills.${skill.key}`); // fallback for regular skills
-        const groupLabel = skill.group
-          ? `${game.i18n.localize(
-              `DG.TypeSkills.${skill.group.replace(/\s+/g, "")}`,
-            )} (${label})`
-          : label;
-
-        return `${groupLabel}: <b>+${increment}%</b>`;
-      });
-    };
-
-    const failedSkillNames = localizeFailedSkills(failedSkills);
-    const failedTypedSkillNames = localizeFailedSkills(failedTypedSkills);
-
-    // Prepare chat data
-    const content = [...failedSkillNames, ...failedTypedSkillNames].join(", ");
-    const flavor = game.i18n.format(
-      "DG.Skills.ApplySkillImprovements.ChatFlavor",
-      {
-        formula: DGAgentSheet._getSkillImprovementFormulaAsPercent(baseFormula),
-      },
-    );
-
-    const chatData = {
-      speaker: ChatMessage.getSpeaker({
-        actor: this.actor,
-        token: this.token,
-        alias: this.actor.name,
-      }),
-      content,
-      flavor,
-      messageMode: game.settings.get("core", "messageMode"),
-    };
-
-    return ChatMessage.create(chatData);
-  }
-
-  /**
-   * Updates the actor's skills / typed skills with the improvements,
-   * persisting the changes to the database.
-   *
-   * @param {FailedSkill[]} failedSkills - array of failed skills that need to be updated
-   * @param {FailedTypedSkill[]} failedTypedSkills - array of failed skills that need to be updated
-   * @param {ResultObj} resultObj
-   * @returns {Promise<DeltaGreenActor>} - the update promise
-   */
   _applySkillImprovements(failedSkills, failedTypedSkills, resultObj) {
     const updateSkills = (skillsArray, updatedTarget) => {
       skillsArray.forEach((skill) => {
@@ -343,18 +395,5 @@ export default class DGAgentSheet extends DGActorSheet {
     return this.actor.update({
       system: { skills: updatedSkills, typedSkills: updatedTypedSkills },
     });
-  }
-
-  /**
-   * Takes a base formula and returns a string representing the skill improvement formula as a percentage.
-   * TODO: Move to the roll class itself, probably even a "SkillImprovementRoll".
-   *
-   * @param {SkillImprovementFormula} baseFormula - the base formula to convert
-   * @returns {string} the skill improvement formula as a percentage (e.g. "1D3%" or "1%")
-   */
-  static _getSkillImprovementFormulaAsPercent(baseFormula) {
-    const flat = baseFormula === "1";
-    const formula = flat ? "1" : `1${baseFormula}`;
-    return `${formula}%`.toUpperCase();
   }
 }

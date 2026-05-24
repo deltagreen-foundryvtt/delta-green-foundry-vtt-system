@@ -1,0 +1,30 @@
+<div class="dice-roll" data-action="expandRoll">
+  <div class="dice-result">
+    <div style="{{styleOverride}}" class="dice-formula">{{resultString}}</div>
+    <div class="dice-tooltip">
+      <div class="wrapper">
+        <section class="tooltip-part">
+          <div class="dice">
+            <header class="part-header flexrow">
+              <span class="part-formula">d100</span>
+              <span class="part-total">{{total}}</span>
+            </header>
+            <ol class="dice-rolls">
+              <li class="roll die d100">{{total}}</li>
+            </ol>
+            <hr>
+            <header class="part-header flexrow">
+              <span class="part-formula">2d10 (d10 + d10)</span>
+              <span class="part-total">{{nonLethalTotal}}</span>
+            </header>
+            <ol class="dice-rolls">
+              <li class="roll die d10">{{die1}}</li>
+              <li class="roll die d10">{{die2}}</li>
+            </ol>
+          </div>
+        </section>
+      </div>
+    </div>
+    <h4 class="dice-total">{{total}} ({{nonLethalTotal}} {{damageLabel}})</h4>
+  </div>
+</div>

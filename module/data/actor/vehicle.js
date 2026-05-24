@@ -1,5 +1,6 @@
 import SheetSettingsActorData from "./base/sheet-settings.js";
 import DGHTMLField from "../fields/html-content-field.js";
+import { computeEquippedArmorProtection } from "../../utils/derived-actor-data.js";
 
 const { SchemaField, NumberField, StringField, ArrayField, HTMLField } =
   foundry.data.fields;
@@ -20,5 +21,10 @@ export default class VehicleData extends foundry.abstract.TypeDataModel {
       expense: new StringField({ initial: "Standard" }),
       passengers: new ArrayField(new StringField()),
     };
+  }
+
+  /** @inheritdoc */
+  prepareDerivedData() {
+    this.health.protection = computeEquippedArmorProtection(this.parent.items);
   }
 }

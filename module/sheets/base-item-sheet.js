@@ -1,5 +1,4 @@
 import { BASE_TEMPLATE_PATH } from "../config.js";
-import { getItemRichTextFields } from "../config/rich-text-fields.js";
 import DGSheetMixin from "./base-sheet.js";
 import { createDGRollFromDataset, processDGRoll } from "../roll/roll.js";
 
@@ -183,10 +182,6 @@ export default class DGItemSheet extends DGSheetMixin(ItemSheetV2) {
     }
 
     context.owner = this.document.isOwner;
-    await this._prepareRichTextContext(
-      context,
-      getItemRichTextFields(this.item.type),
-    );
 
     return context;
   }
@@ -234,14 +229,5 @@ export default class DGItemSheet extends DGSheetMixin(ItemSheetV2) {
     event.preventDefault();
     const revealed = !this.item.system.revealed;
     this.item.update({ "system.revealed": revealed });
-  }
-
-  /**
-   * @param {Event|object} event
-   * @param {Roll} roll
-   * @returns {Promise<void>}
-   */
-  async processRoll(event, roll) {
-    return processDGRoll(event, roll);
   }
 }

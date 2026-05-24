@@ -4,23 +4,29 @@ import DeltaGreenActor from "./actor/actor.js";
 import DGAgentSheet from "./sheets/agent-sheet.js";
 import DeltaGreenItem from "./item/item.js";
 import DGItemSheet from "./sheets/base-item-sheet.js";
-import * as DGRolls from "./roll/roll.js";
+import {
+  DGRoll,
+  DGPercentileRoll,
+  DGLethalityRoll,
+  DGDamageRoll,
+  DGSanityDamageRoll,
+} from "./roll/roll-classes.js";
 import registerSystemSettings from "./settings.js";
 import preloadHandlebarsTemplates from "./templates.js";
-import registerHandlebarsHelpers from "./other/register-helpers.js";
-import ParseDeltaGreenStatBlock from "./other/stat-parser-macro.js";
+import registerHandlebarsHelpers from "./utils/register-helpers.js";
+import ParseDeltaGreenStatBlock from "./macros/stat-parser-macro.js";
 import {
   createDeltaGreenMacro,
   rollItemMacro,
   rollItemSkillCheckMacro,
   rollSkillMacro,
   rollSkillTestAndDamageForOwnedItem,
-} from "./other/macro-functions.js";
-import { handleInlineActions } from "./other/inline.js";
+} from "./macros/macro-functions.js";
+import { handleInlineActions } from "./chat/inline.js";
+import { runWorldMigration } from "./utils/world-migration.js";
 import DGNPCSheet from "./sheets/npc-sheet.js";
 import DGUnnaturalSheet from "./sheets/unnatural-sheet.js";
 import DGVehicleSheet from "./sheets/vehicle-sheet.js";
-import DGAgentSheetV2 from "./sheets/agent-sheet-v2.js";
 import AgentData from "./data/actor/agent.js";
 import UnnaturalData from "./data/actor/unnatural.js";
 import NPCData from "./data/actor/npc.js";
@@ -74,7 +80,13 @@ Hooks.once("init", async () => {
   };
 
   // Register custom dice rolls
-  Object.values(DGRolls).forEach((cls) => CONFIG.Dice.rolls.push(cls));
+  [
+    DGRoll,
+    DGPercentileRoll,
+    DGLethalityRoll,
+    DGDamageRoll,
+    DGSanityDamageRoll,
+  ].forEach((cls) => CONFIG.Dice.rolls.push(cls));
 
   // Register System Settings
   registerSystemSettings();
@@ -103,13 +115,6 @@ Hooks.once("init", async () => {
     });
   });
 
-  Actors.registerSheet(DG.ID, DGAgentSheetV2, {
-    makeDefault: false,
-    themes: null,
-    label: "DG.Sheet.class.agentV2",
-    types: ["agent"],
-  });
-
   // Register item sheet.
   Items.registerSheet(DG.ID, DGItemSheet, {
     makeDefault: true,
@@ -125,6 +130,8 @@ Hooks.once("init", async () => {
 });
 
 Hooks.once("ready", async () => {
+  await runWorldMigration();
+
   // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
   // TODO: Fix eslint issue on next line
   // eslint-disable-next-line consistent-return

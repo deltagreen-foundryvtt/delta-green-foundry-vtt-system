@@ -278,6 +278,8 @@
   "TYPES.Item.motivation": "Motivació",
   "TYPES.Item.bond": "Vincle",
   "TYPES.Item.gear": "Equip",
+  "TYPES.Item.tome": "Tome",
+  "TYPES.Item.ritual": "Ritual",
 
   "DG.ItemWindow.Ritual.ActivationSanityDamage": "Activation SAN Damage",
   "DG.ItemWindow.Ritual.ActivationTime": "Activation Time",

@@ -296,6 +296,8 @@
   "TYPES.Item.motivation": "Motivation",
   "TYPES.Item.bond": "Bindung",
   "TYPES.Item.gear": "Ausrüstung",
+  "TYPES.Item.tome": "Buch",
+  "TYPES.Item.ritual": "Ritual",
 
   "DG.ItemWindow.Ritual.ActivationSanityDamage": "Activation SAN Damage",
   "DG.ItemWindow.Ritual.ActivationTime": "Activation Time",
