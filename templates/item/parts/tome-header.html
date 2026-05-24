@@ -1,0 +1,46 @@
+<header class="">
+    <div class="gear-sheet-grid-2col">
+        <img class="item-img" src="{{item.img}}" data-action="editImage" title="{{item.name}}"/>
+
+        <div class="tome-sheet-horizontal-grid-2col">
+            {{#if item.system.revealed}}
+                <span class="resource-label">
+                    {{#if (playerHasGamemasterPrivileges)}}<a data-action="toggleTomeRevealed"><i class="far fa-eye"></i></a>{{/if}}
+                    {{localize 'DG.Tome.Name'}}:
+                </span>
+                <input name="name" type="text" value="{{item.name}}" placeholder="{{localize 'DG.ItemWindow.Tome.NamePlaceholder'}}"/>
+
+                <span class="resource-label">{{localize 'DG.Tome.Language'}}:</span>
+                <input name="system.language" type="text" value="{{item.system.language}}" placeholder="{{localize 'DG.ItemWindow.Tome.LanguagePlaceholder'}}"/>
+
+                <span class="resource-label">{{localize 'DG.Tome.StudyTime'}}:</span>
+                <input name="system.studyTime" type="text" value="{{item.system.studyTime}}" placeholder="{{localize 'DG.ItemWindow.Tome.StudyTime'}}"/>
+            {{else}}
+                {{#if (playerHasGamemasterPrivileges)}}
+                    <span class="resource-label">
+                        <a data-action="toggleTomeRevealed"><i class="far fa-eye-slash"></i></a>
+                        {{localize 'DG.Tome.Name'}}:
+                    </span>
+                    <input name="name" type="text" value="{{item.name}}" placeholder="{{localize 'DG.ItemWindow.Tome.NamePlaceholder'}}"/>
+
+                    <span class="resource-label">{{localize 'DG.Tome.Language'}}:</span>
+                    <input name="system.language" type="text" value="{{item.system.language}}" placeholder="{{localize 'DG.ItemWindow.Tome.LanguagePlaceholder'}}"/>
+
+                    <span class="resource-label">{{localize 'DG.Tome.StudyTime'}}:</span>
+                    <input name="system.studyTime" type="text" value="{{item.system.studyTime}}" placeholder="{{localize 'DG.ItemWindow.Tome.StudyTime'}}"/>
+                {{else}}
+                    <span class="resource-label">{{localize 'DG.Tome.Name'}}:</span>
+                    <span>???</span>
+
+                    <span class="resource-label">{{localize 'DG.Tome.Language'}}:</span>
+                    <span>???</span>
+
+                    <span class="resource-label">{{localize 'DG.Tome.StudyTime'}}:</span>
+                    <span>???</span>
+                {{/if}}
+            {{/if}}
+        </div>
+
+    </div>
+
+</header>

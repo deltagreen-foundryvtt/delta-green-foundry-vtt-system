@@ -308,7 +308,7 @@ export default class DGAgentSheet extends DGActorSheet {
       }),
       content,
       flavor,
-      rollMode: game.settings.get("core", "rollMode"),
+      messageMode: game.settings.get("core", "messageMode"),
     };
 
     return ChatMessage.create(chatData);

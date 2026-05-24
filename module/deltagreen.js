@@ -3,7 +3,7 @@ import DG from "./config.js";
 import DeltaGreenActor from "./actor/actor.js";
 import DGAgentSheet from "./sheets/agent-sheet.js";
 import DeltaGreenItem from "./item/item.js";
-import DeltaGreenItemSheet from "./item/item-sheet.js";
+import DGItemSheet from "./sheets/base-item-sheet.js";
 import * as DGRolls from "./roll/roll.js";
 import registerSystemSettings from "./settings.js";
 import preloadHandlebarsTemplates from "./templates.js";
@@ -103,16 +103,15 @@ Hooks.once("init", async () => {
     });
   });
 
-  // Don't register new sheet yet.
-  // Actors.registerSheet(DG.ID, DGAgentSheetV2, {
-  //   makeDefault: false,
-  //   themes: null,
-  //   label: `Agent Sheet V2`,
-  //   types: ["agent"],
-  // });
+  Actors.registerSheet(DG.ID, DGAgentSheetV2, {
+    makeDefault: false,
+    themes: null,
+    label: "DG.Sheet.class.agentV2",
+    types: ["agent"],
+  });
 
   // Register item sheet.
-  Items.registerSheet(DG.ID, DeltaGreenItemSheet, {
+  Items.registerSheet(DG.ID, DGItemSheet, {
     makeDefault: true,
     label: "DG.Sheet.class.item",
     themes: null,
@@ -164,32 +163,25 @@ Hooks.on("preCreateItem", (item) => {
 });
 
 // Hook into the render call for the Actors Directory to add an extra button
-Hooks.on("renderActorDirectory", (app, html, data) => {
-  if (!game.user.isGM) {
-    return;
-  }
+Hooks.on("renderActorDirectory", (app, element) => {
+  if (!game.user.isGM) return;
 
-  if (html.querySelector("#statParserButton")) {
-    return;
-  }
+  const footer = element?.querySelector?.(".directory-footer");
+  if (!footer || footer.querySelector("#statParserButton")) return;
 
   const button = document.createElement("button");
   button.id = "statParserButton";
+  button.type = "button";
 
   const icon = document.createElement("i");
-
   icon.classList.add("fas", "fa-file-import");
-
   button.appendChild(icon);
   button.append("Delta Green Stat Block Parser");
 
-  html.querySelector(".directory-footer").appendChild(button);
-
-  if (button) {
-    button.addEventListener("click", function (event) {
-      ParseDeltaGreenStatBlock();
-    });
-  }
+  footer.appendChild(button);
+  button.addEventListener("click", () => {
+    ParseDeltaGreenStatBlock();
+  });
 });
 
 // Note - this event is fired on ALL connected clients...

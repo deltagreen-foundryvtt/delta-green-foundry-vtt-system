@@ -47,14 +47,15 @@
                              height="24" />
                         <span>
                             <span style="display: inline;" class="item-name">{{item.name}}</span>
-                            <span class="rollable"
-                                  data-action="roll"
-                                  data-iid="{{item._id}}"
-                                  data-rolltype="weapon"
-                                  data-key="{{item.system.skill}}"
-                                  title="{{localize 'DG.Tooltip.SkillLabel'}} ({{localizeWeaponSkill item.system.skill}})">
-                                <i class="fas fa-dice"></i>
-                            </span>
+                            <button type="button"
+                                    class="rollable inline-roll"
+                                    data-action="roll"
+                                    data-iid="{{item._id}}"
+                                    data-rolltype="weapon"
+                                    data-key="{{item.system.skill}}"
+                                    title="{{localize 'DG.Tooltip.SkillLabel'}} ({{localizeWeaponSkill item.system.skill}})">
+                                <i class="fas fa-dice" inert></i>
+                            </button>
                         </span>
                     </div>
 
@@ -80,10 +81,12 @@
                         {{/if}}
 
                         {{#unless item.system.isLethal}}
-                            <span class="rollable"
-                                  data-action="roll"
-                                  data-rolltype="damage"
-                                  data-iid="{{item._id}}">
+                            <button type="button"
+                                    class="rollable inline-roll"
+                                    data-action="roll"
+                                    data-rolltype="damage"
+                                    data-iid="{{item._id}}"
+                                    title="{{localize 'DG.Gear.DamageOrLethality'}}">
                                 {{toUpperCase item.system.damage}}
                                 {{#if_eq item.system.skill 'unarmed_combat' }}
                                     {{actor.system.statistics.str.meleeDamageBonusFormula}}
@@ -91,19 +94,20 @@
                                 {{#if_eq item.system.skill 'melee_weapons' }}
                                     {{actor.system.statistics.str.meleeDamageBonusFormula}}
                                 {{/if_eq}}
-                                <i class="fas fa-dice"></i>
-                            </span>
+                                <i class="fas fa-dice" inert></i>
+                            </button>
                         {{/unless}}
 
                         {{#if item.system.isLethal }}
-                            <span class="rollable"
-                                  data-action="roll"
-                                  data-rolltype="lethality"
-                                  data-iid="{{item._id}}"
-                                  title="{{localize 'DG.ItemWindow.Weapons.LethalityTooltip'}}">
+                            <button type="button"
+                                    class="rollable inline-roll"
+                                    data-action="roll"
+                                    data-rolltype="lethality"
+                                    data-iid="{{item._id}}"
+                                    title="{{localize 'DG.ItemWindow.Weapons.LethalityTooltip'}}">
                                 {{item.system.lethality}}%
-                                <i class="fas fa-dice"></i>
-                            </span>
+                                <i class="fas fa-dice" inert></i>
+                            </button>
                         {{/if}}
 
                     </span>
@@ -370,13 +374,14 @@
             <div class="horizontal-bar-section-divider">
                 <span>
                     {{localize 'DG.Gear.Rituals'}}
-                    <a class="rollable"
-                       data-action="roll"
-                       data-key="ritual"
-                       data-rolltype="skill"
-                       title="Ritual activation">
-                        <i class="fa-solid fa-dice"></i>
-                    </a>
+                    <button type="button"
+                            class="rollable inline-roll"
+                            data-action="roll"
+                            data-key="ritual"
+                            data-rolltype="skill"
+                            title="Ritual activation">
+                        <i class="fa-solid fa-dice" inert></i>
+                    </button>
                 </span>
             </div>
 

@@ -83,9 +83,16 @@ export default function registerHandlebarsHelpers() {
     },
   );
 
+  /** Roll visibility modes for dialog selects (v14+ CONFIG.ChatMessage.modes keys). */
+  const ROLL_MESSAGE_MODE_KEYS = ["public", "gm", "blind", "self"];
+
   Handlebars.registerHelper("getAvailableRollModes", () => {
     try {
-      return CONFIG.Dice.rollModes;
+      return Object.fromEntries(
+        ROLL_MESSAGE_MODE_KEYS.filter((key) => key in CONFIG.ChatMessage.modes).map(
+          (key) => [key, CONFIG.ChatMessage.modes[key]],
+        ),
+      );
     } catch (error) {
       return console.log(error);
     }
@@ -93,7 +100,7 @@ export default function registerHandlebarsHelpers() {
 
   Handlebars.registerHelper("getDefaultRollMode", () => {
     try {
-      return game.settings.get("core", "rollMode");
+      return game.settings.get("core", "messageMode");
     } catch (error) {
       return console.log(error);
     }
