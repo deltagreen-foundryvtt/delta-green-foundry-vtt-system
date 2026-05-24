@@ -1,4 +1,4 @@
-<header class="">
+<header class="weapon-sheet-header">
   <div class="weapon-sheet-grid-2col">
 
     <img class="item-img" src="{{item.img}}" data-action="editImage" title="{{item.name}}"/>
@@ -24,78 +24,64 @@
     </div>
   </div>
 
-  <div class="weapon-sheet-outer-grid-2col">
+  <div class="weapon-sheet-stats-grid">
 
-    <div class="weapon-sheet-horizontal-grid-left-2col">
+    <span class="resource-label">{{localize 'DG.ItemWindow.Weapons.Skill'}}:</span>
+    <select class="weapon-sheet-skill-select" name="system.skill" >
+        <option {{#if_eq item.system.skill 'firearms'}}selected{{/if_eq}} value="firearms">{{localize 'DG.Skills.firearms'}}</option>
+        <option {{#if_eq item.system.skill 'melee_weapons'}}selected{{/if_eq}} value="melee_weapons">{{localize 'DG.Skills.melee_weapons'}}</option>
+        <option {{#if_eq item.system.skill 'unarmed_combat'}}selected{{/if_eq}} value="unarmed_combat">{{localize 'DG.Skills.unarmed_combat'}}</option>
+        <option {{#if_eq item.system.skill 'heavy_weapons'}}selected{{/if_eq}} value="heavy_weapons">{{localize 'DG.Skills.heavy_weapons'}}</option>
+        <option {{#if_eq item.system.skill 'athletics'}}selected{{/if_eq}} value="athletics">{{localize 'DG.Skills.athletics'}}</option>
+        <option {{#if_eq item.system.skill 'demolitions'}}selected{{/if_eq}} value="demolitions">{{localize 'DG.Skills.demolitions'}}</option>
+        <option {{#if_eq item.system.skill 'artillery'}}selected{{/if_eq}} value="artillery">{{localize 'DG.Skills.artillery'}}</option>
+        <option {{#if_eq item.system.skill 'str'}}selected{{/if_eq}} value="str">{{localize 'DG.Attributes.str'}}x5</option>
+        <option {{#if_eq item.system.skill 'con'}}selected{{/if_eq}} value="con">{{localize 'DG.Attributes.con'}}x5</option>
+        <option {{#if_eq item.system.skill 'dex'}}selected{{/if_eq}} value="dex">{{localize 'DG.Attributes.dex'}}x5</option>
+        <option {{#if_eq item.system.skill 'int'}}selected{{/if_eq}} value="int">{{localize 'DG.Attributes.int'}}x5</option>
+        <option {{#if_eq item.system.skill 'pow'}}selected{{/if_eq}} value="pow">{{localize 'DG.Attributes.pow'}}x5</option>
+        <option {{#if_eq item.system.skill 'cha'}}selected{{/if_eq}} value="cha">{{localize 'DG.Attributes.cha'}}x5</option>
+        <option {{#if_eq item.system.skill 'custom'}}selected{{/if_eq}} value="custom">{{localize 'DG.ItemWindow.Custom'}}</option>
+    </select>
 
-      <span class="resource-label">{{localize 'DG.ItemWindow.Weapons.Skill'}}:</span>
-      <select name="system.skill" >
-          <option {{#if_eq item.system.skill 'firearms'}}selected{{/if_eq}} value="firearms">{{localize 'DG.Skills.firearms'}}</option>
-          <option {{#if_eq item.system.skill 'melee_weapons'}}selected{{/if_eq}} value="melee_weapons">{{localize 'DG.Skills.melee_weapons'}}</option>
-          <option {{#if_eq item.system.skill 'unarmed_combat'}}selected{{/if_eq}} value="unarmed_combat">{{localize 'DG.Skills.unarmed_combat'}}</option>
-          <option {{#if_eq item.system.skill 'heavy_weapons'}}selected{{/if_eq}} value="heavy_weapons">{{localize 'DG.Skills.heavy_weapons'}}</option>
-          <option {{#if_eq item.system.skill 'athletics'}}selected{{/if_eq}} value="athletics">{{localize 'DG.Skills.athletics'}}</option>
-          <option {{#if_eq item.system.skill 'demolitions'}}selected{{/if_eq}} value="demolitions">{{localize 'DG.Skills.demolitions'}}</option>
-          <option {{#if_eq item.system.skill 'artillery'}}selected{{/if_eq}} value="artillery">{{localize 'DG.Skills.artillery'}}</option>
-          <option {{#if_eq item.system.skill 'str'}}selected{{/if_eq}} value="str">{{localize 'DG.Attributes.str'}}x5</option>
-          <option {{#if_eq item.system.skill 'con'}}selected{{/if_eq}} value="con">{{localize 'DG.Attributes.con'}}x5</option>
-          <option {{#if_eq item.system.skill 'dex'}}selected{{/if_eq}} value="dex">{{localize 'DG.Attributes.dex'}}x5</option>
-          <option {{#if_eq item.system.skill 'int'}}selected{{/if_eq}} value="int">{{localize 'DG.Attributes.int'}}x5</option>
-          <option {{#if_eq item.system.skill 'pow'}}selected{{/if_eq}} value="pow">{{localize 'DG.Attributes.pow'}}x5</option>
-          <option {{#if_eq item.system.skill 'cha'}}selected{{/if_eq}} value="cha">{{localize 'DG.Attributes.cha'}}x5</option>
-          <option {{#if_eq item.system.skill 'custom'}}selected{{/if_eq}} value="custom">{{localize 'DG.ItemWindow.Custom'}}</option>
-      </select>
-    </div>
+    <span class="resource-label">{{localize 'DG.ItemWindow.Weapons.Range'}}:</span>
+    <input type="text" name="system.range" value="{{item.system.range}}" data-dtype="String"/>
 
-    <div class="weapon-sheet-horizontal-grid-right-2col">
-      {{#if_eq item.system.skill 'custom'}}
-        <span class="resource-label">{{localize 'DG.ItemWindow.Weapons.CustomSkillTarget'}}:</span>
-        <input type="text" name="system.customSkillTarget" value="{{item.system.customSkillTarget}}" data-dtype="Number"/>
-      {{/if_eq}}
-    </div>
+    {{#if_eq item.system.skill 'custom'}}
+      <span class="resource-label">{{localize 'DG.ItemWindow.Weapons.CustomSkillTarget'}}:</span>
+      <input type="text" name="system.customSkillTarget" value="{{item.system.customSkillTarget}}" data-dtype="Number"/>
+      <span class="weapon-sheet-stats-pad" aria-hidden="true"></span>
+      <span class="weapon-sheet-stats-pad" aria-hidden="true"></span>
+    {{/if_eq}}
 
-    <div class="weapon-sheet-horizontal-grid-left-2col">
+    <span class="resource-label">{{localize 'DG.ItemWindow.Weapons.ArmorPiercing'}}:</span>
+    <input type="text" name="system.armorPiercing" value="{{item.system.armorPiercing}}" data-dtype="Number"/>
 
-      <span class="resource-label">{{localize 'DG.ItemWindow.Weapons.ArmorPiercing'}}:</span>
-      <input type="text" name="system.armorPiercing" value="{{item.system.armorPiercing}}" data-dtype="Number"/>
+    <span class="resource-label">{{localize 'DG.ItemWindow.Weapons.KillRadius'}}:</span>
+    <input type="text" name="system.killRadius" value="{{item.system.killRadius}}" data-dtype="String"/>
 
-      <span class="resource-label">{{localize 'DG.ItemWindow.Weapons.SkillModifier'}}:</span>
-      <input type="text" name="system.skillModifier" value="{{item.system.skillModifier}}" data-dtype="Number"/>
+    <span class="resource-label">{{localize 'DG.ItemWindow.Weapons.SkillModifier'}}:</span>
+    <input type="text" name="system.skillModifier" value="{{item.system.skillModifier}}" data-dtype="Number"/>
 
-      <span class="resource-label">{{localize 'DG.ItemWindow.Weapons.IsLethality'}}:</span>
-      <input class="labeled-resource-checkbox" type="checkbox" name="system.isLethal" {{checked item.system.isLethal}} data-dtype="Boolean"
-          title="{{localize 'DG.ItemWindow.Weapons.IsLethalityTooltip'}}"
+    {{#unless item.system.isLethal}}
+      <span class="resource-label">{{localize 'DG.ItemWindow.Weapons.Damage'}}:</span>
+      <input type="text" name="system.damage" value="{{item.system.damage}}" data-dtype="String"/>
+    {{/unless}}
+
+    {{#if item.system.isLethal}}
+      <span class="resource-label">{{localize 'DG.ItemWindow.Weapons.Lethality'}} %:</span>
+      <input type="text" name="system.lethality" value="{{item.system.lethality}}" data-dtype="Number"
+        title="{{localize 'DG.ItemWindow.Weapons.LethalityTooltip'}}"
       />
+    {{/if}}
 
-    </div>
-
-    <div class="weapon-sheet-horizontal-grid-right-2col">
-
-      <span class="resource-label">{{localize 'DG.ItemWindow.Weapons.Range'}}:</span>
-      <input type="text" name="system.range" value="{{item.system.range}}" data-dtype="String"/>
-
-      <span class="resource-label">{{localize 'DG.ItemWindow.Weapons.KillRadius'}}:</span>
-      <input type="text" name="system.killRadius" value="{{item.system.killRadius}}" data-dtype="String"/>
-
-      {{#unless item.system.isLethal}}
-        <span class="resource-label">{{localize 'DG.ItemWindow.Weapons.Damage'}}:</span>
-        <input type="text" name="system.damage" value="{{item.system.damage}}" data-dtype="String"/>
-      {{/unless}}
-
-      {{#if item.system.isLethal}}
-        <span class="resource-label">{{localize 'DG.ItemWindow.Weapons.Lethality'}} %:</span>
-        <input class="" type="text" name="system.lethality" value="{{item.system.lethality}}" data-dtype="Number"
-          title="{{localize 'DG.ItemWindow.Weapons.LethalityTooltip'}}"
-        />
-      {{/if}}
-
-    </div>
-
-  </div>
-
-  <div class="weapon-sheet-secondary-grid-2col">
     <span class="resource-label">{{localize 'DG.ItemWindow.Weapons.Ammo'}}:</span>
     <input type="text" name="system.ammo" value="{{item.system.ammo}}" data-dtype="String"/>
+
+    <span class="resource-label">{{localize 'DG.ItemWindow.Weapons.IsLethality'}}:</span>
+    <input class="labeled-resource-checkbox" type="checkbox" name="system.isLethal" {{checked item.system.isLethal}} data-dtype="Boolean"
+        title="{{localize 'DG.ItemWindow.Weapons.IsLethalityTooltip'}}"
+    />
+
   </div>
-  <br>
 </header>

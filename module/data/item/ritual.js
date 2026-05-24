@@ -1,4 +1,5 @@
 import defineBaseItemSystemFields from "./base-fields.js";
+import DGHTMLField from "../fields/html-content-field.js";
 
 const { NumberField, StringField, BooleanField, SchemaField, HTMLField } =
   foundry.data.fields;
@@ -22,11 +23,7 @@ export default class RitualItemData extends foundry.abstract.TypeDataModel {
       activationCosts: new StringField({ initial: "" }),
       activationTime: new StringField({ initial: "" }),
       complexity: new StringField({ initial: "Simple" }),
-      handlerNotes: new HTMLField({
-        initial: "",
-        blank: true,
-        textSearch: true,
-      }),
+      handlerNotes: DGHTMLField(),
       revealed: new BooleanField({ initial: false }),
     };
   }

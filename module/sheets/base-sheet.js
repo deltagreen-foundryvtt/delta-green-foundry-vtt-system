@@ -1,4 +1,5 @@
 import DG, { BASE_TEMPLATE_PATH } from "../config.js";
+import { prepareRichTextContext } from "./rich-text.js";
 
 const HbsAppMixin = foundry.applications.api.HandlebarsApplicationMixin;
 
@@ -62,6 +63,23 @@ const DGSheetMixin = (Base) => {
      */
     resetPosition() {
       this.setPosition(this.options.position);
+    }
+
+    /**
+     * Prepare `context.richText` from schema-driven ProseMirror field specs.
+     * @param {ApplicationRenderContext} context
+     * @param {{ path: string, key: string }[]} fieldSpecs
+     * @returns {Promise<void>}
+     */
+    async _prepareRichTextContext(context, fieldSpecs) {
+      if (!fieldSpecs?.length) {
+        context.richText = {};
+        return;
+      }
+      context.richText = await prepareRichTextContext(
+        this.document,
+        fieldSpecs,
+      );
     }
   };
 };

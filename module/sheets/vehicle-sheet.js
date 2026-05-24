@@ -8,8 +8,8 @@ export default class DGVehicleSheet extends DGActorSheet {
       initial: "gear",
       labelPrefix: "DG.Navigation.Vehicle",
       tabs: [
-        { id: "notes" },
         { id: "gear" },
+        { id: "notes" },
         { id: "about", icon: "fas fa-question-circle", label: "" },
       ],
     },

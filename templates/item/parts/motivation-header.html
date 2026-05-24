@@ -1,15 +1,5 @@
-<section class="sheet-body">
-<div class="tab attributes {{tabs.attributes.cssClass}} top-div-border"
-     data-group="primary"
-     data-tab="attributes">
-
+<header class="">
     <div class="motivation-sheet-horizontal-grid-2col">
-        <span class="resource-label">{{localize 'DG.ItemWindow.Motivations.IsDisorder'}}:</span>
-        <input type="checkbox"
-               name="system.crossedOut"
-               {{checked item.system.crossedOut}}
-               data-dtype="Boolean"
-               title="{{localize 'DG.ItemWindow.Motivations.IsDisorderTooltip'}}" />
         <span class="resource-label">{{localize 'DG.ItemWindow.Motivations.Motivation'}}:</span>
         <input type="text"
                name="name"
@@ -21,8 +11,13 @@
                style="text-decoration: line-through"
                disabled
                {{/if }} />
+        <span class="resource-label">{{localize 'DG.ItemWindow.Motivations.IsDisorder'}}:</span>
+        <input type="checkbox"
+               name="system.crossedOut"
+               {{checked item.system.crossedOut}}
+               data-dtype="Boolean"
+               title="{{localize 'DG.ItemWindow.Motivations.IsDisorderTooltip'}}" />
         {{#if item.system.crossedOut }}
-
             <span class="resource-label">{{localize 'DG.ItemWindow.Motivations.Disorder'}}:</span>
             <input type="text"
                    name="system.disorder"
@@ -37,6 +32,5 @@
                    data-dtype="Boolean"
                    title="{{localize 'DG.ItemWindow.Motivations.DisorderHasBeenCuredTooltip'}}" />
         {{/if}}
-
     </div>
-</div>
+</header>

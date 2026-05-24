@@ -1,4 +1,5 @@
 import DG from "../config.js";
+import { ACTOR_RICH_TEXT_BY_TYPE } from "../config/rich-text-fields.js";
 import {
   DGPercentileRoll,
   createDGRollFromDataset,
@@ -98,8 +99,10 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
     // Prepare subname info placeholder.
     context.subnameInfoPlaceholder = this._prepareSubnameInfoPlaceholder();
 
-    // Prepare descriptions for each sheet.
-    context.enrichedDescription = await this._prepareDescriptions();
+    await this._prepareRichTextContext(
+      context,
+      ACTOR_RICH_TEXT_BY_TYPE[this.actor.type] ?? [],
+    );
 
     // Early return if this is a vehicle.
     if (this.actor.type === "vehicle") return context;
@@ -258,12 +261,6 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
     }
   }
 
-  /** @override */
-  activateEditor(target, editorOptions, initialContent) {
-    editorOptions.content_css = "./systems/deltagreen/css/editor.css";
-    return super.activateEditor(target, editorOptions, initialContent);
-  }
-
   /* --------- Context Preparation Functions --------- */
 
   /**
@@ -289,51 +286,6 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
         break;
     }
     return game.i18n.localize(subnameInfoPlaceholder);
-  }
-
-  /**
-   * Prepares and enriches the description for an actor based on its type.
-   *
-   * @returns {Promise<string>} The outer HTML of the enriched description.
-   */
-  async _prepareDescriptions() {
-    let descriptionPath;
-
-    switch (this.actor.type) {
-      case "agent":
-        descriptionPath = "system.physical.description";
-        break;
-      case "npc":
-      case "unnatural":
-        descriptionPath = "system.notes";
-        break;
-      case "vehicle":
-        descriptionPath = "system.description";
-        break;
-      default:
-        break;
-    }
-
-    const descriptionValue = foundry.utils.getProperty(
-      this.actor,
-      descriptionPath,
-    );
-
-    const enrichedDescription =
-      await foundry.applications.ux.TextEditor.implementation.enrichHTML(
-        descriptionValue,
-        {
-          rollData: this.document.getRollData(),
-          relativeTo: this.document,
-        },
-      );
-    const { HTMLProseMirrorElement } = foundry.applications.elements;
-    return HTMLProseMirrorElement.create({
-      name: descriptionPath,
-      value: descriptionValue,
-      enriched: enrichedDescription,
-      toggled: true,
-    }).outerHTML;
   }
 
   /**

@@ -233,10 +233,12 @@
         "htmlFields": ["description"]
       },
       "tome": {
-        "htmlFields": ["description", "handlerNotes"]
+        "htmlFields": ["description", "handlerNotes"],
+        "gmOnlyFields": ["handlerNotes"]
       },
       "ritual": {
-        "htmlFields": ["description", "handlerNotes"]
+        "htmlFields": ["description", "handlerNotes"],
+        "gmOnlyFields": ["handlerNotes"]
       }
     }
   }

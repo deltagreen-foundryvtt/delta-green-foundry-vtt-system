@@ -20,8 +20,6 @@
     <span class="resource-label">{{localize 'DG.ItemWindow.Tome.HandlerNotes'}}:</span>
 
     <div class="tab top-div-border">
-        <div class="editor-host">
-            {{editor enrichedHandlerNotes target="system.handlerNotes" engine="prosemirror" button=true owner=owner editable=editable}}
-        </div>
+        {{> "systems/deltagreen/templates/partials/prose-mirror-host.html" html=richText.handlerNotes}}
     </div>
 </div>

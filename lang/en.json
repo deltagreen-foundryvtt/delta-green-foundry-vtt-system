@@ -282,7 +282,7 @@
   "DG.ItemWindow.Weapons.LethalityTooltip": "A lethal weapon has a chance to instantly kill a target.  Roll a D100 instead of damage die.  If it is not lethal, damage is dealt instead as if the result was a 2d10 roll, with a '00' on the first d10 equaling a 10.",
   "DG.ItemWindow.Weapons.IsLethalityTooltip": "Check this if the weapon has a lethality % associated with it.",
   "DG.ItemWindow.Weapons.ArmorPiercing": "Armor Piercing",
-  "DG.ItemWindow.Weapons.Ammo": "Ammo (Amount/Type)",
+  "DG.ItemWindow.Weapons.Ammo": "Ammo",
   "DG.ItemWindow.Weapons.Range": "Range",
   "DG.ItemWindow.Weapons.KillRadius": "Kill Radius",
 

@@ -215,7 +215,7 @@
   "DG.ItemWindow.Weapons.LethalityTooltip": "致死武器有机会立即杀死目标。掷D100而不是伤害骰。如果不致死，则造成伤害，就像结果是2d10掷骰一样，第一个d10上的'00'等于10",
   "DG.ItemWindow.Weapons.IsLethalityTooltip": "如果武器有致死等级 % 与之相关，请勾选此项",
   "DG.ItemWindow.Weapons.ArmorPiercing": "穿甲",
-  "DG.ItemWindow.Weapons.Ammo": "弹药 (数量/类别)",
+  "DG.ItemWindow.Weapons.Ammo": "弹药",
   "DG.ItemWindow.Weapons.Range": "射程",
   "DG.ItemWindow.Weapons.KillRadius": "击杀半径",
 

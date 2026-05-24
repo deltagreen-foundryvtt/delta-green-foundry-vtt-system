@@ -894,8 +894,10 @@ div.horizontal-bar-section-header {
 }
 
 .notes-wrapper {
-  height: 100%;
   margin-block-start: 12px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 div.motivation-editor-container div.editor {
@@ -905,15 +907,135 @@ div.motivation-editor-container div.editor {
 
 .deltagreen .editor-host {
   align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* ProseMirror: compact when toggled off; expand to fill tab space while editing. */
+.deltagreen .editor-host prose-mirror {
+  --min-height: 5rem;
+  flex: 0 0 auto;
+}
+
+.deltagreen:not(.item) .editor-host prose-mirror:not(.active) {
+  height: auto !important;
+}
+
+.deltagreen .editor-host prose-mirror.active {
+  --min-height: 12rem;
+  flex: 1 1 auto;
+  min-height: 12rem;
+}
+
+.deltagreen .editor-host prose-mirror.active .editor-container {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.deltagreen .editor-host prose-mirror .editor-content {
+  font-family: "SpecialElite", sans-serif !important;
+}
+
+/* Actor sheets: compact description when not editing. */
+.deltagreen:not(.item) .editor-host prose-mirror:not(.active) .editor-content {
+  position: relative;
+  inset: unset;
+  overflow: visible;
+  min-height: 2.5rem;
+}
+
+/* Let the description block consume remaining tab height while editing. */
+.deltagreen:not(.item) .tab:has(.notes-wrapper prose-mirror.active) {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.deltagreen:not(.item) .tab:has(.notes-wrapper prose-mirror.active) .notes-wrapper,
+.deltagreen:not(.item) .tab:has(.notes-wrapper prose-mirror.active) .notes-wrapper .editor-host {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+/* Item sheets: description fills space below header (view and edit). */
+.deltagreen.item form {
+  display: flex;
+  flex-direction: column;
   height: 100%;
 }
 
-.deltagreen .editor-host .editor {
-  height: 100% !important;
+.deltagreen.item .window-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
 }
 
-.deltagreen .editor .editor-container {
-  height: 100% !important;
+.deltagreen.item [data-application-part="header"],
+.deltagreen.item [data-application-part="tabs"] {
+  flex: 0 0 auto;
+}
+
+/* Bond, gear, weapon, armor, motivation (single description part). */
+.deltagreen.item section.sheet-body[data-application-part="description"] {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Tome/ritual tab parts — flex only when .active; do not override core display:none on inactive tabs. */
+.deltagreen.item .tab[data-tab][data-application-part].active {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.deltagreen.item section.sheet-body > .tab.top-div-border,
+.deltagreen.item .tab[data-application-part="handler"].active > .tab.top-div-border {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.deltagreen.item .tab.top-div-border > .editor-host,
+.deltagreen.item .tab[data-application-part="description"].active > .editor-host {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.deltagreen.item .tab.top-div-border .editor-host prose-mirror {
+  flex: 1 1 auto;
+  min-height: 5rem;
+}
+
+.deltagreen.item .tab.top-div-border .editor-host prose-mirror:not(.active) .editor-content {
+  position: absolute;
+  inset: 0;
+  overflow: auto;
+  min-height: unset;
+}
+
+.deltagreen.item .tab.top-div-border .editor-host prose-mirror.active {
+  min-height: 5rem;
+}
+
+/* Core uses display:block on hover for prose-mirror toggles, which breaks flex icon centering. */
+.deltagreen prose-mirror:hover button.toggle:enabled {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+
+.deltagreen prose-mirror button.toggle > i {
+  margin: 0;
+  line-height: 1;
 }
 
 /* I think all the stuff below is now obsolete
@@ -1007,6 +1129,7 @@ input.item-sheet-short-input {
   justify-content: center;
   text-align: left;
   padding-left: 5px;
+  padding-bottom: 10px;
   grid-gap: 5px;
 }
 
@@ -1096,48 +1219,72 @@ input.item-sheet-short-input {
   padding-right: 5px;
 }
 
-.weapon-sheet-outer-grid-2col {
-  display: grid;
-  grid-template-columns: 60% 40%;
+.weapon-sheet-horizontal-grid-2col .resource-label {
+  display: flex;
   align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding-left: 5px;
-  padding-right: 5px;
-  column-gap: 10px;
-  row-gap: 5px;
+  min-height: 1.5rem;
+  margin: 0;
 }
 
-.weapon-sheet-horizontal-grid-left-2col {
+.weapon-sheet-horizontal-grid-2col input[type="text"],
+.weapon-sheet-horizontal-grid-2col select {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  line-height: 1.5rem;
+}
+
+.weapon-sheet-header {
+  margin-bottom: 12px;
+}
+
+/* One grid row per stat pair so left/right labels share the same baseline. */
+.weapon-sheet-stats-grid {
   display: grid;
-  grid-template-columns: 50% 50%;
+  grid-template-columns: minmax(5.5rem, auto) minmax(9rem, 1.35fr) minmax(5.5rem, auto) minmax(9rem, 1.35fr);
   align-items: center;
-  text-align: left;
-  padding-bottom: 10px;
-  column-gap: 10px;
+  column-gap: 12px;
   row-gap: 10px;
-  padding-right: 10px;
+  padding: 0 2px 10px;
+  text-align: left;
 }
 
-.weapon-sheet-horizontal-grid-right-2col {
-  display: grid;
-  grid-template-columns: 60% 40%;
+.weapon-sheet-stats-grid .resource-label {
+  display: flex;
   align-items: center;
-  text-align: left;
-  padding-bottom: 10px;
-  column-gap: 10px;
-  row-gap: 10px;
-  padding-right: 10px;
+  min-height: var(--weapon-sheet-control-height, 1.75rem);
+  margin: 0;
 }
 
-.weapon-sheet-secondary-grid-2col {
-  display: grid;
-  grid-template-columns: 40% 60%;
-  align-items: center;
-  justify-content: left;
-  text-align: left;
-  grid-gap: 5px;
-  padding-right: 5px;
+.weapon-sheet-stats-grid input[type="text"],
+.weapon-sheet-stats-grid select {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  height: var(--weapon-sheet-control-height, 1.75rem);
+  min-height: var(--weapon-sheet-control-height, 1.75rem);
+  line-height: 1.5rem;
+  padding: 0 6px;
+}
+
+.weapon-sheet-stats-grid select.weapon-sheet-skill-select {
+  min-width: 9rem;
+}
+
+.weapon-sheet-stats-grid .labeled-resource-checkbox {
+  justify-self: start;
+  align-self: center;
+  margin: 0;
+}
+
+.weapon-sheet-stats-pad {
+  display: block;
+  min-height: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 
 /*
