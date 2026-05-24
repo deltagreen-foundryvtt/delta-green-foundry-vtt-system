@@ -17,10 +17,16 @@
 - [#374](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/374) - Moving Age to Bio tab
 - [#393](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/393) - Updated to support Foundry v14
 - [#223](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/223) - Migrated item sheets to Foundry ApplicationV2 (`ItemSheetV2`)
+key
 
 ### **Bug Fixes:**
 - [#392](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/392) - Fixed sheet rolls
 - [#394](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/394) - Unified actor and item description fields on schema with shared ProseMirror preparation
+
+### **Under the Hood:**
+- [#323](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/323) - Refactored roll logic and split into util functions
+- Agent sheet refactor: modular actor sheet mixins, roll module split, skill improvement roll helpers, and consolidated utilities under `module/utils/`
+- Removed obsolete world settings
 
 ## Version 1.6.6 - 2026-04-15
 

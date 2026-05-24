@@ -108,39 +108,18 @@
                 {{#if_eq block.type "training" }}
                     <div class="item flexrow flex-group-left flex-thin-border special-training-box">
                         <div class="flexrow">
-                            {{#if_not_eq (localize (concat 'DG.Attributes.' block.key)) (concat "DG.Attributes." block.key) }}
-                                <label class="{{if_gt block.targetNumber 0 'rollable' 'not-rollable'}} skill-label"
-                                       data-action="roll"
-                                       data-key="{{block.key}}"
-                                       data-name="{{block.name}}"
-                                       data-rolltype="special-training"
-                                       {{#unless (eq ../../skillTooltipDisplay "never") }}
-                                       data-tooltip="{{localize (concat 'DG.Attributes.Tooltip.' block.key)}}"
-                                       {{/unless }}>
-                                    {{block.name}} ({{localize (concat 'DG.Attributes.' block.key)}}, {{block.targetNumber}}%)
-                                </label>
-                            {{else}}
-                                {{#if_not_eq (localize (concat 'DG.Skills.' block.key)) (concat "DG.Skills." block.key) }}
-                                    <label class="{{if_gt block.targetNumber 0 'rollable' 'not-rollable'}} skill-label"
-                                           data-action="roll"
-                                           data-key="{{block.key}}"
-                                           data-name="{{block.name}}"
-                                           data-rolltype="special-training"
-                                           {{#unless (eq ../../skillTooltipDisplay "never") }}
-                                           data-tooltip="{{localize (concat 'DG.Skills.Tooltip.' block.key)}}"
-                                           {{/unless }}>
-                                        {{block.name}} ({{localize (concat 'DG.Skills.' block.key)}}, {{block.targetNumber}}%)
-                                    </label>
-                                {{else}}
-                                    <label class="{{if_gt block.targetNumber 0 'rollable' 'not-rollable'}} skill-label"
-                                           data-action="roll"
-                                           data-key="{{block.key}}"
-                                           data-name="{{block.name}}"
-                                           data-rolltype="special-training">
-                                        {{block.name}} ({{block.attribute}}, {{block.targetNumber}}%)
-                                    </label>
-                                {{/if_not_eq}}
-                            {{/if_not_eq}}
+                            <label class="{{if_gt block.targetNumber 0 'rollable' 'not-rollable'}} skill-label"
+                                   data-action="roll"
+                                   data-key="{{block.key}}"
+                                   data-name="{{block.name}}"
+                                   data-rolltype="special-training"
+                                   {{#if block.attributeTooltip }}
+                                   {{#unless (eq ../../skillTooltipDisplay "never") }}
+                                   data-tooltip="{{localize block.attributeTooltip}}"
+                                   {{/unless }}
+                                   {{/if }}>
+                                {{block.displayLabel}}
+                            </label>
                             <div class="item-controls skill-and-training-controls custom-skill-edit-controls">
                                 <a class="item-control"
                                    data-action="specialTrainingAction"

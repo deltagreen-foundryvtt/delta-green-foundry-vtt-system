@@ -47,7 +47,6 @@ const DG = /** @type {const} */ ({
     "swim",
     "unarmed_combat",
     "unnatural",
-    "ritual",
   ],
 
   skillImprovementFormulas: {

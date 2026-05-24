@@ -27,9 +27,7 @@
                     {{localizeWithFallback (concat "DG.Skills." skill.key) skill.label }}
                 </label>
 
-                <input class="percentile-skill-input  {{!-- This use of helpers is a bit hacky and should be consolidated in _prepareContext --}}
-                              {{#if (and (ne skill.proficiency skill.targetProficiency) (eq ../actor.type "agent")) }}
-                                  target-proficiency-mod{{/if }}"
+                <input class="percentile-skill-input {{skill.proficiencyInputClass}}"
                        type="text"
                        name="system.skills.{{skill.key }}.proficiency"
                        value="{{skill.proficiency }}"
@@ -47,7 +45,7 @@
         {{/each}}
     </div>
 
-    <div>{{> "systems/deltagreen/templates/actor/partials/custom-skills-partial-v2.html" }}</div>
+    <div>{{> "systems/deltagreen/templates/actor/partials/custom-skills-partial-agent.html" }}</div>
 
     {{#if showNotesInSkills }}
         {{> "systems/deltagreen/templates/actor/partials/notes-partial.html"}}

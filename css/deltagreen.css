@@ -900,11 +900,6 @@ div.horizontal-bar-section-header {
   min-height: 0;
 }
 
-div.motivation-editor-container div.editor {
-  height: 400px;
-  min-height: 100% !important;
-}
-
 .deltagreen .editor-host {
   align-items: stretch;
   display: flex;
@@ -931,19 +926,6 @@ div.motivation-editor-container div.editor {
 .deltagreen .editor-host prose-mirror.active .editor-container {
   flex: 1 1 auto;
   min-height: 0;
-}
-
-/* Description fonts follow the selected sheet theme (see .cowboy-style / .program-style). */
-.cowboy-style .editor-host prose-mirror .editor-content,
-.cowboy-style .editor-host prose-mirror .editor-content .ProseMirror {
-  font-family: "SpecialElite", sans-serif !important;
-}
-
-.outlaw-style .editor-host prose-mirror .editor-content,
-.outlaw-style .editor-host prose-mirror .editor-content .ProseMirror,
-.program-style .editor-host prose-mirror .editor-content,
-.program-style .editor-host prose-mirror .editor-content .ProseMirror {
-  font-family: "PublicSans", sans-serif !important;
 }
 
 /* Actor sheets: compact description when not editing. */
@@ -1509,7 +1491,7 @@ a[data-action="applySkillImprovements"] {
   text-decoration: line-through;
 }
 
-.actor-sheet-v2 {
+.agent-sheet {
   .window-content {
     display: grid;
     grid-template-columns: 220px 1fr;
