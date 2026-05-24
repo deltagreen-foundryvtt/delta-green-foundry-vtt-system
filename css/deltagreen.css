@@ -126,6 +126,18 @@
   cursor: pointer;
 }
 
+button.rollable.inline-roll {
+  display: inline;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  line-height: inherit;
+  vertical-align: baseline;
+}
+
 .not-rollable {
   color: #999999;
 }
@@ -1345,7 +1357,7 @@ a[data-action="applySkillImprovements"] {
   .window-content {
     display: grid;
     grid-template-columns: 220px 1fr;
-    grid-template-rows: auto;
+    grid-template-rows: auto 1fr;
     width: 100%;
     height: 100%;
   }
@@ -1353,16 +1365,54 @@ a[data-action="applySkillImprovements"] {
   .left-bar {
     grid-column: 1;
     grid-row: 1 / -1;
-    padding: 10px;
+    padding: 3px;
   }
 
-  .window-content > :not(.left-bar) {
+  .window-content > nav.sheet-tabs {
     grid-column: 2;
     grid-row: 1;
+    align-self: start;
     width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 0;
+    position: relative;
+    z-index: 2;
+  }
+
+  .window-content > [data-application-part="rightBar"],
+  .window-content > .right-bar {
+    grid-column: 2;
+    grid-row: 2;
+    width: 100%;
+    min-height: 0;
     box-sizing: border-box;
     padding-right: 0;
     margin-right: 0;
+  }
+
+  .right-bar {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    height: 100%;
+  }
+
+  .right-bar > .tab {
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+
+  /* Match V1: flat top edge on panel; active tab overlaps the panel top border */
+  .right-bar > .tab.active {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+
+  .tabs [data-action="tab"].active {
+    position: relative;
+    z-index: 1;
+    margin-bottom: -2px;
+    padding-bottom: 2px;
   }
 
   .profile-img {
@@ -1383,10 +1433,6 @@ a[data-action="applySkillImprovements"] {
     padding: 1px;
   }
 
-  .tab.active {
-    padding-top: 20px;
-  }
-
   .breaking-point {
     justify-content: space-between;
     display: flex;
@@ -1397,18 +1443,43 @@ a[data-action="applySkillImprovements"] {
     }
   }
 
+  .mb-10 {
+    margin-bottom: 10px;
+  }
+
   .stats {
     input {
       margin: 1px;
     }
   }
 
-  .luck {
-    margin-top: 5px;
-  }
-
   .horizontal-bar-section-divider.skills-header {
     display: flex;
+  }
+
+  .adaptation-grid-4col {
+    display: grid;
+    grid-template-columns: 50% 25px 25px 25px;
+    align-content: center;
+    justify-content: left;
+    align-items: center;
+    row-gap: 0;
+    margin-bottom: 0;
+  }
+
+  .adaptation-grid-4col .adapted-label-slot {
+    grid-column: 1 / -1;
+    min-height: 1.35em;
+  }
+
+  .adaptation-grid-4col .adapted-label-slot .adapted-label {
+    display: block;
+    margin: 0;
+  }
+
+  .adaptation-block {
+    border: 1px solid black;
+    padding: 3px;
   }
 }
 

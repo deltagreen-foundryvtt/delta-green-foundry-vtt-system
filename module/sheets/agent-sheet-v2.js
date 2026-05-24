@@ -5,7 +5,7 @@ import ActorEditStatForm from "./edit-stats.js";
 export default class DGAgentSheetV2 extends DGAgentSheet {
   static DEFAULT_OPTIONS = /** @type {const} */ ({
     classes: ["actor-sheet-v2"],
-    position: { width: 950, height: 665 },
+    position: { width: 950, height: 700 },
     actions: {
       openStatsEdit: this._openStatsEdit,
     },
@@ -17,6 +17,7 @@ export default class DGAgentSheetV2 extends DGAgentSheet {
       template: `${this.TEMPLATE_PATH}/parts/left-bar.html`,
       templates: [`${this.TEMPLATE_PATH}/partials/sanity-partial.html`],
     },
+    tabs: this.BASE_PARTS.tabs,
     rightBar: {
       template: `${this.TEMPLATE_PATH}/parts/right-bar.html`,
       templates: [
@@ -31,7 +32,6 @@ export default class DGAgentSheetV2 extends DGAgentSheet {
         `${this.TEMPLATE_PATH}/partials/notes-partial.html`,
       ],
     },
-    tabs: this.BASE_PARTS.tabs,
   });
 
   static _openStatsEdit() {

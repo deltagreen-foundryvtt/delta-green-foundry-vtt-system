@@ -312,6 +312,7 @@
   "DG.Sheet.BlockHeaders.SkillsAndTraining": "SKILLS AND TRAINING",
   "DG.Sheet.BlockHeaders.Injuries": "INJURIES",
   "DG.Sheet.BlockHeaders.BreakingPointAndAdaptations": "BREAKING POINT AND ADAPTATIONS",
+  "DG.Sheet.BlockHeaders.Adaptations": "Adaptations",
   "DG.Sheet.BlockHeaders.MotivationsAndDisorders": "MOTIVATIONS AND DISORDERS",
   "DG.Sheet.BlockHeaders.PersonalInfoCV": "PERSONAL INFORMATION / CV",
   "DG.Sheet.BlockHeaders.BondsRelationshipsContacts": "BONDS / RELATIONSHIPS / CONTACTS",
@@ -349,6 +350,7 @@
 
   "DG.Sheet.class.item": "Item Sheet",
   "DG.Sheet.class.agent": "Agent Sheet",
+  "DG.Sheet.class.agentV2": "Agent Sheet V2",
   "DG.Sheet.class.npc": "NPC Sheet",
   "DG.Sheet.class.unnatural": "Unnatural Sheet",
   "DG.Sheet.class.vehicle": "Vehicle Sheet",
