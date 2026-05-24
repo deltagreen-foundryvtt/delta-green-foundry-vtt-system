@@ -13,7 +13,13 @@
 - [#211](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/211) - Move macros to System macros folder in compendium.
 - [#283](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/283) - Added new actor sheet with left hand Sidebar RFC
 - [#291](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/291) - Moving Luck button from three dots to left hand panel
+- [#297](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/297) - Move adaption ticks to left hand panel
 - [#374](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/374) - Moving Age to Bio tab
+- [#393](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/393) - Updated to support Foundry v14
+- [#223](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/223) - Migrated item sheets to Foundry ApplicationV2 (`ItemSheetV2`)
+
+### **Bug Fixes:**
+- [#392](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/392) - Fixed sheet rolls
 
 ## Version 1.6.6 - 2026-04-15
 
