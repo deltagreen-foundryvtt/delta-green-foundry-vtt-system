@@ -32,25 +32,30 @@ export class DGRoll extends Roll {
   /**
    * Simple function that actually creates the message and sends it to chat.
    * We override this to have a little more control over certain aspects of the message,
-   * right now, its `speaker` and `rollMode`.
+   * right now, its `speaker` and `messageMode`.
    *
    * @override
    * The following `@param` descriptions comes from the Foundry VTT code.
    * @param {object} messageData          The data object to use when creating the message
    * @param {options} [options]           Additional options which modify the created message.
-   * @param {string} [options.rollMode]   The template roll mode to use for the message from CONFIG.Dice.rollModes
+   * @param {string} [options.messageMode]  A key of CONFIG.ChatMessage.modes
    * @param {boolean} [options.create=true]   Whether to automatically create the chat message, or only return the
    *                                          prepared chatData object.
    * @returns {Promise<ChatMessage|object>} A promise which resolves to the created ChatMessage document if create is
    *                                        true, or the Object of prepared chatData otherwise.
    */
-  async toMessage(messageData = {}, { rollMode, create = true } = {}) {
+  async toMessage(messageData = {}, { messageMode, create = true } = {}) {
     // eslint-disable-next-line no-param-reassign
     messageData.speaker = ChatMessage.getSpeaker({ actor: this.actor });
-    return super.toMessage(messageData, {
-      rollMode: this.options.rollMode || rollMode,
-      create,
-    });
+    const mode =
+      messageMode ??
+      this.options.messageMode ??
+      this.options.rollMode;
+    const opts = { create };
+    if (mode) {
+      opts.messageMode = foundry.dice.Roll._mapLegacyRollMode(mode);
+    }
+    return super.toMessage(messageData, opts);
   }
 }
 
@@ -165,12 +170,12 @@ export class DGPercentileRoll extends DGRoll {
         const sign = mod > 0 ? "Positive" : "Negative";
         return {
           action: `roll${Math.abs(mod)}${sign}`,
-          label: String(mod),
+          label: mod > 0 ? `+${mod}` : String(mod),
           callback: (event, button, dialog) => {
             try {
-              const rollMode =
+              const messageMode =
                 dialog.element.querySelector("[name='rollMode']")?.value;
-              resolve({ targetModifier: mod, rollMode });
+              resolve({ targetModifier: mod, messageMode });
             } catch (ex) {
               reject(console.log(ex));
             }
@@ -197,7 +202,7 @@ export class DGPercentileRoll extends DGRoll {
                   "[name='targetModifier']",
                 )?.value; // this is text as a heads up
 
-                const rollMode =
+                const messageMode =
                   dialog.element.querySelector("[name='rollMode']")?.value;
 
                 const plusMinus = dialog.element.querySelector(
@@ -222,7 +227,7 @@ export class DGPercentileRoll extends DGRoll {
                     });
                   }
                 }
-                resolve({ targetModifier, rollMode });
+                resolve({ targetModifier, messageMode });
               } catch (ex) {
                 reject(console.log(ex));
               }
@@ -253,7 +258,7 @@ export class DGPercentileRoll extends DGRoll {
       (this.type === "sanity" || this.key === "ritual") &&
       !game.user.isGM
     ) {
-      this.options.rollMode = "blindroll";
+      this.options.messageMode = "blind";
     }
 
     const diceSoNice =
@@ -743,7 +748,7 @@ export class DGDamageRoll extends DGRoll {
                 const modifiedBaseRoll = dialog.element.querySelector(
                   "[name='originalFormula']",
                 )?.value; // this is text as a heads up
-                const rollMode = dialog.element.querySelector(
+                const messageMode = dialog.element.querySelector(
                   "[name='targetRollMode']",
                 )?.value;
 
@@ -758,7 +763,7 @@ export class DGDamageRoll extends DGRoll {
                   newFormula += modifiedBaseRoll + innerModifier.trim();
                 }
 
-                resolve({ newFormula, rollMode });
+                resolve({ newFormula, messageMode });
               } catch (ex) {
                 reject(console.log(ex));
               }
@@ -844,4 +849,104 @@ export class DGSanityDamageRoll extends DGRoll {
     const [lowResult, highResult] = this.terms[0].results;
     return [lowResult?.result, highResult?.result];
   }
+}
+
+/**
+ * Build a Delta Green roll from a click target's dataset.
+ *
+ * @param {DOMStringMap} dataset
+ * @param {object} params
+ * @param {Actor|null} [params.actor]
+ * @param {Item|null} [params.item]
+ * @param {HTMLElement} [params.element]
+ * @param {"actor"|"item"} [params.sanityDamageSource]
+ * @returns {Roll}
+ */
+export function createDGRollFromDataset(
+  dataset,
+  { actor = null, item = null, element = null, sanityDamageSource = "actor" } = {},
+) {
+  const rollOptions = {
+    rollType: dataset.rolltype,
+    key: dataset.key,
+    actor,
+    specialTrainingName: dataset?.name || null,
+    item,
+  };
+
+  let roll = new Roll("1d100", {});
+  switch (dataset.rolltype) {
+    case "stat":
+    case "skill":
+    case "sanity":
+    case "special-training":
+    case "weapon":
+      roll = new DGPercentileRoll("1D100", {}, rollOptions);
+      break;
+    case "lethality":
+      roll = new DGLethalityRoll("1D100", {}, rollOptions);
+      break;
+    case "damage": {
+      let diceFormula = item.system.damage;
+      const { skill } = item.system;
+      if (
+        actor &&
+        (actor.type === "agent" || actor.type === "npc") &&
+        (skill === "unarmed_combat" || skill === "melee_weapons")
+      ) {
+        diceFormula += actor.system.statistics.str.meleeDamageBonusFormula;
+      }
+      roll = new DGDamageRoll(diceFormula, {}, rollOptions);
+      break;
+    }
+    case "sanity-damage": {
+      let successLoss;
+      let failedLoss;
+      if (sanityDamageSource === "item" && item) {
+        const isLearntDamage = element?.hasAttribute("data-san-on-learn");
+        const sanityData = isLearntDamage
+          ? item.system.learnedSanity
+          : item.system.sanity;
+        ({ successLoss, failedLoss } = sanityData);
+      } else if (actor) {
+        ({ successLoss, failedLoss } = actor.system.sanity);
+      } else {
+        break;
+      }
+      const combinedFormula = `{${successLoss}, ${failedLoss}}`;
+      roll = new DGSanityDamageRoll(combinedFormula, {}, rollOptions);
+      break;
+    }
+    default:
+      break;
+  }
+  return roll;
+}
+
+/**
+ * Show an optional modifier dialog, evaluate, and send a roll to chat.
+ *
+ * @param {Event|object} event
+ * @param {Roll} roll
+ * @returns {Promise<void>}
+ */
+export async function processDGRoll(event, roll) {
+  const shiftKey = event?.shiftKey ?? false;
+  const which = event?.which ?? 0;
+
+  if (shiftKey || which === 3) {
+    if (!(roll instanceof DGSanityDamageRoll)) {
+      const dialogData = await roll.showDialog();
+      if (!dialogData) return;
+      if (dialogData.newFormula) {
+        roll = new DGDamageRoll(dialogData.newFormula, {}, roll.options);
+      }
+      roll.modifier += dialogData.targetModifier;
+      if (dialogData.messageMode) {
+        roll.options.messageMode = dialogData.messageMode;
+      }
+    }
+  }
+  await roll.evaluate();
+  roll.toChat();
 }

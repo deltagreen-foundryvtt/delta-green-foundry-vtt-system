@@ -1,0 +1,42 @@
+<section class="sheet-body">
+<div class="tab attributes {{tabs.attributes.cssClass}} top-div-border"
+     data-group="primary"
+     data-tab="attributes">
+
+    <div class="motivation-sheet-horizontal-grid-2col">
+        <span class="resource-label">{{localize 'DG.ItemWindow.Motivations.IsDisorder'}}:</span>
+        <input type="checkbox"
+               name="system.crossedOut"
+               {{checked item.system.crossedOut}}
+               data-dtype="Boolean"
+               title="{{localize 'DG.ItemWindow.Motivations.IsDisorderTooltip'}}" />
+        <span class="resource-label">{{localize 'DG.ItemWindow.Motivations.Motivation'}}:</span>
+        <input type="text"
+               name="name"
+               value="{{item.name}}"
+               placeholder=""
+               data-dtype="String"
+               title="{{localize 'DG.ItemWindow.Motivations.MotivationNameTooltip'}}"
+               {{#if item.system.crossedOut }}
+               style="text-decoration: line-through"
+               disabled
+               {{/if }} />
+        {{#if item.system.crossedOut }}
+
+            <span class="resource-label">{{localize 'DG.ItemWindow.Motivations.Disorder'}}:</span>
+            <input type="text"
+                   name="system.disorder"
+                   value="{{item.system.disorder}}"
+                   data-dtype="String"
+                   title="{{localize 'DG.ItemWindow.Motivations.DisorderNameTooltip'}}" />
+            <span class="resource-label">{{localize 'DG.ItemWindow.Motivations.DisorderHasBeenCured'}}:</span>
+            <input class="labeled-resource-checkbox"
+                   type="checkbox"
+                   name="system.disorderCured"
+                   {{checked item.system.disorderCured}}
+                   data-dtype="Boolean"
+                   title="{{localize 'DG.ItemWindow.Motivations.DisorderHasBeenCuredTooltip'}}" />
+        {{/if}}
+
+    </div>
+</div>

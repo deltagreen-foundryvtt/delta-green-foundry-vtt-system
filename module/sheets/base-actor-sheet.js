@@ -1,9 +1,8 @@
 import DG from "../config.js";
 import {
-  DGDamageRoll,
-  DGLethalityRoll,
   DGPercentileRoll,
-  DGSanityDamageRoll,
+  createDGRollFromDataset,
+  processDGRoll,
 } from "../roll/roll.js";
 import DGSheetMixin from "./base-sheet.js";
 
@@ -1221,52 +1220,14 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
   static async _onRoll(event, target) {
     if (target.classList.contains("not-rollable") || event.which === 2) return;
 
-    const { dataset } = target;
-    const item = this.actor.items.get(dataset.iid);
-    const rollOptions = {
-      rollType: dataset.rolltype,
-      key: dataset.key,
+    const item = this.actor.items.get(target.dataset.iid);
+    const roll = createDGRollFromDataset(target.dataset, {
       actor: this.actor,
-      specialTrainingName: dataset?.name || null, // Only applies to Special Training Rolls
       item,
-    };
-
-    // Create a default 1d100 roll just in case.
-    let roll = new Roll("1d100", {});
-    switch (dataset.rolltype) {
-      case "stat":
-      case "skill":
-      case "sanity":
-      case "special-training":
-      case "weapon":
-        roll = new DGPercentileRoll("1D100", {}, rollOptions);
-        break;
-      case "lethality":
-        roll = new DGLethalityRoll("1D100", {}, rollOptions);
-        break;
-      case "damage": {
-        let diceFormula = item.system.damage;
-        const { skill } = item.system;
-        if (
-          (this.actor.type === "agent" || this.actor.type === "npc") &&
-          (skill === "unarmed_combat" || skill === "melee_weapons")
-        ) {
-          diceFormula +=
-            this.actor.system.statistics.str.meleeDamageBonusFormula;
-        }
-        roll = new DGDamageRoll(diceFormula, {}, rollOptions);
-        break;
-      }
-      case "sanity-damage": {
-        const { successLoss, failedLoss } = this.actor.system.sanity;
-        const combinedFormula = `{${successLoss}, ${failedLoss}}`;
-        roll = new DGSanityDamageRoll(combinedFormula, {}, rollOptions);
-        break;
-      }
-      default:
-        break;
-    }
-    this.processRoll(event, roll, rollOptions);
+      element: target,
+      sanityDamageSource: "actor",
+    });
+    await this.processRoll(event, roll);
   }
 
   // This only exists to give a chance to activate the modifier dialogue if desired
@@ -1288,7 +1249,9 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
       const dialogData = await roll.showDialog();
       if (!dialogData) return;
       roll.modifier += dialogData.targetModifier;
-      roll.options.rollMode = dialogData.rollMode;
+      if (dialogData.messageMode) {
+        roll.options.messageMode = dialogData.messageMode;
+      }
     }
     // Evaluate the roll.
     await roll.evaluate();
@@ -1308,23 +1271,7 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
    * @async
    */
   async processRoll(event, roll) {
-    // Open dialog if user requests it (no dialog for Sanity Damage rolls)
-    if (
-      (event.shiftKey || event.which === 3) &&
-      !(roll instanceof DGSanityDamageRoll)
-    ) {
-      const dialogData = await roll.showDialog();
-      if (!dialogData) return;
-      if (dialogData.newFormula) {
-        roll = new DGDamageRoll(dialogData.newFormula, {}, roll.options);
-      }
-      roll.modifier += dialogData.targetModifier;
-      roll.options.rollMode = dialogData.rollMode;
-    }
-    // Evaluate the roll.
-    await roll.evaluate();
-    // Send the roll to chat.
-    roll.toChat();
+    return processDGRoll(event, roll);
   }
 
   /** Handler for generic toggle events */

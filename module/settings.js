@@ -1,6 +1,7 @@
 /* eslint-disable max-classes-per-file */
 import DG, { BASE_TEMPLATE_PATH } from "./config.js";
 import DGActorSheet from "./sheets/base-actor-sheet.js";
+import DGItemSheet from "./sheets/base-item-sheet.js";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
@@ -329,7 +330,7 @@ export default function registerSystemSettings() {
     default: "hover",
     onChange: () => {
       foundry.applications.instances.forEach((app) => {
-        if (app instanceof DGActorSheet) {
+        if (app instanceof DGActorSheet || app instanceof DGItemSheet) {
           app.render();
         }
       });
