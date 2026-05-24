@@ -933,8 +933,17 @@ div.motivation-editor-container div.editor {
   min-height: 0;
 }
 
-.deltagreen .editor-host prose-mirror .editor-content {
+/* Description fonts follow the selected sheet theme (see .cowboy-style / .program-style). */
+.cowboy-style .editor-host prose-mirror .editor-content,
+.cowboy-style .editor-host prose-mirror .editor-content .ProseMirror {
   font-family: "SpecialElite", sans-serif !important;
+}
+
+.outlaw-style .editor-host prose-mirror .editor-content,
+.outlaw-style .editor-host prose-mirror .editor-content .ProseMirror,
+.program-style .editor-host prose-mirror .editor-content,
+.program-style .editor-host prose-mirror .editor-content .ProseMirror {
+  font-family: "PublicSans", sans-serif !important;
 }
 
 /* Actor sheets: compact description when not editing. */
