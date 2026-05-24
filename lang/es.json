@@ -84,6 +84,7 @@
   "DG.Skills.Tooltip.unnatural": "Conocimiento acerca de los secretos más fundamentales y desgarradores del universo. Úsala para recordar, reconocer o investigar hechos sobre todo aquello que los humanos consideran antinatural. Esto va mucho más allá del ocultismo, porque la habilidad Antinatural representa cosas que existen de verdad. Utilízala para poder filtrar información de los confines más oscuros de los mitos y el folclore y reconocer qué partes son ciertas. El valor de COR de tu Agente nunca puede ser superior a 99 menos su valor de habilidad Antinatural.",
 
   "DG.Skills.AddTypedOrCustomSkill": "Añadir tipo o habilidad personalizada",
+  "DG.Skills.ToggleEditDeleteSkills": "Editar/eliminar habilidades",
   "DG.Skills.AddSkill": "Añadir habilidad",
   "DG.Skills.Apply": "Aplicar",
   "DG.Skills.ApplySkillImprovements.Title": "Aplicar mejoras de habilidad",
@@ -142,9 +143,11 @@
   "DG.Attributes.Tooltip.cha": "Encanto, liderazgo y atractivo personal. Podría indicar atractivo físico.",
 
   "DG.Navigation.Agent.skills": "Habilidades",
+  "DG.Navigation.Agent.combat": "Combate",
   "DG.Navigation.Agent.physical": "Características",
   "DG.Navigation.Agent.motivations": "Salud mental",
   "DG.Navigation.Agent.gear": "Equipo",
+  "DG.Navigation.Agent.personal": "Personal",
   "DG.Navigation.Agent.bio": "Trasfondo",
   "DG.Navigation.Agent.bonds": "Lazos",
   "DG.Navigation.NPC.skills": "Habilidades y entrenamiento",
@@ -308,11 +311,13 @@
   "DG.Sheet.BlockHeaders.Statistics": "CARACTERÍSTICAS",
   "DG.Sheet.BlockHeaders.PhysicalDescriptionNotes": "DESCRIPCIÓN FÍSICA Y NOTAS",
   "DG.Sheet.BlockHeaders.SkillsAndTraining": "HABILIDADES Y ENTRENAMIENTO",
+  "DG.Sheet.BlockHeaders.SpecialTraining": "ENTRENAMIENTO ESPECIAL",
   "DG.Sheet.BlockHeaders.Injuries": "HERIDAS",
   "DG.Sheet.BlockHeaders.BreakingPointAndAdaptations": "PUNTO DE RUPTURA Y ADAPTACIONES",
   "DG.Sheet.BlockHeaders.Adaptations": "Adaptaciones",
   "DG.Sheet.BlockHeaders.MotivationsAndDisorders": "MOTIVACIONES Y TRANSTORNOS MENTALES",
   "DG.Sheet.BlockHeaders.PersonalInfoCV": "INFORMACIÓN PERSONAL Y CURRÍCULO",
+  "DG.Sheet.BlockHeaders.ScenarioInformation": "INFORMACIÓN DEL ESCENARIO",
   "DG.Sheet.BlockHeaders.BondsRelationshipsContacts": "LAZOS, RELACIONES Y CONTACTOS",
 
   "DG.AgentSheet.ProfessionPlaceholder": "Profesión (rango, si es necesario)",

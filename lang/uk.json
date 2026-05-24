@@ -84,6 +84,7 @@
   "DG.Skills.Tooltip.unnatural": "Розпізнавати, досліджувати або пригадувати істини про сили, що виходять за межі людського розуміння.",
 
   "DG.Skills.AddTypedOrCustomSkill": "Додати типізовану/власну навичку",
+  "DG.Skills.ToggleEditDeleteSkills": "Редагувати/видалити навички",
   "DG.Skills.AddSkill": "Додати навичку",
   "DG.Skills.Apply": "Застосувати",
   "DG.Skills.ApplySkillImprovements.Title": "Застосувати покращення навичок",
@@ -142,9 +143,11 @@
   "DG.Attributes.Tooltip.cha": "Див. стор. 19 в Agent's Handbook — Charisma (Харизма)",
 
   "DG.Navigation.Agent.skills": "Навички",
+  "DG.Navigation.Agent.combat": "Бій",
   "DG.Navigation.Agent.physical": "Статистика",
   "DG.Navigation.Agent.motivations": "Психологія",
   "DG.Navigation.Agent.gear": "Спорядження",
+  "DG.Navigation.Agent.personal": "Особисте",
   "DG.Navigation.Agent.bio": "Особисте",
   "DG.Navigation.Agent.bonds": "Зв’язки",
   "DG.Navigation.NPC.skills": "Навички та підготовка",
@@ -308,11 +311,13 @@
   "DG.Sheet.BlockHeaders.Statistics": "СТАТИСТИКА",
   "DG.Sheet.BlockHeaders.PhysicalDescriptionNotes": "ФІЗИЧНИЙ ОПИС / НОТАТКИ",
   "DG.Sheet.BlockHeaders.SkillsAndTraining": "НАВИЧКИ ТА ПІДГОТОВКА",
+  "DG.Sheet.BlockHeaders.SpecialTraining": "СПЕЦІАЛЬНА ПІДГОТОВКА",
   "DG.Sheet.BlockHeaders.Injuries": "ТРАВМИ",
   "DG.Sheet.BlockHeaders.BreakingPointAndAdaptations": "ТОЧКА ЗЛАМУ ТА АДАПТАЦІЇ",
   "DG.Sheet.BlockHeaders.Adaptations": "Адаптації",
   "DG.Sheet.BlockHeaders.MotivationsAndDisorders": "МОТИВАЦІЇ ТА РОЗЛАДИ",
   "DG.Sheet.BlockHeaders.PersonalInfoCV": "ОСОБИСТІ ДАНІ / РЕЗЮМЕ",
+  "DG.Sheet.BlockHeaders.ScenarioInformation": "ІНФОРМАЦІЯ СЦЕНАРІЮ",
   "DG.Sheet.BlockHeaders.BondsRelationshipsContacts": "ЗВ’ЯЗКИ / СТОСУНКИ / КОНТАКТИ",
 
   "DG.AgentSheet.ProfessionPlaceholder": "ПРОФЕСІЯ (ЗВАННЯ, ЯКЩО Є)",

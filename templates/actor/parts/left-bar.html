@@ -7,13 +7,13 @@
              data-tooltip="{{actor.name}}"
              height="150"
              width="100" />
-        <div>
+        <div class="header-name-fields">
             <input class="fill-remaining-space"
                    name="name"
                    type="text"
                    value="{{actor.name}}"
                    data-tooltip="{{localize 'DG.AgentNameFieldTooltip' }}" />
-            <input class="fill-remaining-space"
+            <input class="fill-remaining-space profession-input"
                    name="system.biography.profession"
                    type="text"
                    value="{{actor.system.biography.profession}}"
@@ -21,7 +21,7 @@
         </div>
     </div>
 
-    <div class="stats-wrapper mb-10">
+    <div class="stats-wrapper">
         <a class="stats-edit-btn" title="{{localize 'Edit Stats'}}" data-action="openStatsEdit">
             <i class="fas fa-pen"></i>
         </a>
@@ -52,7 +52,7 @@
         </div>
     </div>
 
-    <div class="resources grid grid-3col mb-10">
+    <div class="resources grid grid-3col">
         {{!-- HP --}}
         <div class="resource-outer-grid-1col">
             <label for="actor.system.health.value"
@@ -99,15 +99,49 @@
         {{/if}}
     </div>
 
-    <div class="breaking-point mb-10">
-        <label class="bolded-label">{{localize 'DG.Mental.BreakingPoint'}}</label>
-        <input class="centered"
+    <div class="exhausted-section resource mb-8">
+        <label class="bolded-label exhaustion-label"
+               title="{{localize 'DG.Tooltip.Exhaustion'}}">
+            {{localize 'DG.Physical.Exhausted'}}
+        </label>
+        <input class="labeled-resource-checkbox"
+               type="checkbox"
+               name="system.physical.exhausted"
+               {{checked actor.system.physical.exhausted}}
+               data-dtype="Boolean"
+               title="{{localize 'DG.Tooltip.Exhaustion'}}" />
+
+        {{#if actor.system.physical.exhausted }}
+
+            <label class="bolded-label exhaustion-label"
+                   title="{{localize 'DG.Tooltip.Exhaustion'}}">
+                {{localize 'DG.Physical.ExhaustionPenalty'}}
+            </label>
+            <input type="number"
+                   name="system.physical.exhaustedPenalty"
+                   value="{{actor.system.physical.exhaustedPenalty}}"
+                   data-dtype="Number"
+                   title="{{localize 'DG.Tooltip.Exhaustion'}}"
+                   min="-99"
+                   max="0" />
+
+        {{/if}}
+    </div>
+
+    <div class="breaking-point breaking-point-inline mb-8">
+        <label class="bolded-label breaking-point-label"
+               data-tooltip="{{localize 'DG.Mental.Tooltip.BreakingPoint'}}">
+            {{localize 'DG.Mental.BreakingPoint'}}
+        </label>
+        <a class="fa fa-refresh"
+           data-action="resetBreakingPoint"
+           title="{{localize 'DG.Tooltip.BreakPointReset'}}"></a>
+        <input class="centered breaking-point-input"
                title="{{localize 'DG.Tooltip.BreakPoint'}}"
                type="text"
                name="system.sanity.currentBreakingPoint"
                value="{{actor.system.sanity.currentBreakingPoint}}"
                data-dtype="Number" />
-        <a class="fa fa-refresh" data-action="resetBreakingPoint" title="Reset breaking point to be current SAN - WP."></a>
     </div>
 
     <div class="adaptation-grid-4col">

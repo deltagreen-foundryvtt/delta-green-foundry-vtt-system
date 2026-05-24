@@ -84,6 +84,7 @@
   "DG.Skills.Tooltip.unnatural": "Reconhecer, pesquisar ou recordar verdades sobre entidades e forças além da compreensão humana.",
 
   "DG.Skills.AddTypedOrCustomSkill": "Adicionar Habilidade Personalizada",
+  "DG.Skills.ToggleEditDeleteSkills": "Editar/excluir habilidades",
   "DG.Skills.AddSkill": "Adicionar Habilidade",
   "DG.Skills.Apply": "Aplicar",
   "DG.Skills.ApplySkillImprovements.Title": "Aplicar Melhorias",
@@ -142,9 +143,11 @@
   "DG.Attributes.Tooltip.cha": "Veja a página 19 do Manual do Agente — Carisma.",
 
   "DG.Navigation.Agent.skills": "Habilidades",
+  "DG.Navigation.Agent.combat": "Combate",
   "DG.Navigation.Agent.physical": "Estatísticas",
   "DG.Navigation.Agent.motivations": "Mental",
   "DG.Navigation.Agent.gear": "Equipamento",
+  "DG.Navigation.Agent.personal": "Pessoal",
   "DG.Navigation.Agent.bio": "Pessoal",
   "DG.Navigation.Agent.bonds": "Laços",
   "DG.Navigation.NPC.skills": "Habilidades & Treinamento",
@@ -308,11 +311,13 @@
   "DG.Sheet.BlockHeaders.Statistics": "ESTATÍSTICAS",
   "DG.Sheet.BlockHeaders.PhysicalDescriptionNotes": "Descrição Física/Notas",
   "DG.Sheet.BlockHeaders.SkillsAndTraining": "HABILIDADES E TREINAMENTO",
+  "DG.Sheet.BlockHeaders.SpecialTraining": "TREINAMENTO ESPECIAL",
   "DG.Sheet.BlockHeaders.Injuries": "FERIMENTOS",
   "DG.Sheet.BlockHeaders.BreakingPointAndAdaptations": "PONTO DE RUPTURA E ADAPTAÇÕES",
   "DG.Sheet.BlockHeaders.Adaptations": "Adaptações",
   "DG.Sheet.BlockHeaders.MotivationsAndDisorders": "MOTIVAÇÕES E DISTÚRBIOS",
   "DG.Sheet.BlockHeaders.PersonalInfoCV": "INFORMAÇÕES PESSOAIS / C.V.",
+  "DG.Sheet.BlockHeaders.ScenarioInformation": "INFORMAÇÕES DO CENÁRIO",
   "DG.Sheet.BlockHeaders.BondsRelationshipsContacts": "LAÇOS / RELACIONAMENTOS / CONTATOS",
 
   "DG.AgentSheet.ProfessionPlaceholder": "PROFISSÂO",

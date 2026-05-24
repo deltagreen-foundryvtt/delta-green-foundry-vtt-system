@@ -84,6 +84,7 @@
   "DG.Skills.Tooltip.unnatural": "Recognize, research, or recall truths about entities and forces beyond human understanding.",
 
   "DG.Skills.AddTypedOrCustomSkill": "Add Typed/Custom Skill",
+  "DG.Skills.ToggleEditDeleteSkills": "Edit/Delete Skills",
   "DG.Skills.AddSkill": "Add Skill",
   "DG.Skills.Apply": "Apply",
   "DG.Skills.ApplySkillImprovements.Title": "Apply Skill Improvements",
@@ -142,9 +143,11 @@
   "DG.Attributes.Tooltip.cha": "See Page 19 of the Agent's Handbook - Charisma",
 
   "DG.Navigation.Agent.skills": "Skills",
+  "DG.Navigation.Agent.combat": "Combat",
   "DG.Navigation.Agent.physical": "Statistics",
   "DG.Navigation.Agent.motivations": "Psychological",
   "DG.Navigation.Agent.gear": "Equipment",
+  "DG.Navigation.Agent.personal": "Personal",
   "DG.Navigation.Agent.bio": "Bio",
   "DG.Navigation.Agent.bonds": "Bonds",
   "DG.Navigation.NPC.skills": "Skills & Training",
@@ -310,11 +313,13 @@
   "DG.Sheet.BlockHeaders.Statistics": "STATISTICS",
   "DG.Sheet.BlockHeaders.PhysicalDescriptionNotes": "PHYSICAL DESCRIPTION / NOTES",
   "DG.Sheet.BlockHeaders.SkillsAndTraining": "SKILLS AND TRAINING",
+  "DG.Sheet.BlockHeaders.SpecialTraining": "SPECIAL TRAINING",
   "DG.Sheet.BlockHeaders.Injuries": "INJURIES",
   "DG.Sheet.BlockHeaders.BreakingPointAndAdaptations": "BREAKING POINT AND ADAPTATIONS",
   "DG.Sheet.BlockHeaders.Adaptations": "Adaptations",
   "DG.Sheet.BlockHeaders.MotivationsAndDisorders": "MOTIVATIONS AND DISORDERS",
   "DG.Sheet.BlockHeaders.PersonalInfoCV": "PERSONAL INFORMATION / CV",
+  "DG.Sheet.BlockHeaders.ScenarioInformation": "SCENARIO INFORMATION",
   "DG.Sheet.BlockHeaders.BondsRelationshipsContacts": "BONDS / RELATIONSHIPS / CONTACTS",
 
   "DG.AgentSheet.ProfessionPlaceholder": "PROFESSION (RANK IF APPLICABLE)",
