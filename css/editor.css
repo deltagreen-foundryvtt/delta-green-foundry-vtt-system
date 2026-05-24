@@ -1,38 +1,49 @@
 @font-face {
   font-family: "SpecialElite";
   src: url("../assets/font/special_elite/SpecialElite-Regular.ttf")
-    format("truetype"); /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
+    format("truetype");
 }
 
 .special-elite-font {
   font-family: "SpecialElite", sans-serif !important;
 }
 
-.editor-content {
-  font-family: "SpecialElite", sans-serif !important;
+.public-sans-font {
+  font-family: "PublicSans", sans-serif !important;
 }
 
-.tox .tox-editor-container {
-  font-family: "SpecialElite", sans-serif !important;
-}
-
+/* TinyMCE iframe (legacy); theme is not available inside the iframe — keep Special Elite. */
+.tox .tox-editor-container,
 .tox .tox-edit-area {
   font-family: "SpecialElite", sans-serif !important;
 }
 
-.editor-host .editor .editor-content,
-.editor-host prose-mirror .editor-content {
+.cowboy-style .editor-host .editor .editor-content,
+.cowboy-style .editor-host prose-mirror .editor-content,
+.cowboy-style .editor-host prose-mirror .editor-content .ProseMirror {
   font-family: "SpecialElite", sans-serif !important;
 }
 
-.editor-host .tox {
+.outlaw-style .editor-host .editor .editor-content,
+.outlaw-style .editor-host prose-mirror .editor-content,
+.outlaw-style .editor-host prose-mirror .editor-content .ProseMirror,
+.program-style .editor-host .editor .editor-content,
+.program-style .editor-host prose-mirror .editor-content,
+.program-style .editor-host prose-mirror .editor-content .ProseMirror {
+  font-family: "PublicSans", sans-serif !important;
+}
+
+.cowboy-style .editor-host .tox,
+.cowboy-style .editor-host .tox-tinymce,
+.cowboy-style .editor-host .tox .tox-edit-area {
   font-family: "SpecialElite", sans-serif !important;
 }
 
-.editor-host .tox-tinymce {
-  font-family: "SpecialElite", sans-serif !important;
-}
-
-.editor-host .tox .tox-edit-area {
-  font-family: "SpecialElite", sans-serif !important;
+.outlaw-style .editor-host .tox,
+.outlaw-style .editor-host .tox-tinymce,
+.outlaw-style .editor-host .tox .tox-edit-area,
+.program-style .editor-host .tox,
+.program-style .editor-host .tox-tinymce,
+.program-style .editor-host .tox .tox-edit-area {
+  font-family: "PublicSans", sans-serif !important;
 }
