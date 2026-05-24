@@ -215,7 +215,7 @@
   "DG.ItemWindow.Weapons.LethalityTooltip": "致命武器は、対象を即死させる可能性がある。ダメージダイスではなく、D100をロールする。致命でない場合、ダメージは2d10をロールした結果となる。最初のd10の「00」は10として扱う。",
   "DG.ItemWindow.Weapons.IsLethalityTooltip": "致命率のある武器なら、ここにチェックする",
   "DG.ItemWindow.Weapons.ArmorPiercing": "装甲貫通",
-  "DG.ItemWindow.Weapons.Ammo": "弾 (数量/種類)",
+  "DG.ItemWindow.Weapons.Ammo": "弾",
   "DG.ItemWindow.Weapons.Range": "射程",
   "DG.ItemWindow.Weapons.KillRadius": "致命半径",
 

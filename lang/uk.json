@@ -280,7 +280,7 @@
   "DG.ItemWindow.Weapons.LethalityTooltip": "Летальна зброя має шанс миттєво вбити ціль. Замість кубів шкоди кидай D100. Якщо результат НЕ летальний, тоді шкода рахується так, ніби випало 2d10, де «00» на першому d10 дорівнює 10.",
   "DG.ItemWindow.Weapons.IsLethalityTooltip": "Познач, якщо зброя має відсоток летальності.",
   "DG.ItemWindow.Weapons.ArmorPiercing": "Бронепробиття",
-  "DG.ItemWindow.Weapons.Ammo": "Набої (кількість/тип)",
+  "DG.ItemWindow.Weapons.Ammo": "Набої",
   "DG.ItemWindow.Weapons.Range": "Дальність",
   "DG.ItemWindow.Weapons.KillRadius": "Радіус ураження",
 

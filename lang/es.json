@@ -280,7 +280,7 @@
   "DG.ItemWindow.Weapons.LethalityTooltip": "Un arma letal tiene la oportunidad de matar instantáneamente a un objetivo.  Tira 1D100 en lugar de un dado de daño.  Si no es letal, el daño se calcula en su lugar tirando 2d10, donde un '00' en el primer d10 es igual a 10.",
   "DG.ItemWindow.Weapons.IsLethalityTooltip": "Marca si el arma tiene un % de letalidad asociada.",
   "DG.ItemWindow.Weapons.ArmorPiercing": "Perforación",
-  "DG.ItemWindow.Weapons.Ammo": "Munición (cantidad/tipo)",
+  "DG.ItemWindow.Weapons.Ammo": "Munición",
   "DG.ItemWindow.Weapons.Range": "Alcance",
   "DG.ItemWindow.Weapons.KillRadius": "Radio muerte",
 

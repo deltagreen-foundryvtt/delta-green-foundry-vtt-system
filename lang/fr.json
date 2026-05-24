@@ -280,7 +280,7 @@
   "DG.ItemWindow.Weapons.LethalityTooltip": "Une arme létale a une chance de tuer instantanément une cible. Lancer un D100 au lieu d'un jet de dégâts. En cas d'échec, la cible subit des dommages égaux aux 2d10 associés",
   "DG.ItemWindow.Weapons.IsLethalityTooltip": "Cochez cette case si l'arme est associée à un pourcentage de Létalité",
   "DG.ItemWindow.Weapons.ArmorPiercing": "Perforant",
-  "DG.ItemWindow.Weapons.Ammo": "Munitions (Nombre/Type)",
+  "DG.ItemWindow.Weapons.Ammo": "Munitions",
   "DG.ItemWindow.Weapons.Range": "Portée",
   "DG.ItemWindow.Weapons.KillRadius": "Rayon de mortalité",
 

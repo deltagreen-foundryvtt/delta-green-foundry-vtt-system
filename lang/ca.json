@@ -199,7 +199,7 @@
   "DG.ItemWindow.Weapons.LethalityTooltip": "Una arma letal té l'oportunitat de matar instantàniament un objectiu. Tira 1d100 enlloc del dany. Si no és letal, el dany és dalcula tirant 2d10, on el primer d10 és iugal a 10.",
   "DG.ItemWindow.Weapons.IsLethalityTooltip": "Marca si l'arma té un % de letalitat associat.",
   "DG.ItemWindow.Weapons.ArmorPiercing": "Perforació d'armadures",
-  "DG.ItemWindow.Weapons.Ammo": "Munició (Quantitat/Tipus)",
+  "DG.ItemWindow.Weapons.Ammo": "Munició",
   "DG.ItemWindow.Weapons.Range": "Abast",
   "DG.ItemWindow.Weapons.KillRadius": "Radi de mort",
 

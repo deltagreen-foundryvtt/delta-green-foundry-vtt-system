@@ -215,7 +215,7 @@
   "DG.ItemWindow.Weapons.LethalityTooltip": "Ett dödligt vapen har en chans att omedelbart döda ett mål.  Slå en D100 istället för skadetärningen.  Om det inte är dödligt tolkas resultatet som om det var 2 enskilda d10or skada, där en '00' på den första d10an motsvarar 10 skada.",
   "DG.ItemWindow.Weapons.IsLethalityTooltip": "Kryssa i detta om vapnet är dödligt.",
   "DG.ItemWindow.Weapons.ArmorPiercing": "Genomträngande",
-  "DG.ItemWindow.Weapons.Ammo": "Ammo (Mängd/Typ)",
+  "DG.ItemWindow.Weapons.Ammo": "Ammo",
   "DG.ItemWindow.Weapons.Range": "Räckvidd",
   "DG.ItemWindow.Weapons.KillRadius": "Dödsradie",
 

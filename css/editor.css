@@ -20,7 +20,8 @@
   font-family: "SpecialElite", sans-serif !important;
 }
 
-.editor-host .editor {
+.editor-host .editor .editor-content,
+.editor-host prose-mirror .editor-content {
   font-family: "SpecialElite", sans-serif !important;
 }
 

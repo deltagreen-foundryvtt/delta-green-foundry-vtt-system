@@ -216,7 +216,7 @@
   "DG.ItemWindow.Weapons.LethalityTooltip": "Eine tödliche Waffe hat eine Chance, ein Ziel sofort zu töten.  Wirf einen D100 statt eines Schadenswürfels.  Wenn sie nicht tödlich ist, wird der Schaden stattdessen wie bei einer 2d10-Probe berechnet, wobei eine '00' auf dem ersten d10 einer 10 entspricht.",
   "DG.ItemWindow.Weapons.IsLethalityTooltip": "Prüfe dies, wenn die Waffe eine Tödlichkeit in % hat.",
   "DG.ItemWindow.Weapons.ArmorPiercing": "Rüstungsdurchdringung",
-  "DG.ItemWindow.Weapons.Ammo": "Munition (Menge/Typ)",
+  "DG.ItemWindow.Weapons.Ammo": "Munition",
   "DG.ItemWindow.Weapons.Range": "Reichweite",
   "DG.ItemWindow.Weapons.KillRadius": "Tötungsradius",
 

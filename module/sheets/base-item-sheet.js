@@ -1,9 +1,13 @@
 import { BASE_TEMPLATE_PATH } from "../config.js";
+import { getItemRichTextFields } from "../config/rich-text-fields.js";
 import DGSheetMixin from "./base-sheet.js";
 import { createDGRollFromDataset, processDGRoll } from "../roll/roll.js";
 
 const { ItemSheetV2 } = foundry.applications.sheets;
 const ITEM_PARTS_PATH = `${BASE_TEMPLATE_PATH}/item/parts`;
+
+/** Tab group id used by item sheet templates (`data-group="primary"`). */
+const ITEM_TAB_GROUP = "primary";
 
 /** Tab and part layout per item type. */
 const ITEM_SHEET_LAYOUT = /** @type {const} */ ({
@@ -44,22 +48,8 @@ const ITEM_SHEET_LAYOUT = /** @type {const} */ ({
     },
   },
   motivation: {
-    tabs: {
-      initial: "attributes",
-      tabs: [
-        {
-          id: "attributes",
-          label: "DG.ItemWindow.Motivations.Attributes",
-        },
-        {
-          id: "description",
-          label: "DG.ItemWindow.Motivations.Description",
-        },
-      ],
-    },
     parts: {
-      tabs: { template: "templates/generic/tab-navigation.hbs" },
-      attributes: { template: `${ITEM_PARTS_PATH}/motivation-attributes.html` },
+      header: { template: `${ITEM_PARTS_PATH}/motivation-header.html` },
       description: {
         template: `${ITEM_PARTS_PATH}/motivation-description.html`,
         scrollable: [""],
@@ -161,30 +151,42 @@ export default class DGItemSheet extends DGSheetMixin(ItemSheetV2) {
   /** @inheritdoc */
   _getTabsConfig(group) {
     const layout = ITEM_SHEET_LAYOUT[this.item.type];
-    if (!layout?.tabs) return super._getTabsConfig(group);
+    if (!layout?.tabs || group !== ITEM_TAB_GROUP) {
+      return super._getTabsConfig(group);
+    }
 
     const tabs = layout.tabs.tabs.filter((tab) => !tab.gmOnly || game.user.isGM);
     return { ...layout.tabs, tabs };
   }
 
   /** @inheritdoc */
+  async _preparePartContext(partId, context, options) {
+    const partContext = await super._preparePartContext(partId, context, options);
+    if (partId === "tabs") partContext.tabClasses = "sheet-tabs";
+    return partContext;
+  }
+
+  /** @inheritdoc */
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
 
-    context.owner = this.document.isOwner;
-    context.enrichedDescription =
-      await foundry.applications.ux.TextEditor.implementation.enrichHTML(
-        this.item.system.description,
-        { async: true },
-      );
-
-    if (this.item.type === "tome" || this.item.type === "ritual") {
-      context.enrichedHandlerNotes =
-        await foundry.applications.ux.TextEditor.implementation.enrichHTML(
-          this.item.system.handlerNotes,
-          { async: true },
-        );
+    const layout = ITEM_SHEET_LAYOUT[this.item.type];
+    if (layout?.tabs) {
+      const { initial } = layout.tabs;
+      const tabIds = layout.tabs.tabs
+        .filter((tab) => !tab.gmOnly || game.user.isGM)
+        .map((tab) => tab.id);
+      if (!tabIds.includes(this.tabGroups[ITEM_TAB_GROUP])) {
+        this.tabGroups[ITEM_TAB_GROUP] = initial;
+      }
+      context.tabs = this._prepareTabs(ITEM_TAB_GROUP);
     }
+
+    context.owner = this.document.isOwner;
+    await this._prepareRichTextContext(
+      context,
+      getItemRichTextFields(this.item.type),
+    );
 
     return context;
   }

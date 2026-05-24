@@ -278,7 +278,7 @@
   "DG.ItemWindow.Weapons.LethalityTooltip": "Broń śmiertelna ma szansę natychmiastowo zabić cel. Rzuć D100 zamiast kości obrażeń. Jeśli nie jest śmiertelna, obrażenia są traktowane jakby wynik był rzutem 2d10, z '00' na pierwszym d10 traktowanym jak 10.",
   "DG.ItemWindow.Weapons.IsLethalityTooltip": "Zaznacz to, jeśli broń ma procentową wartość śmiertelności.",
   "DG.ItemWindow.Weapons.ArmorPiercing": "Przebicie Pancerza",
-  "DG.ItemWindow.Weapons.Ammo": "Amunicja (Ilość/Typ)",
+  "DG.ItemWindow.Weapons.Ammo": "Amunicja",
   "DG.ItemWindow.Weapons.Range": "Zasięg",
   "DG.ItemWindow.Weapons.KillRadius": "Zasięg Śmierci",
 

@@ -1,5 +1,6 @@
 import UnnaturalSkillsActorData from "./base/unnatural-skills.js";
 import CharacterData from "./base/character.js";
+import DGHTMLField from "../fields/html-content-field.js";
 
 const { SchemaField, NumberField, StringField, BooleanField, HTMLField } =
   foundry.data.fields;
@@ -17,12 +18,7 @@ export default class UnnaturalData extends CharacterData {
         successLoss: new StringField({ initial: "1" }),
       }),
       schemaVersion: new NumberField({ initial: 1.0 }),
-      notes: new HTMLField({
-        initial: "",
-        blank: true,
-        textSearch: true,
-        allowColor: true,
-      }),
+      notes: DGHTMLField(),
       shortDescription: new StringField({ initial: "" }),
       showUntrainedSkills: new BooleanField({ initial: true }),
     };
