@@ -84,6 +84,7 @@
   "DG.Skills.Tooltip.unnatural": "Connaissance des secrets fondamentaux de l’univers, propres à provoquer la folie.",
 
   "DG.Skills.AddTypedOrCustomSkill": "Ajouter une compétence personnalisée",
+  "DG.Skills.ToggleEditDeleteSkills": "Modifier/supprimer les compétences",
   "DG.Skills.AddSkill": "Ajout Compétence",
   "DG.Skills.Apply": "Appliquer",
   "DG.Skills.ApplySkillImprovements": "Appliquer l'augmentation d'EXP",
@@ -142,9 +143,11 @@
   "DG.Attributes.Tooltip.cha": "Voir Page 19 du Manuel de l'Agent - Charisme",
 
   "DG.Navigation.Agent.skills": "Compétences",
+  "DG.Navigation.Agent.combat": "Combat",
   "DG.Navigation.Agent.physical": "Statistiques",
   "DG.Navigation.Agent.motivations": "Psychologie",
   "DG.Navigation.Agent.gear": "Équipement",
+  "DG.Navigation.Agent.personal": "Personnel",
   "DG.Navigation.Agent.bio": "Biographie",
   "DG.Navigation.Agent.bonds": "Attaches",
   "DG.Navigation.NPC.skills": "Compétences & Formation",
@@ -308,11 +311,13 @@
   "DG.Sheet.BlockHeaders.Statistics": "STATISTIQUES",
   "DG.Sheet.BlockHeaders.PhysicalDescriptionNotes": "DESCRIPTION PHYSIQUE / NOTES",
   "DG.Sheet.BlockHeaders.SkillsAndTraining": "COMPÉTENCES ET FORMATION",
+  "DG.Sheet.BlockHeaders.SpecialTraining": "FORMATION SPÉCIALE",
   "DG.Sheet.BlockHeaders.Injuries": "BLESSURES ET MALADIES",
   "DG.Sheet.BlockHeaders.BreakingPointAndAdaptations": "SEUIL DE RUPTURE ET ADAPTATIONS",
   "DG.Sheet.BlockHeaders.Adaptations": "Adaptations",
   "DG.Sheet.BlockHeaders.MotivationsAndDisorders": "MOTIVATIONS ET TROUBLES PSYCHIQUES",
   "DG.Sheet.BlockHeaders.PersonalInfoCV": "DÉTAILS PERSONNELS ET NOTES",
+  "DG.Sheet.BlockHeaders.ScenarioInformation": "INFORMATIONS DE SCÉNARIO",
   "DG.Sheet.BlockHeaders.BondsRelationshipsContacts": "ATTACHES, RELATIONS ET CONTACTS",
 
   "DG.AgentSheet.ProfessionPlaceholder": "PROFESSION (RANG LE CAS ÉCHÉANT)",

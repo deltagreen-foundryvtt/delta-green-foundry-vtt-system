@@ -84,6 +84,7 @@
   "DG.Skills.Tooltip.unnatural": "Rozpoznawanie, badanie lub przypominanie sobie prawd o bytach i siłach wykraczających poza ludzkie zrozumienie.",
 
   "DG.Skills.AddTypedOrCustomSkill": "Dodaj Typową/Niestandardową Umiejętność",
+  "DG.Skills.ToggleEditDeleteSkills": "Edytuj/usuń umiejętności",
   "DG.Skills.AddSkill": "Dodaj Umiejętność",
   "DG.Skills.Apply": "Zastosuj",
   "DG.Skills.ApplySkillImprovements.Title": "Zastosuj ulepszenia umiejętności",
@@ -142,9 +143,11 @@
   "DG.Attributes.Tooltip.cha": "Zobacz stronę 19 Podręcznika Agenta – Charyzma",
 
   "DG.Navigation.Agent.skills": "Umiejętności",
+  "DG.Navigation.Agent.combat": "Walka",
   "DG.Navigation.Agent.physical": "Statystyki",
   "DG.Navigation.Agent.motivations": "Psychika",
   "DG.Navigation.Agent.gear": "Wyposażenie",
+  "DG.Navigation.Agent.personal": "Osobiste",
   "DG.Navigation.Agent.bio": "Osobiste",
   "DG.Navigation.Agent.bonds": "Więzi",
   "DG.Navigation.NPC.skills": "Umiejętności i szkolenia",
@@ -306,11 +309,13 @@
   "DG.Sheet.BlockHeaders.Statistics": "STATYSTYKI",
   "DG.Sheet.BlockHeaders.PhysicalDescriptionNotes": "OPIS FIZYCZNY / UWAGI",
   "DG.Sheet.BlockHeaders.SkillsAndTraining": "UMIEJĘTNOŚCI I SZKOLENIE",
+  "DG.Sheet.BlockHeaders.SpecialTraining": "SZKOLENIE SPECJALNE",
   "DG.Sheet.BlockHeaders.Injuries": "URAZY",
   "DG.Sheet.BlockHeaders.BreakingPointAndAdaptations": "PUNKT ZŁAMANIA I ADAPTACJE",
   "DG.Sheet.BlockHeaders.Adaptations": "Adaptacje",
   "DG.Sheet.BlockHeaders.MotivationsAndDisorders": "MOTYWACJE I ZABURZENIA",
   "DG.Sheet.BlockHeaders.PersonalInfoCV": "DANE OSOBOWE / CV",
+  "DG.Sheet.BlockHeaders.ScenarioInformation": "INFORMACJE SCENARIUSZA",
   "DG.Sheet.BlockHeaders.BondsRelationshipsContacts": "WIĘZI / RELACJE / KONTAKTY",
 
   "DG.AgentSheet.ProfessionPlaceholder": "ZAWÓD (RANGA, JEŚLI DOTYCZY)",
