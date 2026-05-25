@@ -1,10 +1,18 @@
 /* eslint-disable max-classes-per-file */
+import {
+  createDGRollChatMessage,
+  prepareDGRollChatMessageData,
+} from "../chat/dg-chat-card.js";
 import DGUtils from "../utils/utility-functions.js";
 import DG from "../config.js";
 import {
   showDamageRollModifyDialog,
   showPercentileRollModifyDialog,
 } from "./roll-dialogs.js";
+import {
+  isDiceSoNiceAvailable,
+  waitForDiceSoNiceMessageAnimation,
+} from "../utils/dice-so-nice.js";
 
 const { renderTemplate } = foundry.applications.handlebars;
 
@@ -33,9 +41,8 @@ export class DGRoll extends Roll {
   }
 
   /**
-   * Simple function that actually creates the message and sends it to chat.
-   * We override this to have a little more control over certain aspects of the message,
-   * right now, its `speaker` and `messageMode`.
+   * Posts a roll to chat with the Delta Green card shell and an explicit `rolls`
+   * array for Dice So Nice (listen-path compatible).
    *
    * @override
    * The following `@param` descriptions comes from the Foundry VTT code.
@@ -48,17 +55,41 @@ export class DGRoll extends Roll {
    *                                        true, or the Object of prepared chatData otherwise.
    */
   async toMessage(messageData = {}, { messageMode, create = true } = {}) {
-    // eslint-disable-next-line no-param-reassign
-    messageData.speaker = ChatMessage.getSpeaker({ actor: this.actor });
+    const label = messageData.label ?? messageData.flavor;
+    delete messageData.label;
+
     const mode =
       messageMode ??
       this.options.messageMode ??
       this.options.rollMode;
-    const opts = { create };
-    if (mode) {
-      opts.messageMode = foundry.dice.Roll._mapLegacyRollMode(mode);
+
+    if (create) {
+      return createDGRollChatMessage({
+        roll: this,
+        actor: this.actor,
+        token: this.options.token,
+        label,
+        content: messageData.content,
+        messageMode: mode,
+        flags: messageData.flags ?? {},
+      });
     }
-    return super.toMessage(messageData, opts);
+
+    const { messageData: prepared, mappedMode } =
+      await prepareDGRollChatMessageData({
+        roll: this,
+        actor: this.actor,
+        token: this.options.token,
+        label,
+        content: messageData.content,
+        messageMode: mode,
+        flags: messageData.flags ?? {},
+      });
+
+    const cls = foundry.utils.getDocumentClass("ChatMessage");
+    const msg = new cls(prepared);
+    msg.applyMode(mappedMode);
+    return msg.toObject();
   }
 }
 
@@ -187,10 +218,6 @@ export class DGPercentileRoll extends DGRoll {
       this.options.messageMode = "blind";
     }
 
-    const diceSoNice =
-      game.modules.has("dice-so-nice") &&
-      game.modules.get("dice-so-nice").active;
-
     const label = this.createLabel();
 
     let resultString = "";
@@ -234,6 +261,7 @@ export class DGPercentileRoll extends DGRoll {
     // TODO: add setting for it?
     if (failureMark) {
       const keyForUpdate = `${this.skillPath}.failure`;
+      const diceSoNice = isDiceSoNiceAvailable();
 
       const message = await this.toMessage({
         flags: {
@@ -244,11 +272,11 @@ export class DGPercentileRoll extends DGRoll {
           },
         },
         content: html,
-        flavor: label,
+        label,
       });
 
       if (diceSoNice) {
-        await game.dice3d.waitFor3DAnimationByMessageID(message.id);
+        await waitForDiceSoNiceMessageAnimation(message.id);
       }
 
       // TODO: auto-update actor or post icon with manual apply
@@ -259,7 +287,7 @@ export class DGPercentileRoll extends DGRoll {
       return message;
     }
 
-    return this.toMessage({ content: html, flavor: label });
+    return this.toMessage({ content: html, label });
   }
 
   /**
@@ -313,9 +341,7 @@ export class DGPercentileRoll extends DGRoll {
    * @returns {string}
    */
   createLabel() {
-    const startOfLabel = `${game.i18n.localize("DG.Roll.Rolling")} <b>${
-      this.localizedKey
-    }`;
+    const startOfLabel = `<b>${this.localizedKey}`;
     const endOfLabel = `${game.i18n.localize("DG.Roll.Target")} ${
       this.effectiveTarget
     }`;
@@ -520,7 +546,7 @@ export class DGLethalityRoll extends DGPercentileRoll {
     }
 
     const { nonLethalDamage } = this;
-    let label = `${game.i18n.localize("DG.Roll.Rolling")} <b>${game.i18n
+    let label = `<b>${game.i18n
       .localize("DG.Roll.Lethality")
       .toUpperCase()}</b> ${game.i18n.localize(
       "DG.Roll.For",
@@ -544,7 +570,7 @@ export class DGLethalityRoll extends DGPercentileRoll {
       },
     );
 
-    return this.toMessage({ content: html, flavor: label });
+    return this.toMessage({ content: html, label });
   }
 
   /**
@@ -603,7 +629,7 @@ export class DGDamageRoll extends DGRoll {
   async toChat() {
     let label = this.formula;
     try {
-      label = `${game.i18n.localize("DG.Roll.Rolling")} <b>${game.i18n
+      label = `<b>${game.i18n
         .localize("DG.Roll.Damage")
         .toUpperCase()}</b> ${game.i18n.localize("DG.Roll.For")} ${
         this.item.name
@@ -612,9 +638,17 @@ export class DGDamageRoll extends DGRoll {
       } </b><img class="armor-piercing-chat-card-img" src="systems/deltagreen/assets/icons/supersonic-bullet.svg" alt="armor penetration"/>)`;
     } catch (ex) {
       // console.log(ex);
-      label = `Rolling <b>DAMAGE</b> for <b>${label.toUpperCase()}</b>`;
+      label = `<b>DAMAGE</b> for <b>${label.toUpperCase()}</b>`;
     }
-    return this.toMessage({ content: this.total, flavor: label });
+    const html = await renderTemplate(
+      "systems/deltagreen/templates/roll/damage-roll.hbs",
+      {
+        formula: this.formula,
+        total: this.total,
+      },
+    );
+
+    return this.toMessage({ content: html, label });
   }
 
   async showDialog() {
@@ -640,7 +674,7 @@ export class DGSanityDamageRoll extends DGRoll {
 
     const [lowResult, highResult] = this.damageResults;
 
-    const flavor = `Rolling <b>${DGUtils.localizeWithFallback(
+    const label = `<b>${DGUtils.localizeWithFallback(
       "DG.Generic.SanDamage",
       "SAN DAMAGE",
     )}</b> For <b>${lowDie.formula} / ${highDie.formula}</b>`;
@@ -657,7 +691,7 @@ export class DGSanityDamageRoll extends DGRoll {
       },
     );
 
-    return this.toMessage({ content: html, flavor });
+    return this.toMessage({ content: html, label });
   }
 
   /**

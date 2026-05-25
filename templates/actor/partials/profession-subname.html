@@ -1,0 +1,14 @@
+{{#if professionItem}}
+<a class="content-link profession-subname-link fill-remaining-space"
+   data-action="openProfessionItem"
+   data-item-id="{{professionItem.id}}"
+   title="{{localize 'DG.AgentSheet.OpenProfessionToEdit'}}">
+    <i class="fas fa-briefcase"></i> {{professionItem.name}}
+</a>
+{{else}}
+<input class="fill-remaining-space profession-input"
+       name="system.biography.profession"
+       type="text"
+       value="{{actor.system.biography.profession}}"
+       placeholder="{{subnameInfoPlaceholder}}" />
+{{/if}}

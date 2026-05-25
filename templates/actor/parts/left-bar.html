@@ -11,11 +11,7 @@
                    type="text"
                    value="{{actor.name}}"
                    data-tooltip="{{localize 'DG.AgentNameFieldTooltip' }}" />
-            <input class="fill-remaining-space profession-input"
-                   name="system.biography.profession"
-                   type="text"
-                   value="{{actor.system.biography.profession}}"
-                   placeholder="{{subnameInfoPlaceholder}}" />
+            {{> "systems/deltagreen/templates/actor/partials/profession-subname.html" }}
         </div>
     </div>
 

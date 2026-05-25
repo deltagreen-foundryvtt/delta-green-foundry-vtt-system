@@ -27,7 +27,13 @@ export {
  */
 export function createDGRollFromDataset(
   dataset,
-  { actor = null, item = null, element = null, sanityDamageSource = "actor" } = {},
+  {
+    actor = null,
+    item = null,
+    element = null,
+    sanityDamageSource = "actor",
+    token = null,
+  } = {},
 ) {
   const rollOptions = {
     rollType: dataset.rolltype,
@@ -35,6 +41,7 @@ export function createDGRollFromDataset(
     actor,
     specialTrainingName: dataset?.name || null,
     item,
+    token,
   };
 
   let roll = new Roll("1d100", {});

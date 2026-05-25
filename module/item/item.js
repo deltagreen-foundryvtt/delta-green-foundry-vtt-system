@@ -1,3 +1,4 @@
+import { getDGRollToken } from "../chat/dg-chat-card.js";
 import { DGDamageRoll, DGLethalityRoll } from "../roll/roll.js";
 
 /**
@@ -28,7 +29,12 @@ export default class DeltaGreenItem extends Item {
       roll = new DGLethalityRoll(
         "1D100",
         {},
-        { rollType: "lethality", actor, item },
+        {
+          rollType: "lethality",
+          actor,
+          item,
+          token: getDGRollToken(actor, actor.sheet?.token),
+        },
       );
     } else {
       // regular damage roll
@@ -46,7 +52,12 @@ export default class DeltaGreenItem extends Item {
       roll = new DGDamageRoll(
         diceFormula,
         {},
-        { rollType: "damage", actor, item },
+        {
+          rollType: "damage",
+          actor,
+          item,
+          token: getDGRollToken(actor, actor.sheet?.token),
+        },
       );
     }
     return actor.sheet.processRoll({}, roll);
