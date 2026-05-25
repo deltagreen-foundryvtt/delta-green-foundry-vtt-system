@@ -38,6 +38,7 @@ import BondItemData from "./data/item/bond.js";
 import GearItemData from "./data/item/gear.js";
 import TomeItemData from "./data/item/tome.js";
 import RitualItemData from "./data/item/ritual.js";
+import ProfessionItemData from "./data/item/profession.js";
 import DGActiveEffect from "./documents/dg-active-effect.js";
 import DGActiveEffectConfig from "./applications/dg-active-effect-config.js";
 import DGActiveEffectTypeDataModel from "./data/active-effect/dg-active-effect-data.js";
@@ -67,6 +68,7 @@ Hooks.once("init", async () => {
     gear: GearItemData,
     tome: TomeItemData,
     ritual: RitualItemData,
+    profession: ProfessionItemData,
   });
 
   CONFIG.ActiveEffect.documentClass = DGActiveEffect;
@@ -205,11 +207,21 @@ Hooks.on("updateItem", (item, changes) => {
     "system.crossedOut",
     "system.disorderCured",
   ];
-  if (!transferStateKeys.some((key) => key in flat)) return;
-  const { actor } = item;
-  if (!actor) return;
-  actor.reset();
-  if (actor.sheet?.rendered) actor.sheet.render();
+  if (transferStateKeys.some((key) => key in flat)) {
+    const { actor } = item;
+    if (actor) {
+      actor.reset();
+      if (actor.sheet?.rendered) actor.sheet.render();
+    }
+  }
+
+  if (
+    item.type === "profession" &&
+    "name" in flat &&
+    item.actor?.type === "agent"
+  ) {
+    item.actor.update({ "system.biography.profession": item.name });
+  }
 });
 
 Hooks.once("ready", async () => {
@@ -326,8 +338,13 @@ Hooks.on("renderChatLog", async (app, element) => {
   addEventListenerToChatMessage(element);
 });
 
-Hooks.on("renderChatMessageHTML", async (app, element, context) => {
+Hooks.on("renderChatMessageHTML", async (message, element, context) => {
   // ignore non chat card notifications
   if (!context.canClose) return;
+
+  if (message.getFlag(DG.ID, "chatCard")) {
+    element.classList.add("dg-chat-card-message");
+  }
+
   addEventListenerToChatMessage(element);
 });

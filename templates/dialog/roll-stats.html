@@ -1,0 +1,23 @@
+<form class="roll-stats-dialog">
+    <div class="roll-stats-layout">
+        <section class="roll-stats-assignment-section">
+            {{#each stats}}
+            <div class="roll-stat-row" data-stat-key="{{key}}">
+                <span class="roll-stat-label">{{label}}</span>
+                <div class="roll-stat-slot" data-stat-slot data-stat-key="{{key}}"></div>
+            </div>
+            {{/each}}
+        </section>
+        <section class="roll-stats-pool-section">
+            <div class="roll-stats-pool" data-roll-stats-pool>
+                {{#each rolls}}
+                <div class="roll-stat-token"
+                     draggable="true"
+                     data-roll-index="{{index}}"
+                     data-roll-value="{{total}}">{{total}}</div>
+                {{/each}}
+            </div>
+        </section>
+    </div>
+    <p class="roll-stats-pool-hint">{{localize "DG.ProfessionSetup.RollStats.PoolHeader"}}</p>
+</form>

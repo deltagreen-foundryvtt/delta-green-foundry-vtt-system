@@ -1,6 +1,8 @@
 import { BASE_TEMPLATE_PATH } from "../config.js";
 import DGSheetMixin from "./base-sheet.js";
 import EffectsTabMixin from "./mixins/effects-tab-mixin.js";
+import ProfessionItemMixin from "./mixins/profession-item-mixin.js";
+import { getDGRollToken } from "../chat/dg-chat-card.js";
 import { createDGRollFromDataset, processDGRoll } from "../roll/roll.js";
 
 const { ItemSheetV2 } = foundry.applications.sheets;
@@ -128,9 +130,32 @@ const ITEM_SHEET_LAYOUT = /** @type {const} */ ({
       },
     },
   },
+  profession: {
+    tabs: {
+      initial: "description",
+      tabs: [
+        { id: "description", label: "DG.ItemWindow.Profession.Description" },
+        { id: "skills", label: "DG.ItemWindow.Profession.SkillsTab" },
+      ],
+    },
+    parts: {
+      header: { template: `${ITEM_PARTS_PATH}/profession-header.html` },
+      ...TABS_PART,
+      description: {
+        template: `${ITEM_PARTS_PATH}/profession-description.html`,
+        scrollable: [""],
+      },
+      skills: {
+        template: `${ITEM_PARTS_PATH}/profession-skills-tab.html`,
+        scrollable: [".profession-skills-scroll"],
+      },
+    },
+  },
 });
 
-const ItemSheetBase = EffectsTabMixin(DGSheetMixin(ItemSheetV2));
+const ItemSheetBase = ProfessionItemMixin(
+  EffectsTabMixin(DGSheetMixin(ItemSheetV2)),
+);
 
 /**
  * @extends {ItemSheetBase}
@@ -143,6 +168,10 @@ export default class DGItemSheet extends ItemSheetBase {
     actions: {
       roll: DGItemSheet._onRoll,
       toggleTomeRevealed: DGItemSheet._toggleTomeRevealed,
+      addAutomaticSkill: DGItemSheet.addAutomaticSkill,
+      addOptionSkill: DGItemSheet.addOptionSkill,
+      removeAutomaticSkill: DGItemSheet.removeAutomaticSkill,
+      removeOptionSkill: DGItemSheet.removeOptionSkill,
       createEffect: ItemSheetBase.createEffect,
       openEffect: ItemSheetBase.openEffect,
       deleteEffect: ItemSheetBase.deleteEffect,
@@ -246,6 +275,7 @@ export default class DGItemSheet extends ItemSheetBase {
       item: this.item,
       element: target,
       sanityDamageSource: "item",
+      token: getDGRollToken(this.actor, this.token),
     });
     await processDGRoll(event, roll);
   }

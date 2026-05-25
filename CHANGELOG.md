@@ -18,6 +18,7 @@
 - [#123](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/123) - Added Active Effect support
 - [#346](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/346) - Maximum resources modifiable through AE
 - [#365](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/365) - Added buttons to trigger exhaustion, rest, and use stimulants
+- [#209](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/209) - Added **Profession** item type with partial chargen automation
 
 ### **Bug Fixes:**
 - [#392](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/392) - Fixed sheet rolls

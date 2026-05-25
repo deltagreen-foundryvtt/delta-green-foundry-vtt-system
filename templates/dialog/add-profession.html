@@ -1,0 +1,136 @@
+<form class="add-profession-dialog">
+    <section class="add-profession-skills-section">
+        <div class="add-profession-skills-columns-header">
+            <div class="add-profession-skill-col-header">
+                <span>{{localize "DG.Profession.Dialog.Skill"}}</span>
+                <span>{{localize "DG.Profession.Dialog.Value"}}</span>
+            </div>
+            <div class="add-profession-skill-col-header">
+                <span>{{localize "DG.Profession.Dialog.Skill"}}</span>
+                <span>{{localize "DG.Profession.Dialog.Value"}}</span>
+            </div>
+            <div class="add-profession-skill-col-header">
+                <span>{{localize "DG.Profession.Dialog.Skill"}}</span>
+                <span>{{localize "DG.Profession.Dialog.Value"}}</span>
+            </div>
+            <div class="add-profession-skill-col-header">
+                <span>{{localize "DG.Profession.Dialog.Skill"}}</span>
+                <span>{{localize "DG.Profession.Dialog.Value"}}</span>
+            </div>
+        </div>
+        <div class="add-profession-skills-grid" data-profession-skills-body>
+            {{#each skillRows}}
+                <div class="add-profession-skill-entry{{#if isModified}} is-modified{{/if}}"
+                     data-skill-row="{{rowId}}">
+                    <span class="add-profession-skill-label">{{label}}</span>
+                    <span class="add-profession-skill-value" data-skill-value>{{value}}%</span>
+                </div>
+            {{/each}}
+        </div>
+    </section>
+
+    {{#if automaticChooseOneRows.length}}
+        <section class="add-profession-choose-one-section">
+            <h3>{{localize "DG.Profession.Dialog.ChooseOneNamesHeader"}}</h3>
+            <div class="add-profession-choose-one-list">
+                {{#each automaticChooseOneRows}}
+                    <label class="add-profession-choose-one-row">
+                        <span class="add-profession-choose-one-label">{{localize "DG.Profession.Dialog.ChooseOneNameLabel" group=groupLabel}}</span>
+                        <input type="text"
+                               name="chooseOneLabel-{{key}}"
+                               data-choose-one-key="{{key}}"
+                               value=""
+                               placeholder="{{localize 'DG.Profession.Dialog.SkillTypePlaceholder'}}" />
+                    </label>
+                {{/each}}
+            </div>
+        </section>
+    {{/if}}
+
+    {{#if showOptionSkills}}
+        <section class="add-profession-options-section">
+            <h3>{{localize "DG.Profession.Dialog.SkillsOptionsHeader" picks=optionPicks}}</h3>
+            <div class="add-profession-option-list">
+                {{#each optionRows}}
+                    <div class="add-profession-option-row" data-option-key="{{key}}">
+                        <label>
+                            <input type="checkbox"
+                                   name="optionSkillChecked"
+                                   value="{{key}}"
+                                   data-option-key="{{key}}"
+                                   data-is-choose-one="{{isChooseOne}}" />
+                            <span class="option-skill-label">{{label}}</span>
+                            <span class="option-skill-rating">({{rating}}%)</span>
+                        </label>
+                        {{#if isChooseOne}}
+                            <input type="text"
+                                   class="option-choose-one-label"
+                                   name="chooseOneLabel-{{key}}"
+                                   data-choose-one-key="{{key}}"
+                                   placeholder="{{localize 'DG.Profession.Dialog.SkillTypePlaceholder'}}"
+                                   disabled />
+                        {{/if}}
+                    </div>
+                {{/each}}
+            </div>
+        </section>
+    {{/if}}
+
+    <section class="add-profession-bonus-section">
+        <h3>{{localize "DG.Profession.Dialog.BonusSkillsHeader"}}</h3>
+        <div class="add-profession-bonus-grid">
+            {{#each bonusSlots}}
+                <div class="add-profession-bonus-slot" data-bonus-index="{{index}}">
+                    <select name="bonusSkill-{{index}}" data-bonus-index="{{index}}">
+                        <option value="">{{localize "DG.Profession.Dialog.SelectSkill"}}</option>
+                        {{#each ../catalog}}
+                            <option value="{{id}}">{{label}}</option>
+                        {{/each}}
+                    </select>
+                    <input type="text"
+                           class="bonus-typed-label hidden"
+                           name="bonusTypedLabel-{{index}}"
+                           data-bonus-typed-index="{{index}}"
+                           placeholder="{{localize 'DG.Profession.Dialog.SkillTypePlaceholder'}}" />
+                </div>
+            {{/each}}
+        </div>
+    </section>
+
+    <div class="add-profession-messages" data-profession-messages>
+        {{#each validationMessages}}
+            <p class="validation-error">{{this}}</p>
+        {{/each}}
+        {{#each capWarnings}}
+            <p class="cap-warning">{{warning}}</p>
+        {{/each}}
+    </div>
+
+    {{#if bondCount}}
+        <section class="add-profession-bonds-section">
+            <h3>{{localize "DG.Profession.Dialog.BondsHeader"}}</h3>
+            <div class="add-profession-bonds-grid">
+                {{#each bondRows}}
+                    <div class="add-profession-bond-row">
+                        <span class="bond-row-label">{{localize "DG.Profession.Dialog.Bond"}} {{number}}</span>
+                        <label class="add-profession-bond-field">
+                            <span class="add-profession-bond-field-label">{{localize "DG.Bonds.Name"}}</span>
+                            <input type="text" name="bondName-{{index}}" />
+                        </label>
+                        <label class="add-profession-bond-field">
+                            <span class="add-profession-bond-field-label">{{localize "DG.Bonds.Relationship"}}</span>
+                            <input type="text" name="bondRelationship-{{index}}" />
+                        </label>
+                        <label class="add-profession-bond-field add-profession-bond-field-score">
+                            <span class="add-profession-bond-field-label">{{localize "DG.Bonds.Score"}}</span>
+                            <input type="number"
+                                   name="bondScore-{{index}}"
+                                   value="{{chaScore}}"
+                                   disabled />
+                        </label>
+                    </div>
+                {{/each}}
+            </div>
+        </section>
+    {{/if}}
+</form>

@@ -1,32 +1,48 @@
-<form>
-    <div class="skill-modify-grid">
-        <span>{{localize 'DG.ModifySkillRollDialogue.Test'}}</span>
-
-        <span>{{data.label}}</span>
-        
-        <span>{{localize 'DG.ModifySkillRollDialogue.OriginalTarget'}}</span>
-
-        {{#if data.hideTarget}}
-        <input class="numeric-label-field" disabled value="??" />
-        {{/if}}
-
-        {{#unless data.hideTarget}}
-        <input class="numeric-label-field" disabled value="{{data.originalTarget}}" />
-        {{/unless}}
-        
-
-        <span>{{localize 'DG.ModifySkillRollDialogue.TargetModifier'}}</span>
-        <div class="plusMinusNumberFieldBox">
-            <select name="plusOrMinus">
-                <option value="+" selected>+</option>
-                <option value="-">-</option>
-            </select>
-            <input class="numeric-label-field" type="number" name="targetModifier" value="{{data.targetModifier}}" title="{{localize 'DG.ModifySkillRollDialogue.ModifierTooltip'}}" min="0" max="99" step="1" oninput="validity.valid||(value='');"/>
-        </div>
-        
-        <label for="messageMode">{{ localize "DG.RollMode" }}:</label>
-        <select name="messageMode">
+<div class="modify-roll-dialog">
+    <div class="form-group">
+        <label>{{localize "DG.ModifySkillRollDialogue.Test"}}</label>
+        <span class="modify-roll-readonly">{{data.label}}</span>
+    </div>
+    <div class="form-group">
+        <label>{{localize "DG.ModifySkillRollDialogue.OriginalTarget"}}</label>
+        <span class="modify-roll-readonly">
+            {{#if data.hideTarget}}??{{else}}{{data.originalTarget}}%{{/if}}
+        </span>
+    </div>
+    <div class="form-group">
+        <label for="messageMode">{{localize "DG.RollMode"}}</label>
+        <select id="messageMode" name="messageMode">
             {{selectOptions (getAvailableRollModes) selected=(getDefaultRollMode) localize=true}}
         </select>
     </div>
-</form>
+
+    <section class="modify-roll-section modify-roll-quick-section">
+        <h3>{{localize "DG.ModifySkillRollDialogue.QuickModifiersHeader"}}</h3>
+        <p class="modify-roll-hint">{{localize "DG.ModifySkillRollDialogue.QuickModifiersHint"}}</p>
+        <div class="modify-roll-quick-grid">
+            {{#each quickModifiers}}
+            <div class="modify-roll-quick-option">
+                <button type="submit" data-action="{{action}}" class="modify-roll-quick-btn">{{label}}</button>
+                <p class="modify-roll-quick-explanation">{{explanation}}</p>
+            </div>
+            {{/each}}
+        </div>
+    </section>
+
+    <section class="modify-roll-section modify-roll-custom-section">
+        <h3>{{localize "DG.ModifySkillRollDialogue.CustomModifierHeader"}}</h3>
+        <p class="modify-roll-hint">{{localize "DG.ModifySkillRollDialogue.CustomModifierHint"}}</p>
+        <div class="modify-roll-custom-row">
+            <input type="number"
+                   name="targetModifier"
+                   value="{{data.targetModifier}}"
+                   title="{{localize 'DG.ModifySkillRollDialogue.ModifierTooltip'}}"
+                   min="-99"
+                   max="99"
+                   step="1" />
+            <button type="submit" data-action="roll" class="modify-roll-submit-btn">
+                {{localize "DG.Roll.Roll"}}
+            </button>
+        </div>
+    </section>
+</div>

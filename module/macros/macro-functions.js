@@ -1,3 +1,4 @@
+import { getTokenFromChatSpeaker } from "../chat/dg-chat-card.js";
 import * as DGRolls from "../roll/roll.js";
 
 const { fromUuid } = foundry.utils;
@@ -108,11 +109,11 @@ export function rollItemSkillCheckMacro(itemId) {
     );
 
   const skillName = item.system.skill.toString();
-
+  const token = getTokenFromChatSpeaker(speaker);
   const roll = new DGRolls.DGPercentileRoll(
     "1D100",
     {},
-    { rollType: "weapon", key: skillName, actor, item },
+    { rollType: "weapon", key: skillName, actor, item, token },
   );
   return actor.sheet.processRoll({}, roll);
 }
@@ -130,10 +131,11 @@ export function rollSkillMacro(skillName) {
 
   if (!skill) return ui.notifications.warn("Bad skill name passed to macro.");
 
+  const token = getTokenFromChatSpeaker(speaker);
   const roll = new DGRolls.DGPercentileRoll(
     "1D100",
     {},
-    { rollType: "skill", key: skillName, actor },
+    { rollType: "skill", key: skillName, actor, token },
   );
   return actor.sheet.processRoll({}, roll);
 }
@@ -166,12 +168,15 @@ export async function rollSkillTestAndDamageForOwnedItem(
     return ui.notifications.warn("Invalid item targeted in macro.");
   }
 
+  const speaker = ChatMessage.getSpeaker();
+  const token = getTokenFromChatSpeaker(speaker);
   const rollOptions = {
     rollType: "weapon",
     key: item.system.skill,
     actor: item.parent,
     specialTrainingName: null, // Only applies to Special Training Rolls
     item,
+    token,
   };
 
   const roll = new DGRolls.DGPercentileRoll("1D100", {}, rollOptions);

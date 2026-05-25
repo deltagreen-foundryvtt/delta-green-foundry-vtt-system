@@ -1,27 +1,3 @@
-.skill-modify-grid {
-  display: grid;
-  grid-template-columns: auto auto;
-  align-content: left;
-  justify-content: left;
-  align-items: left;
-  padding: 10px;
-  grid-gap: 10px 15px;
-}
-
-.plusMinusNumberFieldBox {
-  display: flex;
-  gap: 10px;
-
-  select[name="plusOrMinus"] {
-    flex: 1;
-  }
-
-  .numeric-label-field {
-    flex: 1;
-    text-align: center !important;
-  }
-}
-
 .damage-modify-label-grid {
   display: grid;
   grid-template-columns: auto auto;

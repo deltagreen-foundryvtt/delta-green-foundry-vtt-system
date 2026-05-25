@@ -15,6 +15,8 @@ import {
   getEffectiveSuppressExhaustion,
   hasActiveStimulantEffect,
 } from "../utils/stimulant-effect.js";
+import { assignProfessionToAgent } from "../applications/profession-setup-flow.js";
+import { PROFESSION_OPTION_PICKS_KEY } from "../data/item/profession.js";
 
 const { DialogV2 } = foundry.applications.api;
 const { renderTemplate } = foundry.applications.handlebars;
@@ -50,6 +52,7 @@ export default class DGAgentSheet extends AgentSheetBase {
       exhaustAgent: DGAgentSheet._exhaustAgent,
       restAgent: DGAgentSheet._restAgent,
       takeStimulants: DGAgentSheet._takeStimulants,
+      openProfessionItem: DGAgentSheet._openProfessionItem,
     },
   });
 
@@ -87,6 +90,7 @@ export default class DGAgentSheet extends AgentSheetBase {
         `${this.TEMPLATE_PATH}/partials/left-bar-exhaustion-section.html`,
         `${this.TEMPLATE_PATH}/partials/left-bar-rest-tab.html`,
         `${this.TEMPLATE_PATH}/partials/left-bar-sanity-tab.html`,
+        `${this.TEMPLATE_PATH}/partials/profession-subname.html`,
       ],
     },
     tabs: this.BASE_PARTS.tabs,
@@ -124,7 +128,11 @@ export default class DGAgentSheet extends AgentSheetBase {
   _prepareTabs(group) {
     const tabs = super._prepareTabs(group);
 
-    if (!this.actor.limited || this.actor.type !== "agent" || group !== "primary") {
+    if (
+      !this.actor.limited ||
+      this.actor.type !== "agent" ||
+      group !== "primary"
+    ) {
       return tabs;
     }
 
@@ -145,6 +153,9 @@ export default class DGAgentSheet extends AgentSheetBase {
     context.typedSkillColumns = this._prepareTypedSkillColumns();
     context.customSkillsEditMode = this._customSkillsEditMode;
     context.physicalUi = this._preparePhysicalUi();
+    context.professionItem = this.actor.items.find(
+      (i) => i.type === "profession",
+    );
 
     return context;
   }
@@ -190,12 +201,25 @@ export default class DGAgentSheet extends AgentSheetBase {
   static async _toggleAcuteEpisode(event, target) {
     event.preventDefault();
     const itemId =
-      target.dataset.itemId ?? target.closest("[data-item-id]")?.dataset?.itemId;
+      target.dataset.itemId ??
+      target.closest("[data-item-id]")?.dataset?.itemId;
     const item = this.actor.items.get(itemId);
     if (!item || item.type !== "motivation") return;
     await item.update({
       "system.acuteEpisode": !item.system.acuteEpisode,
     });
+  }
+
+  /**
+   * @param {PointerEvent} _event
+   * @param {HTMLElement} target
+   */
+  static _openProfessionItem(_event, target) {
+    const itemId =
+      target.dataset.itemId ??
+      target.closest("[data-item-id]")?.dataset?.itemId;
+    const item = this.actor.items.get(itemId);
+    if (item?.type === "profession") item.sheet.render(true);
   }
 
   static _clearBondDamage() {
@@ -329,7 +353,7 @@ export default class DGAgentSheet extends AgentSheetBase {
   }
 
   static async _exhaustAgent() {
-    const actor = this.actor;
+    const { actor } = this;
     const content = await renderTemplate(
       `${BASE_TEMPLATE_PATH}/dialog/exhaust-agent.html`,
       {
@@ -350,7 +374,9 @@ export default class DGAgentSheet extends AgentSheetBase {
           default: true,
           icon: "fas fa-dice",
           callback: (_event, _button, dialog) => {
-            const input = dialog.element.querySelector('[name="exhaustionPenalty"]');
+            const input = dialog.element.querySelector(
+              '[name="exhaustionPenalty"]',
+            );
             penalty = DGAgentSheet._normalizeExhaustionPenalty(input?.value);
             return true;
           },
@@ -376,6 +402,7 @@ export default class DGAgentSheet extends AgentSheetBase {
       actor,
       token: this.token,
       contentKey: "DG.Physical.Chat.Exhausted",
+      labelKey: "DG.Physical.Chat.ExhaustedLabel",
       i18nData: {
         name: actor.name,
         loss,
@@ -386,7 +413,7 @@ export default class DGAgentSheet extends AgentSheetBase {
   }
 
   static async _restAgent() {
-    const actor = this.actor;
+    const { actor } = this;
 
     if (getEffectiveSuppressExhaustion(actor)) {
       ui.notifications.warn(
@@ -415,6 +442,7 @@ export default class DGAgentSheet extends AgentSheetBase {
       actor,
       token: this.token,
       contentKey: "DG.Physical.Chat.Rested",
+      labelKey: "DG.Physical.Chat.RestedLabel",
       i18nData: {
         name: actor.name,
         gain,
@@ -433,7 +461,7 @@ export default class DGAgentSheet extends AgentSheetBase {
   }
 
   static async _takeStimulants() {
-    const actor = this.actor;
+    const { actor } = this;
 
     if (!DGAgentSheet._isActorExhausted(actor)) {
       ui.notifications.info(
@@ -482,10 +510,16 @@ export default class DGAgentSheet extends AgentSheetBase {
 
     const appliedHours = await applyStimulantEffect(actor, hours);
 
+    const labelKey =
+      choice === "hard"
+        ? "DG.Physical.Chat.StimulantsHardLabel"
+        : "DG.Physical.Chat.StimulantsRegularLabel";
+
     await createAgentResourceChatMessage({
       actor,
       token: this.token,
       contentKey,
+      labelKey,
       i18nData: {
         name: actor.name,
         hours: appliedHours,
@@ -619,6 +653,60 @@ export default class DGAgentSheet extends AgentSheetBase {
         },
       ],
     });
+  }
+
+  /**
+   * @param {DragEvent} event
+   * @param {Item} item
+   * @returns {Promise<Item|null>}
+   */
+  async _onDropItem(event, item) {
+    const dropType = item.type ?? item.system?.type;
+    if (dropType !== "profession") {
+      return super._onDropItem(event, item);
+    }
+
+    const itemData =
+      typeof item.toObject === "function"
+        ? item.toObject()
+        : foundry.utils.duplicate(item);
+
+    return assignProfessionToAgent(this.actor, itemData, {
+      token: this.token,
+    });
+  }
+
+  /**
+   * @param {string} type
+   * @returns {Promise<Item|Item[]>}
+   */
+  _onItemCreate(type) {
+    if (type !== "profession") {
+      return super._onItemCreate(type);
+    }
+
+    const name = game.i18n.format(
+      game.i18n.translations.DOCUMENT?.New || "DG.FallbackText.newItem",
+      {
+        type: game.i18n.localize("TYPES.Item.profession"),
+      },
+    );
+
+    const itemData = {
+      name,
+      type: "profession",
+      system: {
+        bonds: 0,
+        automaticSkills: {},
+        automaticSkillMeta: {},
+        optionSkills: { [PROFESSION_OPTION_PICKS_KEY]: 0 },
+        optionSkillMeta: {},
+      },
+    };
+
+    return assignProfessionToAgent(this.actor, itemData, {
+      token: this.token,
+    }).then((created) => (created ? [created] : []));
   }
 
   _applySkillImprovements(failedSkills, failedTypedSkills, resultObj) {

@@ -1,3 +1,4 @@
+import { getDGRollToken } from "../../chat/dg-chat-card.js";
 import {
   createDGRollFromDataset,
   processDGRoll,
@@ -46,6 +47,7 @@ export default function RollSheetMixin(Base) {
         item,
         element: target,
         sanityDamageSource: "actor",
+        token: getDGRollToken(this.actor, this.token),
       });
       await this.processRoll(event, roll);
     }
@@ -55,7 +57,10 @@ export default function RollSheetMixin(Base) {
 
       const roll = createDGRollFromDataset(
         { rolltype: "luck", key: "luck" },
-        { actor: this.actor },
+        {
+          actor: this.actor,
+          token: getDGRollToken(this.actor, this.token),
+        },
       );
       await this.processRoll(event, roll);
     }

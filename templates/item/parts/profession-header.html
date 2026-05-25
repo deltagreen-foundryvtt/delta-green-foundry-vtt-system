@@ -1,0 +1,16 @@
+<header class="profession-item-header">
+    <div class="profession-sheet-grid-2col">
+        <img class="item-img"
+             src="{{item.img}}"
+             data-action="editImage"
+             title="{{item.name}}" />
+        <div class="profession-sheet-name">
+            <span class="resource-label">{{localize 'DG.ItemWindow.Profession.Name'}}:</span>
+            <input type="text"
+                   name="name"
+                   value="{{item.name}}"
+                   placeholder="{{localize 'DG.ItemWindow.Profession.Name'}}"
+                   data-dtype="String" />
+        </div>
+    </div>
+</header>

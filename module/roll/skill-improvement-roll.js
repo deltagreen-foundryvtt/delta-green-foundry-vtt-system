@@ -1,3 +1,4 @@
+import { createDGChatMessage } from "../chat/dg-chat-card.js";
 import DG from "../config.js";
 
 /**
@@ -86,21 +87,18 @@ export async function createSkillImprovementChatMessage({
   const failedTypedSkillNames = localizeFailedSkills(failedTypedSkills);
 
   const content = [...failedSkillNames, ...failedTypedSkillNames].join(", ");
-  const flavor = game.i18n.format(
+  const label = game.i18n.format(
     "DG.Skills.ApplySkillImprovements.ChatFlavor",
     {
       formula: getSkillImprovementFormulaAsPercent(baseFormula),
     },
   );
 
-  return ChatMessage.create({
-    speaker: ChatMessage.getSpeaker({
-      actor,
-      token,
-      alias: actor.name,
-    }),
+  return createDGChatMessage({
+    actor,
+    token,
+    label,
     content,
-    flavor,
     messageMode: game.settings.get("core", "messageMode"),
   });
 }

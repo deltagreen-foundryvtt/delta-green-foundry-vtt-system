@@ -1,0 +1,39 @@
+<form class="add-profession-skill-dialog">
+    <div class="form-group">
+        <label for="profession-skill-select">{{localize "DG.ItemWindow.Profession.Skill"}}</label>
+        <select id="profession-skill-select" name="skillCatalogId">
+            <option value="">{{localize "DG.ItemWindow.Profession.SelectSkill"}}</option>
+            {{#each catalog}}
+                <option value="{{id}}">{{label}}</option>
+            {{/each}}
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="profession-skill-rating">{{localize "DG.ItemWindow.Profession.Rating"}}</label>
+        <input id="profession-skill-rating"
+               type="number"
+               name="skillRating"
+               value="0"
+               min="0"
+               max="99" />
+    </div>
+    <div class="form-group stacked profession-typed-label-group hidden">
+        <div class="profession-typed-name-field">
+            <label for="profession-typed-label">{{localize "DG.ItemWindow.Profession.SkillType"}}</label>
+            <input id="profession-typed-label"
+                   type="text"
+                   name="typedSkillLabel"
+                   placeholder="{{localize 'DG.ItemWindow.Profession.SkillTypePlaceholder'}}" />
+        </div>
+        <div class="profession-choose-one-field">
+            <label class="profession-choose-one-checkbox" for="profession-choose-one">
+                <input id="profession-choose-one"
+                       type="checkbox"
+                       name="chooseOne"
+                       value="1" />
+                {{localize "DG.ItemWindow.Profession.ChooseOne"}}
+            </label>
+            <p class="profession-choose-one-hint notes">{{localize "DG.ItemWindow.Profession.ChooseOneHint"}}</p>
+        </div>
+    </div>
+</form>

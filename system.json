@@ -239,6 +239,9 @@
       "ritual": {
         "htmlFields": ["description", "handlerNotes"],
         "gmOnlyFields": ["handlerNotes"]
+      },
+      "profession": {
+        "htmlFields": ["description"]
       }
     }
   }

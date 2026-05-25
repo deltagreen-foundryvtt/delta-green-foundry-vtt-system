@@ -1036,6 +1036,8 @@ div.horizontal-bar-section-header {
   display: flex;
   flex-direction: column;
   height: 100%;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .deltagreen.item .window-content {
@@ -1057,6 +1059,25 @@ div.horizontal-bar-section-header {
   flex-direction: column;
   min-height: 0;
   overflow: hidden;
+}
+
+/* Profession skills tab: outer panel flexes; inner region scrolls (see description tab). */
+.deltagreen.item .tab.profession-skills.active,
+.deltagreen.item .tab[data-application-part="skills"].active {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: auto;
+  max-height: 100%;
+  overflow: hidden;
+}
+
+.deltagreen.item .tab.profession-skills .profession-skills-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .deltagreen.item .tab[data-application-part="description"].active.top-div-border,
@@ -1561,6 +1582,85 @@ a[data-action="applySkillImprovements"] {
   font-weight: bold;
 }
 
+/* Delta Green stylized chat cards */
+.deltagreen.chat-card.dg-chat-card {
+  border: 2px solid #000;
+  border-radius: 3px;
+  overflow: hidden;
+  margin: 0;
+}
+
+.dg-chat-card__header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0;
+  background: #1a1a1a;
+  color: #f5f5f0;
+  padding: 6px 0;
+}
+
+.dg-chat-card__icon-slot {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  aspect-ratio: 1 / 1;
+  box-sizing: border-box;
+  margin-left: 8px;
+  overflow: hidden;
+}
+
+.dg-chat-card__icon {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.dg-chat-card__titles {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 8px 0 8px;
+}
+
+.dg-chat-card__speaker {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: bold;
+  color: #f5f5f0;
+  line-height: 1.2;
+}
+
+.dg-chat-card__label {
+  font-size: 0.8rem;
+  color: #f5f5f0;
+  line-height: 1.25;
+  margin-top: 2px;
+}
+
+.dg-chat-card__body {
+  border-color: #000;
+  border-width: 0;
+  border-style: solid;
+  border-radius: 0;
+  padding: 5px;
+  background: inherit;
+}
+
+.chat-message:has(.dg-chat-card) .message-header,
+.chat-message.dg-chat-card-message .message-header {
+  display: none;
+}
+
 .rollback-section {
   order: 99;
   display: flex;
@@ -1602,6 +1702,17 @@ a[data-action="applySkillImprovements"] {
     grid-column: 1;
     grid-row: 1 / -1;
     padding: 3px;
+  }
+
+  .left-bar .profession-subname-link {
+    display: block;
+    box-sizing: border-box;
+    padding: 1px 2px;
+    line-height: var(--line-height-18, 1.125rem);
+    text-decoration: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .stats-wrapper {
@@ -2333,6 +2444,93 @@ a[data-action="applySkillImprovements"] {
   display: none;
 }
 
+.modify-roll-dialog-app .form-footer {
+  display: none;
+}
+
+.modify-roll-dialog .form-group {
+  margin-bottom: 0.5rem;
+}
+
+.modify-roll-dialog .modify-roll-readonly {
+  flex: 1;
+  font-weight: bold;
+}
+
+.modify-roll-dialog .modify-roll-section {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--color-border-light-2, rgba(255, 255, 255, 0.2));
+}
+
+.modify-roll-dialog .modify-roll-section h3 {
+  margin: 0 0 0.35rem;
+  font-size: var(--font-size-14, 0.875rem);
+  font-weight: bold;
+}
+
+.modify-roll-dialog .modify-roll-hint {
+  margin: 0 0 0.65rem;
+  font-size: var(--font-size-12);
+  color: var(--color-text-light-secondary, rgba(255, 255, 255, 0.75));
+  line-height: 1.35;
+}
+
+.modify-roll-dialog .modify-roll-quick-grid {
+  display: grid;
+  grid-template-columns: 5rem 1fr;
+  gap: 10px 12px;
+  align-items: center;
+}
+
+.modify-roll-dialog .modify-roll-quick-option {
+  display: contents;
+}
+
+.modify-roll-dialog .modify-roll-quick-btn,
+.modify-roll-dialog .modify-roll-submit-btn {
+  box-sizing: border-box;
+  padding: 4px 8px;
+  border-radius: 3px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  background: var(--color-control-bg, rgba(255, 255, 255, 0.14));
+  color: var(--color-text-light-primary, #eee);
+  border: 1px solid var(--color-border-light-2, rgba(255, 255, 255, 0.35));
+  cursor: pointer;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.modify-roll-dialog .modify-roll-quick-btn:hover,
+.modify-roll-dialog .modify-roll-submit-btn:hover {
+  background: var(--color-control-bg-hover, rgba(255, 255, 255, 0.22));
+  border-color: var(--color-border-light-highlight, rgba(255, 255, 255, 0.5));
+}
+
+.modify-roll-dialog .modify-roll-quick-explanation {
+  margin: 0;
+  font-size: var(--font-size-12);
+  color: var(--color-text-light-secondary, rgba(255, 255, 255, 0.75));
+  line-height: 1.35;
+}
+
+.modify-roll-dialog .modify-roll-custom-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.modify-roll-dialog .modify-roll-custom-row input[type="number"] {
+  flex: 0 0 5rem;
+  text-align: center;
+}
+
+.modify-roll-dialog .modify-roll-submit-btn {
+  flex: 0 0 auto;
+  min-width: 5rem;
+}
+
 .deltagreen .effects-list .effect-controls {
   display: flex;
   gap: 4px;
@@ -2355,4 +2553,556 @@ a[data-action="applySkillImprovements"] {
 .deltagreen .active-effect-config .dg-effect-key-select {
   width: 100%;
   max-width: 14rem;
+}
+
+/* Profession item sheet */
+.deltagreen .profession-sheet-grid-2col {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.75rem;
+  align-items: start;
+}
+
+.deltagreen .profession-sheet-name {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.deltagreen .tab.profession-skills {
+  --profession-toolbar-label-width: 11rem;
+  --profession-toolbar-secondary-label-width: 7rem;
+}
+
+.deltagreen .tab.profession-skills .profession-skills-section {
+  margin-top: 0.75rem;
+}
+
+.deltagreen .tab.profession-skills .profession-skills-section:first-child {
+  margin-top: 0;
+}
+
+.deltagreen .tab.profession-skills .profession-section-toolbar {
+  display: grid;
+  grid-template-columns:
+    var(--profession-toolbar-label-width)
+    auto
+    var(--profession-toolbar-secondary-label-width)
+    4rem;
+  align-items: center;
+  column-gap: 0.5rem;
+  margin-bottom: 0.35rem;
+}
+
+.deltagreen .tab.profession-skills .profession-skills-toolbar-label {
+  font-weight: bold;
+}
+
+.deltagreen .tab.profession-skills .profession-skills-toolbar-control {
+  justify-self: start;
+}
+
+.deltagreen .tab.profession-skills .profession-bonds-input,
+.deltagreen .tab.profession-skills .profession-option-picks-input {
+  width: 100%;
+  text-align: center;
+}
+
+.deltagreen .tab.profession-skills .profession-skill-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.25rem 1rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.deltagreen .tab.profession-skills .profession-skill-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.15rem 0;
+  min-width: 0;
+}
+
+.deltagreen .tab.profession-skills .profession-skill-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.deltagreen .tab.profession-skills .profession-skill-rating {
+  flex-shrink: 0;
+  min-width: 2.5rem;
+  text-align: right;
+}
+
+.add-profession-skill-dialog-app .add-profession-skill-dialog .profession-typed-label-group.hidden,
+.deltagreen .add-profession-skill-dialog .profession-typed-label-group.hidden {
+  display: none;
+}
+
+.add-profession-skill-dialog-app .add-profession-skill-dialog .profession-typed-label-group,
+.add-profession-skill-dialog-app .standard-form .add-profession-skill-dialog .profession-typed-label-group,
+.deltagreen .add-profession-skill-dialog .profession-typed-label-group,
+.standard-form .add-profession-skill-dialog .profession-typed-label-group {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.5rem;
+}
+
+.add-profession-skill-dialog-app .add-profession-skill-dialog .profession-typed-label-group > *,
+.add-profession-skill-dialog-app .standard-form .add-profession-skill-dialog .profession-typed-label-group > *,
+.deltagreen .add-profession-skill-dialog .profession-typed-label-group > *,
+.standard-form .add-profession-skill-dialog .profession-typed-label-group > * {
+  flex: 0 0 auto;
+  width: 100%;
+  max-width: 100%;
+}
+
+.add-profession-skill-dialog-app .add-profession-skill-dialog .profession-typed-name-field,
+.add-profession-skill-dialog-app .add-profession-skill-dialog .profession-choose-one-field,
+.add-profession-skill-dialog-app .standard-form .add-profession-skill-dialog .profession-typed-name-field,
+.add-profession-skill-dialog-app .standard-form .add-profession-skill-dialog .profession-choose-one-field,
+.deltagreen .add-profession-skill-dialog .profession-typed-name-field,
+.deltagreen .add-profession-skill-dialog .profession-choose-one-field,
+.standard-form .add-profession-skill-dialog .profession-typed-name-field,
+.standard-form .add-profession-skill-dialog .profession-choose-one-field {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+}
+
+.add-profession-skill-dialog-app .add-profession-skill-dialog .profession-typed-name-field > label,
+.add-profession-skill-dialog-app .standard-form .add-profession-skill-dialog .profession-typed-name-field > label,
+.deltagreen .add-profession-skill-dialog .profession-typed-name-field > label,
+.standard-form .add-profession-skill-dialog .profession-typed-name-field > label {
+  flex: none;
+  width: 100%;
+  line-height: 1.3;
+}
+
+.deltagreen .add-profession-skill-dialog .profession-typed-name-field input {
+  width: 100%;
+}
+
+.deltagreen .add-profession-skill-dialog .profession-choose-one-field {
+  padding-top: 0.25rem;
+}
+
+/* Add Profession dialog */
+.add-profession-dialog-app h3 {
+  font-size: var(--font-size-14);
+  font-weight: bold;
+  margin: 0.5rem 0 0.35rem;
+  line-height: 1.2;
+}
+
+.add-profession-skill-dialog-app .add-profession-skill-dialog .profession-choose-one-checkbox,
+.deltagreen .add-profession-skill-dialog .profession-choose-one-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0;
+}
+
+.add-profession-skill-dialog-app .add-profession-skill-dialog .profession-choose-one-hint,
+.deltagreen .add-profession-skill-dialog .profession-choose-one-hint {
+  margin: 0.25rem 0 0;
+}
+
+.add-profession-dialog-app .add-profession-choose-one-section {
+  margin-bottom: 0.75rem;
+}
+
+.add-profession-dialog-app .add-profession-choose-one-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.add-profession-dialog-app .add-profession-choose-one-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.add-profession-dialog-app .add-profession-choose-one-row input {
+  width: 100%;
+}
+
+.add-profession-dialog-app .add-profession-option-row .option-choose-one-label {
+  width: 100%;
+}
+
+.add-profession-dialog-app .add-profession-skills-section {
+  margin-bottom: 0.75rem;
+}
+
+.add-profession-dialog-app .add-profession-skills-columns-header {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 0.25rem;
+  font-size: var(--font-size-12);
+  font-weight: bold;
+}
+
+.add-profession-dialog-app .add-profession-skill-col-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.5rem;
+  padding: 0 0.15rem;
+}
+
+.add-profession-dialog-app .add-profession-skills-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.2rem 0.75rem;
+  max-height: 16rem;
+  overflow-y: auto;
+}
+
+.add-profession-dialog-app .add-profession-skill-entry {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.25rem 0.5rem;
+  align-items: center;
+  min-width: 0;
+}
+
+.add-profession-dialog-app .add-profession-skill-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.add-profession-dialog-app .add-profession-skill-value {
+  text-align: right;
+  min-width: 2.5rem;
+}
+
+.add-profession-dialog-app .add-profession-skill-entry.is-modified .add-profession-skill-label,
+.add-profession-dialog-app .add-profession-skill-entry.is-modified .add-profession-skill-value {
+  color: var(--color-text-success, #2d8a3e);
+}
+
+.add-profession-dialog-app .add-profession-options-section {
+  margin-bottom: 0.75rem;
+}
+
+.add-profession-dialog-app .add-profession-option-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.35rem 0.75rem;
+  margin: 0 0 0.75rem;
+  padding: 0;
+}
+
+.add-profession-dialog-app .add-profession-option-row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.add-profession-dialog-app .add-profession-option-row > label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  width: 100%;
+  min-width: 0;
+}
+
+.add-profession-dialog-app .add-profession-option-row .option-skill-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.add-profession-dialog-app .add-profession-option-row .option-typed-label {
+  width: 100%;
+}
+
+.add-profession-dialog-app .add-profession-bonus-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.add-profession-dialog-app .add-profession-bonus-slot {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.add-profession-dialog-app .add-profession-bonus-slot select {
+  flex: 0 1 11rem;
+  width: 11rem;
+  max-width: 42%;
+  min-width: 7rem;
+}
+
+.add-profession-dialog-app .add-profession-bonus-slot .bonus-typed-label {
+  flex: 1 1 0;
+  min-width: 5rem;
+  width: auto;
+}
+
+.add-profession-dialog-app .add-profession-bonus-slot .bonus-typed-label.hidden {
+  display: none;
+}
+
+.add-profession-dialog-app .cap-warning,
+.add-profession-dialog-app .validation-error {
+  color: var(--color-text-error, #c00);
+  font-weight: bold;
+  margin: 0.25rem 0;
+}
+
+.add-profession-dialog-app .add-profession-bonds-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.add-profession-dialog-app .add-profession-bond-row {
+  display: grid;
+  grid-template-columns: auto 1fr 1fr 3.5rem;
+  gap: 0.35rem 0.5rem;
+  align-items: end;
+  min-width: 0;
+}
+
+.add-profession-dialog-app .add-profession-bond-row .bond-row-label {
+  font-weight: bold;
+  white-space: nowrap;
+  padding-bottom: 0.15rem;
+}
+
+.add-profession-dialog-app .add-profession-bond-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+  font-size: var(--font-size-12);
+}
+
+.add-profession-dialog-app .add-profession-bond-field-label {
+  white-space: nowrap;
+}
+
+.add-profession-dialog-app .add-profession-bond-field input {
+  width: 100%;
+  min-width: 0;
+}
+
+.add-profession-dialog-app .add-profession-bond-field-score input {
+  text-align: center;
+}
+
+.add-profession-dialog-app .form-footer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.add-profession-dialog-app .form-footer > button {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.deltagreen .profession-assigned-row {
+  margin-bottom: 0.75rem;
+}
+
+.pick-statistics-dialog-app .pick-statistics-intro {
+  margin: 0 0 0.5rem;
+  line-height: 1.4;
+}
+
+.pick-statistics-dialog-app .form-footer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.pick-statistics-dialog-app .form-footer > button[data-action="skip"] {
+  grid-column: 1 / -1;
+}
+
+.roll-stats-dialog-app .roll-stats-layout {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1rem;
+  align-items: start;
+}
+
+.roll-stats-dialog-app .roll-stats-pool-section {
+  min-width: 5.5rem;
+}
+
+.roll-stats-dialog-app .roll-stats-pool-hint {
+  margin: 0.75rem 0 0;
+  font-size: var(--font-size-12, 0.75rem);
+  text-align: center;
+  color: var(--color-text-dark-secondary, rgba(255, 255, 255, 0.65));
+}
+
+.roll-stats-dialog-app .roll-stats-pool {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  width: 3rem;
+  min-height: 3rem;
+  padding: 0.5rem;
+  border: 1px dashed var(--color-border-light-2, rgba(255, 255, 255, 0.25));
+  border-radius: 4px;
+}
+
+.roll-stats-dialog-app .roll-stats-pool.drag-over {
+  border-color: var(--color-border-highlight, #ff6400);
+  background: rgba(255, 100, 0, 0.08);
+}
+
+.roll-stats-dialog-app .roll-stat-token {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  font-weight: bold;
+  font-size: var(--font-size-16, 1rem);
+  border: 1px solid var(--color-border-light-2, rgba(255, 255, 255, 0.25));
+  border-radius: 4px;
+  background: var(--color-bg-option, rgba(0, 0, 0, 0.15));
+  cursor: grab;
+  user-select: none;
+  box-sizing: border-box;
+}
+
+.roll-stats-dialog-app .roll-stat-token.is-dragging {
+  opacity: 0.5;
+  cursor: grabbing;
+}
+
+.roll-stats-dialog-app .roll-stats-assignment-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.roll-stats-dialog-app .roll-stat-row {
+  display: grid;
+  grid-template-columns: 3rem auto;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.roll-stats-dialog-app .roll-stat-label {
+  font-weight: bold;
+}
+
+.roll-stats-dialog-app .roll-stat-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex: 0 0 auto;
+  padding: 0;
+  border: 1px dashed var(--color-border-light-2, rgba(255, 255, 255, 0.25));
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.roll-stats-dialog-app .roll-stat-slot.drag-over {
+  border-color: var(--color-border-highlight, #ff6400);
+  background: rgba(255, 100, 0, 0.08);
+}
+
+.roll-stats-dialog-app .roll-stat-slot .roll-stat-token {
+  cursor: grab;
+  width: 100%;
+  height: 100%;
+}
+
+.roll-stats-dialog-app .form-footer {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.assign-stats-dialog-app .assign-stats-remaining {
+  margin: 0 0 0.75rem;
+  font-weight: bold;
+}
+
+.assign-stats-dialog-app .assign-stats-remaining.is-invalid {
+  color: var(--color-text-warning, #ff9200);
+}
+
+.assign-stats-dialog-app .assign-stats-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.assign-stats-dialog-app .assign-stats-row {
+  display: grid;
+  grid-template-columns: 3rem 1fr;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.assign-stats-dialog-app .assign-stats-label {
+  font-weight: bold;
+}
+
+.assign-stats-dialog-app .assign-stats-row input {
+  width: 100%;
+  text-align: center;
+}
+
+.assign-stats-dialog-app .form-footer {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.roll-stats-chat-table {
+  width: auto;
+  margin: 0 auto;
+  border-collapse: collapse;
+}
+
+.roll-stats-chat-table td {
+  padding: 0.35rem 1rem;
+  text-align: center;
+  font-weight: bold;
+  font-size: var(--font-size-16, 1rem);
+  border: 1px solid var(--color-border-light-2, rgba(255, 255, 255, 0.2));
+}
+
+.roll-stats-chat-table .roll-stats-chat-value {
+  min-width: 2rem;
 }
