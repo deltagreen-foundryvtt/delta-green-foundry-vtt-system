@@ -9,6 +9,7 @@ export default class MotivationItemData extends foundry.abstract.TypeDataModel {
       disorder: new StringField({ initial: "" }),
       crossedOut: new BooleanField({ initial: false }),
       disorderCured: new BooleanField({ initial: false }),
+      acuteEpisode: new BooleanField({ initial: false }),
     };
   }
 }

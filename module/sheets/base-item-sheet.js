@@ -1,60 +1,83 @@
 import { BASE_TEMPLATE_PATH } from "../config.js";
 import DGSheetMixin from "./base-sheet.js";
+import EffectsTabMixin from "./mixins/effects-tab-mixin.js";
 import { createDGRollFromDataset, processDGRoll } from "../roll/roll.js";
 
 const { ItemSheetV2 } = foundry.applications.sheets;
 const ITEM_PARTS_PATH = `${BASE_TEMPLATE_PATH}/item/parts`;
+const TAB_NAV_TEMPLATE = "templates/generic/tab-navigation.hbs";
 
 /** Tab group id used by item sheet templates (`data-group="primary"`). */
 const ITEM_TAB_GROUP = "primary";
 
+const EFFECTS_TAB = /** @type {const} */ ({
+  id: "effects",
+  label: "DG.Navigation.Item.effects",
+});
+
+const EFFECTS_PART = /** @type {const} */ ({
+  effects: {
+    template: `${ITEM_PARTS_PATH}/effects-tab.html`,
+    scrollable: [""],
+  },
+});
+
+const TABS_PART = /** @type {const} */ ({
+  tabs: { template: TAB_NAV_TEMPLATE },
+});
+
+/**
+ * @param {object} config
+ * @param {string} config.header
+ * @param {string} config.description
+ * @param {string} config.descriptionLabel
+ * @returns {object}
+ */
+function activeEffectItemLayout({ header, description, descriptionLabel }) {
+  return {
+    tabs: {
+      initial: "description",
+      tabs: [
+        { id: "description", label: descriptionLabel },
+        EFFECTS_TAB,
+      ],
+    },
+    parts: {
+      header: { template: header },
+      ...TABS_PART,
+      description: { template: description, scrollable: [""] },
+      ...EFFECTS_PART,
+    },
+  };
+}
+
 /** Tab and part layout per item type. */
 const ITEM_SHEET_LAYOUT = /** @type {const} */ ({
-  weapon: {
-    parts: {
-      header: { template: `${ITEM_PARTS_PATH}/weapon-header.html` },
-      description: {
-        template: `${ITEM_PARTS_PATH}/weapon-description.html`,
-        scrollable: [""],
-      },
-    },
-  },
-  gear: {
-    parts: {
-      header: { template: `${ITEM_PARTS_PATH}/gear-header.html` },
-      description: {
-        template: `${ITEM_PARTS_PATH}/gear-description.html`,
-        scrollable: [""],
-      },
-    },
-  },
-  armor: {
-    parts: {
-      header: { template: `${ITEM_PARTS_PATH}/armor-header.html` },
-      description: {
-        template: `${ITEM_PARTS_PATH}/armor-description.html`,
-        scrollable: [""],
-      },
-    },
-  },
-  bond: {
-    parts: {
-      header: { template: `${ITEM_PARTS_PATH}/bond-header.html` },
-      description: {
-        template: `${ITEM_PARTS_PATH}/bond-description.html`,
-        scrollable: [""],
-      },
-    },
-  },
-  motivation: {
-    parts: {
-      header: { template: `${ITEM_PARTS_PATH}/motivation-header.html` },
-      description: {
-        template: `${ITEM_PARTS_PATH}/motivation-description.html`,
-        scrollable: [""],
-      },
-    },
-  },
+  weapon: activeEffectItemLayout({
+    header: `${ITEM_PARTS_PATH}/weapon-header.html`,
+    description: `${ITEM_PARTS_PATH}/weapon-description.html`,
+    descriptionLabel: "DG.ItemWindow.Weapons.Description",
+  }),
+  gear: activeEffectItemLayout({
+    header: `${ITEM_PARTS_PATH}/gear-header.html`,
+    description: `${ITEM_PARTS_PATH}/gear-description.html`,
+    descriptionLabel: "DG.ItemWindow.Gear.Description",
+  }),
+  armor: activeEffectItemLayout({
+    header: `${ITEM_PARTS_PATH}/armor-header.html`,
+    description: `${ITEM_PARTS_PATH}/armor-description.html`,
+    descriptionLabel: "DG.ItemWindow.Armor.Description",
+  }),
+  bond: activeEffectItemLayout({
+    header: `${ITEM_PARTS_PATH}/bond-header.html`,
+    description: `${ITEM_PARTS_PATH}/bond-description.html`,
+    descriptionLabel: "DG.ItemWindow.Bonds.Description",
+  }),
+  motivation: activeEffectItemLayout({
+    header: `${ITEM_PARTS_PATH}/motivation-header.html`,
+    description: `${ITEM_PARTS_PATH}/motivation-description.html`,
+    descriptionLabel: "DG.ItemWindow.Motivations.Description",
+  }),
   tome: {
     tabs: {
       initial: "description",
@@ -69,7 +92,7 @@ const ITEM_SHEET_LAYOUT = /** @type {const} */ ({
     },
     parts: {
       header: { template: `${ITEM_PARTS_PATH}/tome-header.html` },
-      tabs: { template: "templates/generic/tab-navigation.hbs" },
+      ...TABS_PART,
       description: {
         template: `${ITEM_PARTS_PATH}/tome-description.html`,
         scrollable: [""],
@@ -94,7 +117,7 @@ const ITEM_SHEET_LAYOUT = /** @type {const} */ ({
     },
     parts: {
       header: { template: `${ITEM_PARTS_PATH}/ritual-header.html` },
-      tabs: { template: "templates/generic/tab-navigation.hbs" },
+      ...TABS_PART,
       description: {
         template: `${ITEM_PARTS_PATH}/ritual-description.html`,
         scrollable: [""],
@@ -107,10 +130,12 @@ const ITEM_SHEET_LAYOUT = /** @type {const} */ ({
   },
 });
 
+const ItemSheetBase = EffectsTabMixin(DGSheetMixin(ItemSheetV2));
+
 /**
- * @extends {DGSheetMixin(ItemSheetV2)}
+ * @extends {ItemSheetBase}
  */
-export default class DGItemSheet extends DGSheetMixin(ItemSheetV2) {
+export default class DGItemSheet extends ItemSheetBase {
   /** @override */
   static DEFAULT_OPTIONS = /** @type {const} */ ({
     classes: ["item"],
@@ -118,6 +143,10 @@ export default class DGItemSheet extends DGSheetMixin(ItemSheetV2) {
     actions: {
       roll: DGItemSheet._onRoll,
       toggleTomeRevealed: DGItemSheet._toggleTomeRevealed,
+      createEffect: ItemSheetBase.createEffect,
+      openEffect: ItemSheetBase.openEffect,
+      deleteEffect: ItemSheetBase.deleteEffect,
+      toggleEffect: ItemSheetBase.toggleEffect,
     },
   });
 

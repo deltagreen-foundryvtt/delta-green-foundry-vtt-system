@@ -164,7 +164,9 @@ export default function ItemListMixin(Base) {
       };
 
       if (type === "bond") {
-        itemData.system.score = this.actor.system.statistics.cha.value;
+        itemData.system.score =
+          this.actor.system.statistics.cha.effectiveValue ??
+          this.actor.system.statistics.cha.value;
       }
 
       return this.actor.createEmbeddedDocuments("Item", [itemData]);

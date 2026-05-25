@@ -480,12 +480,21 @@ explicitly define a number of rows, rather than columns. */
   flex: 0 0 35px;
 }
 
-.deltagreen .action-pill {
+.deltagreen .action-pill,
+.deltagreen button.action-pill {
   padding: 2px;
   border-radius: 2.5px;
   font-size: 0.8rem;
   font-weight: bold;
   background-color: rgba(0, 0, 0, 0.185);
+  color: inherit;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+}
+
+.deltagreen button.action-pill {
+  appearance: none;
 }
 
 .deltagreen[id^="dg-settings"] {
@@ -549,6 +558,79 @@ input.percentile-skill-input {
   height: 1.2rem;
   align-self: center;
   text-align: center;
+}
+
+/* AE-backed inputs: overlay shows effective value; focus reveals base value for editing */
+.deltagreen .ae-input-host {
+  position: relative;
+  display: inline-flex;
+  flex: 0 0 40px;
+  margin: 0 5px;
+  height: auto;
+  align-self: center;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.deltagreen .ae-input-host input {
+  position: relative;
+  z-index: 0;
+  width: 100%;
+  margin: 0;
+}
+
+/* Typography + inset come from the input (mirrored in JS); only layer + AE colors here */
+.deltagreen .ae-input-host .ae-input-display {
+  position: absolute;
+  z-index: 1;
+  display: block;
+  overflow: hidden;
+  box-sizing: border-box;
+  pointer-events: none;
+  border: none;
+  background: transparent;
+}
+
+.deltagreen .stats .physical-stats-outer-grid-3col .ae-input-host--stat {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  flex: none;
+  margin: 1px;
+  height: auto;
+  align-self: auto;
+  box-sizing: border-box;
+}
+
+.deltagreen .stats .ae-input-host--stat input {
+  width: 100%;
+  margin: 0;
+}
+
+/* Hide input text only when an AE overlay is showing the effective value */
+.deltagreen .ae-input-host:has(.ae-input-display):not(:focus-within) input {
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  caret-color: transparent;
+}
+
+.deltagreen .ae-input-host:has(.ae-input-display):focus-within input {
+  color: var(--input-text-color);
+  -webkit-text-fill-color: var(--input-text-color);
+  caret-color: auto;
+}
+
+.deltagreen .ae-input-host:focus-within .ae-input-display {
+  display: none;
+}
+
+.deltagreen .ae-input-host .ae-input-display.ae-mod-increase {
+  color: #00a82d;
+}
+
+.deltagreen .ae-input-host .ae-input-display.ae-mod-decrease {
+  color: #ff8a8a;
 }
 
 input.checkbox-skill-input {
@@ -968,16 +1050,7 @@ div.horizontal-bar-section-header {
   flex: 0 0 auto;
 }
 
-/* Bond, gear, weapon, armor, motivation (single description part). */
-.deltagreen.item section.sheet-body[data-application-part="description"] {
-  flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-  overflow: hidden;
-}
-
-/* Tome/ritual tab parts — flex only when .active; do not override core display:none on inactive tabs. */
+/* Item tab bodies — flex only when .active; do not override core display:none on inactive tabs. */
 .deltagreen.item .tab[data-tab][data-application-part].active {
   flex: 1 1 auto;
   display: flex;
@@ -986,7 +1059,7 @@ div.horizontal-bar-section-header {
   overflow: hidden;
 }
 
-.deltagreen.item section.sheet-body > .tab.top-div-border,
+.deltagreen.item .tab[data-application-part="description"].active.top-div-border,
 .deltagreen.item .tab[data-application-part="handler"].active > .tab.top-div-border {
   flex: 1 1 auto;
   display: flex;
@@ -1460,8 +1533,32 @@ a[data-action="applySkillImprovements"] {
   padding-bottom: 10px;
 }
 
-.target-proficiency-mod {
-  color: #247c14;
+.ae-mod-increase {
+  color: #00a82d;
+}
+
+.ae-mod-decrease {
+  color: #e00000;
+}
+
+/* Stats/skills: dark input chrome — brighter red (overlays keep inherited weight) */
+.deltagreen input.ae-mod-decrease,
+.deltagreen input.centered.ae-mod-decrease,
+.deltagreen input.percentile-skill-input.ae-mod-decrease,
+.deltagreen .ae-input-host .ae-input-display.ae-mod-decrease {
+  color: #ff8a8a;
+  -webkit-text-fill-color: #ff8a8a;
+}
+
+.deltagreen input.ae-mod-decrease,
+.deltagreen input.centered.ae-mod-decrease,
+.deltagreen input.percentile-skill-input.ae-mod-decrease {
+  font-weight: bold;
+}
+
+.deltagreen .max-resource-value.ae-mod-increase > div,
+.deltagreen .max-resource-value.ae-mod-decrease > div {
+  font-weight: bold;
 }
 
 .rollback-section {
@@ -1494,7 +1591,7 @@ a[data-action="applySkillImprovements"] {
 .agent-sheet {
   .window-content {
     display: grid;
-    grid-template-columns: 220px 1fr;
+    grid-template-columns: 240px 1fr;
     grid-template-rows: auto 1fr;
     column-gap: 8px;
     width: 100%;
@@ -1516,34 +1613,101 @@ a[data-action="applySkillImprovements"] {
     margin-bottom: 8px;
   }
 
+  .luck {
+    display: flex;
+    justify-content: center;
+  }
+
+  .luck .bolded-label {
+    text-align: center;
+  }
+
+  /* Override core nav.tabs gap/space-evenly and v1-compat space-around so tabs can overlap */
   .window-content > nav.sheet-tabs {
     grid-column: 2;
     grid-row: 1;
     align-self: start;
     width: 100%;
+    min-width: 0;
     box-sizing: border-box;
     margin-bottom: 0;
     position: relative;
     z-index: 2;
     display: flex;
     flex-wrap: nowrap;
+    gap: 0;
+    justify-content: flex-start;
+    overflow-x: auto;
+    overflow-y: hidden;
   }
 
   .tabs [data-action="tab"] {
-    flex: 0 0 7.5rem;
+    flex: 1 1 0;
+    min-width: 0;
+    position: relative;
     text-align: center;
-    z-index: 0;
-    margin-left: -6px;
+    margin-left: -14px;
+    padding-inline: 3px;
+    font-size: 11px;
+    overflow: visible;
+    box-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.16),
+      -1px 0 2px rgba(0, 0, 0, 0.1),
+      1px 0 2px rgba(0, 0, 0, 0.1);
+
+    > span {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
 
     &:first-child {
       margin-left: 0;
     }
+
+    &:nth-child(1) {
+      z-index: 1;
+    }
+    &:nth-child(2) {
+      z-index: 2;
+    }
+    &:nth-child(3) {
+      z-index: 3;
+    }
+    &:nth-child(4) {
+      z-index: 4;
+    }
+    &:nth-child(5) {
+      z-index: 5;
+    }
+    &:nth-child(6) {
+      z-index: 6;
+    }
+    &:nth-child(7) {
+      z-index: 7;
+    }
+  }
+
+  /* Opaque inactive tabs so overlapping borders only show on the tab in front */
+  .window-content.program-style .tabs [data-action="tab"]:not(.active) {
+    background-color: rgb(186, 184, 181);
+  }
+
+  .window-content.cowboy-style .tabs [data-action="tab"]:not(.active),
+  .window-content.outlaw-style .tabs [data-action="tab"]:not(.active) {
+    background-color: rgb(210, 190, 150);
+  }
+
+  /* Pin the about tab to the right without opening a gap before it */
+  .tabs [data-action="tab"][data-tab="effects"] {
+    margin-right: auto;
   }
 
   .tabs [data-action="tab"][data-tab="about"] {
     flex: 0 0 auto;
     min-width: unset;
-    margin-left: auto;
+    margin-left: -14px;
   }
 
   .window-content > [data-application-part="rightBar"],
@@ -1560,13 +1724,17 @@ a[data-action="applySkillImprovements"] {
   .right-bar {
     display: flex;
     flex-direction: column;
+    min-width: 0;
     min-height: 0;
     height: 100%;
+    overflow: hidden;
   }
 
   .right-bar > .tab {
     flex: 1 1 auto;
+    min-width: 0;
     min-height: 0;
+    box-sizing: border-box;
   }
 
   /* Match V1: flat top edge on panel; active tab overlaps the panel top border */
@@ -1576,15 +1744,20 @@ a[data-action="applySkillImprovements"] {
   }
 
   .tabs [data-action="tab"].active {
-    position: relative;
-    z-index: 3;
+    z-index: 10;
     margin-bottom: -2px;
     padding-bottom: 2px;
+    box-shadow:
+      0 2px 6px rgba(0, 0, 0, 0.22),
+      -2px 0 5px rgba(0, 0, 0, 0.14),
+      2px 0 5px rgba(0, 0, 0, 0.14);
   }
 
   .profile-img {
     width: 100%;
-    height: auto;
+    height: 194px;
+    object-fit: cover;
+    object-position: center top;
   }
 
   .physical-stats-outer-grid-3col {
@@ -1600,8 +1773,26 @@ a[data-action="applySkillImprovements"] {
     margin-bottom: 8px;
   }
 
-  .resource-inner-grid-3col input {
+  .resources .resource-inner-grid-3col {
+    grid-template-columns: auto auto auto;
+    justify-content: center;
+    column-gap: 2px;
+  }
+
+  .resources .resource-inner-grid-3col input {
+    box-sizing: border-box;
+    width: 1.5rem;
+    height: 1.5rem;
     padding: 1px;
+    line-height: calc(1.5rem - 4px);
+  }
+
+  .resources .resource-inner-grid-3col .max-resource-value {
+    box-sizing: border-box;
+    width: 1.5rem;
+    height: 1.5rem;
+    min-width: 1.5rem;
+    min-height: 1.5rem;
   }
 
   .breaking-point-inline {
@@ -1660,6 +1851,10 @@ a[data-action="applySkillImprovements"] {
   .stats {
     input {
       margin: 1px;
+    }
+
+    .ae-input-host--stat input {
+      margin: 0;
     }
   }
 
@@ -1897,6 +2092,62 @@ a[data-action="applySkillImprovements"] {
     border: 1px solid black;
     padding: 3px;
   }
+
+  .left-bar-tabs {
+    font-size: 11px;
+    margin-bottom: 4px;
+  }
+
+  .left-bar-tab-panels .tab:not(.active) {
+    display: none;
+  }
+
+  .left-bar-action-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 8px;
+  }
+
+  .left-bar-action-pill {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0 0 8px;
+    text-align: center;
+    padding-block: 4px; /* +8px height vs default 2px .action-pill padding */
+  }
+
+  .left-bar-action-stack .left-bar-action-pill {
+    margin-bottom: 0;
+  }
+
+  .left-bar-action-stack .left-bar-action-pill[data-action="takeStimulants"] {
+    margin-bottom: 5px;
+  }
+
+  .exhausted-section.resource input.is-inactive {
+    color: #888;
+    background-color: rgba(0, 0, 0, 0.04);
+    border-color: #bbb;
+  }
+
+  .suppress-exhaustion.resource {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    column-gap: 8px;
+    margin-bottom: 8px;
+
+    label.is-crossed-out {
+      color: #888;
+      text-decoration: line-through;
+    }
+
+    input:disabled {
+      opacity: 0.45;
+    }
+  }
 }
 
 .stats-wrapper {
@@ -1954,4 +2205,154 @@ a[data-action="applySkillImprovements"] {
   text-align: center;
   padding: 5px;
   grid-gap: 5px;
+}
+
+/* Active Effects */
+.deltagreen .tab.effects {
+  padding: 5px;
+}
+
+.deltagreen.item .tab[data-application-part="effects"].active {
+  overflow-y: auto;
+}
+
+.deltagreen .effects-transfer-hint {
+  font-size: var(--font-size-12);
+  font-style: italic;
+  margin: 0 0 8px;
+}
+
+.deltagreen .effect-add {
+  margin-bottom: 8px;
+}
+
+.deltagreen .effect-add .action-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: fit-content;
+  max-width: 100%;
+  text-align: center;
+  padding-inline: 6px;
+}
+
+.deltagreen .effect-header {
+  font-weight: bold;
+  border-bottom: 1px solid #999;
+  margin-top: 8px;
+  padding-bottom: 2px;
+  gap: 4px;
+}
+
+.deltagreen .effects-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.deltagreen .effects-list .effect {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr) minmax(0, 6rem) auto auto;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 2px;
+  border-bottom: 1px solid #ccc;
+  min-width: 0;
+}
+
+.deltagreen .effects-list .effect-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.deltagreen .effects-list .effect-icon {
+  width: 24px;
+  height: 24px;
+  border: none;
+}
+
+.deltagreen .effects-list .effect.suppressed-effect {
+  opacity: 0.55;
+}
+
+.deltagreen .effects-list .effect.disabled-effect {
+  opacity: 0.4;
+  text-decoration: line-through;
+}
+
+.deltagreen .effects-list .effect-source {
+  font-size: var(--font-size-12);
+  max-width: 8rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.stimulants-dialog {
+  display: grid;
+  grid-template-columns: 10rem 1fr;
+  gap: 12px;
+  align-items: center;
+}
+
+.stimulants-dialog .stimulants-option {
+  display: contents;
+}
+
+.stimulants-dialog .stimulants-choice-btn {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 4px 8px;
+  border-radius: 3px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  background: var(--color-control-bg, rgba(255, 255, 255, 0.14));
+  color: var(--color-text-light-primary, #eee);
+  border: 1px solid var(--color-border-light-2, rgba(255, 255, 255, 0.35));
+  cursor: pointer;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.stimulants-dialog .stimulants-choice-btn:hover {
+  background: var(--color-control-bg-hover, rgba(255, 255, 255, 0.22));
+  border-color: var(--color-border-light-highlight, rgba(255, 255, 255, 0.5));
+}
+
+.stimulants-dialog .stimulants-explanation {
+  margin: 0;
+  font-size: var(--font-size-12);
+  color: var(--color-text-light-secondary, rgba(255, 255, 255, 0.75));
+  line-height: 1.35;
+}
+
+.stimulants-dialog-app .form-footer {
+  display: none;
+}
+
+.deltagreen .effects-list .effect-controls {
+  display: flex;
+  gap: 4px;
+}
+
+.deltagreen .effects-list .effect-empty {
+  font-style: italic;
+  padding: 6px;
+}
+
+.deltagreen .motivations .acute-episode-col {
+  flex: 0 0 5.5rem;
+  text-align: center;
+}
+
+.deltagreen .motivations li.acute-episode-active {
+  background: rgba(180, 0, 0, 0.08);
+}
+
+.deltagreen .active-effect-config .dg-effect-key-select {
+  width: 100%;
+  max-width: 14rem;
 }

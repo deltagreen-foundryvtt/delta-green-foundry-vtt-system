@@ -17,7 +17,7 @@
            data-dtype="Number"
            data-tooltip="{{localize 'DG.Tooltip.CurrentSanityPartOne' }}{{actor.system.sanity.currentBreakingPoint }}{{localize 'DG.Tooltip.CurrentSanityPartTwo' }}" />
     <span>/</span>
-    <div class="max-resource-value"
+    <div class="max-resource-value {{actor.system.sanity.maxDisplayClass}}"
          data-tooltip="{{localize 'DG.Tooltip.MaximumSanity'}}">
         <div>{{numberFormat actor.system.sanity.max decimals=0 sign=false}}</div>
     </div>

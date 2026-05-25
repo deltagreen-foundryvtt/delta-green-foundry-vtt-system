@@ -14,6 +14,7 @@
 
             <li class="item flexrow item-header">
                 <div class="item-name">{{localize 'DG.Mental.Motivations'}}</div>
+                <div class="item-name acute-episode-col">{{localize 'DG.ItemWindow.Motivations.AcuteEpisode'}}</div>
                 <div class="item-name">{{localize 'DG.Mental.Disorders'}}</div>
                 <div class="item-controls">
                     <a class="item-control action-pill"
@@ -30,12 +31,20 @@
             {{#each actor.items as |item id| }}
                 {{#if_eq item.type 'motivation' }}
 
-                    <li class="item flexrow" data-item-id="{{item.id}}">
+                    <li class="item flexrow {{#if item.system.acuteEpisode}}acute-episode-active{{/if}}" data-item-id="{{item.id}}">
                         <span class="item-name"
                               {{#if item.system.crossedOut }}
                               style="text-decoration: line-through"
                               {{/if }}>
                             {{item.name}}
+                        </span>
+
+                        <span class="acute-episode-col">
+                            <input type="checkbox"
+                                   {{checked item.system.acuteEpisode}}
+                                   data-action="toggleAcuteEpisode"
+                                   data-item-id="{{item.id}}"
+                                   title="{{localize 'DG.ItemWindow.Motivations.AcuteEpisodeTooltip'}}" />
                         </span>
 
                         {{#if item.system.crossedOut }}

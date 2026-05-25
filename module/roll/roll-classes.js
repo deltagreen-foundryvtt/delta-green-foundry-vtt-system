@@ -294,7 +294,7 @@ export class DGPercentileRoll extends DGRoll {
     }
     if (typedSkillKeys.includes(this.key)) {
       const skill = actorData.typedSkills[this.key];
-      target = skill.proficiency;
+      target = skill.targetProficiency ?? skill.proficiency;
       localizedKey = `${skill.group} (${skill.label})`;
       skillPath = `system.typedSkills.${this.key}`;
     }
@@ -327,19 +327,17 @@ export class DGPercentileRoll extends DGRoll {
           .toUpperCase()}]</b> ${endOfLabel}`
       : `${startOfLabel}</b><br> ${endOfLabel}%`;
 
-    const { isExhausted, exhaustedCheckPenalty } = this.exhausted;
+    const rollTargetModifier = this.rollTargetModifier;
 
-    if (this.modifier || isExhausted) {
+    if (this.modifier || rollTargetModifier) {
       label += ` (${this.target}%`;
 
       if (this.modifier) {
         label += `${DGUtils.formatStringWithLeadingPlus(this.modifier)}%`;
       }
 
-      if (isExhausted) {
-        label += `${DGUtils.formatStringWithLeadingPlus(
-          exhaustedCheckPenalty,
-        )}%`;
+      if (rollTargetModifier) {
+        label += `${DGUtils.formatStringWithLeadingPlus(rollTargetModifier)}%`;
       }
 
       label += `)`;
@@ -348,23 +346,32 @@ export class DGPercentileRoll extends DGRoll {
     return label;
   }
 
-  get exhausted() {
-    let isExhausted = false;
-    let exhaustedCheckPenalty = -20;
+  /**
+   * Active Effect roll-target modifier for this roll type (excludes luck).
+   * @returns {number}
+   */
+  get rollTargetModifier() {
+    if (this.type === "luck") return 0;
 
     try {
-      // I suspect (but am not entirely certain) that being tired doesn't make you less lucky)
-      if (this.type !== "luck") {
-        isExhausted = this.actor.system.physical.exhausted;
-        exhaustedCheckPenalty = this.actor.system.physical.exhaustedPenalty;
-        exhaustedCheckPenalty = -1 * Math.abs(exhaustedCheckPenalty);
-      }
-    } catch {
-      isExhausted = false;
-      exhaustedCheckPenalty = -20;
-    }
+      const rollTarget = this.actor.system.rollTarget;
+      if (!rollTarget) return 0;
 
-    return { isExhausted, exhaustedCheckPenalty };
+      if (this.type === "sanity") return Number(rollTarget.sanity) || 0;
+      if (this.type === "stat") return Number(rollTarget.statistics) || 0;
+      return Number(rollTarget.allSkills) || 0;
+    } catch {
+      return 0;
+    }
+  }
+
+  /** @deprecated Use rollTargetModifier via Active Effects instead. */
+  get exhausted() {
+    const modifier = this.rollTargetModifier;
+    return {
+      isExhausted: modifier !== 0,
+      exhaustedCheckPenalty: modifier,
+    };
   }
 
   /**
@@ -445,7 +452,7 @@ export class DGPercentileRoll extends DGRoll {
   get effectiveTarget() {
     let target = 1;
 
-    const { isExhausted, exhaustedCheckPenalty } = this.exhausted;
+    const rollTargetModifier = this.rollTargetModifier;
 
     if (!this.target || Number.isNaN(this.target)) {
       return null;
@@ -453,8 +460,8 @@ export class DGPercentileRoll extends DGRoll {
 
     target = parseInt(this.target);
 
-    if (isExhausted) {
-      target += exhaustedCheckPenalty;
+    if (rollTargetModifier) {
+      target += rollTargetModifier;
     }
 
     if (this.modifier && !Number.isNaN(this.modifier)) {

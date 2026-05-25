@@ -1,8 +1,35 @@
+import { refreshDerivedAfterActiveEffects } from "../utils/active-effect-derived.js";
+import {
+  syncExhaustionEffect,
+  updateTouchesExhaustionPhysical,
+} from "../utils/exhaustion-effect.js";
+import { pruneExpiredStimulantEffects } from "../utils/stimulant-effect.js";
+import { sanitizeActiveEffectBackedUpdateData } from "../utils/active-effect-submit.js";
+
 /**
  * Extend the base Actor entity by defining a custom roll data structure which is ideal for the Simple system.
  * @extends {Actor}
  */
 export default class DeltaGreenActor extends Actor {
+  /** @override */
+  prepareData() {
+    super.prepareData();
+    refreshDerivedAfterActiveEffects(this);
+  }
+
+  /** @override */
+  async update(data, options = {}) {
+    const sanitized = sanitizeActiveEffectBackedUpdateData(
+      this,
+      foundry.utils.deepClone(data),
+    );
+    const shouldSyncExhaustion =
+      this.type === "agent" && updateTouchesExhaustionPhysical(sanitized);
+    const result = await super.update(sanitized, options);
+    if (shouldSyncExhaustion) await syncExhaustionEffect(this);
+    return result;
+  }
+
   /** @override */
   static async create(data, options = {}) {
     data.prototypeToken = data.prototypeToken || {};
@@ -159,5 +186,14 @@ export default class DeltaGreenActor extends Actor {
     };
 
     await this.createEmbeddedDocuments("Item", [weaponData]);
+  }
+
+  /** @override */
+  async onUpdateEffectDurations(effects, event, context) {
+    await super.onUpdateEffectDurations(effects, event, context);
+    if (!game.user.isActiveGM || this.type !== "agent") return;
+    if (!effects.some((effect) => effect.parent === this)) return;
+    await pruneExpiredStimulantEffects(this);
+    await syncExhaustionEffect(this);
   }
 }

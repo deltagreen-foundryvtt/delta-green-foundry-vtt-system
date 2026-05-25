@@ -38,8 +38,17 @@ import BondItemData from "./data/item/bond.js";
 import GearItemData from "./data/item/gear.js";
 import TomeItemData from "./data/item/tome.js";
 import RitualItemData from "./data/item/ritual.js";
+import DGActiveEffect from "./documents/dg-active-effect.js";
+import DGActiveEffectConfig from "./applications/dg-active-effect-config.js";
+import DGActiveEffectTypeDataModel from "./data/active-effect/dg-active-effect-data.js";
+import { syncExhaustionEffect } from "./utils/exhaustion-effect.js";
+import {
+  pruneAllAgentsExpiredStimulants,
+  pruneExpiredStimulantEffects,
+} from "./utils/stimulant-effect.js";
 
 const { Actors, Items } = foundry.documents.collections;
+const { DocumentSheetConfig } = foundry.applications.apps;
 
 Hooks.once("init", async () => {
   Object.assign(CONFIG.Actor.dataModels, {
@@ -60,9 +69,23 @@ Hooks.once("init", async () => {
     ritual: RitualItemData,
   });
 
+  CONFIG.ActiveEffect.documentClass = DGActiveEffect;
+  CONFIG.ActiveEffect.dataModels.base = DGActiveEffectTypeDataModel;
+
+  DocumentSheetConfig.registerSheet(
+    DGActiveEffect,
+    DG.ID,
+    DGActiveEffectConfig,
+    {
+      makeDefault: true,
+      label: "DG.ActiveEffects.SheetLabel",
+    },
+  );
+
   game.deltagreen = {
     DeltaGreenActor,
     DeltaGreenItem,
+    DGActiveEffect,
     rollItemMacro,
     rollItemSkillCheckMacro,
     rollSkillMacro,
@@ -127,6 +150,66 @@ Hooks.once("init", async () => {
 
   // Add Handlebars helpers
   registerHandlebarsHelpers();
+});
+
+/**
+ * @param {ActiveEffect} effect
+ * @returns {Actor|undefined}
+ */
+function getAgentFromEffect(effect) {
+  const { parent } = effect;
+  if (parent?.documentName === "Actor" && parent.type === "agent") {
+    return parent;
+  }
+  if (parent?.documentName === "Item") {
+    const { actor } = parent;
+    if (actor?.type === "agent") return actor;
+  }
+  return undefined;
+}
+
+/**
+ * @param {ActiveEffect} effect
+ * @returns {Promise<void>}
+ */
+async function onAgentActiveEffectChange(effect) {
+  const actor = getAgentFromEffect(effect);
+  if (!actor) return;
+  actor.reset();
+  if (game.user.isActiveGM) await pruneExpiredStimulantEffects(actor);
+  await syncExhaustionEffect(actor);
+}
+
+Hooks.on("createActiveEffect", (effect) => {
+  onAgentActiveEffectChange(effect);
+});
+
+Hooks.on("updateActiveEffect", (effect) => {
+  onAgentActiveEffectChange(effect);
+});
+
+Hooks.on("deleteActiveEffect", (effect) => {
+  onAgentActiveEffectChange(effect);
+});
+
+Hooks.on("updateWorldTime", () => {
+  if (!game.user.isActiveGM) return;
+  pruneAllAgentsExpiredStimulants();
+});
+
+Hooks.on("updateItem", (item, changes) => {
+  const flat = foundry.utils.flattenObject(changes);
+  const transferStateKeys = [
+    "system.equipped",
+    "system.acuteEpisode",
+    "system.crossedOut",
+    "system.disorderCured",
+  ];
+  if (!transferStateKeys.some((key) => key in flat)) return;
+  const { actor } = item;
+  if (!actor) return;
+  actor.reset();
+  if (actor.sheet?.rendered) actor.sheet.render();
 });
 
 Hooks.once("ready", async () => {

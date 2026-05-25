@@ -1,5 +1,6 @@
 import DG, { BASE_TEMPLATE_PATH } from "../config.js";
 import { packSkillGroupsIntoColumns } from "../utils/skill-layout.js";
+import { createAgentResourceChatMessage } from "../utils/resource-chat.js";
 import {
   createSkillImprovementChatMessage,
   evaluateSkillImprovementRolls,
@@ -7,15 +8,25 @@ import {
 } from "../roll/skill-improvement-roll.js";
 import DGActorSheet from "./base-actor-sheet.js";
 import ActorEditStatForm from "../applications/edit-stats.js";
+import EffectsTabMixin from "./mixins/effects-tab-mixin.js";
+import {
+  applyStimulantEffect,
+  clearStimulantEffects,
+  getEffectiveSuppressExhaustion,
+  hasActiveStimulantEffect,
+} from "../utils/stimulant-effect.js";
 
+const { DialogV2 } = foundry.applications.api;
 const { renderTemplate } = foundry.applications.handlebars;
 
-/** @extends {DGActorSheet} */
-export default class DGAgentSheet extends DGActorSheet {
+const AgentSheetBase = EffectsTabMixin(DGActorSheet);
+
+/** @extends {AgentSheetBase} */
+export default class DGAgentSheet extends AgentSheetBase {
   /** @override */
   static DEFAULT_OPTIONS = /** @type {const} */ ({
     classes: ["agent-sheet"],
-    position: { width: 958, height: 700 },
+    position: { width: 978, height: 720 },
     actions: {
       // Resets.
       clearBondDamage: DGAgentSheet._clearBondDamage,
@@ -30,6 +41,15 @@ export default class DGAgentSheet extends DGActorSheet {
         this._syncCustomSkillsEditModeUi();
         return this.render();
       },
+      createEffect: AgentSheetBase.createEffect,
+      openEffect: AgentSheetBase.openEffect,
+      deleteEffect: AgentSheetBase.deleteEffect,
+      toggleEffect: AgentSheetBase.toggleEffect,
+      openEffectOrigin: AgentSheetBase.openEffectOrigin,
+      toggleAcuteEpisode: DGAgentSheet._toggleAcuteEpisode,
+      exhaustAgent: DGAgentSheet._exhaustAgent,
+      restAgent: DGAgentSheet._restAgent,
+      takeStimulants: DGAgentSheet._takeStimulants,
     },
   });
 
@@ -47,8 +67,14 @@ export default class DGAgentSheet extends DGActorSheet {
         { id: "motivations" },
         { id: "gear" },
         { id: "personal" },
+        { id: "effects" },
         { id: "about", icon: "fas fa-question-circle", label: "" },
       ],
+    },
+    leftBarRestSanity: {
+      initial: "rest",
+      labelPrefix: "DG.Navigation.Agent.LeftBar",
+      tabs: [{ id: "rest" }, { id: "sanity" }],
     },
   });
 
@@ -56,7 +82,12 @@ export default class DGAgentSheet extends DGActorSheet {
   static PARTS = /** @type {const} */ ({
     leftBar: {
       template: `${this.TEMPLATE_PATH}/parts/left-bar.html`,
-      templates: [`${this.TEMPLATE_PATH}/partials/sanity-partial.html`],
+      templates: [
+        `${this.TEMPLATE_PATH}/partials/sanity-partial.html`,
+        `${this.TEMPLATE_PATH}/partials/left-bar-exhaustion-section.html`,
+        `${this.TEMPLATE_PATH}/partials/left-bar-rest-tab.html`,
+        `${this.TEMPLATE_PATH}/partials/left-bar-sanity-tab.html`,
+      ],
     },
     tabs: this.BASE_PARTS.tabs,
     rightBar: {
@@ -67,6 +98,7 @@ export default class DGAgentSheet extends DGActorSheet {
         `${this.TEMPLATE_PATH}/parts/motivations-tab-agent.html`,
         `${this.TEMPLATE_PATH}/parts/gear-tab-agent.html`,
         `${this.TEMPLATE_PATH}/parts/personal-tab-agent.html`,
+        `${this.TEMPLATE_PATH}/parts/effects-tab.html`,
         `${this.TEMPLATE_PATH}/parts/about-tab.html`,
         `${this.TEMPLATE_PATH}/partials/custom-skills-partial-agent.html`,
         `${this.TEMPLATE_PATH}/partials/bonds-section-partial.html`,
@@ -92,7 +124,9 @@ export default class DGAgentSheet extends DGActorSheet {
   _prepareTabs(group) {
     const tabs = super._prepareTabs(group);
 
-    if (!this.actor.limited || this.actor.type !== "agent") return tabs;
+    if (!this.actor.limited || this.actor.type !== "agent" || group !== "primary") {
+      return tabs;
+    }
 
     return {
       personal: { ...tabs.personal, active: true, cssClass: "active" },
@@ -103,12 +137,31 @@ export default class DGAgentSheet extends DGActorSheet {
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
 
+    context.tabs = this._prepareTabs("primary");
+    context.leftBarRestSanityTabs = this._prepareTabs("leftBarRestSanity");
+
     if (this.actor.type !== "agent") return context;
 
     context.typedSkillColumns = this._prepareTypedSkillColumns();
     context.customSkillsEditMode = this._customSkillsEditMode;
+    context.physicalUi = this._preparePhysicalUi();
 
     return context;
+  }
+
+  /** @returns {object} */
+  _preparePhysicalUi() {
+    const { physical } = this.actor.system;
+    const isExhausted = DGAgentSheet._isActorExhausted(this.actor);
+    const stimulantActive = hasActiveStimulantEffect(this.actor);
+    const suppressExhaustion = getEffectiveSuppressExhaustion(this.actor);
+    return {
+      isExhausted,
+      displayPenalty: isExhausted ? physical.exhaustedPenalty : 0,
+      suppressExhaustionInactive: !isExhausted,
+      suppressExhaustionInputDisabled: !isExhausted || stimulantActive,
+      suppressExhaustionChecked: isExhausted && suppressExhaustion,
+    };
   }
 
   /** @override */
@@ -130,6 +183,21 @@ export default class DGAgentSheet extends DGActorSheet {
     );
   }
 
+  /**
+   * @param {PointerEvent} event
+   * @param {HTMLElement} target
+   */
+  static async _toggleAcuteEpisode(event, target) {
+    event.preventDefault();
+    const itemId =
+      target.dataset.itemId ?? target.closest("[data-item-id]")?.dataset?.itemId;
+    const item = this.actor.items.get(itemId);
+    if (!item || item.type !== "motivation") return;
+    await item.update({
+      "system.acuteEpisode": !item.system.acuteEpisode,
+    });
+  }
+
   static _clearBondDamage() {
     for (const bond of this.actor.itemTypes.bond) {
       if (!bond.system.hasBeenDamagedSinceLastHomeScene) continue;
@@ -145,8 +213,11 @@ export default class DGAgentSheet extends DGActorSheet {
    * @returns {void}
    */
   static _resetBreakingPoint() {
+    const pow =
+      this.actor.system.statistics.pow.effectiveValue ??
+      this.actor.system.statistics.pow.value;
     const currentBreakingPoint = Math.max(
-      this.actor.system.sanity.value - this.actor.system.statistics.pow.value,
+      this.actor.system.sanity.value - pow,
       0,
     );
 
@@ -245,6 +316,181 @@ export default class DGAgentSheet extends DGActorSheet {
       actor: this.actor,
     });
     form.render(true);
+  }
+
+  /**
+   * @param {number} raw
+   * @returns {number}
+   */
+  static _normalizeExhaustionPenalty(raw) {
+    const value = Number(raw);
+    if (Number.isNaN(value) || value === 0) return -20;
+    return value > 0 ? -1 * Math.abs(value) : value;
+  }
+
+  static async _exhaustAgent() {
+    const actor = this.actor;
+    const content = await renderTemplate(
+      `${BASE_TEMPLATE_PATH}/dialog/exhaust-agent.html`,
+      {
+        penalty: actor.system.physical.exhaustedPenalty ?? -20,
+      },
+    );
+
+    let penalty = null;
+    const confirmed = await DialogV2.wait({
+      content,
+      window: {
+        title: game.i18n.localize("DG.Physical.ExhaustDialogTitle"),
+      },
+      buttons: [
+        {
+          action: "rollWpLoss",
+          label: game.i18n.localize("DG.Physical.RollWillpowerLoss"),
+          default: true,
+          icon: "fas fa-dice",
+          callback: (_event, _button, dialog) => {
+            const input = dialog.element.querySelector('[name="exhaustionPenalty"]');
+            penalty = DGAgentSheet._normalizeExhaustionPenalty(input?.value);
+            return true;
+          },
+        },
+      ],
+    });
+
+    if (!confirmed || penalty === null) return;
+
+    const wpRoll = await new Roll("1d6").evaluate();
+    const loss = wpRoll.total;
+    const currentWp = Number(actor.system.wp.value) || 0;
+    const maxWp = Number(actor.system.wp.max) || 0;
+    const newWp = Math.max(0, currentWp - loss);
+
+    await actor.update({
+      "system.physical.exhausted": true,
+      "system.physical.exhaustedPenalty": penalty,
+      "system.wp.value": newWp,
+    });
+
+    await createAgentResourceChatMessage({
+      actor,
+      token: this.token,
+      contentKey: "DG.Physical.Chat.Exhausted",
+      i18nData: {
+        name: actor.name,
+        loss,
+        current: newWp,
+        max: maxWp,
+      },
+    });
+  }
+
+  static async _restAgent() {
+    const actor = this.actor;
+
+    if (getEffectiveSuppressExhaustion(actor)) {
+      ui.notifications.warn(
+        game.i18n.format("DG.Physical.RestBlockedWhileSuppressed", {
+          name: actor.name,
+        }),
+      );
+      return;
+    }
+
+    const wpRoll = await new Roll("1d6").evaluate();
+    const gain = wpRoll.total;
+    const currentWp = Number(actor.system.wp.value) || 0;
+    const maxWp = Number(actor.system.wp.max) || 0;
+    const newWp = Math.min(maxWp, currentWp + gain);
+
+    await clearStimulantEffects(actor);
+
+    await actor.update({
+      "system.physical.exhausted": false,
+      "system.physical.suppressExhaustion": false,
+      "system.wp.value": newWp,
+    });
+
+    await createAgentResourceChatMessage({
+      actor,
+      token: this.token,
+      contentKey: "DG.Physical.Chat.Rested",
+      i18nData: {
+        name: actor.name,
+        gain,
+        current: newWp,
+        max: maxWp,
+      },
+    });
+  }
+
+  /**
+   * @param {Actor} actor
+   * @returns {boolean}
+   */
+  static _isActorExhausted(actor) {
+    return Boolean(actor._source?.system?.physical?.exhausted);
+  }
+
+  static async _takeStimulants() {
+    const actor = this.actor;
+
+    if (!DGAgentSheet._isActorExhausted(actor)) {
+      ui.notifications.info(
+        game.i18n.format("DG.Physical.StimulantsNotExhaustedWarning", {
+          name: actor.name,
+        }),
+      );
+      return;
+    }
+
+    const content = await renderTemplate(
+      `${BASE_TEMPLATE_PATH}/dialog/take-stimulants.html`,
+      {},
+    );
+
+    const choice = await DialogV2.wait({
+      content,
+      window: {
+        title: game.i18n.localize("DG.Physical.StimulantsDialogTitle"),
+      },
+      classes: ["stimulants-dialog-app"],
+      buttons: [
+        {
+          action: "regular",
+          label: game.i18n.localize("DG.Physical.StimulantsRegular"),
+          default: true,
+          callback: () => "regular",
+        },
+        {
+          action: "hard",
+          label: game.i18n.localize("DG.Physical.StimulantsHard"),
+          callback: () => "hard",
+        },
+      ],
+    });
+
+    if (!choice) return;
+
+    const formula = choice === "hard" ? "2d6" : "1d6";
+    const hoursRoll = await new Roll(formula).evaluate();
+    const hours = hoursRoll.total;
+    const contentKey =
+      choice === "hard"
+        ? "DG.Physical.Chat.StimulantsHard"
+        : "DG.Physical.Chat.StimulantsRegular";
+
+    const appliedHours = await applyStimulantEffect(actor, hours);
+
+    await createAgentResourceChatMessage({
+      actor,
+      token: this.token,
+      contentKey,
+      i18nData: {
+        name: actor.name,
+        hours: appliedHours,
+      },
+    });
   }
 
   /**

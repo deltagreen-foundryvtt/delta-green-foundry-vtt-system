@@ -42,14 +42,6 @@ export default function SkillPrepMixin(Base) {
           skill.sortLabel = skill.key;
         }
 
-        if (this.actor.type === "agent") {
-          skill.hasPendingImprovement =
-            skill.proficiency !== skill.targetProficiency;
-          skill.proficiencyInputClass = skill.hasPendingImprovement
-            ? "target-proficiency-mod"
-            : "";
-        }
-
         if (
           !(
             (this.actor.type === "npc" || this.actor.type === "unnatural") &&

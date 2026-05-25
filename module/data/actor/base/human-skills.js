@@ -45,7 +45,7 @@ export default class HumanSkillsActorData extends TypeDataModel {
         swim: skillField(20, "Swim"),
         unarmed_combat: skillField(40, "Unarmed Combat"),
         unnatural: new SchemaField({
-          proficiency: new NumberField({ initial: 0 }),
+          proficiency: new NumberField({ initial: 0, min: 0, max: 99, integer: true }),
           label: new StringField({ initial: "Unnatural" }),
         }),
       }),
