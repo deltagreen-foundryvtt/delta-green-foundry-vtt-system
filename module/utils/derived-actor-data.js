@@ -1,5 +1,14 @@
 /**
  * Shared derived-data helpers for actor TypeDataModels.
+ *
+ * Active Effect validation layers (do not duplicate clamp logic elsewhere):
+ * - Schema `NumberField` min/max: enforced when values pass through `field.clean()`
+ *   (document updates, Active Effect `applyChange` on registered paths).
+ * - `cleanDerivedNumber`: use when assigning derived fields in code (e.g. `health.max`,
+ *   `sanity.max`); plain assignment bypasses schema cleaners unless the path has a NumberField.
+ * - `clampStatisticValue`: effective ratings after statistic modifier AEs (min 0).
+ * - `applyAgentResourceMaxBonuses`: recompute resource max after AE;
+ *   agents call these only from `refreshDerivedAfterActiveEffects` (post–final phase).
  */
 
 /**
@@ -29,19 +38,85 @@ export function calculateMeleeDamageBonusFormula(strengthValue) {
 }
 
 /**
+ * @param {number} value
+ * @returns {number}
+ */
+function clampStatisticValue(value) {
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric)) return 0;
+  return Math.max(0, Math.round(numeric));
+}
+
+/**
+ * Effective statistic rating: persisted value plus AE modifier (minimum 0).
+ * @param {object} stat Prepared statistic.
+ * @param {object} [sourceStat] Persisted statistic from `_source`.
+ * @returns {number}
+ */
+export function getStatisticEffectiveValue(stat, sourceStat) {
+  const base = clampStatisticValue(sourceStat?.value ?? stat?.value);
+  const modifier = Number(stat?.modifier) || 0;
+  return clampStatisticValue(base + modifier);
+}
+
+/**
  * @param {object} statistics
+ * @param {object} [sourceStatistics] Persisted statistics from `_source`.
  * @returns {void}
  */
-export function prepareStatisticsX5(statistics) {
-  for (const statistic of Object.values(statistics)) {
-    statistic.x5 = statistic.value * 5;
+export function prepareStatisticsX5(statistics, sourceStatistics) {
+  for (const [key, statistic] of Object.entries(statistics ?? {})) {
+    statistic.effectiveValue = getStatisticEffectiveValue(
+      statistic,
+      sourceStatistics?.[key],
+    );
+    statistic.x5 = statistic.effectiveValue * 5;
   }
 }
 
 /**
- * @param {object} skills
+ * Clamp a derived numeric value through the TypeDataModel field definition when available.
+ * @param {foundry.abstract.TypeDataModel} model
+ * @param {string} path Dot-delimited path (e.g. "health.max")
+ * @param {number} raw
+ * @returns {number}
+ */
+export function cleanDerivedNumber(model, path, raw) {
+  const field = model.getFieldForProperty?.(path);
+  const numeric = Number(raw);
+  if (!field) {
+    return Number.isFinite(numeric) ? Math.max(0, Math.round(numeric)) : 0;
+  }
+  return field.clean(numeric, { persisted: false });
+}
+
+/**
+ * @param {foundry.abstract.TypeDataModel} model Agent system TypeDataModel.
  * @returns {void}
  */
+export function applyAgentResourceMaxBonuses(model, sourceStatistics) {
+  const sourceStats = sourceStatistics ?? model._source?.statistics;
+  model.health.max = cleanDerivedNumber(
+    model,
+    "health.max",
+    calculateHealthMax(model.statistics, sourceStats) +
+      (model.health.maxBonus ?? 0),
+  );
+  model.wp.max = cleanDerivedNumber(
+    model,
+    "wp.max",
+    getStatisticEffectiveValue(model.statistics.pow, sourceStats?.pow) +
+      (model.wp.maxBonus ?? 0),
+  );
+  model.sanity.max = cleanDerivedNumber(
+    model,
+    "sanity.max",
+    99 -
+      model.skills.unnatural.proficiency +
+      (model.sanity.maxBonus ?? 0),
+  );
+}
+
 export function setSkillTargetProficiencies(skills) {
   for (const skill of Object.values(skills)) {
     skill.targetProficiency = skill.proficiency;
@@ -56,7 +131,9 @@ export function setSkillTargetProficiencies(skills) {
 export function initializeSanityIfUnset(sanity, statistics) {
   if (sanity.value >= 100) {
     sanity.value = statistics.pow.x5;
-    sanity.currentBreakingPoint = sanity.value - statistics.pow.value;
+    sanity.currentBreakingPoint =
+      sanity.value -
+      (statistics.pow.effectiveValue ?? statistics.pow.value);
   }
 }
 
@@ -107,7 +184,6 @@ export function prepareAgentSkillFlags(skills) {
     skill.cannotBeImprovedByFailure =
       key === "unnatural" || key === "luck" || key === "ritual";
     skill.isCalculatedValue = key === "ritual";
-    skill.targetProficiency = skill.proficiency;
   }
 }
 
@@ -127,10 +203,15 @@ export function removeLegacyRitualSkill(system) {
  * @param {object} statistics
  * @returns {number}
  */
-export function calculateHealthMax(statistics) {
+export function calculateHealthMax(statistics, sourceStatistics) {
   try {
     return Math.ceil(
-      (statistics.con.value + statistics.str.value) / 2,
+      (getStatisticEffectiveValue(
+        statistics.con,
+        sourceStatistics?.con,
+      ) +
+        getStatisticEffectiveValue(statistics.str, sourceStatistics?.str)) /
+        2,
     );
   } catch {
     return 10;

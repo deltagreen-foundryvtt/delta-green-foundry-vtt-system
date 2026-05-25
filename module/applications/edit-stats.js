@@ -33,6 +33,8 @@ export default class ActorEditStatForm extends foundry.applications.api.Handleba
     return {
       ...(await super._prepareContext(options)),
       actor: this.actor,
+      sourceStatistics:
+        this.actor._source?.system?.statistics ?? this.actor.system.statistics,
     };
   }
 

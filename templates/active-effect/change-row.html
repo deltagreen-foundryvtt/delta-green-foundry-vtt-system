@@ -1,0 +1,29 @@
+<li data-index="{{index}}">
+    <div class="key">
+        <select name="{{change.keyPath}}" class="dg-effect-key-select" data-dtype="String">
+            <option value="">{{localize "DG.ActiveEffects.SelectAttribute"}}</option>
+            {{#each fieldGroups as |group|}}
+            <optgroup label="{{group.groupLabel}}">
+                {{#each group.options as |opt|}}
+                <option value="{{opt.value}}" {{#if_eq opt.value @root.change.key}}selected{{/if_eq}}>
+                    {{opt.label}}
+                </option>
+                {{/each}}
+            </optgroup>
+            {{/each}}
+        </select>
+    </div>
+    <div class="type">
+        {{formInput fields.type name=change.typePath value=change.type choices=dgChangeTypes}}
+    </div>
+    <div class="value">
+        {{formInput fields.value name=change.valuePath value=change.value elementType="input"}}
+    </div>
+    <input type="hidden" name="{{change.phasePath}}" value="{{change.phase}}">
+    <div class="priority">
+        {{formInput fields.priority name=change.priorityPath value=change.priority placeholder=defaultPriority}}
+    </div>
+    <div class="controls">
+        <button type="button" class="inline-control icon fa-solid fa-trash" data-action="deleteChange"></button>
+    </div>
+</li>

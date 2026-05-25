@@ -11,6 +11,12 @@
                style="text-decoration: line-through"
                disabled
                {{/if }} />
+        <span class="resource-label">{{localize 'DG.ItemWindow.Motivations.AcuteEpisode'}}:</span>
+        <input type="checkbox"
+               name="system.acuteEpisode"
+               {{checked item.system.acuteEpisode}}
+               data-dtype="Boolean"
+               title="{{localize 'DG.ItemWindow.Motivations.AcuteEpisodeTooltip'}}" />
         <span class="resource-label">{{localize 'DG.ItemWindow.Motivations.IsDisorder'}}:</span>
         <input type="checkbox"
                name="system.crossedOut"

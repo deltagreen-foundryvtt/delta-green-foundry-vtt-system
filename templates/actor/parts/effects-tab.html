@@ -1,0 +1,113 @@
+<div class="tab effects {{tabs.effects.cssClass}}"
+     data-group="primary"
+     data-tab="effects">
+    {{#if canManageEffects}}
+        <div class="effect-add">
+            <a class="item-control action-pill"
+               data-action="createEffect"
+               data-document-class="ActiveEffect"
+               data-render-sheet="true"
+               title="{{localize 'DG.ActiveEffects.Add'}}">
+                <i class="fas fa-plus"></i>
+                {{localize "DG.ActiveEffects.Add"}}
+            </a>
+        </div>
+    {{/if}}
+
+    <div class="effect-header flexrow">
+        <span class="effect-label">{{localize "DG.ActiveEffects.Temporary"}}</span>
+        <span class="effect-source">{{localize "DG.ActiveEffects.Source"}}</span>
+        <span class="effect-controls"></span>
+    </div>
+    <ol class="effects-list">
+        {{#each sheetEffects.temporary as |effect|}}
+        <li class="item effect draggable {{#unless effect.active}}suppressed-effect{{/unless}} {{#if effect.disabled}}disabled-effect{{/if}}"
+            data-document-class="ActiveEffect"
+            data-effect-id="{{effect.id}}"
+            {{#if effect.source}}data-parent-id="{{effect.source.id}}"{{/if}}>
+            <img class="effect-icon" src="{{effect.img}}" alt="{{effect.name}}" />
+            <span class="effect-label">{{effect.name}}</span>
+            {{#if effect.source}}
+            <button type="button"
+                    class="effect-source effect-action"
+                    data-action="openEffectOrigin"
+                    title="{{effect.source.name}}">
+                {{effect.source.name}}
+            </button>
+            {{else}}
+            <span class="effect-source"></span>
+            {{/if}}
+            {{#if effect.duration.label}}
+            <span class="effect-duration">{{effect.duration.label}}</span>
+            {{/if}}
+            {{#if effect.suppressionReasonKey}}
+            <span class="effect-suppression-hint" title="{{localize effect.suppressionReasonKey}}">
+                <i class="fas fa-pause"></i>
+            </span>
+            {{/if}}
+            <span class="effect-controls">
+                {{#if ../canManageEffects}}
+                <button type="button" class="effect-action" data-action="toggleEffect" title="{{localize 'DG.ActiveEffects.Toggle'}}">
+                    <i class="fas fa-power-off"></i>
+                </button>
+                <button type="button" class="effect-action" data-action="openEffect" title="{{localize 'DG.ActiveEffects.Edit'}}">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button type="button" class="effect-action" data-action="deleteEffect" title="{{localize 'DG.ActiveEffects.Delete'}}">
+                    <i class="fas fa-trash"></i>
+                </button>
+                {{/if}}
+            </span>
+        </li>
+        {{else}}
+        <li class="effect-empty">{{localize "DG.ActiveEffects.None"}}</li>
+        {{/each}}
+    </ol>
+
+    <div class="effect-header flexrow">
+        <span class="effect-label">{{localize "DG.ActiveEffects.Permanent"}}</span>
+        <span class="effect-source">{{localize "DG.ActiveEffects.Source"}}</span>
+        <span class="effect-controls"></span>
+    </div>
+    <ol class="effects-list">
+        {{#each sheetEffects.permanent as |effect|}}
+        <li class="item effect draggable {{#unless effect.active}}suppressed-effect{{/unless}} {{#if effect.disabled}}disabled-effect{{/if}}"
+            data-document-class="ActiveEffect"
+            data-effect-id="{{effect.id}}"
+            {{#if effect.source}}data-parent-id="{{effect.source.id}}"{{/if}}>
+            <img class="effect-icon" src="{{effect.img}}" alt="{{effect.name}}" />
+            <span class="effect-label">{{effect.name}}</span>
+            {{#if effect.source}}
+            <button type="button"
+                    class="effect-source effect-action"
+                    data-action="openEffectOrigin"
+                    title="{{effect.source.name}}">
+                {{effect.source.name}}
+            </button>
+            {{else}}
+            <span class="effect-source"></span>
+            {{/if}}
+            {{#if effect.suppressionReasonKey}}
+            <span class="effect-suppression-hint" title="{{localize effect.suppressionReasonKey}}">
+                <i class="fas fa-pause"></i>
+            </span>
+            {{/if}}
+            <span class="effect-controls">
+                {{#if ../canManageEffects}}
+                <button type="button" class="effect-action" data-action="toggleEffect" title="{{localize 'DG.ActiveEffects.Toggle'}}">
+                    <i class="fas fa-power-off"></i>
+                </button>
+                <button type="button" class="effect-action" data-action="openEffect" title="{{localize 'DG.ActiveEffects.Edit'}}">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button type="button" class="effect-action" data-action="deleteEffect" title="{{localize 'DG.ActiveEffects.Delete'}}">
+                    <i class="fas fa-trash"></i>
+                </button>
+                {{/if}}
+            </span>
+        </li>
+        {{else}}
+        <li class="effect-empty">{{localize "DG.ActiveEffects.None"}}</li>
+        {{/each}}
+    </ol>
+</div>

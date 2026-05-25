@@ -5,10 +5,12 @@ import RollSheetMixin from "./mixins/roll-sheet-mixin.js";
 import SkillPrepMixin from "./mixins/skill-prep-mixin.js";
 import SpecialTrainingMixin from "./mixins/special-training-mixin.js";
 import TypedSkillMixin from "./mixins/typed-skill-mixin.js";
+import AeInputMixin from "./mixins/ae-input-mixin.js";
 
 const { ActorSheetV2 } = foundry.applications.sheets;
 
 const ComposedActorSheetBase = composeMixins(
+  AeInputMixin,
   SpecialTrainingMixin,
   TypedSkillMixin,
   ItemListMixin,
@@ -125,23 +127,12 @@ export default class DGActorSheet extends ComposedActorSheetBase {
     if (!this.actor.limited) return;
 
     options.parts = ["header"];
-
-    if (this.actor.type === "agent") options.parts.push("tabs", "bio");
   }
 
   /** @override */
   async _onFirstRender(context, options) {
     await super._onFirstRender(context, options);
     this._setRightClickListeners();
-  }
-
-  /** @override */
-  _prepareTabs(group) {
-    const tabs = super._prepareTabs(group);
-
-    if (!this.actor.limited || this.actor.type !== "agent") return tabs;
-
-    return { bio: { ...tabs.bio, active: true, cssClass: "active" } };
   }
 
   /** @override */
@@ -156,6 +147,7 @@ export default class DGActorSheet extends ComposedActorSheetBase {
 
     this._setupItemDragListeners();
     this._tooltipsSettings(element);
+    this._bindAeBackedInputs(element);
   }
 
   /** @override */

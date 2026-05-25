@@ -136,7 +136,6 @@ export function rollSkillMacro(skillName) {
     { rollType: "skill", key: skillName, actor },
   );
   return actor.sheet.processRoll({}, roll);
-  // sendPercentileTestToChat(actor, translatedSkillLabel, skill.proficiency);
 }
 
 /**

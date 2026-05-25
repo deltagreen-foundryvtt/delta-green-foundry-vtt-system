@@ -3,6 +3,7 @@ import CharacterData from "./base/character.js";
 import DGHTMLField from "../fields/html-content-field.js";
 import {
   calculateHealthMax,
+  cleanDerivedNumber,
   computeEquippedArmorProtection,
   prepareStatisticsX5,
   removeLegacyRitualSkill,
@@ -33,14 +34,23 @@ export default class UnnaturalData extends CharacterData {
 
   /** @inheritdoc */
   prepareDerivedData() {
-    prepareStatisticsX5(this.statistics);
+    const sourceStatistics = this.parent?._source?.system?.statistics;
+    prepareStatisticsX5(this.statistics, sourceStatistics);
 
     if (this.wp.maxNeedsUpdate) {
-      this.wp.max = this.statistics.pow.value;
+      this.wp.max = cleanDerivedNumber(
+        this,
+        "wp.max",
+        this.statistics.pow.effectiveValue ?? this.statistics.pow.value,
+      );
     }
 
     if (this.health.maxNeedsUpdate) {
-      this.health.max = calculateHealthMax(this.statistics);
+      this.health.max = cleanDerivedNumber(
+        this,
+        "health.max",
+        calculateHealthMax(this.statistics, sourceStatistics),
+      );
     }
 
     removeLegacyRitualSkill(this);
