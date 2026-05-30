@@ -1,6 +1,6 @@
-import DG from "../../config.js";
+import DG from "../../config/index.js";
 import { reorderForColumnSorting } from "../../utils/skill-layout.js";
-import { getRollTargetDisplayClassFromModifier } from "../../utils/active-effect-derived.js";
+import { getRollTargetDisplayClassFromModifier } from "../../active-effect/runtime/derived.js";
 import {
   applySkillTooltipDisplayMode,
   buildAgentSpecialTrainingTooltip,

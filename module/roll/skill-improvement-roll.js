@@ -1,5 +1,5 @@
 import { createDGChatMessage } from "../chat/dg-chat-card.js";
-import DG from "../config.js";
+import DG from "../config/index.js";
 
 /**
  * @param {"1"|"d3"|"d4"|"d4-1"} baseFormula

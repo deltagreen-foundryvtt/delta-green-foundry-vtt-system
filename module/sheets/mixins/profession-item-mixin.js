@@ -1,4 +1,4 @@
-import { BASE_TEMPLATE_PATH } from "../../config.js";
+import { BASE_TEMPLATE_PATH } from "../../config/index.js";
 import { PROFESSION_OPTION_PICKS_KEY } from "../../data/item/profession.js";
 import {
   allocateProfessionSkillStorageKey,
@@ -7,7 +7,7 @@ import {
   findTypedSkillNameConflict,
   prepareProfessionSkillRows,
   splitProfessionSkillMap,
-} from "../../utils/profession-skills.js";
+} from "../../profession/index.js";
 import {
   getDialogContentRoot,
   showDgDialog,

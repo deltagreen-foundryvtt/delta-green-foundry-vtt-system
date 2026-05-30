@@ -5,4 +5,5 @@
 .deltagreen section.window-content {
   @include dg-window-content;
   @include dg-window-form-inputs;
+  @include dg-parchment-content-theme;
 }

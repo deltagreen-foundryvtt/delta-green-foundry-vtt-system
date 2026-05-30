@@ -1,6 +1,8 @@
-import DG, { BASE_TEMPLATE_PATH } from "../config.js";
-import { packSkillGroupsIntoColumns } from "../utils/skill-layout.js";
-import { createAgentResourceChatMessage } from "../utils/resource-chat.js";
+import DG, { BASE_TEMPLATE_PATH } from "../config/index.js";
+import { prepareAgentSkillColumns } from "../utils/skill-layout.js";
+import { formatProfessionSkillLabel } from "../profession/index.js";
+import { buildSkillTooltip } from "../utils/skill-tooltip.js";
+import { createAgentResourceChatMessage } from "../chat/resource-chat.js";
 import {
   createSkillImprovementChatMessage,
   evaluateSkillImprovementRolls,
@@ -14,10 +16,11 @@ import {
   clearStimulantEffects,
   getEffectiveSuppressExhaustion,
   hasActiveStimulantEffect,
-} from "../utils/stimulant-effect.js";
+} from "../active-effect/runtime/stimulant-effect.js";
 import { assignProfessionToAgent } from "../applications/profession-setup-flow.js";
 import { showDgDialog } from "../applications/dg-dialog.js";
 import { PROFESSION_OPTION_PICKS_KEY } from "../data/item/profession.js";
+
 const { renderTemplate } = foundry.applications.handlebars;
 
 const AgentSheetBase = EffectsTabMixin(DGActorSheet);
@@ -103,6 +106,8 @@ export default class DGAgentSheet extends AgentSheetBase {
         `${this.TEMPLATE_PATH}/parts/personal-tab-agent.html`,
         `${this.TEMPLATE_PATH}/parts/effects-tab.html`,
         `${this.TEMPLATE_PATH}/parts/about-tab.html`,
+        `${this.TEMPLATE_PATH}/partials/agent-skill-row-partial.html`,
+        `${this.TEMPLATE_PATH}/partials/agent-special-training-row-partial.html`,
         `${this.TEMPLATE_PATH}/partials/custom-skills-partial-agent.html`,
         `${this.TEMPLATE_PATH}/partials/bonds-section-partial.html`,
         `${this.TEMPLATE_PATH}/partials/weapons-section-partial.html`,
@@ -149,7 +154,18 @@ export default class DGAgentSheet extends AgentSheetBase {
 
     if (this.actor.type !== "agent") return context;
 
-    context.typedSkillColumns = this._prepareTypedSkillColumns();
+    const sortSkillsByColumn = game.settings.get("deltagreen", "sortSkills");
+    context.sortSkillsByColumn = sortSkillsByColumn;
+    context.skillColumns = prepareAgentSkillColumns(
+      this.actor.system.sortedSkills,
+      sortSkillsByColumn,
+    );
+    context.specialTrainingRows = this._prepareSpecialTrainingBlocks();
+    context.showSpecialTrainingSection = context.specialTrainingRows.length > 0;
+    context.specialTrainingColumns = prepareAgentSkillColumns(
+      context.specialTrainingRows,
+      sortSkillsByColumn,
+    );
     context.customSkillsEditMode = this._customSkillsEditMode;
     context.physicalUi = this._preparePhysicalUi();
     context.professionItem = this.actor.items.find(
@@ -175,8 +191,71 @@ export default class DGAgentSheet extends AgentSheetBase {
   }
 
   /** @override */
-  _sortCustomSkills() {
-    // Agent sheet uses typedSkillColumns instead of sortedCustomSkills.
+  _sortSkills() {
+    const sortedSkills = [];
+
+    for (const [key, skill] of Object.entries(this.actor.system.skills)) {
+      let sortLabel;
+      if (game.i18n.lang === "ja") {
+        sortLabel = game.i18n.localize(`DG.Skills.ruby.${key}`);
+      } else {
+        sortLabel = game.i18n.localize(`DG.Skills.${key}`);
+      }
+
+      if (sortLabel === "" || sortLabel === `DG.Skills.${key}`) {
+        sortLabel = key;
+      }
+
+      sortedSkills.push({
+        ...skill,
+        skillKind: "fixed",
+        key,
+        sortLabel,
+      });
+    }
+
+    for (const [key, skill] of Object.entries(this.actor.system.typedSkills)) {
+      const displayLabel = formatProfessionSkillLabel({
+        kind: "typed",
+        group: skill.group,
+        label: skill.label,
+      });
+      sortedSkills.push({
+        ...skill,
+        skillKind: "typed",
+        key,
+        displayLabel,
+        sortLabel: displayLabel,
+        actorType: this.actor.type,
+      });
+    }
+
+    sortedSkills.sort((a, b) =>
+      a.sortLabel.localeCompare(b.sortLabel, game.i18n.lang),
+    );
+
+    this.actor.system.sortedSkills = sortedSkills;
+  }
+
+  /** @override */
+  _prepareSkillTooltips() {
+    for (const skill of this.actor.system.sortedSkills) {
+      if (skill.skillKind === "typed") {
+        skill.tooltip = buildSkillTooltip(
+          "sheet",
+          this.actor,
+          { kind: "typed", group: skill.group, label: skill.label },
+          { proficiency: Number(skill.proficiency) || 0 },
+        );
+      } else {
+        skill.tooltip = buildSkillTooltip(
+          "sheet",
+          this.actor,
+          { kind: "fixed", key: skill.key },
+          { proficiency: Number(skill.proficiency) || 0 },
+        );
+      }
+    }
   }
 
   /** @override */
@@ -262,61 +341,7 @@ export default class DGAgentSheet extends AgentSheetBase {
   }
 
   /**
-   * Builds grouped typed-skill columns for the skills tab.
-   *
-   * @returns {object[][]}
-   */
-  _prepareTypedSkillColumns() {
-    const groupsMap = new Map();
-
-    for (const [key, skill] of Object.entries(this.actor.system.typedSkills)) {
-      const groupKey = skill.group;
-      if (!groupsMap.has(groupKey)) {
-        groupsMap.set(groupKey, {
-          group: groupKey,
-          label: game.i18n.localize(`DG.TypeSkills.${groupKey}`),
-          skills: [],
-          rowCount: 0,
-        });
-      }
-
-      groupsMap.get(groupKey).skills.push({
-        ...skill,
-        key,
-        actorType: this.actor.type,
-      });
-    }
-
-    const groups = [...groupsMap.values()].map((group) => {
-      group.skills.sort((a, b) =>
-        a.label.localeCompare(b.label, game.i18n.lang),
-      );
-      group.rowCount = 1 + group.skills.length;
-      return group;
-    });
-
-    groups.sort((a, b) => a.label.localeCompare(b.label, game.i18n.lang));
-
-    const trainings = this._prepareSpecialTrainingBlocks();
-    if (trainings.length > 0) {
-      groups.push({
-        group: "specialTraining",
-        isSpecialTraining: true,
-        label: game.i18n.localize("DG.Sheet.BlockHeaders.SpecialTraining"),
-        skills: trainings,
-        rowCount: 1 + trainings.length,
-      });
-    }
-
-    return packSkillGroupsIntoColumns(
-      groups,
-      3,
-      game.settings.get("deltagreen", "sortSkills"),
-    );
-  }
-
-  /**
-   * Sorted special-training blocks for the skills tab (single-column list).
+   * Sorted special-training blocks for the skills tab.
    *
    * @returns {object[]}
    */
@@ -415,15 +440,6 @@ export default class DGAgentSheet extends AgentSheetBase {
 
   static async _restAgent() {
     const { actor } = this;
-
-    if (getEffectiveSuppressExhaustion(actor)) {
-      ui.notifications.warn(
-        game.i18n.format("DG.Physical.RestBlockedWhileSuppressed", {
-          name: actor.name,
-        }),
-      );
-      return;
-    }
 
     const wasExhausted = DGAgentSheet._isActorExhausted(actor);
     const wpRoll = await new Roll("1d6").evaluate();
@@ -524,6 +540,7 @@ export default class DGAgentSheet extends AgentSheetBase {
     await createAgentResourceChatMessage({
       actor,
       token: this.token,
+      roll: hoursRoll,
       contentKey,
       labelKey,
       i18nData: {

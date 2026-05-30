@@ -1,0 +1,81 @@
+{{#if (eq skill.skillKind "typed") }}
+    <div class="item flexrow flex-group-left flex-thin-border skill-row typed-skill-row">
+        <div class="flexrow">
+            <label class="{{if_gt skill.proficiency 0 'rollable' 'not-rollable'}} skill-label"
+                   data-action="roll"
+                   data-key="{{skill.key}}"
+                   data-rolltype="skill"
+                   data-roll="d100"
+                   data-target="{{skill.proficiency}}"
+                   data-label="{{skill.label}}"
+                   {{#unless (eq @root.skillTooltipDisplay "never") }}
+                   data-tooltip="{{skill.tooltip}}"
+                   {{/unless }}>
+                {{skill.displayLabel}}
+            </label>
+            <div class="custom-skill-controls-slot">
+                <div class="custom-skill-play-controls">
+                    <input class="percentile-skill-input {{skill.rollTargetDisplayClass}}"
+                           type="text"
+                           name="system.typedSkills.{{skill.key}}.proficiency"
+                           value="{{skill.proficiency}}"
+                           data-dtype="Number" />
+                    <input class="checkbox-skill-input"
+                           type="checkbox"
+                           name="system.typedSkills.{{skill.key}}.failure"
+                           {{checked skill.failure}}
+                           data-dtype="Boolean"
+                           {{#if skill.cannotBeImprovedByFailure }}
+                           disabled
+                           {{/if }} />
+                </div>
+                <div class="item-controls skill-and-training-controls custom-skill-edit-controls">
+                    <a class="item-control"
+                       data-action="typedSkillAction"
+                       data-action-type="edit"
+                       data-typedskill="{{skill.key}}"
+                       {{#unless (eq @root.skillTooltipDisplay "never") }}
+                       title="Edit Skill"
+                       {{/unless }}>
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <a class="item-control"
+                       data-action="typedSkillAction"
+                       data-action-type="delete"
+                       data-typedskill="{{skill.key}}"
+                       {{#unless (eq @root.skillTooltipDisplay "never") }}
+                       title="Delete Skill"
+                       {{/unless }}>
+                        <i class="fas fa-trash"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{{else}}
+    <div class="flexrow flex-group-left flex-thin-border skill-row">
+        <label class="{{if_gt skill.proficiency 0 'rollable' 'not-rollable'}} skill-label"
+               data-action="roll"
+               data-key="{{skill.key}}"
+               data-rolltype="skill"
+               for="system.skills.{{skill.key}}.proficiency"
+               {{#unless (eq @root.skillTooltipDisplay "never") }}
+               data-tooltip="{{ skill.tooltip }}"
+               {{/unless }}>
+            {{localizeWithFallback (concat "DG.Skills." skill.key) skill.label }}
+        </label>
+
+        <input class="percentile-skill-input {{skill.rollTargetDisplayClass}}"
+               type="text"
+               name="system.skills.{{skill.key}}.proficiency"
+               value="{{skill.proficiency}}"
+               data-dtype="Number"
+               {{disabled skill.isCalculatedValue}} />
+        <input class="checkbox-skill-input"
+               type="checkbox"
+               name="system.skills.{{skill.key}}.failure"
+               data-tooltip="{{localize 'DG.Tooltip.SkillFailCheckbox' }}"
+               {{checked skill.failure}}
+               {{disabled skill.cannotBeImprovedByFailure }} />
+    </div>
+{{/if}}

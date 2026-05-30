@@ -1,5 +1,5 @@
 /* eslint-disable max-classes-per-file */
-import DG, { BASE_TEMPLATE_PATH } from "./config.js";
+import DG, { BASE_TEMPLATE_PATH } from "./config/index.js";
 import DGActorSheet from "./sheets/base-actor-sheet.js";
 import DGItemSheet from "./sheets/base-item-sheet.js";
 

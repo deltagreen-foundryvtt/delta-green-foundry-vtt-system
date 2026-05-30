@@ -1,4 +1,4 @@
-import DG from "../config.js";
+import DG from "../config/index.js";
 
 const { DialogV2 } = foundry.applications.api;
 

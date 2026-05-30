@@ -107,3 +107,34 @@
 .strike {
   text-decoration: line-through;
 }
+
+.roll-stats-chat-table {
+  width: auto;
+  margin: 0 auto;
+  border-collapse: collapse;
+}
+
+/* Override Foundry row striping; alternate per cell in reading order (checkerboard in 3 cols) */
+.dg-chat-card__body .roll-stats-chat-table tbody tr {
+  background-color: transparent;
+}
+
+.dg-chat-card__body .roll-stats-chat-table td {
+  padding: 0.35rem 1rem;
+  text-align: center;
+  font-weight: bold;
+  font-size: var(--font-size-16, 1rem);
+  border: 1px solid var(--color-border-light-2, rgba(255, 255, 255, 0.2));
+}
+
+.dg-chat-card__body .roll-stats-chat-table td.roll-stats-chat-value--a {
+  background-color: var(--table-row-color-odd, transparent);
+}
+
+.dg-chat-card__body .roll-stats-chat-table td.roll-stats-chat-value--b {
+  background-color: var(--table-row-color-even, rgba(255, 255, 255, 0.1));
+}
+
+.dg-chat-card__body .roll-stats-chat-table .roll-stats-chat-value {
+  min-width: 2rem;
+}

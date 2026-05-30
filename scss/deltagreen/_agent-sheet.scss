@@ -67,7 +67,7 @@
     min-width: 0;
     position: relative;
     text-align: center;
-    margin-left: -14px;
+    margin-left: -5px;
     padding-inline: 3px;
     font-size: 11px;
     overflow: visible;
@@ -141,7 +141,7 @@
   .tabs [data-action="tab"][data-tab="about"] {
     flex: 0 0 auto;
     min-width: unset;
-    margin-left: -14px;
+    margin-left: -5px;
   }
 
   .window-content > [data-application-part="rightBar"],
@@ -175,6 +175,32 @@
   .right-bar > .tab.active {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
+  }
+
+  .right-bar > .tab:not(.active) {
+    display: none;
+  }
+
+  .right-bar > .tab.skills.active {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    .skills-tab-scroll {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow-y: auto;
+    }
+
+    .skills-tab-footer {
+      flex: 0 0 auto;
+      margin-top: auto;
+      padding-top: 8px;
+    }
+
+    .skills-tab-footer .skill-util-buttons {
+      margin-bottom: 0;
+    }
   }
 
   .tabs [data-action="tab"].active {
@@ -294,33 +320,39 @@
 
   .skill-util-buttons {
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: stretch;
+    flex-direction: column;
     gap: 8px;
     width: 100%;
     margin: 5px 0;
     box-sizing: border-box;
 
-    .action-pill {
-      flex: 1 1 0;
-      min-width: 0;
-      margin: 0;
-      text-align: center;
+    .skill-util-buttons-row {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: stretch;
+      gap: 8px;
+      width: 100%;
+
+      .action-pill {
+        flex: 1 1 0;
+        min-width: 0;
+        margin: 0;
+        text-align: center;
+      }
+
+      .typed-skill-add {
+        margin-right: 0;
+      }
     }
 
-    .typed-skill-add {
-      margin-right: 0;
+    .skill-util-buttons-row--full .action-pill {
+      flex: 1 1 100%;
+      width: 100%;
     }
 
     a[data-action="applySkillImprovements"] {
       float: none;
-    }
-
-    .custom-skills-edit-toggle {
-      flex: 0 0 auto;
-      min-width: 2rem;
-      padding-inline: 6px;
     }
   }
 
@@ -350,9 +382,72 @@
     color: var(--dg-on-dark);
   }
 
-  .typed-skill-row {
-    min-height: 27px;
+  .agent-skills-columns {
+    align-items: start;
+    --agent-skill-row-gap: 3px;
+  }
+
+  .agent-skills-column {
+    display: flex;
+    flex-direction: column;
+    gap: var(--agent-skill-row-gap);
+    min-width: 0;
+
+    /* Prevent flex column from shrinking skill rows below min-height */
+    > .skill-row,
+    > .item.skill-row {
+      flex: 0 0 auto;
+      flex-shrink: 0;
+      align-self: stretch;
+      width: 100%;
+    }
+  }
+
+  .tab.skills .skill-row,
+  .tab.skills .skill-row > .flexrow {
+    flex-wrap: nowrap;
     align-items: center;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  /* Fixed skills: one flexrow row — stop Foundry .flexrow > * { flex: 1 } from widening inputs */
+  .tab.skills .flexrow.skill-row > .skill-label {
+    flex: 1 1 0;
+    min-width: 0;
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    line-height: 1.2;
+  }
+
+  .tab.skills .flexrow.skill-row > .percentile-skill-input {
+    flex: 0 0 40px;
+    width: 40px;
+    max-width: 40px;
+  }
+
+  .tab.skills .flexrow.skill-row > .checkbox-skill-input {
+    flex: 0 0 20px;
+    width: 20px;
+    max-width: 20px;
+  }
+
+  /* Typed skills: label grows, controls stay fixed width */
+  .tab.skills .typed-skill-row > .flexrow > .skill-label {
+    flex: 1 1 0;
+    min-width: 0;
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    line-height: 1.2;
+  }
+
+  .tab.skills .typed-skill-row > .flexrow > .custom-skill-controls-slot {
+    flex: 0 0 70px;
+    width: 70px;
+    max-width: 70px;
   }
 
   .custom-skill-controls-slot {
@@ -400,15 +495,8 @@
     pointer-events: none;
   }
 
-  .typed-skills-columns {
-    align-items: start;
-  }
-
-  .typed-skills-column {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-    min-width: 0;
+  .special-training-columns {
+    margin-bottom: 4px;
   }
 
   .skill-and-training-controls {
@@ -528,8 +616,51 @@
     margin-bottom: 4px;
   }
 
+  .left-bar-section-divider {
+    margin: 8px 0;
+    border: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.15);
+    height: 0;
+  }
+
+  .left-bar-section-heading {
+    margin: 0 0 6px;
+    padding: 0;
+    border: 0;
+    background: none;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: bold;
+    font-style: normal;
+    line-height: 1.2;
+    text-align: left;
+    color: inherit;
+  }
+
   .left-bar-tab-panels .tab:not(.active) {
     display: none;
+  }
+
+  .left-bar-rest-sanity-panels {
+    display: grid;
+
+    > .tab {
+      grid-area: 1 / 1;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+
+    > .tab:not(.active) {
+      display: block;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    > .tab.active {
+      visibility: visible;
+      pointer-events: auto;
+      z-index: 1;
+    }
   }
 
   .left-bar-action-stack {

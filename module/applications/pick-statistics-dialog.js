@@ -1,4 +1,4 @@
-import { BASE_TEMPLATE_PATH } from "../config.js";
+import { BASE_TEMPLATE_PATH } from "../config/index.js";
 import { showDgDialog } from "./dg-dialog.js";
 
 const { renderTemplate } = foundry.applications.handlebars;

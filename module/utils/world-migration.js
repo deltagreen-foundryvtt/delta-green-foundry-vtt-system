@@ -1,4 +1,4 @@
-import DG from "../config.js";
+import DG from "../config/index.js";
 
 const MIGRATION_VERSION = 2;
 const ACTOR_TYPES_WITH_SKILLS = ["agent", "npc", "unnatural"];

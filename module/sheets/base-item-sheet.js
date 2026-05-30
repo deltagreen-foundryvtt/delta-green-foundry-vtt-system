@@ -1,4 +1,4 @@
-import { BASE_TEMPLATE_PATH } from "../config.js";
+import { BASE_TEMPLATE_PATH } from "../config/index.js";
 import DGSheetMixin from "./base-sheet.js";
 import EffectsTabMixin from "./mixins/effects-tab-mixin.js";
 import ProfessionItemMixin from "./mixins/profession-item-mixin.js";

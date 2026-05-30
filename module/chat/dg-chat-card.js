@@ -1,6 +1,6 @@
 /* global TokenDocument */
 
-import DG from "../config.js";
+import DG from "../config/index.js";
 
 const CHAT_CARD_TEMPLATE = "systems/deltagreen/templates/chat/dg-chat-card.hbs";
 const { renderTemplate } = foundry.applications.handlebars;

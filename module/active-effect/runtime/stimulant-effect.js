@@ -1,4 +1,4 @@
-import DG from "../config.js";
+import DG from "../../config/index.js";
 import { syncExhaustionEffect } from "./exhaustion-effect.js";
 
 /**
@@ -51,16 +51,7 @@ function getStimulantRemainingHours(effect) {
   return 0;
 }
 
-/**
- * Persisted manual suppress or an active stimulant AE.
- * @param {Actor} actor
- * @returns {boolean}
- */
-export function getEffectiveSuppressExhaustion(actor) {
-  const persisted =
-    actor._source?.system?.physical?.suppressExhaustion ?? false;
-  return Boolean(persisted) || hasActiveStimulantEffect(actor);
-}
+export { getEffectiveSuppressExhaustion } from "./agent-condition-sync.js";
 
 /**
  * @param {number} hours

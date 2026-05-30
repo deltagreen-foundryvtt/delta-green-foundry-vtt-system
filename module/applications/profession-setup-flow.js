@@ -24,7 +24,7 @@ function createProfessionStub(actor, itemData) {
  * @param {TokenDocument|null} [options.token]
  * @returns {Promise<boolean>} True if Character Creation was submitted successfully.
  */
-export async function runProfessionSetupFlow(
+async function runProfessionSetupFlow(
   professionItem,
   actor,
   { token = null } = {},

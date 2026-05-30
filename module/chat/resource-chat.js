@@ -1,7 +1,4 @@
-import {
-  createDGChatMessage,
-  createDGRollChatMessage,
-} from "../chat/dg-chat-card.js";
+import { createDGRollChatMessage } from "./dg-chat-card.js";
 
 /**
  * @param {object} params
@@ -10,8 +7,8 @@ import {
  * @param {string} params.contentKey i18n key for message body.
  * @param {string} params.labelKey i18n key for card subtitle.
  * @param {Record<string, string|number>} params.i18nData
+ * @param {Roll} params.roll Roll attached to the chat message for display and Dice So Nice.
  * @param {string|null} [params.extraContentKey] Optional i18n key appended on a new line after the main body.
- * @param {Roll} [params.roll] When set, attaches the roll to the chat message for display and Dice So Nice.
  * @returns {Promise<ChatMessage>}
  */
 export async function createAgentResourceChatMessage({
@@ -20,8 +17,8 @@ export async function createAgentResourceChatMessage({
   contentKey,
   labelKey,
   i18nData,
+  roll,
   extraContentKey = null,
-  roll = null,
 }) {
   let content = game.i18n.format(contentKey, i18nData);
   if (extraContentKey) {
@@ -30,20 +27,10 @@ export async function createAgentResourceChatMessage({
   const label = game.i18n.localize(labelKey);
   const messageMode = game.settings.get("core", "messageMode");
 
-  if (roll) {
-    return createDGRollChatMessage({
-      actor,
-      token,
-      roll,
-      label,
-      content,
-      messageMode,
-    });
-  }
-
-  return createDGChatMessage({
+  return createDGRollChatMessage({
     actor,
     token,
+    roll,
     label,
     content,
     messageMode,

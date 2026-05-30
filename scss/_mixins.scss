@@ -26,6 +26,35 @@
   }
 }
 
+/* Parchment/light sheet bodies: override Foundry v14 .application light text and heading typography. */
+@mixin dg-parchment-content-theme {
+  :is(h1, h2, h3, h4, h5, h6) {
+    color: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+  }
+
+  .resource-label,
+  .standard-form .form-group > label,
+  .form-group > label {
+    color: inherit;
+  }
+}
+
+@mixin dg-parchment-form-fields {
+  input[type="text"],
+  input[type="number"],
+  input[type="password"],
+  select {
+    background-color: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgb(122, 121, 113);
+    border-radius: 3px;
+    color: inherit;
+  }
+}
+
 @mixin item-sheet-grid-2col {
   display: grid;
   grid-template-columns: 25% 75%;

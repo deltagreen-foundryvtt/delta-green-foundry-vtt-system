@@ -292,3 +292,28 @@ div.horizontal-bar-section-divider.skills-header {
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
 }
+
+/* Agent sheet: only the title — center in a single column (not grid column 2 of 3). */
+div.horizontal-bar-section-divider.skills-header:not(:has(.toggle-untrained)) {
+  grid-template-columns: 1fr;
+}
+
+.horizontal-bar-section-divider .skills-header-title {
+  grid-column: 2;
+  margin: 0;
+  line-height: 1.2;
+}
+
+div.horizontal-bar-section-divider.skills-header:not(:has(.toggle-untrained))
+  .skills-header-title {
+  grid-column: 1;
+  justify-self: center;
+}
+
+.horizontal-bar-section-divider .toggle-untrained {
+  grid-column: 3;
+  padding-right: 0.5rem;
+  justify-self: end;
+  align-self: center;
+  line-height: 1.2;
+}
