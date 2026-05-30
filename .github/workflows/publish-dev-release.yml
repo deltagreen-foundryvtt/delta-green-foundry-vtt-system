@@ -54,6 +54,12 @@ jobs:
       - name: Build Packs
         uses: ./.github/actions/build-packs
 
+      - name: Node Setup
+        uses: ./.github/actions/setup-node
+
+      - name: Build CSS
+        run: npm run build:css
+
       - name: Substitute Download Link
         uses: TomaszKandula/variable-substitution@v1.0.1
         with:

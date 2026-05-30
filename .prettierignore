@@ -13,3 +13,7 @@ packs/**
 # Ignore html/handlebars files as a different formatter is used.
 *.html
 *.hbs
+
+# Generated from scss/ via npm run build:css
+css/*.css
+css/*.css.map

@@ -1,0 +1,107 @@
+/* Active Effects */
+.deltagreen .tab.effects {
+  padding: 5px;
+}
+
+.deltagreen.item .tab[data-application-part="effects"].active {
+  overflow-y: auto;
+}
+
+.deltagreen .effects-transfer-hint {
+  font-size: var(--font-size-12);
+  font-style: italic;
+  margin: 0 0 8px;
+}
+
+.deltagreen .effect-add {
+  margin-bottom: 8px;
+}
+
+.deltagreen .effect-add .action-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: fit-content;
+  max-width: 100%;
+  text-align: center;
+  padding-inline: 6px;
+}
+
+.deltagreen .effect-header {
+  font-weight: bold;
+  border-bottom: 1px solid #999;
+  margin-top: 8px;
+  padding-bottom: 2px;
+  gap: 4px;
+}
+
+.deltagreen .effects-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.deltagreen .effects-list .effect {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr) minmax(0, 6rem) auto auto;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 2px;
+  border-bottom: 1px solid #ccc;
+  min-width: 0;
+}
+
+.deltagreen .effects-list .effect-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.deltagreen .effects-list .effect-icon {
+  width: 24px;
+  height: 24px;
+  border: none;
+}
+
+.deltagreen .effects-list .effect.suppressed-effect {
+  opacity: 0.55;
+}
+
+.deltagreen .effects-list .effect.disabled-effect {
+  opacity: 0.4;
+  text-decoration: line-through;
+}
+
+.deltagreen .effects-list .effect-source {
+  font-size: var(--font-size-12);
+  max-width: 8rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.deltagreen .effects-list .effect-controls {
+  display: flex;
+  gap: 4px;
+}
+
+.deltagreen .effects-list .effect-empty {
+  font-style: italic;
+  padding: 6px;
+}
+
+.deltagreen .motivations .acute-episode-col {
+  flex: 0 0 5.5rem;
+  text-align: center;
+}
+
+.deltagreen .motivations li.acute-episode-active {
+  background: rgba(180, 0, 0, 0.08);
+}
+
+.deltagreen .active-effect-config .dg-effect-key-select {
+  width: 100%;
+  max-width: 14rem;
+}
