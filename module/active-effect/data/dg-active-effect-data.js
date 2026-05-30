@@ -41,7 +41,8 @@ export default class DGActiveEffectTypeDataModel extends foundry.data
    * @returns {true}
    */
   static #validateType(type) {
-    if (type.length < 3) throw new Error("must be at least three characters long");
+    if (type.length < 3)
+      throw new Error("must be at least three characters long");
     if (
       !/^custom\.-?\d+$/.test(type) &&
       !type.split(".").every((s) => /^[a-z0-9]+$/i.test(s))

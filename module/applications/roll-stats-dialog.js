@@ -43,12 +43,14 @@ function syncDomFromAssignments(state, dialog) {
 
   for (const key of STAT_KEYS) {
     const rollIndex = state.assignments[key];
-    if (rollIndex === null) continue;
-
-    const slot = root.querySelector(`[data-stat-slot][data-stat-key="${key}"]`);
-    const token = pool.querySelector(`[data-roll-index="${rollIndex}"]`);
-    if (slot && token) {
-      slot.appendChild(token);
+    if (rollIndex !== null) {
+      const slot = root.querySelector(
+        `[data-stat-slot][data-stat-key="${key}"]`,
+      );
+      const token = pool.querySelector(`[data-roll-index="${rollIndex}"]`);
+      if (slot && token) {
+        slot.appendChild(token);
+      }
     }
   }
 }
@@ -183,7 +185,10 @@ function bindRollStatsListeners(state, dialog) {
  * @param {TokenDocument|null} [options.token]
  * @returns {Promise<RollStatsResult>}
  */
-export async function showRollStatsDialog(actor, { token = null } = {}) {
+export default async function showRollStatsDialog(
+  actor,
+  { token = null } = {},
+) {
   const rolled = await rollStatisticScores({ actor, token });
   const rolls = rolled.map((entry, index) => ({
     index,

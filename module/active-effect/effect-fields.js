@@ -46,7 +46,7 @@ export const SUPPORTED_ITEM_TYPES = new Set([
  * @returns {Record<string, { label: string, fields: Record<string, string> }>}
  */
 export function getEffectFieldGroupsForDocument(effect) {
-  const parent = effect.parent;
+  const { parent } = effect;
 
   if (parent?.documentName === "Actor") {
     if (parent.type !== "agent") return {};

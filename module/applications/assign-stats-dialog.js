@@ -24,10 +24,11 @@ function syncValuesFromDom(dialog, values) {
 
   for (const key of STAT_KEYS) {
     const input = root.querySelector(`[data-stat-key="${key}"]`);
-    if (!input) continue;
-    let value = Number(input.value);
-    if (!Number.isFinite(value)) value = STAT_MIN;
-    values[key] = Math.clamp(Math.trunc(value), STAT_MIN, STAT_MAX);
+    if (input) {
+      let value = Number(input.value);
+      if (!Number.isFinite(value)) value = STAT_MIN;
+      values[key] = Math.clamp(Math.trunc(value), STAT_MIN, STAT_MAX);
+    }
   }
 }
 
@@ -85,7 +86,7 @@ function bindAssignStatsListeners(dialog, values) {
  * @param {Actor} actor
  * @returns {Promise<AssignStatsResult>}
  */
-export async function showAssignStatsDialog(actor) {
+export default async function showAssignStatsDialog(actor) {
   /** @type {Record<string, number>} */
   const values = getDefaultPointBuyValues();
   const { remaining } = validatePointBuyValues(values);

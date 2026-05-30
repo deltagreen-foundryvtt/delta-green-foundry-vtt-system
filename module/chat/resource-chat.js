@@ -11,7 +11,7 @@ import { createDGRollChatMessage } from "./dg-chat-card.js";
  * @param {string|null} [params.extraContentKey] Optional i18n key appended on a new line after the main body.
  * @returns {Promise<ChatMessage>}
  */
-export async function createAgentResourceChatMessage({
+export default async function createAgentResourceChatMessage({
   actor,
   token = null,
   contentKey,

@@ -21,7 +21,11 @@ export default function ProfessionItemMixin(Base) {
   return class extends Base {
     /** @inheritdoc */
     async _preparePartContext(partId, context, options) {
-      const partContext = await super._preparePartContext(partId, context, options);
+      const partContext = await super._preparePartContext(
+        partId,
+        context,
+        options,
+      );
       if (this.item.type !== "profession" || partId !== "skills") {
         return partContext;
       }
@@ -83,7 +87,9 @@ export default function ProfessionItemMixin(Base) {
         onRender: (dialog) => {
           const root = getDialogContentRoot(dialog);
           const select = root?.querySelector('[name="skillCatalogId"]');
-          const typedGroup = root?.querySelector(".profession-typed-label-group");
+          const typedGroup = root?.querySelector(
+            ".profession-typed-label-group",
+          );
           const typeInput = root?.querySelector('[name="typedSkillLabel"]');
           const chooseOneInput = root?.querySelector('[name="chooseOne"]');
 
@@ -135,14 +141,20 @@ export default function ProfessionItemMixin(Base) {
               const isTyped = catalogId.startsWith("typed:");
               if (isTyped && !chooseOne && !typedLabel) {
                 ui.notifications.warn(
-                  game.i18n.localize("DG.ItemWindow.Profession.TypedSkillRequired"),
+                  game.i18n.localize(
+                    "DG.ItemWindow.Profession.TypedSkillRequired",
+                  ),
                 );
                 return false;
               }
 
-              const ref = catalogIdToSkillRef(catalogId, chooseOne ? "" : typedLabel, {
-                allowEmptyTypedLabel: chooseOne,
-              });
+              const ref = catalogIdToSkillRef(
+                catalogId,
+                chooseOne ? "" : typedLabel,
+                {
+                  allowEmptyTypedLabel: chooseOne,
+                },
+              );
               if (!ref) return false;
 
               const skillKey = allocateProfessionSkillStorageKey(ref, {
@@ -156,7 +168,9 @@ export default function ProfessionItemMixin(Base) {
               const automaticMeta = {
                 ...(this.item.system.automaticSkillMeta ?? {}),
               };
-              const optionMeta = { ...(this.item.system.optionSkillMeta ?? {}) };
+              const optionMeta = {
+                ...(this.item.system.optionSkillMeta ?? {}),
+              };
 
               const conflict =
                 ref.kind === "typed"
@@ -262,8 +276,9 @@ export default function ProfessionItemMixin(Base) {
      */
     static removeAutomaticSkill(event, target) {
       const skillKey = this.#getProfessionSkillKeyFromTarget(target);
-      if (!skillKey) return;
-      return this.#removeProfessionSkill("automaticSkills", skillKey);
+      if (skillKey) {
+        this.#removeProfessionSkill("automaticSkills", skillKey);
+      }
     }
 
     /**
@@ -272,9 +287,9 @@ export default function ProfessionItemMixin(Base) {
      */
     static removeOptionSkill(event, target) {
       const skillKey = this.#getProfessionSkillKeyFromTarget(target);
-      if (!skillKey) return;
-      if (skillKey === PROFESSION_OPTION_PICKS_KEY) return;
-      return this.#removeProfessionSkill("optionSkills", skillKey);
+      if (skillKey && skillKey !== PROFESSION_OPTION_PICKS_KEY) {
+        this.#removeProfessionSkill("optionSkills", skillKey);
+      }
     }
   };
 }

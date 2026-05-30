@@ -7,7 +7,7 @@ const { renderTemplate } = foundry.applications.handlebars;
  * @param {Item} professionItem
  * @returns {Promise<boolean>} True if the name was updated.
  */
-export async function showRenameProfessionDialog(professionItem) {
+export default async function showRenameProfessionDialog(professionItem) {
   if (professionItem.type !== "profession") return false;
 
   const content = await renderTemplate(

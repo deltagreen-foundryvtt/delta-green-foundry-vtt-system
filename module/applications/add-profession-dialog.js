@@ -34,7 +34,7 @@ const { renderTemplate } = foundry.applications.handlebars;
  * @param {Actor} actor
  * @returns {Promise<boolean>}
  */
-export async function showPickSkillsDialog(professionItem, actor) {
+export default async function showPickSkillsDialog(professionItem, actor) {
   // eslint-disable-next-line no-use-before-define -- class defined below in this module
   const controller = new AddProfessionDialogController(professionItem, actor);
   return controller.run();
@@ -428,11 +428,12 @@ class AddProfessionDialogController {
         `[name="optionSkillChecked"][value="${CSS.escape(key)}"]`,
       );
       if (cb) cb.checked = true;
-      if (!this.optionSkillMeta[key]?.chooseOne) continue;
-      const nameInput = this.#getOptionChooseOneInput(key);
-      if (nameInput) {
-        nameInput.disabled = false;
-        nameInput.value = this.chooseOneLabels[key] ?? "";
+      if (this.optionSkillMeta[key]?.chooseOne) {
+        const nameInput = this.#getOptionChooseOneInput(key);
+        if (nameInput) {
+          nameInput.disabled = false;
+          nameInput.value = this.chooseOneLabels[key] ?? "";
+        }
       }
     }
 
@@ -519,9 +520,7 @@ class AddProfessionDialogController {
       .join("");
 
     return (
-      toErrorHtml(validationMessages) +
-      capHtml +
-      toErrorHtml(wasteMessages)
+      toErrorHtml(validationMessages) + capHtml + toErrorHtml(wasteMessages)
     );
   }
 

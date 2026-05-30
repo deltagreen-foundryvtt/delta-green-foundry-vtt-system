@@ -1,6 +1,6 @@
 import DG from "../../config/index.js";
 import { ROLL_TARGET_FIELD_KEYS } from "../effect-fields.js";
-import { getEffectiveSuppressExhaustion } from "./agent-condition-sync.js";
+import getEffectiveSuppressExhaustion from "./agent-condition-sync.js";
 
 /** @type {WeakMap<Actor, Promise<void>>} */
 const syncLocks = new WeakMap();
@@ -10,7 +10,9 @@ const syncLocks = new WeakMap();
  * @returns {ActiveEffect[]}
  */
 function getExhaustionEffects(actor) {
-  return actor.effects?.filter((effect) => effect.getFlag(DG.ID, "exhaustion")) ?? [];
+  return (
+    actor.effects?.filter((effect) => effect.getFlag(DG.ID, "exhaustion")) ?? []
+  );
 }
 
 /**
@@ -77,9 +79,7 @@ async function syncExhaustionEffectInner(actor) {
   const { exhausted, exhaustedPenalty } = actor.system.physical;
   const suppressExhaustion = getEffectiveSuppressExhaustion(actor);
   const effect = getExhaustionEffect(actor);
-  const penalty = exhausted
-    ? -1 * Math.abs(Number(exhaustedPenalty) || 0)
-    : 0;
+  const penalty = exhausted ? -1 * Math.abs(Number(exhaustedPenalty) || 0) : 0;
 
   if (!exhausted) {
     if (effect) await effect.delete();
@@ -95,7 +95,7 @@ async function syncExhaustionEffectInner(actor) {
     return;
   }
 
-  const documentClass = getDocumentClass("ActiveEffect");
+  const documentClass = foundry.utils.getDocumentClass("ActiveEffect");
   await documentClass.create(
     {
       name: game.i18n.localize("DG.Physical.ExhaustionEffectName"),

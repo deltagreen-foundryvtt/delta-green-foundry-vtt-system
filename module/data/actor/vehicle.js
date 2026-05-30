@@ -1,6 +1,6 @@
 import SheetSettingsActorData from "./base/sheet-settings.js";
 import DGHTMLField from "../fields/html-content-field.js";
-import { computeEquippedArmorProtection } from "../../data/derived/actor-derived.js";
+import { computeEquippedArmorProtection } from "../derived/actor-derived.js";
 
 const { SchemaField, NumberField, StringField, ArrayField } =
   foundry.data.fields;

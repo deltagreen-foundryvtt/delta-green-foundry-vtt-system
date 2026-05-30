@@ -96,10 +96,10 @@ export default function EffectsTabMixin(Base) {
      * @param {PointerEvent} _event
      * @param {HTMLElement} target
      */
-    static async createEffect(_event, target) {
+    static async createEffect() {
       const sheet = /** @type {EffectsTabHost} */ (this);
       const parent = sheet._effectsParent;
-      const documentClass = getDocumentClass("ActiveEffect");
+      const documentClass = foundry.utils.getDocumentClass("ActiveEffect");
 
       const docData = {
         name: game.i18n.localize("DG.ActiveEffects.DefaultName"),

@@ -1,5 +1,5 @@
 /** Default proficiency for fixed agent skills (single source of truth for schema initials). */
-export const AGENT_SKILL_DEFAULTS = /** @type {Record<string, number>} */ ({
+const AGENT_SKILL_DEFAULTS = /** @type {Record<string, number>} */ ({
   accounting: 10,
   alertness: 20,
   anthropology: 0,
@@ -37,3 +37,5 @@ export const AGENT_SKILL_DEFAULTS = /** @type {Record<string, number>} */ ({
   swim: 20,
   unarmed_combat: 40,
 });
+
+export default AGENT_SKILL_DEFAULTS;

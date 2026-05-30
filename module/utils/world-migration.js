@@ -8,11 +8,24 @@ const OBSOLETE_WORLD_SETTINGS = [
 ];
 
 /**
+ * @returns {void}
+ */
+function removeObsoleteWorldSettings() {
+  const worldConfig = game.settings.storage.get("world")?.document?.config;
+  const dgConfig = worldConfig?.[DG.ID];
+  if (!dgConfig) return;
+
+  for (const key of OBSOLETE_WORLD_SETTINGS) {
+    delete dgConfig[key];
+  }
+}
+
+/**
  * Run one-time world migrations for the Delta Green system.
  *
  * @returns {Promise<void>}
  */
-export async function runWorldMigration() {
+export default async function runWorldMigration() {
   if (!game.user.isGM) return;
 
   const currentVersion =
@@ -26,13 +39,13 @@ export async function runWorldMigration() {
   );
 
   for (const actor of actors) {
-    if (!actor.system.skills?.ritual) continue;
-
-    await actor.update({
-      "system.skills.-=ritual": null,
-      "system.schemaVersion": MIGRATION_VERSION,
-    });
-    migratedActors += 1;
+    if (actor.system.skills?.ritual) {
+      await actor.update({
+        "system.skills.-=ritual": null,
+        "system.schemaVersion": MIGRATION_VERSION,
+      });
+      migratedActors += 1;
+    }
   }
 
   removeObsoleteWorldSettings();
@@ -42,17 +55,4 @@ export async function runWorldMigration() {
   console.log(
     `Delta Green | World migration v${MIGRATION_VERSION} complete. Removed legacy ritual skill from ${migratedActors} actor(s).`,
   );
-}
-
-/**
- * @returns {void}
- */
-function removeObsoleteWorldSettings() {
-  const worldConfig = game.settings.storage.get("world")?.document?.config;
-  const dgConfig = worldConfig?.[DG.ID];
-  if (!dgConfig) return;
-
-  for (const key of OBSOLETE_WORLD_SETTINGS) {
-    delete dgConfig[key];
-  }
 }

@@ -23,7 +23,9 @@ export default function SpecialTrainingMixin(Base) {
           }
           break;
         default:
-          void this._showSpecialTrainingDialog(actionType, id);
+          this._showSpecialTrainingDialog(actionType, id).catch((error) => {
+            console.error(error);
+          });
           break;
       }
     }

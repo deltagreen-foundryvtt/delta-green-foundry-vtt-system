@@ -1,5 +1,5 @@
 import DG from "../config/index.js";
-import { AGENT_SKILL_DEFAULTS } from "../data/actor/base/agent-skill-defaults.js";
+import AGENT_SKILL_DEFAULTS from "../data/actor/base/agent-skill-defaults.js";
 import { PROFESSION_OPTION_PICKS_KEY } from "../data/item/profession.js";
 import {
   INTERNAL_TYPED_KEY_PATTERN,
@@ -49,6 +49,64 @@ export function isChooseOneProfessionSkillKey(
 }
 
 /**
+ * @returns {Record<string, number>}
+ */
+export function getAgentSkillDefaults() {
+  return { ...AGENT_SKILL_DEFAULTS };
+}
+
+/**
+ * @param {string} group
+ * @returns {string}
+ */
+export function normalizeTypedGroup(group) {
+  if (group == null) return "";
+  const trimmed = String(group).trim();
+  const map = {
+    "Foreign Language": "ForeignLanguage",
+    "Military Science": "MilitaryScience",
+  };
+  return map[trimmed] ?? trimmed.replace(/\s+/g, "");
+}
+
+/**
+ * @param {string} key
+ * @returns {ProfessionSkillRef | null}
+ */
+export function parseProfessionSkillKey(key) {
+  if (!key || key === PROFESSION_OPTION_PICKS_KEY) return null;
+  if (DG.skills.includes(key)) return { kind: "fixed", key };
+
+  const internalMatch = key.match(INTERNAL_TYPED_KEY_PATTERN);
+  if (internalMatch) {
+    let label = "";
+    if (internalMatch[3] !== undefined) {
+      try {
+        label = decodeURIComponent(internalMatch[3]);
+      } catch {
+        const [, , , fallbackLabel] = internalMatch;
+        label = fallbackLabel;
+      }
+    }
+    return {
+      kind: "typed",
+      group: internalMatch[1],
+      label,
+    };
+  }
+
+  const match = key.match(TYPED_KEY_PATTERN);
+  if (match) {
+    return {
+      kind: "typed",
+      group: normalizeTypedGroup(match[1]),
+      label: match[2].trim(),
+    };
+  }
+  return null;
+}
+
+/**
  * @param {object} params
  * @param {string} params.group
  * @param {string} params.label
@@ -85,42 +143,22 @@ export function findTypedSkillNameConflict({
 
   for (const [skillMap, metaMap] of maps) {
     for (const mapKey of Object.keys(skillMap ?? {})) {
-      if (mapKey === excludeKey || mapKey === PROFESSION_OPTION_PICKS_KEY)
-        continue;
-
-      const ref = parseProfessionSkillKey(mapKey);
-      if (!ref || ref.kind !== "typed") continue;
-      if (normalizeTypedGroup(ref.group) !== normalizedGroup) continue;
-
-      // Unresolved choose-one slots have no fixed name yet.
-      if (metaMap[mapKey]?.chooseOne) continue;
-
-      if (normalizeTypedSkillName(ref.label) === normalizedNew) return mapKey;
+      if (mapKey !== excludeKey && mapKey !== PROFESSION_OPTION_PICKS_KEY) {
+        const ref = parseProfessionSkillKey(mapKey);
+        if (
+          ref &&
+          ref.kind === "typed" &&
+          normalizeTypedGroup(ref.group) === normalizedGroup &&
+          !metaMap[mapKey]?.chooseOne &&
+          normalizeTypedSkillName(ref.label) === normalizedNew
+        ) {
+          return mapKey;
+        }
+      }
     }
   }
 
   return null;
-}
-
-/**
- * @returns {Record<string, number>}
- */
-export function getAgentSkillDefaults() {
-  return { ...AGENT_SKILL_DEFAULTS };
-}
-
-/**
- * @param {string} group
- * @returns {string}
- */
-export function normalizeTypedGroup(group) {
-  if (group == null) return "";
-  const trimmed = String(group).trim();
-  const map = {
-    "Foreign Language": "ForeignLanguage",
-    "Military Science": "MilitaryScience",
-  };
-  return map[trimmed] ?? trimmed.replace(/\s+/g, "");
 }
 
 /**
@@ -167,42 +205,6 @@ export function allocateProfessionSkillStorageKey(
     group: ref.group,
     label,
   });
-}
-
-/**
- * @param {string} key
- * @returns {ProfessionSkillRef | null}
- */
-export function parseProfessionSkillKey(key) {
-  if (!key || key === PROFESSION_OPTION_PICKS_KEY) return null;
-  if (DG.skills.includes(key)) return { kind: "fixed", key };
-
-  const internalMatch = key.match(INTERNAL_TYPED_KEY_PATTERN);
-  if (internalMatch) {
-    let label = "";
-    if (internalMatch[3] !== undefined) {
-      try {
-        label = decodeURIComponent(internalMatch[3]);
-      } catch {
-        label = internalMatch[3];
-      }
-    }
-    return {
-      kind: "typed",
-      group: internalMatch[1],
-      label,
-    };
-  }
-
-  const match = key.match(TYPED_KEY_PATTERN);
-  if (match) {
-    return {
-      kind: "typed",
-      group: normalizeTypedGroup(match[1]),
-      label: match[2].trim(),
-    };
-  }
-  return null;
 }
 
 /**
@@ -262,8 +264,9 @@ export function splitProfessionSkillMap(obj) {
   /** @type {Record<string, number>} */
   const skills = {};
   for (const [key, value] of Object.entries(source)) {
-    if (key === PROFESSION_OPTION_PICKS_KEY) continue;
-    skills[key] = Number(value);
+    if (key !== PROFESSION_OPTION_PICKS_KEY) {
+      skills[key] = Number(value);
+    }
   }
   return { optionPicks, skills };
 }

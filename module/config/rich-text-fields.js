@@ -41,7 +41,7 @@ const ITEM_RICH_TEXT_BY_PART = {
  * @param {boolean} [options.showNotesInSkills]
  * @returns {{ path: string, key: string }[]}
  */
-export function getRichTextFieldsForPart(
+export default function getRichTextFieldsForPart(
   documentName,
   partId,
   { actorType, itemType, showNotesInSkills = true } = {},

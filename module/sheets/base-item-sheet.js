@@ -39,10 +39,7 @@ function activeEffectItemLayout({ header, description, descriptionLabel }) {
   return {
     tabs: {
       initial: "description",
-      tabs: [
-        { id: "description", label: descriptionLabel },
-        EFFECTS_TAB,
-      ],
+      tabs: [{ id: "description", label: descriptionLabel }, EFFECTS_TAB],
     },
     parts: {
       header: { template: header },
@@ -195,8 +192,13 @@ export default class DGItemSheet extends ItemSheetBase {
         .filter((tab) => !tab.gmOnly || game.user.isGM)
         .map((tab) => tab.id);
       for (const partId of Object.keys(parts)) {
-        if (partId === "tabs" || partId === "header") continue;
-        if (!tabIds.includes(partId)) delete parts[partId];
+        if (
+          partId !== "tabs" &&
+          partId !== "header" &&
+          !tabIds.includes(partId)
+        ) {
+          delete parts[partId];
+        }
       }
     }
     Object.values(parts).forEach((p) => {
@@ -212,13 +214,19 @@ export default class DGItemSheet extends ItemSheetBase {
       return super._getTabsConfig(group);
     }
 
-    const tabs = layout.tabs.tabs.filter((tab) => !tab.gmOnly || game.user.isGM);
+    const tabs = layout.tabs.tabs.filter(
+      (tab) => !tab.gmOnly || game.user.isGM,
+    );
     return { ...layout.tabs, tabs };
   }
 
   /** @inheritdoc */
   async _preparePartContext(partId, context, options) {
-    const partContext = await super._preparePartContext(partId, context, options);
+    const partContext = await super._preparePartContext(
+      partId,
+      context,
+      options,
+    );
     if (partId === "tabs") partContext.tabClasses = "sheet-tabs";
     return partContext;
   }

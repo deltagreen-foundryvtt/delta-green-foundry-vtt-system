@@ -51,7 +51,7 @@ function getStimulantRemainingHours(effect) {
   return 0;
 }
 
-export { getEffectiveSuppressExhaustion } from "./agent-condition-sync.js";
+export { default as getEffectiveSuppressExhaustion } from "./agent-condition-sync.js";
 
 /**
  * @param {number} hours
@@ -99,7 +99,7 @@ export async function applyStimulantEffect(actor, newHours) {
     return hours;
   }
 
-  const documentClass = getDocumentClass("ActiveEffect");
+  const documentClass = foundry.utils.getDocumentClass("ActiveEffect");
   await documentClass.create(data, { parent: actor });
   return hours;
 }
@@ -150,8 +150,9 @@ export async function clearStimulantEffects(actor) {
 export async function pruneAllAgentsExpiredStimulants() {
   if (!game.user.isActiveGM) return;
   for (const actor of game.actors) {
-    if (actor.type !== "agent") continue;
-    await pruneExpiredStimulantEffects(actor);
-    await syncExhaustionEffect(actor);
+    if (actor.type === "agent") {
+      await pruneExpiredStimulantEffects(actor);
+      await syncExhaustionEffect(actor);
+    }
   }
 }

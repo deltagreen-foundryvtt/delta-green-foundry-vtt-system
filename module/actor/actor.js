@@ -5,7 +5,7 @@ import {
   updateTouchesExhaustionPhysical,
 } from "../active-effect/runtime/exhaustion-effect.js";
 import { pruneExpiredStimulantEffects } from "../active-effect/runtime/stimulant-effect.js";
-import { sanitizeActiveEffectBackedUpdateData } from "../active-effect/runtime/submit.js";
+import sanitizeActiveEffectBackedUpdateData from "../active-effect/runtime/submit.js";
 
 /**
  * Extend the base Actor entity by defining a custom roll data structure which is ideal for the Simple system.

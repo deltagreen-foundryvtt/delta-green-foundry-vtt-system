@@ -4,7 +4,7 @@ import { showDgDialog } from "../../applications/dg-dialog.js";
 export default function ItemListMixin(Base) {
   return class extends Base {
     /** @param {object} [context] */
-    _prepareCharacterItems(context) {
+    _prepareCharacterItems() {
       const { actor } = this;
 
       const armor = [];
@@ -190,7 +190,9 @@ export default function ItemListMixin(Base) {
     static _browsePack(event, target) {
       const { packType } = target.dataset;
       if (packType === "weapon") {
-        void this._browseWeaponPack();
+        this._browseWeaponPack().catch((error) => {
+          console.error(error);
+        });
         return;
       }
 

@@ -793,7 +793,10 @@
   .tab.combat .items-list .item-header,
   .tab.combat .items-list .item:not(.item-header) {
     display: grid;
-    grid-template-columns: 24px minmax(0, 1fr) minmax(4rem, auto) minmax(3rem, auto) 86px;
+    grid-template-columns: 24px minmax(0, 1fr) minmax(4rem, auto) minmax(
+        3rem,
+        auto
+      ) 86px;
     align-items: center;
     column-gap: 5px;
   }
@@ -807,7 +810,10 @@
   }
 
   .tab.combat .items-list .item-header .item-image,
-  .tab.combat .items-list .item-header > span:not(.centered-item-property):not(.item-controls) {
+  .tab.combat
+    .items-list
+    .item-header
+    > span:not(.centered-item-property):not(.item-controls) {
     min-width: 0;
   }
 
@@ -858,10 +864,9 @@
   }
 
   .tab.personal .bio-grid-5col {
-    grid-template-columns: minmax(4rem, max-content) minmax(0, 1fr) 20px minmax(
-        4rem,
-        max-content
-      ) minmax(0, 1fr);
+    grid-template-columns:
+      minmax(4rem, max-content) minmax(0, 1fr) 20px minmax(4rem, max-content)
+      minmax(0, 1fr);
   }
 
   .tab.personal .notes-wrapper {

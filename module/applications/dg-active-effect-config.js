@@ -54,10 +54,13 @@ export default class DGActiveEffectConfig extends ActiveEffectConfig {
 
     Object.assign(
       change,
-      ["key", "type", "value", "phase", "priority"].reduce((paths, fieldName) => {
-        paths[`${fieldName}Path`] = `system.changes.${index}.${fieldName}`;
-        return paths;
-      }, {}),
+      ["key", "type", "value", "phase", "priority"].reduce(
+        (paths, fieldName) => {
+          paths[`${fieldName}Path`] = `system.changes.${index}.${fieldName}`;
+          return paths;
+        },
+        {},
+      ),
     );
 
     return renderTemplate(

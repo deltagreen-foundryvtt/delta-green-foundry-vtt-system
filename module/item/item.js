@@ -1,5 +1,5 @@
 import { getDGRollToken } from "../chat/dg-chat-card.js";
-import { appendMeleeDamageBonus } from "../roll/melee-damage.js";
+import appendMeleeDamageBonus from "../roll/melee-damage.js";
 import { DGDamageRoll, DGLethalityRoll } from "../roll/roll.js";
 
 /**

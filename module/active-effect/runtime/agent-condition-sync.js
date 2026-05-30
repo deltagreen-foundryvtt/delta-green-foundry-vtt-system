@@ -18,7 +18,7 @@ function hasActiveStimulantEffect(actor) {
  * @param {Actor} actor
  * @returns {boolean}
  */
-export function getEffectiveSuppressExhaustion(actor) {
+export default function getEffectiveSuppressExhaustion(actor) {
   const persisted =
     actor._source?.system?.physical?.suppressExhaustion ?? false;
   return Boolean(persisted) || hasActiveStimulantEffect(actor);

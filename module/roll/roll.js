@@ -3,7 +3,7 @@ import { DGPercentileRoll } from "./classes/dg-percentile-roll.js";
 import { DGLethalityRoll } from "./classes/dg-lethality-roll.js";
 import { DGDamageRoll } from "./classes/dg-damage-roll.js";
 import { DGSanityDamageRoll } from "./classes/dg-sanity-damage-roll.js";
-import { appendMeleeDamageBonus } from "./melee-damage.js";
+import appendMeleeDamageBonus from "./melee-damage.js";
 
 export {
   DGRoll,

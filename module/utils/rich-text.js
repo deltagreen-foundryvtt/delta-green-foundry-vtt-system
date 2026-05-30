@@ -7,7 +7,11 @@ const { HTMLField } = foundry.data.fields;
  * @param {object} [options]   Additional options passed to DataField#toInput
  * @returns {Promise<string>}
  */
-export async function prepareProseMirrorInput(document, fieldPath, options = {}) {
+export async function prepareProseMirrorInput(
+  document,
+  fieldPath,
+  options = {},
+) {
   const field = document.system.schema.getField(fieldPath);
   if (!(field instanceof HTMLField)) {
     throw new Error(

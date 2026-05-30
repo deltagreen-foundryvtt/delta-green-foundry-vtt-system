@@ -1,7 +1,7 @@
-import { showPickSkillsDialog } from "./add-profession-dialog.js";
-import { showAssignStatsDialog } from "./assign-stats-dialog.js";
-import { showPickStatisticsDialog } from "./pick-statistics-dialog.js";
-import { showRollStatsDialog } from "./roll-stats-dialog.js";
+import showPickSkillsDialog from "./add-profession-dialog.js";
+import showAssignStatsDialog from "./assign-stats-dialog.js";
+import showPickStatisticsDialog from "./pick-statistics-dialog.js";
+import showRollStatsDialog from "./roll-stats-dialog.js";
 
 /**
  * @param {Actor} actor
@@ -58,7 +58,7 @@ async function runProfessionSetupFlow(
  * @param {TokenDocument|null} [options.token]
  * @returns {Promise<Item|null>}
  */
-export async function assignProfessionToAgent(
+export default async function assignProfessionToAgent(
   actor,
   itemData,
   { token = null } = {},

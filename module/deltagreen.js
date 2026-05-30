@@ -23,7 +23,7 @@ import {
   rollSkillTestAndDamageForOwnedItem,
 } from "./macros/macro-functions.js";
 import { handleInlineActions } from "./chat/inline.js";
-import { runWorldMigration } from "./utils/world-migration.js";
+import runWorldMigration from "./utils/world-migration.js";
 import DGNPCSheet from "./sheets/npc-sheet.js";
 import DGUnnaturalSheet from "./sheets/unnatural-sheet.js";
 import DGVehicleSheet from "./sheets/vehicle-sheet.js";

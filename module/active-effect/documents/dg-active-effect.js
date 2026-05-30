@@ -6,7 +6,7 @@ function resolveTransferItem(effect) {
   const item = effect.parent;
   if (item?.documentName !== "Item") return undefined;
 
-  const actor = item.actor;
+  const { actor } = item;
   if (actor?.documentName === "Actor") {
     return actor.items.get(item.id) ?? item;
   }

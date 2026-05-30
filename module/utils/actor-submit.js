@@ -3,7 +3,7 @@
  * @param {Actor} actor
  * @returns {void}
  */
-export function flagUnnaturalResourceMaxUpdates(submittedData, actor) {
+export default function flagUnnaturalResourceMaxUpdates(submittedData, actor) {
   const sourceStats = actor._source?.system?.statistics;
 
   submittedData.system.wp.maxNeedsUpdate =

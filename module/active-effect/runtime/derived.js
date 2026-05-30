@@ -77,8 +77,8 @@ function attachRollTargetDisplay(entry, modifier) {
 export function prepareAgentRollTargetDisplay(actor) {
   if (actor.type !== "agent") return;
 
-  const system = actor.system;
-  const rollTarget = system.rollTarget;
+  const { system } = actor;
+  const { rollTarget } = system;
   if (!rollTarget) return;
 
   const allSkillsMod = Number(rollTarget.allSkills) || 0;
@@ -108,7 +108,7 @@ export function prepareAgentRollTargetDisplay(actor) {
 export function prepareAgentActiveEffectDisplay(actor) {
   if (actor.type !== "agent") return;
 
-  const system = actor.system;
+  const { system } = actor;
   const source = actor._source?.system;
   if (!source) return;
 
@@ -128,7 +128,9 @@ export function prepareAgentActiveEffectDisplay(actor) {
   const healthFormulaMax = calculateHealthMax(persistedStats, persistedStats);
   const wpFormulaMax = persistedStats.pow?.value ?? 0;
   const persistedUnnatural =
-    source.skills?.unnatural?.proficiency ?? system.skills?.unnatural?.proficiency ?? 0;
+    source.skills?.unnatural?.proficiency ??
+    system.skills?.unnatural?.proficiency ??
+    0;
   const sanityFormulaMax = 99 - persistedUnnatural;
 
   const healthBaseMax = healthFormulaMax + (source.health?.maxBonus ?? 0);
@@ -159,7 +161,7 @@ export function prepareAgentActiveEffectDisplay(actor) {
 export function refreshDerivedAfterActiveEffects(actor) {
   if (actor.type !== "agent") return;
 
-  const system = actor.system;
+  const { system } = actor;
 
   const sourceStatistics = actor._source?.system?.statistics;
   prepareStatisticsX5(system.statistics, sourceStatistics);

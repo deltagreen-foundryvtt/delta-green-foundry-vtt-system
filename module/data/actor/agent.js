@@ -1,16 +1,14 @@
 import HumanSkillsActorData from "./base/human-skills.js";
 import CharacterData from "./base/character.js";
 import DGHTMLField from "../fields/html-content-field.js";
-import {
-  agentResourceField,
-} from "./base/general.js";
+import { agentResourceField } from "./base/general.js";
 import {
   computeEquippedArmorProtection,
   initializeSanityIfUnset,
   prepareSanityAdaptations,
   prepareStatisticsX5,
   removeLegacyRitualSkill,
-} from "../../data/derived/actor-derived.js";
+} from "../derived/actor-derived.js";
 
 const { SchemaField, NumberField, StringField, BooleanField } =
   foundry.data.fields;
@@ -96,9 +94,7 @@ export default class AgentData extends CharacterData {
     initializeSanityIfUnset(this.sanity, this.statistics);
     prepareSanityAdaptations(this.sanity.adaptations);
 
-    this.health.protection = computeEquippedArmorProtection(
-      this.parent.items,
-    );
+    this.health.protection = computeEquippedArmorProtection(this.parent.items);
 
     if (this.physical.exhaustedPenalty > 0) {
       this.physical.exhaustedPenalty =
