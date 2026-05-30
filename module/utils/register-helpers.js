@@ -16,14 +16,6 @@ export default function registerHandlebarsHelpers() {
     return outStr;
   });
 
-  Handlebars.registerHelper("toLowerCase", (str) => {
-    try {
-      return str.toLowerCase();
-    } catch (error) {
-      return "";
-    }
-  });
-
   Handlebars.registerHelper("toUpperCase", (str) => {
     try {
       return str.toUpperCase();
@@ -34,13 +26,6 @@ export default function registerHandlebarsHelpers() {
 
   Handlebars.registerHelper("if_eq", (a, b, opts) => {
     if (a === b) {
-      return opts.fn(this);
-    }
-    return opts.inverse(this);
-  });
-
-  Handlebars.registerHelper("if_not_eq", (a, b, opts) => {
-    if (a !== b) {
       return opts.fn(this);
     }
     return opts.inverse(this);

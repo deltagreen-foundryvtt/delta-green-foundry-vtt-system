@@ -16,13 +16,13 @@ function createProfessionStub(actor, itemData) {
 }
 
 /**
- * Run the full profession setup flow: Pick Statistics → optional stat setup → Pick Skills.
+ * Run the full profession setup flow: Pick Statistics → optional stat setup → Character Creation.
  *
  * @param {Item} professionItem Profession item or unsaved stub on the actor
  * @param {Actor} actor
  * @param {object} [options]
  * @param {TokenDocument|null} [options.token]
- * @returns {Promise<boolean>} True if Pick Skills was submitted successfully.
+ * @returns {Promise<boolean>} True if Character Creation was submitted successfully.
  */
 export async function runProfessionSetupFlow(
   professionItem,
@@ -79,5 +79,3 @@ export async function assignProfessionToAgent(
   const created = await actor.createEmbeddedDocuments("Item", [createData]);
   return created[0] ?? null;
 }
-
-export default { runProfessionSetupFlow, assignProfessionToAgent };

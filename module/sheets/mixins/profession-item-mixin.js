@@ -8,8 +8,11 @@ import {
   prepareProfessionSkillRows,
   splitProfessionSkillMap,
 } from "../../utils/profession-skills.js";
+import {
+  getDialogContentRoot,
+  showDgDialog,
+} from "../../applications/dg-dialog.js";
 
-const { DialogV2 } = foundry.applications.api;
 const { renderTemplate } = foundry.applications.handlebars;
 const { ForcedDeletion } = foundry.data.operators;
 
@@ -69,16 +72,16 @@ export default function ProfessionItemMixin(Base) {
         { catalog, isTyped: false },
       );
 
-      const confirmed = await DialogV2.wait({
+      const confirmed = await showDgDialog({
+        modifier: "add-profession-skill",
         content,
         position: { width: 300 },
-        classes: ["add-profession-skill-dialog-app"],
         window: {
           title: game.i18n.localize("DG.ItemWindow.Profession.AddSkillTitle"),
         },
         form: { closeOnSubmit: false },
-        render: (_event, dialog) => {
-          const root = dialog.element?.querySelector(".dialog-content");
+        onRender: (dialog) => {
+          const root = getDialogContentRoot(dialog);
           const select = root?.querySelector('[name="skillCatalogId"]');
           const typedGroup = root?.querySelector(".profession-typed-label-group");
           const typeInput = root?.querySelector('[name="typedSkillLabel"]');
@@ -116,7 +119,7 @@ export default function ProfessionItemMixin(Base) {
             label: game.i18n.localize("DG.Profession.Dialog.Submit"),
             default: true,
             callback: async (_event, _button, dialog) => {
-              const root = dialog.element.querySelector(".dialog-content");
+              const root = getDialogContentRoot(dialog);
               const select = root?.querySelector('[name="skillCatalogId"]');
               const ratingInput = root?.querySelector('[name="skillRating"]');
               const typeInput = root?.querySelector('[name="typedSkillLabel"]');

@@ -27,7 +27,7 @@
                     {{localizeWithFallback (concat "DG.Skills." skill.key) skill.label }}
                 </label>
 
-                <input class="percentile-skill-input"
+                <input class="percentile-skill-input {{skill.rollTargetDisplayClass}}"
                        type="text"
                        name="system.skills.{{skill.key}}.proficiency"
                        value="{{skill.proficiency}}"

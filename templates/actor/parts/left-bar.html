@@ -24,18 +24,18 @@
             {{#each actor.system.statistics as |statistic key| }}
             <div class="flex-group-center flex-mid-border">
                 <div>
-                    <div class="physical-stats-outer-grid-3col">
+                    <div class="physical-stats-outer-grid-3col agent-left-bar-stat-grid">
                         <label class="rollable resource-label"
                                data-action="roll"
                                data-rolltype="stat"
                                data-key="{{key}}"
-                               data-tooltip="{{localize (concat 'DG.Attributes.Tooltip.' key)}}"
+                               data-tooltip="{{statistic.tooltip}}"
                                for="system.statistics.{{key}}.value">
                             {{localize (concat 'DG.Attributes.' key)}}
                         </label>
                         {{> "systems/deltagreen/templates/actor/partials/ae-backed-input.html"
                             hostClass="ae-input-host--stat"
-                            inputClass="centered"
+                            inputClass=(concat "centered " statistic.rollTargetDisplayClass)
                             inputId=(concat "system.statistics." key ".value")
                             name=(concat "system.statistics." key ".value")
                             base=statistic.value

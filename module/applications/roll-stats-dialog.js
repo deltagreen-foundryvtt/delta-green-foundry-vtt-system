@@ -7,19 +7,11 @@ import {
   buildStatisticRows,
   rollStatisticScores,
 } from "../utils/profession-stat-setup.js";
+import { getDialogContentRoot, showDgDialog } from "./dg-dialog.js";
 
-const { DialogV2 } = foundry.applications.api;
 const { renderTemplate } = foundry.applications.handlebars;
 
 /** @typedef {'submitted' | 'cancelled'} RollStatsResult */
-
-/**
- * @param {DialogV2} dialog
- * @returns {HTMLElement|null}
- */
-function contentRoot(dialog) {
-  return dialog.element?.querySelector(".dialog-content") ?? null;
-}
 
 /**
  * @param {object} state
@@ -39,7 +31,7 @@ function findStatKeyForRollIndex(state, rollIndex) {
  * @param {DialogV2} dialog
  */
 function syncDomFromAssignments(state, dialog) {
-  const root = contentRoot(dialog);
+  const root = getDialogContentRoot(dialog);
   if (!root) return;
 
   const pool = root.querySelector("[data-roll-stats-pool]");
@@ -81,8 +73,10 @@ function refreshRollStatsUi(state, dialog) {
  * @param {DialogV2} dialog
  */
 function bindRollStatsListeners(state, dialog) {
-  const root = contentRoot(dialog);
+  const root = getDialogContentRoot(dialog);
   if (!root) return;
+  if (root.dataset.rollStatsListenersBound === "true") return;
+  root.dataset.rollStatsListenersBound = "true";
 
   root.querySelectorAll(".roll-stat-token").forEach((token) => {
     token.addEventListener("dragstart", (event) => {
@@ -219,15 +213,15 @@ export async function showRollStatsDialog(actor, { token = null } = {}) {
     },
   );
 
-  return DialogV2.wait({
+  return showDgDialog({
+    modifier: "roll-stats",
     content,
     window: {
       title: game.i18n.localize("DG.ProfessionSetup.RollStats.Title"),
     },
     position: { width: 520 },
-    classes: ["roll-stats-dialog-app"],
     form: { closeOnSubmit: false },
-    render: (_event, dialog) => {
+    onRender: (dialog) => {
       bindRollStatsListeners(state, dialog);
       refreshRollStatsUi(state, dialog);
     },
@@ -270,5 +264,3 @@ export async function showRollStatsDialog(actor, { token = null } = {}) {
     ],
   });
 }
-
-export default { showRollStatsDialog };

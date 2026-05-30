@@ -115,6 +115,29 @@ export async function renderDGChatCard({ speakerName, label = "", content }) {
 }
 
 /**
+ * Whether HTML already includes an inline dice roll block.
+ * @param {string} content
+ * @returns {boolean}
+ */
+function contentIncludesRollDisplay(content) {
+  return typeof content === "string" && content.includes("dice-roll");
+}
+
+/**
+ * Render roll HTML for embedding in a chat card body.
+ * @param {Roll[]} rolls
+ * @returns {Promise<string>}
+ */
+async function renderRollsHTML(rolls) {
+  let html = "";
+  for (const roll of rolls) {
+    if (!roll._evaluated) await roll.evaluate();
+    html += await roll.render();
+  }
+  return html;
+}
+
+/**
  * Wrap message content in the Delta Green chat card shell.
  * @param {object} messageData
  * @param {object} [options]
@@ -176,10 +199,18 @@ export async function prepareDGRollChatMessageData({
     scene,
   });
 
+  let bodyContent = content ?? String(roll.total);
+
+  // Foundry only auto-injects roll HTML when content has no child elements.
+  // DG chat cards always wrap content in a <section>, so embed rolls in the body.
+  if (label && !contentIncludesRollDisplay(bodyContent)) {
+    bodyContent = `${bodyContent}${await renderRollsHTML([roll])}`;
+  }
+
   let messageData = {
     author: game.user.id,
     speaker,
-    content: content ?? String(roll.total),
+    content: bodyContent,
     sound: CONFIG.sounds.dice,
     rolls: [roll],
     flags: foundry.utils.mergeObject(

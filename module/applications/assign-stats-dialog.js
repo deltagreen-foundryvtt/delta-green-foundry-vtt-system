@@ -8,26 +8,18 @@ import {
   getDefaultPointBuyValues,
   validatePointBuyValues,
 } from "../utils/profession-stat-setup.js";
+import { getDialogContentRoot, showDgDialog } from "./dg-dialog.js";
 
-const { DialogV2 } = foundry.applications.api;
 const { renderTemplate } = foundry.applications.handlebars;
 
 /** @typedef {'submitted' | 'cancelled'} AssignStatsResult */
 
 /**
  * @param {DialogV2} dialog
- * @returns {HTMLElement|null}
- */
-function contentRoot(dialog) {
-  return dialog.element?.querySelector(".dialog-content") ?? null;
-}
-
-/**
- * @param {DialogV2} dialog
  * @param {Record<string, number>} values
  */
 function syncValuesFromDom(dialog, values) {
-  const root = contentRoot(dialog);
+  const root = getDialogContentRoot(dialog);
   if (!root) return;
 
   for (const key of STAT_KEYS) {
@@ -47,7 +39,7 @@ function refreshAssignStatsUi(dialog, values) {
   syncValuesFromDom(dialog, values);
   const { isValid, remaining } = validatePointBuyValues(values);
 
-  const root = contentRoot(dialog);
+  const root = getDialogContentRoot(dialog);
   const remainingEl = root?.querySelector("[data-points-remaining]");
   if (remainingEl) {
     remainingEl.textContent = game.i18n.format(
@@ -68,7 +60,7 @@ function refreshAssignStatsUi(dialog, values) {
  * @param {Record<string, number>} values
  */
 function bindAssignStatsListeners(dialog, values) {
-  const root = contentRoot(dialog);
+  const root = getDialogContentRoot(dialog);
   if (!root) return;
 
   root.querySelectorAll("[data-stat-key]").forEach((input) => {
@@ -111,15 +103,15 @@ export async function showAssignStatsDialog(actor) {
     },
   );
 
-  return DialogV2.wait({
+  return showDgDialog({
+    modifier: "assign-stats",
     content,
     window: {
       title: game.i18n.localize("DG.ProfessionSetup.AssignStats.Title"),
     },
     position: { width: 420 },
-    classes: ["assign-stats-dialog-app"],
     form: { closeOnSubmit: false },
-    render: (_event, dialog) => {
+    onRender: (dialog) => {
       bindAssignStatsListeners(dialog, values);
       refreshAssignStatsUi(dialog, values);
     },
@@ -152,5 +144,3 @@ export async function showAssignStatsDialog(actor) {
     ],
   });
 }
-
-export default { showAssignStatsDialog };

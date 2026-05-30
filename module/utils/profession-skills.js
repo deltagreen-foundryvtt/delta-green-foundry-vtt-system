@@ -75,7 +75,12 @@ const AGENT_SKILL_DEFAULTS = /** @type {Record<string, number>} */ ({
 
 const BONUS_SKILL_COUNT = 8;
 const BONUS_SKILL_INCREMENT = 20;
+
+/** @type {ReadonlySet<string>} */
+const BONUS_SKILL_CATALOG_EXCLUDED_FIXED = new Set(["unnatural"]);
 const SKILL_CAP = 80;
+/** Bonus picks that would waste this many points or more are rejected (e.g. 80 + 20% at cap). */
+const MAX_ALLOWED_BONUS_WASTE = 20;
 
 const TYPED_KEY_PATTERN =
   /^(Art|Craft|Foreign Language|ForeignLanguage|Military Science|MilitaryScience|Pilot|Science|Other)\s*\(([^)]+)\)\s*$/i;
@@ -124,16 +129,6 @@ export function isChooseOneProfessionSkillKey(
   return Boolean(
     automaticMeta[mapKey]?.chooseOne ?? optionMeta[mapKey]?.chooseOne,
   );
-}
-
-/**
- * @param {string} mapKey
- * @param {Record<string, ProfessionSkillMeta>} automaticMeta
- * @param {Record<string, ProfessionSkillMeta>} optionMeta
- * @returns {ProfessionSkillMeta}
- */
-export function getProfessionSkillMeta(mapKey, automaticMeta, optionMeta) {
-  return automaticMeta[mapKey] ?? optionMeta[mapKey] ?? {};
 }
 
 /**
@@ -394,6 +389,19 @@ export function buildSkillCatalog() {
 }
 
 /**
+ * Skill catalog for character-creation bonus picks (excludes Unnatural).
+ *
+ * @returns {SkillCatalogEntry[]}
+ */
+export function buildBonusSkillCatalog() {
+  return buildSkillCatalog().filter(
+    (entry) =>
+      entry.ref.kind !== "fixed" ||
+      !BONUS_SKILL_CATALOG_EXCLUDED_FIXED.has(entry.ref.key),
+  );
+}
+
+/**
  * @param {string} catalogId
  * @param {string} [typedLabel]
  * @param {{ allowEmptyTypedLabel?: boolean }} [options]
@@ -418,6 +426,119 @@ export function catalogIdToSkillRef(
     return { kind: "typed", group, label };
   }
   return null;
+}
+
+/**
+ * @param {ProfessionSkillRef} ref
+ * @returns {string}
+ */
+function getBonusTrackKey(ref) {
+  if (ref.kind === "fixed") return `fixed:${ref.key}`;
+  return formatProfessionSkillKey(ref);
+}
+
+/**
+ * @param {string} trackKey
+ * @returns {string}
+ */
+function getBonusTrackLabel(trackKey) {
+  if (trackKey.startsWith("fixed:")) {
+    const key = trackKey.slice(6);
+    return formatProfessionSkillLabel(
+      /** @type {FixedSkillRef} */ ({ kind: "fixed", key }),
+    );
+  }
+  const ref = parseProfessionSkillKey(trackKey);
+  if (ref) return formatProfessionSkillLabel(ref);
+  return trackKey;
+}
+
+/**
+ * @param {string} trackKey
+ * @param {Record<string, number>} baseFixed
+ * @param {Record<string, { group: string, label: string, value: number }>} baseTyped
+ * @param {Record<string, number>} defaults
+ * @returns {number}
+ */
+function getBonusTrackBaseValue(trackKey, baseFixed, baseTyped, defaults) {
+  if (trackKey.startsWith("fixed:")) {
+    const key = trackKey.slice(6);
+    return baseFixed[key] ?? defaults[key] ?? 0;
+  }
+  return baseTyped[trackKey]?.value ?? 0;
+}
+
+/**
+ * Bonus skill slots that would waste 20+ points or raise a skill already at the creation cap.
+ *
+ * @param {Record<string, number>} baseFixed
+ * @param {Record<string, { group: string, label: string, value: number }>} baseTyped
+ * @param {string[]} bonusCatalogIds
+ * @param {string[]} bonusTypedLabels
+ * @returns {string[]}
+ */
+export function collectBonusCapValidationErrors(
+  baseFixed,
+  baseTyped,
+  bonusCatalogIds,
+  bonusTypedLabels,
+) {
+  const defaults = getAgentSkillDefaults();
+  /** @type {Record<string, number>} */
+  const counts = {};
+  /** @type {(string | null)[]} */
+  const slotTrackKeys = [];
+
+  for (let i = 0; i < BONUS_SKILL_COUNT; i++) {
+    const catalogId = bonusCatalogIds?.[i];
+    if (!catalogId) {
+      slotTrackKeys.push(null);
+      continue;
+    }
+    const ref = catalogIdToSkillRef(
+      catalogId,
+      bonusTypedLabels?.[i] ?? "",
+    );
+    if (!ref) {
+      slotTrackKeys.push(null);
+      continue;
+    }
+    const trackKey = getBonusTrackKey(ref);
+    slotTrackKeys.push(trackKey);
+    counts[trackKey] = (counts[trackKey] ?? 0) + 1;
+  }
+
+  /** @type {Set<string>} */
+  const violatingTrackKeys = new Set();
+
+  for (const [trackKey, count] of Object.entries(counts)) {
+    const base = getBonusTrackBaseValue(trackKey, baseFixed, baseTyped, defaults);
+    const final = base + count * BONUS_SKILL_INCREMENT;
+    const waste = Math.max(0, final - SKILL_CAP);
+    if (base >= SKILL_CAP || waste >= MAX_ALLOWED_BONUS_WASTE) {
+      violatingTrackKeys.add(trackKey);
+    }
+  }
+
+  /** @type {string[]} */
+  const errors = [];
+  for (let i = 0; i < BONUS_SKILL_COUNT; i++) {
+    const trackKey = slotTrackKeys[i];
+    if (!trackKey || !violatingTrackKeys.has(trackKey)) continue;
+
+    const base = getBonusTrackBaseValue(trackKey, baseFixed, baseTyped, defaults);
+    const count = counts[trackKey] ?? 0;
+    const final = base + count * BONUS_SKILL_INCREMENT;
+    const waste = Math.max(0, final - SKILL_CAP);
+
+    if (base >= SKILL_CAP) {
+      errors.push(`bonusAtCap:${i}|${trackKey}`);
+    } else {
+      errors.push(`bonusWaste:${i}|${waste}|${trackKey}`);
+    }
+  }
+
+  return errors;
 }
 
 /**
@@ -634,6 +755,15 @@ export function computeSkillValues(
     bondCount,
   });
 
+  validationErrors.push(
+    ...collectBonusCapValidationErrors(
+      baseFixed,
+      baseTyped,
+      bonusIds,
+      bonusLabels,
+    ),
+  );
+
   return {
     fixedValues,
     typedValues,
@@ -768,6 +898,8 @@ export function formatProfessionValidationMessages(
   let needsBonusSkillType = false;
   /** @type {Set<string>} */
   const typedNameRequiredGroups = new Set();
+  /** @type {string[]} */
+  const bonusAtCapTrackKeys = [];
 
   for (const code of errors) {
     if (code === "optionPicks") {
@@ -782,11 +914,29 @@ export function formatProfessionValidationMessages(
       needsBondRelationship = true;
       continue;
     }
+    const bonusAtCap = code.match(/^bonusAtCap:\d+\|(.+)$/);
+    if (bonusAtCap) {
+      bonusAtCapTrackKeys.push(bonusAtCap[1]);
+      continue;
+    }
+
+    const bonusWaste = code.match(/^bonusWaste:\d+\|(\d+)\|(.+)$/);
+    if (bonusWaste) {
+      push(
+        game.i18n.format("DG.Profession.Dialog.BonusSkillWasteTooHigh", {
+          skill: getBonusTrackLabel(bonusWaste[2]),
+          waste: Number(bonusWaste[1]),
+          maxWaste: MAX_ALLOWED_BONUS_WASTE - 1,
+        }),
+      );
+      continue;
+    }
+
     if (code.startsWith("bonusType")) {
       needsBonusSkillType = true;
       continue;
     }
-    if (code.startsWith("bonus")) {
+    if (/^bonus\d+$/.test(code)) {
       needsBonusSkill = true;
       continue;
     }
@@ -816,12 +966,6 @@ export function formatProfessionValidationMessages(
       }),
     );
   }
-  if (needsBondName) {
-    push(game.i18n.localize("DG.Profession.Dialog.BondNameRequired"));
-  }
-  if (needsBondRelationship) {
-    push(game.i18n.localize("DG.Profession.Dialog.BondRelationshipRequired"));
-  }
   if (needsBonusSkill) {
     push(
       game.i18n.format("DG.Profession.Dialog.BonusSkillRequired", {
@@ -836,6 +980,20 @@ export function formatProfessionValidationMessages(
     push(
       game.i18n.format("DG.Profession.Dialog.TypedNameRequired", {
         type: getTypedGroupDisplayName(group),
+      }),
+    );
+  }
+  if (needsBondName) {
+    push(game.i18n.localize("DG.Profession.Dialog.BondNameRequired"));
+  }
+  if (needsBondRelationship) {
+    push(game.i18n.localize("DG.Profession.Dialog.BondRelationshipRequired"));
+  }
+
+  for (const trackKey of bonusAtCapTrackKeys) {
+    push(
+      game.i18n.format("DG.Profession.Dialog.BonusSkillAlreadyAtCap", {
+        skill: getBonusTrackLabel(trackKey),
       }),
     );
   }
@@ -915,4 +1073,4 @@ export function prepareProfessionSkillRows(skillMap, skillMeta = {}) {
   return rows;
 }
 
-export { BONUS_SKILL_COUNT, BONUS_SKILL_INCREMENT, SKILL_CAP };
+export { BONUS_SKILL_COUNT };

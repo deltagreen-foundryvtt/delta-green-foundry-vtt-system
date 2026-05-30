@@ -17,7 +17,7 @@ function resolveTransferItem(effect) {
  * @param {Item} item
  * @returns {{ inactive: boolean, reasonKey: string|null }}
  */
-export function getTransferSuppressionState(item) {
+function getTransferSuppressionState(item) {
   switch (item.type) {
     case "weapon":
     case "armor":
@@ -54,7 +54,7 @@ export function getTransferSuppressionState(item) {
  * @param {Item} item
  * @returns {boolean} True when a transfer effect on this item should not apply.
  */
-export function isTransferEffectInactive(item) {
+function isTransferEffectInactive(item) {
   return getTransferSuppressionState(item).inactive;
 }
 
