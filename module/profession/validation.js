@@ -1,4 +1,4 @@
-import { BONUS_SKILL_COUNT, MAX_ALLOWED_BONUS_WASTE } from "./constants.js";
+import { BONUS_SKILL_COUNT } from "./constants.js";
 import { catalogIdToSkillRef, getBonusTrackLabel } from "./catalog.js";
 import {
   getTypedGroupDisplayName,
@@ -135,7 +135,7 @@ export function formatProfessionValidationMessages(
   /** @type {Set<string>} */
   const typedNameRequiredGroups = new Set();
   /** @type {string[]} */
-  const bonusAtCapTrackKeys = [];
+  const bonusWasteTrackKeys = [];
 
   for (const code of errors) {
     if (code === "optionPicks") {
@@ -150,21 +150,9 @@ export function formatProfessionValidationMessages(
       needsBondRelationship = true;
       continue;
     }
-    const bonusAtCap = code.match(/^bonusAtCap:\d+\|(.+)$/);
-    if (bonusAtCap) {
-      bonusAtCapTrackKeys.push(bonusAtCap[1]);
-      continue;
-    }
-
     const bonusWaste = code.match(/^bonusWaste:\d+\|(\d+)\|(.+)$/);
     if (bonusWaste) {
-      push(
-        game.i18n.format("DG.Profession.Dialog.BonusSkillWasteTooHigh", {
-          skill: getBonusTrackLabel(bonusWaste[2]),
-          waste: Number(bonusWaste[1]),
-          maxWaste: MAX_ALLOWED_BONUS_WASTE - 1,
-        }),
-      );
+      bonusWasteTrackKeys.push(bonusWaste[2]);
       continue;
     }
 
@@ -226,9 +214,9 @@ export function formatProfessionValidationMessages(
     push(game.i18n.localize("DG.Profession.Dialog.BondRelationshipRequired"));
   }
 
-  for (const trackKey of bonusAtCapTrackKeys) {
+  for (const trackKey of bonusWasteTrackKeys) {
     push(
-      game.i18n.format("DG.Profession.Dialog.BonusSkillAlreadyAtCap", {
+      game.i18n.format("DG.Profession.Dialog.BonusSkillWasteTooHigh", {
         skill: getBonusTrackLabel(trackKey),
       }),
     );

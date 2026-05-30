@@ -19,6 +19,7 @@ import {
 } from "../active-effect/runtime/stimulant-effect.js";
 import { assignProfessionToAgent } from "../applications/profession-setup-flow.js";
 import { showDgDialog } from "../applications/dg-dialog.js";
+import { showRenameProfessionDialog } from "../applications/rename-profession-dialog.js";
 import { PROFESSION_OPTION_PICKS_KEY } from "../data/item/profession.js";
 
 const { renderTemplate } = foundry.applications.handlebars;
@@ -292,12 +293,13 @@ export default class DGAgentSheet extends AgentSheetBase {
    * @param {PointerEvent} _event
    * @param {HTMLElement} target
    */
-  static _openProfessionItem(_event, target) {
+  static async _openProfessionItem(_event, target) {
     const itemId =
       target.dataset.itemId ??
       target.closest("[data-item-id]")?.dataset?.itemId;
     const item = this.actor.items.get(itemId);
-    if (item?.type === "profession") item.sheet.render(true);
+    if (item?.type !== "profession") return;
+    await showRenameProfessionDialog(item);
   }
 
   static _clearBondDamage() {
@@ -551,6 +553,18 @@ export default class DGAgentSheet extends AgentSheetBase {
   }
 
   /**
+   * @param {Record<string, object>} skillMap
+   * @returns {object[]}
+   */
+  static _collectFailedSkills(skillMap) {
+    return Object.entries(skillMap)
+      .filter(
+        ([, skill]) => skill.failure && !skill.cannotBeImprovedByFailure,
+      )
+      .map(([key, skill]) => ({ ...skill, key }));
+  }
+
+  /**
    * Runs through the whole process of improving skills,
    * i.e., prompting the user, rolling, and creating the chat card.
    *
@@ -559,12 +573,8 @@ export default class DGAgentSheet extends AgentSheetBase {
   static async _processSkillImprovements() {
     const { skills, typedSkills } = this.actor.system;
 
-    const failedSkills = Object.values(skills).filter(
-      (skill) => skill.failure && !skill.cannotBeImprovedByFailure,
-    );
-    const failedTypedSkills = Object.values(typedSkills).filter(
-      (skill) => skill.failure && !skill.cannotBeImprovedByFailure,
-    );
+    const failedSkills = DGAgentSheet._collectFailedSkills(skills);
+    const failedTypedSkills = DGAgentSheet._collectFailedSkills(typedSkills);
 
     if (failedSkills.length + failedTypedSkills.length === 0) {
       ui.notifications.warn("DG.Skills.ApplySkillImprovements.Warning", {
@@ -640,14 +650,16 @@ export default class DGAgentSheet extends AgentSheetBase {
     failedTypedSkills,
   ) {
     const localizedFailedSkills = failedSkills.map((skill) =>
-      game.i18n.localize(`DG.Skills.${skill.key}`),
+      formatProfessionSkillLabel({ kind: "fixed", key: skill.key }),
     );
 
-    const localizedFailedTypedSkills = failedTypedSkills.map((skill) => {
-      const groupKey = `DG.TypeSkills.${skill.group.replace(/\s+/g, "")}`;
-      const groupLabel = game.i18n.localize(groupKey);
-      return `${groupLabel} (${skill.label})`;
-    });
+    const localizedFailedTypedSkills = failedTypedSkills.map((skill) =>
+      formatProfessionSkillLabel({
+        kind: "typed",
+        group: skill.group,
+        label: skill.label,
+      }),
+    );
 
     const failedSkillNames = [
       ...localizedFailedSkills,

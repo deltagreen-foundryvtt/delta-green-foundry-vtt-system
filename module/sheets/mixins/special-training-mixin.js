@@ -1,4 +1,4 @@
-const { DialogV2 } = foundry.applications.api;
+import { showDgDialog } from "../../applications/dg-dialog.js";
 
 /** @param {typeof foundry.applications.api.ApplicationV2} Base */
 export default function SpecialTrainingMixin(Base) {
@@ -23,7 +23,7 @@ export default function SpecialTrainingMixin(Base) {
           }
           break;
         default:
-          this._showSpecialTrainingDialog(actionType, id);
+          void this._showSpecialTrainingDialog(actionType, id);
           break;
       }
     }
@@ -95,7 +95,8 @@ export default function SpecialTrainingMixin(Base) {
         `DG.SpecialTraining.Dialog.${action.capitalize()}SpecialTraining`,
       );
 
-      new DialogV2({
+      await showDgDialog({
+        modifier: "special-training",
         content,
         window: {
           title: game.i18n.localize("DG.SpecialTraining.Dialog.Title"),
@@ -106,7 +107,7 @@ export default function SpecialTrainingMixin(Base) {
             default: true,
             action: "confirm",
             label: buttonLabel,
-            callback: (event, button, dialog) => {
+            callback: (_event, _button, dialog) => {
               const specialTrainingLabel = dialog.element.querySelector(
                 "[name='special-training-label']",
               )?.value;
@@ -127,7 +128,7 @@ export default function SpecialTrainingMixin(Base) {
             },
           },
         ],
-      }).render(true);
+      });
     }
 
     _createSpecialTraining(label, attribute) {

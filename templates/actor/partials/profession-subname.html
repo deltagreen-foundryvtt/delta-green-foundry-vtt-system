@@ -1,12 +1,13 @@
 {{#if professionItem}}
-<a class="content-link profession-subname-link fill-remaining-space"
-   data-action="openProfessionItem"
-   data-item-id="{{professionItem.id}}"
-   title="{{localize 'DG.AgentSheet.OpenProfessionToEdit'}}">
-    <i class="fas fa-briefcase"></i> {{professionItem.name}}
-</a>
+<input class="fill-remaining-space profession-subname-display"
+       type="text"
+       readonly
+       value="{{professionItem.name}}"
+       data-action="openProfessionItem"
+       data-item-id="{{professionItem.id}}"
+       title="{{localize 'DG.AgentSheet.RenameProfession.Tooltip'}}" />
 {{else}}
-<input class="fill-remaining-space profession-input"
+<input class="fill-remaining-space"
        name="system.biography.profession"
        type="text"
        value="{{actor.system.biography.profession}}"

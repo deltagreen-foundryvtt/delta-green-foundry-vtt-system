@@ -93,8 +93,16 @@
 }
 
 .deltagreen .motivations .acute-episode-col {
-  flex: 0 0 5.5rem;
-  text-align: center;
+  flex: 0 0 7.75rem;
+  min-width: 7.75rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  white-space: nowrap;
+
+  input[type="checkbox"] {
+    margin: 0;
+  }
 }
 
 .deltagreen .motivations li.acute-episode-active {

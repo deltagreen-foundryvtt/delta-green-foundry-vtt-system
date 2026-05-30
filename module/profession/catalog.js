@@ -143,7 +143,7 @@ function getBonusTrackBaseValue(trackKey, baseFixed, baseTyped, defaults) {
 }
 
 /**
- * Bonus skill slots that would waste 20+ points or raise a skill already at the creation cap.
+ * Bonus skill slots that would waste 20+ points over the creation cap (skill below 80).
  *
  * @param {Record<string, number>} baseFixed
  * @param {Record<string, { group: string, label: string, value: number }>} baseTyped
@@ -191,7 +191,7 @@ export function collectBonusCapValidationErrors(
     );
     const final = base + count * BONUS_SKILL_INCREMENT;
     const waste = Math.max(0, final - SKILL_CAP);
-    if (base >= SKILL_CAP || waste >= MAX_ALLOWED_BONUS_WASTE) {
+    if (base < SKILL_CAP && waste >= MAX_ALLOWED_BONUS_WASTE) {
       violatingTrackKeys.add(trackKey);
     }
   }
@@ -212,11 +212,7 @@ export function collectBonusCapValidationErrors(
     const final = base + count * BONUS_SKILL_INCREMENT;
     const waste = Math.max(0, final - SKILL_CAP);
 
-    if (base >= SKILL_CAP) {
-      errors.push(`bonusAtCap:${i}|${trackKey}`);
-    } else {
-      errors.push(`bonusWaste:${i}|${waste}|${trackKey}`);
-    }
+    errors.push(`bonusWaste:${i}|${waste}|${trackKey}`);
   }
 
   return errors;

@@ -462,16 +462,16 @@ class AddProfessionDialogController {
    * @returns {{
    *   validationMessages: string[],
    *   capWarnings: { warning: string }[],
-   *   atCapMessages: string[],
+   *   wasteMessages: string[],
    * }}
    */
   #getDisplayMessages(computed) {
-    const atCapPrefix = "bonusAtCap:";
+    const wastePrefix = "bonusWaste:";
     const mainErrors = computed.validationErrors.filter(
-      (code) => !code.startsWith(atCapPrefix),
+      (code) => !code.startsWith(wastePrefix),
     );
-    const atCapErrors = computed.validationErrors.filter((code) =>
-      code.startsWith(atCapPrefix),
+    const wasteErrors = computed.validationErrors.filter((code) =>
+      code.startsWith(wastePrefix),
     );
 
     return {
@@ -485,7 +485,7 @@ class AddProfessionDialogController {
           waste: w.waste,
         }),
       })),
-      atCapMessages: formatProfessionValidationMessages(atCapErrors, {
+      wasteMessages: formatProfessionValidationMessages(wasteErrors, {
         optionPicks: this.optionPicks,
       }),
     };
@@ -496,7 +496,7 @@ class AddProfessionDialogController {
    * @returns {string}
    */
   #buildMessagesHtml(computed) {
-    const { validationMessages, capWarnings, atCapMessages } =
+    const { validationMessages, capWarnings, wasteMessages } =
       this.#getDisplayMessages(computed);
 
     const toErrorHtml = (messages) =>
@@ -519,7 +519,9 @@ class AddProfessionDialogController {
       .join("");
 
     return (
-      toErrorHtml(validationMessages) + capHtml + toErrorHtml(atCapMessages)
+      toErrorHtml(validationMessages) +
+      capHtml +
+      toErrorHtml(wasteMessages)
     );
   }
 

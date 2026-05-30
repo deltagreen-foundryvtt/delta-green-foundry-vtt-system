@@ -1,4 +1,4 @@
-const { DialogV2 } = foundry.applications.api;
+import { showDgDialog } from "../../applications/dg-dialog.js";
 
 /** @param {typeof foundry.applications.api.ApplicationV2} Base */
 export default function ItemListMixin(Base) {
@@ -189,41 +189,43 @@ export default function ItemListMixin(Base) {
 
     static _browsePack(event, target) {
       const { packType } = target.dataset;
-      switch (packType) {
-        case "weapon": {
-          new DialogV2({
-            window: { title: "Select Compendium" },
-            buttons: [
-              {
-                action: "firearms",
-                label: game.i18n.localize("DG.Gear.WeaponTypes.Firearms"),
-                icon: '<i class="fas fa-crosshairs"></i>',
-                callback: () =>
-                  game.packs
-                    .find((k) => k.collection === "deltagreen.firearms")
-                    .render(true),
-              },
-              {
-                action: "melee",
-                label: game.i18n.localize("DG.Gear.WeaponTypes.Melee"),
-                icon: '<i class="far fa-hand-rock"></i>',
-                callback: () =>
-                  game.packs
-                    .find(
-                      (k) => k.collection === "deltagreen.hand-to-hand-weapons",
-                    )
-                    .render(true),
-              },
-            ],
-          }).render(true);
-          break;
-        }
-        default:
-          game.packs
-            .find((k) => k.collection === `deltagreen.${packType}`)
-            .render(true);
-          break;
+      if (packType === "weapon") {
+        void this._browseWeaponPack();
+        return;
       }
+
+      game.packs
+        .find((k) => k.collection === `deltagreen.${packType}`)
+        .render(true);
+    }
+
+    async _browseWeaponPack() {
+      await showDgDialog({
+        modifier: "browse-weapon-pack",
+        window: {
+          title: game.i18n.localize("DG.Gear.SelectCompendium"),
+        },
+        buttons: [
+          {
+            action: "firearms",
+            label: game.i18n.localize("DG.Gear.WeaponTypes.Firearms"),
+            icon: '<i class="fas fa-crosshairs"></i>',
+            callback: () =>
+              game.packs
+                .find((k) => k.collection === "deltagreen.firearms")
+                .render(true),
+          },
+          {
+            action: "melee",
+            label: game.i18n.localize("DG.Gear.WeaponTypes.Melee"),
+            icon: '<i class="far fa-hand-rock"></i>',
+            callback: () =>
+              game.packs
+                .find((k) => k.collection === "deltagreen.hand-to-hand-weapons")
+                .render(true),
+          },
+        ],
+      });
     }
 
     /**
