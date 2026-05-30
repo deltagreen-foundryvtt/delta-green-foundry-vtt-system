@@ -86,7 +86,10 @@ export async function createSkillImprovementChatMessage({
   };
 
   const failedSkillNames = localizeFailedSkills(failedSkills, "fixed");
-  const failedTypedSkillNames = localizeFailedSkills(failedTypedSkills, "typed");
+  const failedTypedSkillNames = localizeFailedSkills(
+    failedTypedSkills,
+    "typed",
+  );
 
   const content = [...failedSkillNames, ...failedTypedSkillNames].join(", ");
   const label = game.i18n.format(

@@ -1,4 +1,4 @@
-import { flagUnnaturalResourceMaxUpdates } from "../utils/actor-submit.js";
+import flagUnnaturalResourceMaxUpdates from "../utils/actor-submit.js";
 import DGNPCSheet from "./npc-sheet.js";
 
 /** @extends {DGNPCSheet} */

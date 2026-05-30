@@ -115,9 +115,7 @@ function GetAttacksFromInput(inputText) {
 
             if (attackLine.indexOf("ARMOR PIERCING") >= 0) {
               const apMatch = attackLine.match(/ARMOR\s+PIERCING\s*(\d+)/i);
-              const armorPiercing = apMatch?.[1]
-                ? parseInt(apMatch[1], 10)
-                : 5;
+              const armorPiercing = apMatch?.[1] ? parseInt(apMatch[1]) : 5;
               weaponData.armorPiercing = armorPiercing;
               weaponData.system.armorPiercing = armorPiercing;
             }

@@ -44,9 +44,9 @@ export default function registerHandlebarsHelpers() {
   Handlebars.registerHelper("getAvailableRollModes", () => {
     try {
       return Object.fromEntries(
-        ROLL_MESSAGE_MODE_KEYS.filter((key) => key in CONFIG.ChatMessage.modes).map(
-          (key) => [key, CONFIG.ChatMessage.modes[key]],
-        ),
+        ROLL_MESSAGE_MODE_KEYS.filter(
+          (key) => key in CONFIG.ChatMessage.modes,
+        ).map((key) => [key, CONFIG.ChatMessage.modes[key]]),
       );
     } catch (error) {
       return console.log(error);

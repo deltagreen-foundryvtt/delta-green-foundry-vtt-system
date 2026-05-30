@@ -40,7 +40,7 @@ import { validateProfessionFormState } from "./validation.js";
  *   modifiedTypedKeys: string[],
  * }}
  */
-export function computeSkillValues(
+export default function computeSkillValues(
   automaticSkills,
   optionSkills,
   optionPicks,
@@ -100,39 +100,46 @@ export function computeSkillValues(
 
   for (const [key, rating] of Object.entries(automaticSkills ?? {})) {
     const ref = parseProfessionSkillKey(key);
-    if (!ref) continue;
-
-    let labelOverride;
-    if (ref.kind === "typed" && automaticMeta[key]?.chooseOne) {
-      labelOverride = formState.chooseOneLabels?.[key]?.trim();
-      if (!labelOverride) continue;
-    }
-
-    const storageKey = applyOverride(key, rating, { labelOverride });
-    if (ref.kind === "fixed") modifiedFixedKeys.add(ref.key);
-    else if (storageKey) {
-      markTypedModified(ref, labelOverride ?? ref.label);
+    if (ref) {
+      let labelOverride;
+      let skip = false;
+      if (ref.kind === "typed" && automaticMeta[key]?.chooseOne) {
+        labelOverride = formState.chooseOneLabels?.[key]?.trim();
+        if (!labelOverride) skip = true;
+      }
+      if (!skip) {
+        const storageKey = applyOverride(key, rating, { labelOverride });
+        if (ref.kind === "fixed") modifiedFixedKeys.add(ref.key);
+        else if (storageKey) {
+          markTypedModified(ref, labelOverride ?? ref.label);
+        }
+      }
     }
   }
 
   for (const key of formState.checkedOptionKeys ?? []) {
-    if (!optionSkills[key] && optionSkills[key] !== 0) continue;
-    const ref = parseProfessionSkillKey(key);
-    if (!ref) continue;
-
-    let labelOverride;
-    if (ref.kind === "typed" && optionMeta[key]?.chooseOne) {
-      labelOverride = formState.chooseOneLabels?.[key]?.trim();
-      if (!labelOverride) continue;
-    } else if (ref.kind === "typed") {
-      labelOverride = ref.label?.trim();
-      if (!labelOverride) continue;
-    }
-
-    const storageKey = applyOverride(key, optionSkills[key], { labelOverride });
-    if (ref.kind === "fixed") modifiedFixedKeys.add(ref.key);
-    else if (storageKey) {
-      markTypedModified(ref, labelOverride ?? ref.label);
+    if (optionSkills[key] || optionSkills[key] === 0) {
+      const ref = parseProfessionSkillKey(key);
+      if (ref) {
+        let labelOverride;
+        let skip = false;
+        if (ref.kind === "typed" && optionMeta[key]?.chooseOne) {
+          labelOverride = formState.chooseOneLabels?.[key]?.trim();
+          if (!labelOverride) skip = true;
+        } else if (ref.kind === "typed") {
+          labelOverride = ref.label?.trim();
+          if (!labelOverride) skip = true;
+        }
+        if (!skip) {
+          const storageKey = applyOverride(key, optionSkills[key], {
+            labelOverride,
+          });
+          if (ref.kind === "fixed") modifiedFixedKeys.add(ref.key);
+          else if (storageKey) {
+            markTypedModified(ref, labelOverride ?? ref.label);
+          }
+        }
+      }
     }
   }
 
@@ -144,21 +151,22 @@ export function computeSkillValues(
 
   for (let i = 0; i < BONUS_SKILL_COUNT; i++) {
     const catalogId = bonusIds[i];
-    if (!catalogId) continue;
-    const typedLabel = bonusLabels[i] ?? "";
-    const ref = catalogIdToSkillRef(catalogId, typedLabel);
-    if (!ref) continue;
+    if (catalogId) {
+      const typedLabel = bonusLabels[i] ?? "";
+      const ref = catalogIdToSkillRef(catalogId, typedLabel);
+      if (ref) {
+        if (ref.kind === "fixed") modifiedFixedKeys.add(ref.key);
+        else modifiedTypedKeys.add(formatProfessionSkillKey(ref));
 
-    if (ref.kind === "fixed") modifiedFixedKeys.add(ref.key);
-    else modifiedTypedKeys.add(formatProfessionSkillKey(ref));
-
-    let trackKey;
-    if (ref.kind === "fixed") {
-      trackKey = `fixed:${ref.key}`;
-    } else {
-      trackKey = formatProfessionSkillKey(ref);
+        let trackKey;
+        if (ref.kind === "fixed") {
+          trackKey = `fixed:${ref.key}`;
+        } else {
+          trackKey = formatProfessionSkillKey(ref);
+        }
+        bonusCounts[trackKey] = (bonusCounts[trackKey] ?? 0) + 1;
+      }
     }
-    bonusCounts[trackKey] = (bonusCounts[trackKey] ?? 0) + 1;
   }
 
   /** Pre-bonus base for cap warnings */
@@ -172,14 +180,14 @@ export function computeSkillValues(
       fixedValues[key] = (fixedValues[key] ?? defaults[key] ?? 0) + bonus;
     } else {
       const ref = parseProfessionSkillKey(trackKey);
-      if (ref?.kind !== "typed") continue;
-
-      const base = typedValues[trackKey]?.value ?? 0;
-      typedValues[trackKey] = {
-        group: ref.group,
-        label: ref.label,
-        value: base + bonus,
-      };
+      if (ref?.kind === "typed") {
+        const base = typedValues[trackKey]?.value ?? 0;
+        typedValues[trackKey] = {
+          group: ref.group,
+          label: ref.label,
+          value: base + bonus,
+        };
+      }
     }
   }
 

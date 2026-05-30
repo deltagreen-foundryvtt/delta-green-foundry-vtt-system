@@ -26,12 +26,16 @@ export default function TypedSkillMixin(Base) {
       const { actionType, typedskill } = target.dataset;
       switch (actionType) {
         case "create":
-          void this._showTypedSkillDialog({ mode: "create" });
+          this._showTypedSkillDialog({ mode: "create" }).catch((error) => {
+            console.error(error);
+          });
           break;
         case "edit":
-          void this._showTypedSkillDialog({
+          this._showTypedSkillDialog({
             mode: "edit",
             targetSkill: typedskill,
+          }).catch((error) => {
+            console.error(error);
           });
           break;
         case "delete":
@@ -47,7 +51,7 @@ export default function TypedSkillMixin(Base) {
      */
     async _showTypedSkillDialog({ mode, targetSkill }) {
       const isEdit = mode === "edit";
-      const typedSkills = this.actor.system.typedSkills;
+      const { typedSkills } = this.actor.system;
       const currentLabel = isEdit ? typedSkills[targetSkill].label : "";
       const currentGroup = isEdit
         ? typedSkills[targetSkill].group

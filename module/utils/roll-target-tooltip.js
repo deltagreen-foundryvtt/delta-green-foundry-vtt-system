@@ -27,7 +27,7 @@ function getRollTargetEffectLabel(effect) {
 
   if (effect.name?.trim()) return effect.name;
 
-  const parent = effect.parent;
+  const { parent } = effect;
   if (parent?.documentName === "Item") return parent.name ?? "";
 
   return effect.name ?? "";
@@ -39,27 +39,30 @@ function getRollTargetEffectLabel(effect) {
  * @returns {Array<{ name: string, modifier: number }>}
  */
 export function collectRollTargetContributions(actor, rollTargetFieldKey) {
-  if (actor.type !== "agent" || !ROLL_TARGET_FIELD_KEYS.includes(rollTargetFieldKey)) {
+  if (
+    actor.type !== "agent" ||
+    !ROLL_TARGET_FIELD_KEYS.includes(rollTargetFieldKey)
+  ) {
     return [];
   }
 
   const contributions = [];
 
   for (const effect of actor.appliedEffects ?? []) {
-    if (!isRollTargetEffectActive(effect)) continue;
-
-    const change = (effect.changes ?? []).find(
-      (entry) => entry.key === rollTargetFieldKey && entry.type === "add",
-    );
-    if (!change) continue;
-
-    const modifier = Number(change.value);
-    if (!Number.isFinite(modifier) || modifier === 0) continue;
-
-    contributions.push({
-      name: getRollTargetEffectLabel(effect),
-      modifier,
-    });
+    if (isRollTargetEffectActive(effect)) {
+      const change = (effect.changes ?? []).find(
+        (entry) => entry.key === rollTargetFieldKey && entry.type === "add",
+      );
+      if (change) {
+        const modifier = Number(change.value);
+        if (Number.isFinite(modifier) && modifier !== 0) {
+          contributions.push({
+            name: getRollTargetEffectLabel(effect),
+            modifier,
+          });
+        }
+      }
+    }
   }
 
   return contributions;
@@ -119,7 +122,9 @@ function buildRollTargetBreakdownTable(
   const body = rows
     .map(
       ([label, value]) =>
-        `<tr><td>${foundry.utils.escapeHTML(label)}</td><td>${foundry.utils.escapeHTML(value)}</td></tr>`,
+        `<tr><td>${foundry.utils.escapeHTML(
+          label,
+        )}</td><td>${foundry.utils.escapeHTML(value)}</td></tr>`,
     )
     .join("");
 
@@ -181,7 +186,7 @@ export function appendRollTargetTooltipSection(
 export function prepareAgentStatSanityTooltips(actor) {
   if (actor.type !== "agent") return;
 
-  const system = actor.system;
+  const { system } = actor;
 
   for (const [key, stat] of Object.entries(system.statistics ?? {})) {
     const base = Number(stat.x5) || 0;
@@ -195,9 +200,11 @@ export function prepareAgentStatSanityTooltips(actor) {
     );
   }
 
-  const sanity = system.sanity;
+  const { sanity } = system;
   if (sanity) {
-    const existing = `${game.i18n.localize("DG.Tooltip.CurrentSanityPartOne")}${sanity.currentBreakingPoint}${game.i18n.localize("DG.Tooltip.CurrentSanityPartTwo")}`;
+    const existing = `${game.i18n.localize("DG.Tooltip.CurrentSanityPartOne")}${
+      sanity.currentBreakingPoint
+    }${game.i18n.localize("DG.Tooltip.CurrentSanityPartTwo")}`;
     const base = Number(sanity.value) || 0;
     sanity.tooltip = appendRollTargetTooltipSection(
       existing,

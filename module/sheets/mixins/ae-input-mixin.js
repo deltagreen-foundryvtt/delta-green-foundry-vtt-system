@@ -27,34 +27,34 @@ export default function AeInputMixin(Base) {
 
         const input = host.querySelector("input");
         const display = host.querySelector(".ae-input-display");
-        if (!input || !display) continue;
+        if (input && display) {
+          const modifier = Number(display.dataset.aeModifier) || 0;
 
-        const modifier = Number(display.dataset.aeModifier) || 0;
+          const syncTypography = () => syncAeDisplayTypography(input, display);
 
-        const syncTypography = () => syncAeDisplayTypography(input, display);
+          const syncDisplay = () => {
+            if (host.matches(":focus-within")) return;
+            const base = Number(input.value);
+            if (Number.isFinite(base)) {
+              const effective = Math.max(0, Math.round(base + modifier));
+              display.textContent = String(effective);
+            }
+          };
 
-        const syncDisplay = () => {
-          if (host.matches(":focus-within")) return;
-          const base = Number(input.value);
-          if (Number.isFinite(base)) {
-            const effective = Math.max(0, Math.round(base + modifier));
-            display.textContent = String(effective);
-          }
-        };
+          input.addEventListener("focus", () => input.select());
+          input.addEventListener("blur", () => {
+            syncTypography();
+            syncDisplay();
+          });
 
-        input.addEventListener("focus", () => input.select());
-        input.addEventListener("blur", () => {
           syncTypography();
+          requestAnimationFrame(syncTypography);
           syncDisplay();
-        });
 
-        syncTypography();
-        requestAnimationFrame(syncTypography);
-        syncDisplay();
-
-        const observer = new ResizeObserver(syncTypography);
-        observer.observe(input);
-        hostObservers.set(host, observer);
+          const observer = new ResizeObserver(syncTypography);
+          observer.observe(input);
+          hostObservers.set(host, observer);
+        }
       }
     }
   };

@@ -28,7 +28,6 @@ export function validateProfessionFormState(
   const picks = Number(optionPicks) || 0;
   const {
     automaticSkills = {},
-    optionSkills = {},
     automaticMeta = {},
     optionMeta = {},
     bondCount = 0,
@@ -49,18 +48,19 @@ export function validateProfessionFormState(
     const catalogId = formState.bonusCatalogIds?.[i];
     if (!catalogId) {
       errors.push(`bonus${i}`);
-      continue;
-    }
-    const ref = catalogIdToSkillRef(
-      catalogId,
-      formState.bonusTypedLabels?.[i] ?? "",
-    );
-    if (!ref) {
-      errors.push(`bonus${i}`);
-      continue;
-    }
-    if (ref.kind === "typed" && !formState.bonusTypedLabels?.[i]?.trim()) {
-      errors.push(`bonusType${i}`);
+    } else {
+      const ref = catalogIdToSkillRef(
+        catalogId,
+        formState.bonusTypedLabels?.[i] ?? "",
+      );
+      if (!ref) {
+        errors.push(`bonus${i}`);
+      } else if (
+        ref.kind === "typed" &&
+        !formState.bonusTypedLabels?.[i]?.trim()
+      ) {
+        errors.push(`bonusType${i}`);
+      }
     }
   }
 
@@ -86,21 +86,23 @@ export function validateProfessionFormState(
 
   for (const [key] of Object.entries(automaticSkills)) {
     const ref = parseProfessionSkillKey(key);
-    if (!ref || ref.kind !== "typed") continue;
-    if (automaticMeta[key]?.chooseOne) {
-      registerResolvedName(ref, formState.chooseOneLabels?.[key]);
-    } else {
-      registerResolvedName(ref, ref.label);
+    if (ref && ref.kind === "typed") {
+      if (automaticMeta[key]?.chooseOne) {
+        registerResolvedName(ref, formState.chooseOneLabels?.[key]);
+      } else {
+        registerResolvedName(ref, ref.label);
+      }
     }
   }
 
   for (const key of checked) {
     const ref = parseProfessionSkillKey(key);
-    if (!ref || ref.kind !== "typed") continue;
-    if (optionMeta[key]?.chooseOne) {
-      registerResolvedName(ref, formState.chooseOneLabels?.[key]);
-    } else {
-      registerResolvedName(ref, ref.label);
+    if (ref && ref.kind === "typed") {
+      if (optionMeta[key]?.chooseOne) {
+        registerResolvedName(ref, formState.chooseOneLabels?.[key]);
+      } else {
+        registerResolvedName(ref, ref.label);
+      }
     }
   }
 
@@ -140,46 +142,35 @@ export function formatProfessionValidationMessages(
   for (const code of errors) {
     if (code === "optionPicks") {
       needsOptionPicks = true;
-      continue;
-    }
-    if (code.startsWith("bondName")) {
+    } else if (code.startsWith("bondName")) {
       needsBondName = true;
-      continue;
-    }
-    if (code.startsWith("bondRelationship")) {
+    } else if (code.startsWith("bondRelationship")) {
       needsBondRelationship = true;
-      continue;
-    }
-    const bonusWaste = code.match(/^bonusWaste:\d+\|(\d+)\|(.+)$/);
-    if (bonusWaste) {
-      bonusWasteTrackKeys.push(bonusWaste[2]);
-      continue;
-    }
-
-    if (code.startsWith("bonusType")) {
-      needsBonusSkillType = true;
-      continue;
-    }
-    if (/^bonus\d+$/.test(code)) {
-      needsBonusSkill = true;
-      continue;
-    }
-
-    const typedNameRequired = code.match(/^typedNameRequired:(.+)$/);
-    if (typedNameRequired) {
-      typedNameRequiredGroups.add(typedNameRequired[1]);
-      continue;
-    }
-
-    const conflict = code.match(/^typedNameConflict:([^:]+):(.+)$/);
-    if (conflict) {
-      const [, group, name] = conflict;
-      push(
-        game.i18n.format("DG.Profession.Dialog.DuplicateTypedName", {
-          type: getTypedGroupDisplayName(group),
-          name,
-        }),
-      );
+    } else {
+      const bonusWaste = code.match(/^bonusWaste:\d+\|(\d+)\|(.+)$/);
+      if (bonusWaste) {
+        bonusWasteTrackKeys.push(bonusWaste[2]);
+      } else if (code.startsWith("bonusType")) {
+        needsBonusSkillType = true;
+      } else if (/^bonus\d+$/.test(code)) {
+        needsBonusSkill = true;
+      } else {
+        const typedNameRequired = code.match(/^typedNameRequired:(.+)$/);
+        if (typedNameRequired) {
+          typedNameRequiredGroups.add(typedNameRequired[1]);
+        } else {
+          const conflict = code.match(/^typedNameConflict:([^:]+):(.+)$/);
+          if (conflict) {
+            const [, group, name] = conflict;
+            push(
+              game.i18n.format("DG.Profession.Dialog.DuplicateTypedName", {
+                type: getTypedGroupDisplayName(group),
+                name,
+              }),
+            );
+          }
+        }
+      }
     }
   }
 

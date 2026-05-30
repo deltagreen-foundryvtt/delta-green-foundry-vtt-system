@@ -14,7 +14,10 @@
   padding: 0 0.5rem 0.5rem;
 }
 
-.deltagreen .tab.profession-skills .profession-skills-section + .profession-skills-section {
+.deltagreen
+  .tab.profession-skills
+  .profession-skills-section
+  + .profession-skills-section {
   margin-top: 1rem;
   padding-top: 0.75rem;
   border-top: 1px solid var(--color-border-light-2, rgba(0, 0, 0, 0.15));

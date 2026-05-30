@@ -8,7 +8,7 @@ const { renderTemplate } = foundry.applications.handlebars;
 /**
  * @returns {Promise<PickStatisticsChoice | null>}
  */
-export async function showPickStatisticsDialog() {
+export default async function showPickStatisticsDialog() {
   const content = await renderTemplate(
     `${BASE_TEMPLATE_PATH}/dialog/pick-statistics.html`,
     {},
@@ -25,7 +25,9 @@ export async function showPickStatisticsDialog() {
     buttons: [
       {
         action: "roll",
-        label: game.i18n.localize("DG.ProfessionSetup.PickStatistics.RollStats"),
+        label: game.i18n.localize(
+          "DG.ProfessionSetup.PickStatistics.RollStats",
+        ),
         tooltip: game.i18n.localize(
           "DG.ProfessionSetup.PickStatistics.RollStatsTooltip",
         ),

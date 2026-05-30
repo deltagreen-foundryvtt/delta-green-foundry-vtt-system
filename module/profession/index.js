@@ -21,7 +21,7 @@ export {
   catalogIdToSkillRef,
   collectBonusCapValidationErrors,
 } from "./catalog.js";
-export { computeSkillValues } from "./compute.js";
+export { default as computeSkillValues } from "./compute.js";
 export {
   validateProfessionFormState,
   formatProfessionValidationMessages,

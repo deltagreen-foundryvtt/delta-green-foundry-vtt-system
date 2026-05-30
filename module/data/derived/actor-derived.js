@@ -91,6 +91,22 @@ export function cleanDerivedNumber(model, path, raw) {
 }
 
 /**
+ * @param {object} statistics
+ * @returns {number}
+ */
+export function calculateHealthMax(statistics, sourceStatistics) {
+  try {
+    return Math.ceil(
+      (getStatisticEffectiveValue(statistics.con, sourceStatistics?.con) +
+        getStatisticEffectiveValue(statistics.str, sourceStatistics?.str)) /
+        2,
+    );
+  } catch {
+    return 10;
+  }
+}
+
+/**
  * @param {foundry.abstract.TypeDataModel} model Agent system TypeDataModel.
  * @returns {void}
  */
@@ -111,9 +127,7 @@ export function applyAgentResourceMaxBonuses(model, sourceStatistics) {
   model.sanity.max = cleanDerivedNumber(
     model,
     "sanity.max",
-    99 -
-      model.skills.unnatural.proficiency +
-      (model.sanity.maxBonus ?? 0),
+    99 - model.skills.unnatural.proficiency + (model.sanity.maxBonus ?? 0),
   );
 }
 
@@ -132,8 +146,7 @@ export function initializeSanityIfUnset(sanity, statistics) {
   if (sanity.value >= 100) {
     sanity.value = statistics.pow.x5;
     sanity.currentBreakingPoint =
-      sanity.value -
-      (statistics.pow.effectiveValue ?? statistics.pow.value);
+      sanity.value - (statistics.pow.effectiveValue ?? statistics.pow.value);
   }
 }
 
@@ -196,24 +209,5 @@ export function removeLegacyRitualSkill(system) {
     delete system.skills.ritual;
   } catch {
     // Legacy field may be absent or non-configurable.
-  }
-}
-
-/**
- * @param {object} statistics
- * @returns {number}
- */
-export function calculateHealthMax(statistics, sourceStatistics) {
-  try {
-    return Math.ceil(
-      (getStatisticEffectiveValue(
-        statistics.con,
-        sourceStatistics?.con,
-      ) +
-        getStatisticEffectiveValue(statistics.str, sourceStatistics?.str)) /
-        2,
-    );
-  } catch {
-    return 10;
   }
 }

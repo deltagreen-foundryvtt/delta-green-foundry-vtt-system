@@ -11,7 +11,7 @@ import {
   prepareStatisticsX5,
   removeLegacyRitualSkill,
   setSkillTargetProficiencies,
-} from "../../data/derived/actor-derived.js";
+} from "../derived/actor-derived.js";
 
 const { SchemaField, NumberField, StringField, BooleanField } =
   foundry.data.fields;

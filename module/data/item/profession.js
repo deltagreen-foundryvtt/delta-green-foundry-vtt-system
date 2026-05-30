@@ -19,7 +19,9 @@ export default class ProfessionItemData extends foundry.abstract.TypeDataModel {
       bonds: new NumberField({ initial: 1, min: 1, max: 5, integer: true }),
       automaticSkills: new ObjectField({ initial: {} }),
       automaticSkillMeta: new ObjectField({ initial: {} }),
-      optionSkills: new ObjectField({ initial: { [PROFESSION_OPTION_PICKS_KEY]: 0 } }),
+      optionSkills: new ObjectField({
+        initial: { [PROFESSION_OPTION_PICKS_KEY]: 0 },
+      }),
       optionSkillMeta: new ObjectField({ initial: {} }),
     };
   }

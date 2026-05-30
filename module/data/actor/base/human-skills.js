@@ -1,4 +1,4 @@
-import { AGENT_SKILL_DEFAULTS } from "./agent-skill-defaults.js";
+import AGENT_SKILL_DEFAULTS from "./agent-skill-defaults.js";
 import { skillField } from "./general.js";
 
 const { SchemaField, NumberField, StringField, ArrayField, ObjectField } =
@@ -47,7 +47,12 @@ export default class HumanSkillsActorData extends TypeDataModel {
         swim: skillField(d.swim, "Swim"),
         unarmed_combat: skillField(d.unarmed_combat, "Unarmed Combat"),
         unnatural: new SchemaField({
-          proficiency: new NumberField({ initial: 0, min: 0, max: 99, integer: true }),
+          proficiency: new NumberField({
+            initial: 0,
+            min: 0,
+            max: 99,
+            integer: true,
+          }),
           label: new StringField({ initial: "Unnatural" }),
         }),
       }),

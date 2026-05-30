@@ -6,7 +6,7 @@
  * @param {string|null|undefined} skill Weapon skill key from item system
  * @returns {string}
  */
-export function appendMeleeDamageBonus(diceFormula, actor, skill) {
+export default function appendMeleeDamageBonus(diceFormula, actor, skill) {
   if (
     !actor ||
     (actor.type !== "agent" && actor.type !== "npc") ||

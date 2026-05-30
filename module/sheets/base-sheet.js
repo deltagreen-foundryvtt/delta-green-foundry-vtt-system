@@ -1,5 +1,5 @@
 import DG, { BASE_TEMPLATE_PATH } from "../config/index.js";
-import { getRichTextFieldsForPart } from "../config/rich-text-fields.js";
+import getRichTextFieldsForPart from "../config/rich-text-fields.js";
 import { prepareRichTextContext } from "../utils/rich-text.js";
 
 const HbsAppMixin = foundry.applications.api.HandlebarsApplicationMixin;
@@ -40,7 +40,7 @@ const DGSheetMixin = (Base) => {
     async _preparePartContext(partId, context, options) {
       context = await super._preparePartContext(partId, context, options);
 
-      const documentName = this.document.documentName;
+      const { documentName } = this.document;
       const fieldSpecs = getRichTextFieldsForPart(documentName, partId, {
         actorType: this.document.type,
         itemType: this.document.type,

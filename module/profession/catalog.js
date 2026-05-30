@@ -167,16 +167,16 @@ export function collectBonusCapValidationErrors(
     const catalogId = bonusCatalogIds?.[i];
     if (!catalogId) {
       slotTrackKeys.push(null);
-      continue;
+    } else {
+      const ref = catalogIdToSkillRef(catalogId, bonusTypedLabels?.[i] ?? "");
+      if (!ref) {
+        slotTrackKeys.push(null);
+      } else {
+        const trackKey = getBonusTrackKey(ref);
+        slotTrackKeys.push(trackKey);
+        counts[trackKey] = (counts[trackKey] ?? 0) + 1;
+      }
     }
-    const ref = catalogIdToSkillRef(catalogId, bonusTypedLabels?.[i] ?? "");
-    if (!ref) {
-      slotTrackKeys.push(null);
-      continue;
-    }
-    const trackKey = getBonusTrackKey(ref);
-    slotTrackKeys.push(trackKey);
-    counts[trackKey] = (counts[trackKey] ?? 0) + 1;
   }
 
   /** @type {Set<string>} */
@@ -200,19 +200,19 @@ export function collectBonusCapValidationErrors(
   const errors = [];
   for (let i = 0; i < BONUS_SKILL_COUNT; i++) {
     const trackKey = slotTrackKeys[i];
-    if (!trackKey || !violatingTrackKeys.has(trackKey)) continue;
+    if (trackKey && violatingTrackKeys.has(trackKey)) {
+      const base = getBonusTrackBaseValue(
+        trackKey,
+        baseFixed,
+        baseTyped,
+        defaults,
+      );
+      const count = counts[trackKey] ?? 0;
+      const final = base + count * BONUS_SKILL_INCREMENT;
+      const waste = Math.max(0, final - SKILL_CAP);
 
-    const base = getBonusTrackBaseValue(
-      trackKey,
-      baseFixed,
-      baseTyped,
-      defaults,
-    );
-    const count = counts[trackKey] ?? 0;
-    const final = base + count * BONUS_SKILL_INCREMENT;
-    const waste = Math.max(0, final - SKILL_CAP);
-
-    errors.push(`bonusWaste:${i}|${waste}|${trackKey}`);
+      errors.push(`bonusWaste:${i}|${waste}|${trackKey}`);
+    }
   }
 
   return errors;

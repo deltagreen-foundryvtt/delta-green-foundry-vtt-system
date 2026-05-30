@@ -88,7 +88,7 @@ const SettingForm = class extends HandlebarsApplicationMixin(ApplicationV2) {
     }
 
     // Once all promises resolve, show a notification.
-    Promise.allSettled(settingsPromises).then((values) => {
+    Promise.allSettled(settingsPromises).then(() => {
       ui.notifications.info(game.i18n.localize("DG.Settings.Saved"));
     });
   }
@@ -298,7 +298,7 @@ export default function registerSystemSettings() {
       program: game.i18n.localize("DG.Settings.charactersheet.program"),
     },
     default: "program", // The default value for the setting
-    onChange: (value) => {
+    onChange: () => {
       // A callback function which triggers when the setting is changed
       // console.log(value)
     },

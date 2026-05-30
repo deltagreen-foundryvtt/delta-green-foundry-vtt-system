@@ -1,8 +1,5 @@
 import { getDGRollToken } from "../../chat/dg-chat-card.js";
-import {
-  createDGRollFromDataset,
-  processDGRoll,
-} from "../../roll/roll.js";
+import { createDGRollFromDataset, processDGRoll } from "../../roll/roll.js";
 
 /** @param {typeof foundry.applications.api.ApplicationV2} Base */
 export default function RollSheetMixin(Base) {
@@ -39,7 +36,8 @@ export default function RollSheetMixin(Base) {
      * @private
      */
     static async _onRoll(event, target) {
-      if (target.classList.contains("not-rollable") || event.which === 2) return;
+      if (target.classList.contains("not-rollable") || event.which === 2)
+        return;
 
       const item = this.actor.items.get(target.dataset.iid);
       const roll = createDGRollFromDataset(target.dataset, {

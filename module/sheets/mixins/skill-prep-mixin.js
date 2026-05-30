@@ -76,7 +76,9 @@ export default function SkillPrepMixin(Base) {
       const specialTrainings = this._prepareSpecialTrainings();
       const sortedCustomSkills = [];
 
-      for (const [key, skill] of Object.entries(this.actor.system.typedSkills)) {
+      for (const [key, skill] of Object.entries(
+        this.actor.system.typedSkills,
+      )) {
         skill.type = "typeSkill";
         skill.key = key;
         skill.sortLabel = `${skill.group}.${skill.label}`;
@@ -180,7 +182,7 @@ export default function SkillPrepMixin(Base) {
         simplifiedTraining.attributeTooltip = attributeTooltip;
 
         if (this.actor.type === "agent") {
-          const rollTarget = this.actor.system.rollTarget;
+          const { rollTarget } = this.actor.system;
           let modifier = 0;
 
           if (rollTarget) {

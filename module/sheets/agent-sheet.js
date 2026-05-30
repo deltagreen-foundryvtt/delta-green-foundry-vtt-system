@@ -2,7 +2,7 @@ import DG, { BASE_TEMPLATE_PATH } from "../config/index.js";
 import { prepareAgentSkillColumns } from "../utils/skill-layout.js";
 import { formatProfessionSkillLabel } from "../profession/index.js";
 import { buildSkillTooltip } from "../utils/skill-tooltip.js";
-import { createAgentResourceChatMessage } from "../chat/resource-chat.js";
+import createAgentResourceChatMessage from "../chat/resource-chat.js";
 import {
   createSkillImprovementChatMessage,
   evaluateSkillImprovementRolls,
@@ -17,9 +17,9 @@ import {
   getEffectiveSuppressExhaustion,
   hasActiveStimulantEffect,
 } from "../active-effect/runtime/stimulant-effect.js";
-import { assignProfessionToAgent } from "../applications/profession-setup-flow.js";
+import assignProfessionToAgent from "../applications/profession-setup-flow.js";
 import { showDgDialog } from "../applications/dg-dialog.js";
-import { showRenameProfessionDialog } from "../applications/rename-profession-dialog.js";
+import showRenameProfessionDialog from "../applications/rename-profession-dialog.js";
 import { PROFESSION_OPTION_PICKS_KEY } from "../data/item/profession.js";
 
 const { renderTemplate } = foundry.applications.handlebars;
@@ -304,8 +304,9 @@ export default class DGAgentSheet extends AgentSheetBase {
 
   static _clearBondDamage() {
     for (const bond of this.actor.itemTypes.bond) {
-      if (!bond.system.hasBeenDamagedSinceLastHomeScene) continue;
-      bond.update({ "system.hasBeenDamagedSinceLastHomeScene": false });
+      if (bond.system.hasBeenDamagedSinceLastHomeScene) {
+        bond.update({ "system.hasBeenDamagedSinceLastHomeScene": false });
+      }
     }
   }
 
@@ -558,9 +559,7 @@ export default class DGAgentSheet extends AgentSheetBase {
    */
   static _collectFailedSkills(skillMap) {
     return Object.entries(skillMap)
-      .filter(
-        ([, skill]) => skill.failure && !skill.cannotBeImprovedByFailure,
-      )
+      .filter(([, skill]) => skill.failure && !skill.cannotBeImprovedByFailure)
       .map(([key, skill]) => ({ ...skill, key }));
   }
 
