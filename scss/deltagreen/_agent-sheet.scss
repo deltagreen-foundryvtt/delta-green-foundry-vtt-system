@@ -793,10 +793,9 @@
   .tab.combat .items-list .item-header,
   .tab.combat .items-list .item:not(.item-header) {
     display: grid;
-    grid-template-columns: 24px minmax(0, 1fr) minmax(4rem, auto) minmax(
-        3rem,
-        auto
-      ) 86px;
+    grid-template-columns:
+      24px minmax(0, 1fr) minmax(4rem, auto) minmax(3rem, auto)
+      86px;
     align-items: center;
     column-gap: 5px;
   }
