@@ -1,6 +1,6 @@
 import defineBaseItemSystemFields from "./base-fields.js";
 
-const { NumberField, StringField, BooleanField, SchemaField } =
+const { NumberField, StringField, BooleanField, SchemaField, HTMLField } =
   foundry.data.fields;
 
 export default class TomeItemData extends foundry.abstract.TypeDataModel {
@@ -16,7 +16,7 @@ export default class TomeItemData extends foundry.abstract.TypeDataModel {
         failedLoss: new StringField({ initial: "1D6" }),
         successLoss: new StringField({ initial: "1D4" }),
       }),
-      handlerNotes: new StringField({ initial: "" }),
+      handlerNotes: new HTMLField({ initial: "", blank: true, textSearch: true }),
       revealed: new BooleanField({ initial: false }),
     };
   }

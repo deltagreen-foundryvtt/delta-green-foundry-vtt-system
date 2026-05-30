@@ -7,7 +7,7 @@ export default class BondItemData extends foundry.abstract.TypeDataModel {
     return {
       ...defineBaseItemSystemFields(),
       score: new NumberField({ initial: 10, integer: true }),
-      relationship: new StringField({ initial: "?" }),
+      relationship: new StringField({ initial: "" }),
       hasBeenDamagedSinceLastHomeScene: new BooleanField({ initial: false }),
     };
   }

@@ -1,4 +1,4 @@
-const { StringField } = foundry.data.fields;
+const { HTMLField } = foundry.data.fields;
 
 /**
  * Shared system fields for all Delta Green item types (from legacy template base).
@@ -6,6 +6,6 @@ const { StringField } = foundry.data.fields;
  */
 export default function defineBaseItemSystemFields() {
   return {
-    description: new StringField({ initial: "" }),
+    description: new HTMLField({ initial: "", blank: true, textSearch: true }),
   };
 }

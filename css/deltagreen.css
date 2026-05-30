@@ -737,31 +737,35 @@ div .exhausted-section {
   margin-bottom: 5px;
 }
 
-.tab.about .dg-about-links {
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-}
+.tab.about {
+  .dg-about-links {
+    gap: 0.5rem;
+    margin-bottom: 1rem;
 
-.tab.about .dg-about-links a {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  width: fit-content;
-  max-width: 100%;
-}
+    a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      width: fit-content;
+      max-width: 100%;
 
-.tab.about .dg-about-links a i {
-  flex: 0 0 auto;
-}
+      i {
+        flex: 0 0 auto;
+      }
 
-.tab.about .dg-about-links a span {
-  flex: 1 1 auto;
-  line-height: 1.4;
-  text-align: left;
-}
+      span {
+        flex: 1 1 auto;
+        line-height: 1.4;
+        text-align: left;
+      }
+    }
+  }
 
-.tab.about .dg-about-legal p {
-  margin: 0.5rem 0;
+  .dg-about-legal {
+    p {
+      margin: 0.5rem 0;
+    }
+  }
 }
 
 textarea.wounds {

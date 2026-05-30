@@ -1,6 +1,6 @@
 import defineBaseItemSystemFields from "./base-fields.js";
 
-const { NumberField, StringField, BooleanField, SchemaField } =
+const { NumberField, StringField, BooleanField, SchemaField, HTMLField } =
   foundry.data.fields;
 
 export default class RitualItemData extends foundry.abstract.TypeDataModel {
@@ -22,7 +22,7 @@ export default class RitualItemData extends foundry.abstract.TypeDataModel {
       activationCosts: new StringField({ initial: "" }),
       activationTime: new StringField({ initial: "" }),
       complexity: new StringField({ initial: "Simple" }),
-      handlerNotes: new StringField({ initial: "" }),
+      handlerNotes: new HTMLField({ initial: "", blank: true, textSearch: true }),
       revealed: new BooleanField({ initial: false }),
     };
   }

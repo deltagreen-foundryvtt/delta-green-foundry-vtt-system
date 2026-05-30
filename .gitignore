@@ -15,6 +15,3 @@ deltagreen.lock
 
 # Ignore npm modules
 node_modules
-
-# Ignore Foundry VTT Reference Files
-reference/

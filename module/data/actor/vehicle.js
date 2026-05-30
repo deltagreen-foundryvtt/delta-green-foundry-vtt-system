@@ -1,6 +1,6 @@
 import SheetSettingsActorData from "./base/sheet-settings.js";
 
-const { SchemaField, NumberField, StringField, ArrayField } =
+const { SchemaField, NumberField, StringField, ArrayField, HTMLField } =
   foundry.data.fields;
 
 export default class VehicleData extends foundry.abstract.TypeDataModel {
@@ -8,7 +8,7 @@ export default class VehicleData extends foundry.abstract.TypeDataModel {
     return {
       ...SheetSettingsActorData.defineSchema(),
       name: new StringField({ initial: "" }),
-      description: new StringField({ initial: "" }),
+      description: new HTMLField({ initial: "", blank: true, textSearch: true }),
       shortDescription: new StringField({ initial: "" }),
       health: new SchemaField({
         value: new NumberField({ initial: 10 }),

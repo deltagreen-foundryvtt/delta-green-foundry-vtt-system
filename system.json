@@ -203,19 +203,41 @@
   "secondaryTokenAttribute": "wp",
   "documentTypes": {
     "Actor": {
-      "agent": {},
-      "unnatural": {},
-      "npc": {},
-      "vehicle": {}
+      "agent": {
+        "htmlFields": ["physical.description"]
+      },
+      "unnatural": {
+        "htmlFields": ["notes"]
+      },
+      "npc": {
+        "htmlFields": ["notes"]
+      },
+      "vehicle": {
+        "htmlFields": ["description"]
+      }
     },
     "Item": {
-      "weapon": {},
-      "armor": {},
-      "motivation": {},
-      "bond": {},
-      "gear": {},
-      "tome": {},
-      "ritual": {}
+      "weapon": {
+        "htmlFields": ["description"]
+      },
+      "armor": {
+        "htmlFields": ["description"]
+      },
+      "motivation": {
+        "htmlFields": ["description"]
+      },
+      "bond": {
+        "htmlFields": ["description"]
+      },
+      "gear": {
+        "htmlFields": ["description"]
+      },
+      "tome": {
+        "htmlFields": ["description", "handlerNotes"]
+      },
+      "ritual": {
+        "htmlFields": ["description", "handlerNotes"]
+      }
     }
   }
 }
