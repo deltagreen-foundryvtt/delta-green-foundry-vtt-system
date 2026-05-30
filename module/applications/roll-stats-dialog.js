@@ -1,4 +1,4 @@
-import { BASE_TEMPLATE_PATH } from "../config.js";
+import { BASE_TEMPLATE_PATH } from "../config/index.js";
 import { createDGChatMessage } from "../chat/dg-chat-card.js";
 import {
   STAT_KEYS,
@@ -6,7 +6,7 @@ import {
   buildRollStatsChatContent,
   buildStatisticRows,
   rollStatisticScores,
-} from "../utils/profession-stat-setup.js";
+} from "../profession/stat-setup.js";
 import { getDialogContentRoot, showDgDialog } from "./dg-dialog.js";
 
 const { renderTemplate } = foundry.applications.handlebars;

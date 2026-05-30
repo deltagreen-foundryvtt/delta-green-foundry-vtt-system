@@ -1,140 +1,15 @@
-<div class="item-controls skill-util-buttons">
-    <a class="item-control typed-skill-add action-pill"
-       data-action="typedSkillAction"
-       data-action-type="create">
-        <i class="fas fa-plus"></i>
-        {{localize 'DG.Skills.AddTypedOrCustomSkill'}}
-    </a>
+{{#if showSpecialTrainingSection }}
+    <div class="horizontal-bar-section-divider custom-skill-group-label">
+        <span>{{localize "DG.Sheet.BlockHeaders.SpecialTraining"}}</span>
+    </div>
 
-    <a class="item-control action-pill"
-       data-action="specialTrainingAction"
-       data-action-type="create">
-        <i class="fas fa-plus"></i>
-        {{localize 'DG.SpecialTraining.Dialog.CreateSpecialTraining'}}
-    </a>
-
-    {{#if_eq actor.type "agent" }}
-        <a class="item-control action-pill" data-action="applySkillImprovements">
-            {{localize 'DG.Skills.ApplySkillImprovements.Title'}}
-            <i class="fas fa-dice"></i>
-        </a>
-    {{/if_eq}}
-
-    <a class="item-control action-pill custom-skills-edit-toggle"
-       data-action="toggleCustomSkillsEdit"
-       data-tooltip="{{localize 'DG.Skills.ToggleEditDeleteSkills'}}">
-        <i class="fas fa-edit" inert></i>
-    </a>
-</div>
-
-<div class="typed-skills-columns grid grid-3col">
-    {{#each typedSkillColumns as |column| }}
-        <div class="typed-skills-column">
-            {{#each column as |block| }}
-                {{#if_eq block.type "groupHeader" }}
-                    <div class="horizontal-bar-section-divider custom-skill-group-label"
-                         {{#unless block.isSpecialTraining }}
-                         {{#unless (eq ../../skillTooltipDisplay "never") }}
-                         data-tooltip="{{localize (concat 'DG.TypeSkills.Tooltip.' block.group)}}"
-                         {{/unless }}
-                         {{/unless }}>
-                        <span>{{block.label}}</span>
-                    </div>
-                {{/if_eq}}
-
-                {{#if_eq block.type "typedSkill" }}
-                    <div class="item flexrow flex-group-left flex-thin-border typed-skill-row">
-                        <div class="flexrow">
-                            <label class="{{if_gt block.proficiency 0 'rollable' 'not-rollable'}} skill-label"
-                                   data-action="roll"
-                                   data-key="{{block.key}}"
-                                   data-rolltype="skill"
-                                   data-roll="d100"
-                                   data-target="{{block.proficiency}}"
-                                   data-label="{{block.label}}"
-                                   {{#unless (eq ../../skillTooltipDisplay "never") }}
-                                   data-tooltip="{{block.tooltip}}"
-                                   {{/unless }}>
-                                {{block.label}}
-                            </label>
-                            <div class="custom-skill-controls-slot">
-                                <div class="custom-skill-play-controls">
-                                    <input class="percentile-skill-input {{block.rollTargetDisplayClass}}"
-                                           type="text"
-                                           name="system.typedSkills.{{block.key}}.proficiency"
-                                           value="{{block.proficiency}}"
-                                           data-dtype="Number" />
-                                    {{#if_eq block.actorType "agent" }}
-                                        <input class="checkbox-skill-input"
-                                               type="checkbox"
-                                               name="system.typedSkills.{{block.key}}.failure"
-                                               {{checked block.failure}}
-                                               data-dtype="Boolean"
-                                               {{#if block.cannotBeImprovedByFailure }}
-                                               disabled
-                                               {{/if }} />
-                                    {{/if_eq}}
-                                </div>
-                                <div class="item-controls skill-and-training-controls custom-skill-edit-controls">
-                                    <a class="item-control"
-                                       data-action="typedSkillAction"
-                                       data-action-type="edit"
-                                       data-typedskill="{{block.key}}"
-                                       {{#unless (eq ../../skillTooltipDisplay "never") }}
-                                       title="Edit Skill"
-                                       {{/unless }}>
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                    <a class="item-control"
-                                       data-action="typedSkillAction"
-                                       data-action-type="delete"
-                                       data-typedskill="{{block.key}}"
-                                       {{#unless (eq ../../skillTooltipDisplay "never") }}
-                                       title="Delete Skill"
-                                       {{/unless }}>
-                                        <i class="fas fa-trash"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                {{/if_eq}}
-
-                {{#if_eq block.type "training" }}
-                    <div class="item flexrow flex-group-left flex-thin-border special-training-box">
-                        <div class="flexrow">
-                            <label class="{{if_gt block.targetNumber 0 'rollable' 'not-rollable'}} skill-label {{block.rollTargetDisplayClass}}"
-                                   data-action="roll"
-                                   data-key="{{block.key}}"
-                                   data-name="{{block.name}}"
-                                   data-rolltype="special-training"
-                                   {{#if block.tooltip }}
-                                   {{#unless (eq ../../skillTooltipDisplay "never") }}
-                                   data-tooltip="{{block.tooltip}}"
-                                   {{/unless }}
-                                   {{/if }}>
-                                {{block.displayLabel}}
-                            </label>
-                            <div class="item-controls skill-and-training-controls custom-skill-edit-controls">
-                                <a class="item-control"
-                                   data-action="specialTrainingAction"
-                                   data-action-type="edit"
-                                   data-id="{{block.id}}"
-                                   {{#unless (eq ../../skillTooltipDisplay "never") }}
-                                   title="Edit Training"
-                                   {{/unless }}><i class="fas fa-edit"></i></a>
-                                <a class="item-control"
-                                   data-action="specialTrainingAction"
-                                   data-action-type="delete"
-                                   {{#unless (eq ../../skillTooltipDisplay "never") }}
-                                   title="Delete Training"
-                                   {{/unless }}
-                                   data-id="{{block.id}}"><i class="fas fa-trash"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                {{/if_eq}}
-            {{/each}}
-        </div>
-    {{/each}}
-</div>
+    <div class="agent-skills-columns grid grid-3col special-training-columns">
+        {{#each specialTrainingColumns as |column| }}
+            <div class="agent-skills-column">
+                {{#each column as |block| }}
+                    {{> "systems/deltagreen/templates/actor/partials/agent-special-training-row-partial.html" block=block }}
+                {{/each}}
+            </div>
+        {{/each}}
+    </div>
+{{/if}}

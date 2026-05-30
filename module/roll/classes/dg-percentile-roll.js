@@ -1,101 +1,19 @@
-/* eslint-disable max-classes-per-file */
-import {
-  createDGRollChatMessage,
-  prepareDGRollChatMessageData,
-} from "../chat/dg-chat-card.js";
-import DGUtils from "../utils/utility-functions.js";
-import DG from "../config.js";
-import {
-  showDamageRollModifyDialog,
-  showPercentileRollModifyDialog,
-} from "./roll-dialogs.js";
+/** @internal Import roll subclasses only from ../roll.js. */
+/* eslint-disable import/prefer-default-export */
+import DGUtils from "../../utils/utility-functions.js";
+import DG from "../../config/index.js";
+import { showPercentileRollModifyDialog } from "../roll-dialogs.js";
 import {
   isDiceSoNiceAvailable,
   waitForDiceSoNiceMessageAnimation,
-} from "../utils/dice-so-nice.js";
+} from "../../integrations/dice-so-nice.js";
 import {
   clampPercentileRollTarget,
   getRollTargetDisplayClassFromModifier,
-} from "../utils/active-effect-derived.js";
+} from "../../active-effect/runtime/derived.js";
+import { DGRoll } from "./dg-roll.js";
 
 const { renderTemplate } = foundry.applications.handlebars;
-
-export class DGRoll extends Roll {
-  /**
-   * NOTE: This class will rarely be called on its own. It should generally be extended. Look to DGPercentileRoll as an example.
-   *
-   * Customize our roll with some useful information, passed in the `options` Object.
-   *
-   * @param {string}          formula            Unused - The string formula to parse (from Foundry)
-   * @param {Object}          data               Unused - The data object against which to parse attributes within the formula
-   * @param {Object}          [options]          Additional data which is preserved in the database
-   * @param {Number}          [options.rollType] The type of roll (stat, skill, sanity, damage, etc).
-   * @param {String}          [options.key]      The key of the skill, stat, etc. to use as a basis for this roll.
-   * @param {DeltaGreenActor} [options.actor]    The actor that this roll originates from.
-   * @param {DeltaGreenItem}  [options.item]     Optional - The item from which the roll originates.
-   */
-  constructor(formula, data = {}, options = {}) {
-    super(formula, data, options);
-    const { rollType, key, actor, item } = options;
-    this.type = rollType;
-    this.key = key;
-    this.actor = actor;
-    this.item = item;
-    this.modifier = 0;
-  }
-
-  /**
-   * Posts a roll to chat with the Delta Green card shell and an explicit `rolls`
-   * array for Dice So Nice (listen-path compatible).
-   *
-   * @override
-   * The following `@param` descriptions comes from the Foundry VTT code.
-   * @param {object} messageData          The data object to use when creating the message
-   * @param {options} [options]           Additional options which modify the created message.
-   * @param {string} [options.messageMode]  A key of CONFIG.ChatMessage.modes
-   * @param {boolean} [options.create=true]   Whether to automatically create the chat message, or only return the
-   *                                          prepared chatData object.
-   * @returns {Promise<ChatMessage|object>} A promise which resolves to the created ChatMessage document if create is
-   *                                        true, or the Object of prepared chatData otherwise.
-   */
-  async toMessage(messageData = {}, { messageMode, create = true } = {}) {
-    const label = messageData.label ?? messageData.flavor;
-    delete messageData.label;
-
-    const mode =
-      messageMode ??
-      this.options.messageMode ??
-      this.options.rollMode;
-
-    if (create) {
-      return createDGRollChatMessage({
-        roll: this,
-        actor: this.actor,
-        token: this.options.token,
-        label,
-        content: messageData.content,
-        messageMode: mode,
-        flags: messageData.flags ?? {},
-      });
-    }
-
-    const { messageData: prepared, mappedMode } =
-      await prepareDGRollChatMessageData({
-        roll: this,
-        actor: this.actor,
-        token: this.options.token,
-        label,
-        content: messageData.content,
-        messageMode: mode,
-        flags: messageData.flags ?? {},
-      });
-
-    const cls = foundry.utils.getDocumentClass("ChatMessage");
-    const msg = new cls(prepared);
-    msg.applyMode(mappedMode);
-    return msg.toObject();
-  }
-}
 
 export class DGPercentileRoll extends DGRoll {
   /**
@@ -123,10 +41,7 @@ export class DGPercentileRoll extends DGRoll {
     super("1D100", {}, options);
 
     // Set roll info for Skill, Stat, Typed Skill, and non-custom Weapon Percentile rolls.
-    const { target, localizedKey, skillPath } = this.getRollInfoFromKey(
-      this.key,
-      this.actor.system,
-    );
+    const { target, localizedKey, skillPath } = this.getRollInfoFromKey();
     this.target = target;
     this.localizedKey = localizedKey;
     this.skillPath = skillPath;
@@ -191,7 +106,7 @@ export class DGPercentileRoll extends DGRoll {
       }
     }
 
-    const rollTargetModifier = this.rollTargetModifier;
+    const { rollTargetModifier } = this;
     const targetDisplayClass =
       getRollTargetDisplayClassFromModifier(rollTargetModifier);
 
@@ -300,13 +215,11 @@ export class DGPercentileRoll extends DGRoll {
   }
 
   /**
-   * Utility function, called in the DGPercentileRoll constructor.
-   * If this roll key corresponds to a stat, skill,
-   * or typedSkill, get pertinent info.
+   * Resolve roll target, localized label, and skill path from `this.key` and `this.actor`.
    *
-   * This is used for Stat, Skill, Typed Skill, Weapon, and Special Training Rolls.
+   * Used for Stat, Skill, Typed Skill, Weapon, and Special Training Rolls.
    *
-   * @returns {Object} - Contains the roll target and localized version of the key.
+   * @returns {{ target: number|null, localizedKey: string|null, skillPath: string|null }}
    */
   getRollInfoFromKey() {
     const actorData = this.actor.system;
@@ -351,7 +264,7 @@ export class DGPercentileRoll extends DGRoll {
    */
   createLabel() {
     const startOfLabel = `<b>${this.localizedKey}`;
-    const rollTargetModifier = this.rollTargetModifier;
+    const { rollTargetModifier } = this;
     const endOfLabel = `${game.i18n.localize("DG.Roll.Target")} ${
       this.effectiveTarget
     }`;
@@ -388,7 +301,7 @@ export class DGPercentileRoll extends DGRoll {
     if (this.type === "luck") return 0;
 
     try {
-      const rollTarget = this.actor.system.rollTarget;
+      const { rollTarget } = this.actor.system;
       if (!rollTarget) return 0;
 
       if (this.type === "sanity") return Number(rollTarget.sanity) || 0;
@@ -397,21 +310,6 @@ export class DGPercentileRoll extends DGRoll {
     } catch {
       return 0;
     }
-  }
-
-  /**
-   * Target after roll-target Active Effects, before dialog modifier.
-   * @returns {number|null}
-   */
-  get rollTargetEffectiveTarget() {
-    if (!this.target || Number.isNaN(this.target)) return null;
-
-    const rollTargetModifier = this.rollTargetModifier;
-    if (!rollTargetModifier) return parseInt(this.target);
-
-    return clampPercentileRollTarget(this.target, rollTargetModifier, {
-      allowOver99: this.target > 99 && this.type === "stat",
-    });
   }
 
   /**
@@ -492,7 +390,7 @@ export class DGPercentileRoll extends DGRoll {
   get effectiveTarget() {
     let target = 1;
 
-    const rollTargetModifier = this.rollTargetModifier;
+    const { rollTargetModifier } = this;
 
     if (!this.target || Number.isNaN(this.target)) {
       return null;
@@ -521,206 +419,5 @@ export class DGPercentileRoll extends DGRoll {
     }
 
     return target;
-  }
-}
-
-export class DGLethalityRoll extends DGPercentileRoll {
-  /**
-   * See constructor for DGPercentileRoll. This theoretically could be done in the parent class'
-   * constructor, but since Lethality rolls needs its own class for custom methods anyway,
-   * we will set the target and localized key here.
-   *
-   * @param {String} formula
-   * @param {Object} data
-   * @param {Object} options
-   */
-  constructor(formula, data, options) {
-    super(formula, data, options);
-    this.target = options.item.system.lethality;
-    this.localizedKey = game.i18n.localize("DG.ItemWindow.Weapons.Lethality");
-  }
-
-  /**
-   * Prepares data for a chat message and then passes that data
-   * to a method that actually creates a ChatMessage.
-   *
-   * Lays out and styles message based on outcome of the roll.
-   *
-   * Overrides `DGPercentileRoll.toChat()`
-   *
-   * @returns {Promise<ChatMessage>} - the created chat message.
-   * @override
-   */
-  async toChat() {
-    let resultString = "";
-    let styleOverride = "";
-    if (this.total <= this.target) {
-      resultString = `${game.i18n.localize("DG.Roll.Lethal").toUpperCase()}`;
-      styleOverride = "color: red";
-    } else {
-      resultString = `${game.i18n.localize("DG.Roll.Failure")}`;
-    }
-
-    const { nonLethalDamage } = this;
-    let label = `<b>${game.i18n
-      .localize("DG.Roll.Lethality")
-      .toUpperCase()}</b> ${game.i18n.localize(
-      "DG.Roll.For",
-    )} <b>${this.item.name.toUpperCase()}</b> ${game.i18n.localize(
-      "DG.Roll.Target",
-    )} ${this.target + this.modifier}`;
-    if (this.modifier) {
-      label += ` (${DGUtils.formatStringWithLeadingPlus(this.modifier)}%)`;
-    }
-
-    const html = await renderTemplate(
-      "systems/deltagreen/templates/roll/lethality-roll.hbs",
-      {
-        styleOverride,
-        resultString,
-        total: this.total,
-        die1: nonLethalDamage.die1,
-        die2: nonLethalDamage.die2,
-        nonLethalTotal: nonLethalDamage.total,
-        damageLabel: game.i18n.localize("DG.Roll.Damage"),
-      },
-    );
-
-    return this.toMessage({ content: html, label });
-  }
-
-  /**
-   * Calculates the damage for when a lethality roll fails.
-   * If roll has not been evaluated, return null.
-   *
-   * See full rules on page 57 of agent's handbook.
-   *
-   * Note, this getter does not actually care if the roll has failed.
-   *
-   * @returns {null|Object} - return data about the non-lethal damage.
-   */
-  get nonLethalDamage() {
-    if (!this.total) {
-      return null;
-    }
-
-    // Try to determine what the d100 result would be as if it was two d10's being rolled.
-    const totalString = this.total.toString();
-    const digits = totalString.length;
-    let die1;
-    let die2;
-    switch (digits) {
-      case 1:
-        // If one digit in the result, one die is a 10, and the other is the result.
-        [die1, die2] = [10, this.total];
-        break;
-      case 2:
-        // If two digits in the result, each die is the value of one of the digits. If one of those digits is 0, make it 10.
-        [die1, die2] = totalString
-          .split("")
-          .map((digit) => parseInt(digit))
-          .map((digit) => digit || 10);
-        break;
-      case 3:
-        // If three digits in the result (aka result === 100), each die is a 10.
-        [die1, die2] = [10, 10];
-        break;
-      default:
-        break;
-    }
-
-    const total = die1 + die2;
-    return { die1, die2, total };
-  }
-}
-
-export class DGDamageRoll extends DGRoll {
-  /**
-   * Prepares data for a chat message and then passes that data
-   * to a method that actually creates a ChatMessage.
-   *
-   * @returns {Promise<ChatMessage>} - the created chat message.
-   * @override
-   */
-  async toChat() {
-    let label = this.formula;
-    try {
-      label = `<b>${game.i18n
-        .localize("DG.Roll.Damage")
-        .toUpperCase()}</b> ${game.i18n.localize("DG.Roll.For")} ${
-        this.item.name
-      } (<b>${
-        this.item.system.armorPiercing
-      } </b><img class="armor-piercing-chat-card-img" src="systems/deltagreen/assets/icons/supersonic-bullet.svg" alt="armor penetration"/>)`;
-    } catch (ex) {
-      // console.log(ex);
-      label = `<b>DAMAGE</b> for <b>${label.toUpperCase()}</b>`;
-    }
-    const html = await renderTemplate(
-      "systems/deltagreen/templates/roll/damage-roll.hbs",
-      {
-        formula: this.formula,
-        total: this.total,
-      },
-    );
-
-    return this.toMessage({ content: html, label });
-  }
-
-  async showDialog() {
-    return showDamageRollModifyDialog({
-      itemName: this.item?.name,
-      formula: this.formula,
-    });
-  }
-}
-
-export class DGSanityDamageRoll extends DGRoll {
-  /**
-   * Prepares data for a chat message and then passes that data
-   * to a method that actually creates a ChatMessage.
-   *
-   * @returns {Promise<ChatMessage>} - the created chat message.
-   * @override
-   */
-  async toChat() {
-    const [lowDie, highDie] = this.terms[0].terms.map((formula) => {
-      return Roll.parse(formula)[0] || { faces: parseInt(formula), number: 1 };
-    });
-
-    const [lowResult, highResult] = this.damageResults;
-
-    const label = `<b>${DGUtils.localizeWithFallback(
-      "DG.Generic.SanDamage",
-      "SAN DAMAGE",
-    )}</b> For <b>${lowDie.formula} / ${highDie.formula}</b>`;
-
-    const html = await renderTemplate(
-      "systems/deltagreen/templates/roll/sanity-damage-roll.hbs",
-      {
-        lowFormula: lowDie.formula,
-        highFormula: highDie.formula,
-        lowFaces: lowDie.faces,
-        highFaces: highDie.faces,
-        lowResult,
-        highResult,
-      },
-    );
-
-    return this.toMessage({ content: html, label });
-  }
-
-  /**
-   * Returns the two results for a sanity damage roll.
-   *
-   * Returns null if the roll has not been evaluated.
-   *
-   * @returns {null|Array<Number>} - Array of result numbers
-   */
-  get damageResults() {
-    if (!this.total) return null;
-
-    const [lowResult, highResult] = this.terms[0].results;
-    return [lowResult?.result, highResult?.result];
   }
 }

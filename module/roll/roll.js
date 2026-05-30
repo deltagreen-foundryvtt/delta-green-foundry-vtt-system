@@ -1,10 +1,9 @@
-import {
-  DGRoll,
-  DGPercentileRoll,
-  DGLethalityRoll,
-  DGDamageRoll,
-  DGSanityDamageRoll,
-} from "./roll-classes.js";
+import { DGRoll } from "./classes/dg-roll.js";
+import { DGPercentileRoll } from "./classes/dg-percentile-roll.js";
+import { DGLethalityRoll } from "./classes/dg-lethality-roll.js";
+import { DGDamageRoll } from "./classes/dg-damage-roll.js";
+import { DGSanityDamageRoll } from "./classes/dg-sanity-damage-roll.js";
+import { appendMeleeDamageBonus } from "./melee-damage.js";
 
 export {
   DGRoll,
@@ -58,15 +57,11 @@ export function createDGRollFromDataset(
       roll = new DGLethalityRoll("1D100", {}, rollOptions);
       break;
     case "damage": {
-      let diceFormula = item.system.damage;
-      const { skill } = item.system;
-      if (
-        actor &&
-        (actor.type === "agent" || actor.type === "npc") &&
-        (skill === "unarmed_combat" || skill === "melee_weapons")
-      ) {
-        diceFormula += actor.system.statistics.str.meleeDamageBonusFormula;
-      }
+      const diceFormula = appendMeleeDamageBonus(
+        item.system.damage,
+        actor,
+        item.system.skill,
+      );
       roll = new DGDamageRoll(diceFormula, {}, rollOptions);
       break;
     }

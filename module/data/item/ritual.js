@@ -1,7 +1,7 @@
 import defineBaseItemSystemFields from "./base-fields.js";
 import DGHTMLField from "../fields/html-content-field.js";
 
-const { NumberField, StringField, BooleanField, SchemaField, HTMLField } =
+const { NumberField, StringField, BooleanField, SchemaField } =
   foundry.data.fields;
 
 export default class RitualItemData extends foundry.abstract.TypeDataModel {

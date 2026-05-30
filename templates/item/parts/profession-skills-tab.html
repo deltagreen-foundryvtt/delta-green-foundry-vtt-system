@@ -2,74 +2,87 @@
      data-group="primary"
      data-tab="skills">
     <div class="profession-skills-scroll">
-    <div class="profession-skills-section">
-        <div class="profession-section-toolbar">
-            <span class="profession-skills-toolbar-label">{{localize 'DG.ItemWindow.Profession.AutomaticSkills'}}</span>
-            <button type="button"
-                    class="profession-skills-toolbar-control"
-                    data-action="addAutomaticSkill"
-                    title="{{localize 'DG.ItemWindow.Profession.AddSkill'}}">
-                <i class="fas fa-plus"></i> {{localize 'DG.ItemWindow.Profession.AddSkill'}}
-            </button>
-            <span class="profession-skills-toolbar-label">{{localize 'DG.ItemWindow.Profession.Bonds'}}</span>
-            <input type="number"
-                   class="profession-skills-toolbar-control profession-bonds-input"
-                   name="system.bonds"
-                   value="{{item.system.bonds}}"
-                   min="1"
-                   max="5"
-                   data-dtype="Number"
-                   title="{{localize 'DG.ItemWindow.Profession.BondsTooltip'}}" />
-        </div>
-        <ol class="profession-skill-list">
-            {{#each automaticSkillRows}}
-                <li class="profession-skill-row">
-                    <span class="profession-skill-label">{{label}}</span>
-                    <span class="profession-skill-rating">{{rating}}%</span>
-                    <button type="button"
-                            class="profession-skill-remove"
-                            data-action="removeAutomaticSkill"
-                            data-skill-key="{{key}}"
-                            title="{{localize 'DG.ItemWindow.Profession.RemoveSkill'}}">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </li>
-            {{/each}}
-        </ol>
-    </div>
+        <section class="profession-skills-section">
+            <header class="profession-section-header">
+                <h4 class="profession-section-title">{{localize 'DG.ItemWindow.Profession.AutomaticSkills'}}</h4>
+                <button type="button"
+                        class="profession-section-add"
+                        data-action="addAutomaticSkill"
+                        title="{{localize 'DG.ItemWindow.Profession.AddSkill'}}">
+                    <i class="fas fa-plus"></i> {{localize 'DG.ItemWindow.Profession.AddSkill'}}
+                </button>
+            </header>
+            <div class="profession-skill-list-columns-header">
+                <div class="profession-skill-col-header">
+                    <span>{{localize 'DG.ItemWindow.Profession.Skill'}}</span>
+                    <span>{{localize 'DG.ItemWindow.Profession.Rating'}}</span>
+                </div>
+                <div class="profession-skill-col-header">
+                    <span>{{localize 'DG.ItemWindow.Profession.Skill'}}</span>
+                    <span>{{localize 'DG.ItemWindow.Profession.Rating'}}</span>
+                </div>
+            </div>
+            <ol class="profession-skill-list">
+                {{#each automaticSkillRows}}
+                    <li class="profession-skill-row">
+                        <span class="profession-skill-label">{{label}}</span>
+                        <span class="profession-skill-rating">{{rating}}%</span>
+                        <button type="button"
+                                class="profession-skill-remove"
+                                data-action="removeAutomaticSkill"
+                                data-skill-key="{{key}}"
+                                title="{{localize 'DG.ItemWindow.Profession.RemoveSkill'}}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </li>
+                {{/each}}
+            </ol>
+        </section>
 
-    <div class="profession-skills-section">
-        <div class="profession-section-toolbar">
-            <span class="profession-skills-toolbar-label">{{localize 'DG.ItemWindow.Profession.OptionSkills'}}</span>
-            <button type="button"
-                    class="profession-skills-toolbar-control"
-                    data-action="addOptionSkill"
-                    title="{{localize 'DG.ItemWindow.Profession.AddSkill'}}">
-                <i class="fas fa-plus"></i> {{localize 'DG.ItemWindow.Profession.AddSkill'}}
-            </button>
-            <span class="profession-skills-toolbar-label">{{localize 'DG.ItemWindow.Profession.OptionPicks'}}</span>
-            <input type="number"
-                   class="profession-skills-toolbar-control profession-option-picks-input"
-                   name="system.optionSkills.optionPicks"
-                   value="{{optionPicks}}"
-                   min="0"
-                   data-dtype="Number" />
-        </div>
-        <ol class="profession-skill-list">
-            {{#each optionSkillRows}}
-                <li class="profession-skill-row">
-                    <span class="profession-skill-label">{{label}}</span>
-                    <span class="profession-skill-rating">{{rating}}%</span>
-                    <button type="button"
-                            class="profession-skill-remove"
-                            data-action="removeOptionSkill"
-                            data-skill-key="{{key}}"
-                            title="{{localize 'DG.ItemWindow.Profession.RemoveSkill'}}">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </li>
-            {{/each}}
-        </ol>
-    </div>
+        <section class="profession-skills-section">
+            <header class="profession-section-header">
+                <h4 class="profession-section-title">{{localize 'DG.ItemWindow.Profession.OptionSkills'}}</h4>
+                <button type="button"
+                        class="profession-section-add"
+                        data-action="addOptionSkill"
+                        title="{{localize 'DG.ItemWindow.Profession.AddSkill'}}">
+                    <i class="fas fa-plus"></i> {{localize 'DG.ItemWindow.Profession.AddSkill'}}
+                </button>
+            </header>
+            <div class="profession-section-config">
+                <span class="resource-label">{{localize 'DG.ItemWindow.Profession.OptionPicks'}}:</span>
+                <input type="number"
+                       class="item-sheet-short-input profession-option-picks-input"
+                       name="system.optionSkills.optionPicks"
+                       value="{{optionPicks}}"
+                       min="0"
+                       data-dtype="Number" />
+            </div>
+            <div class="profession-skill-list-columns-header">
+                <div class="profession-skill-col-header">
+                    <span>{{localize 'DG.ItemWindow.Profession.Skill'}}</span>
+                    <span>{{localize 'DG.ItemWindow.Profession.Rating'}}</span>
+                </div>
+                <div class="profession-skill-col-header">
+                    <span>{{localize 'DG.ItemWindow.Profession.Skill'}}</span>
+                    <span>{{localize 'DG.ItemWindow.Profession.Rating'}}</span>
+                </div>
+            </div>
+            <ol class="profession-skill-list">
+                {{#each optionSkillRows}}
+                    <li class="profession-skill-row">
+                        <span class="profession-skill-label">{{label}}</span>
+                        <span class="profession-skill-rating">{{rating}}%</span>
+                        <button type="button"
+                                class="profession-skill-remove"
+                                data-action="removeOptionSkill"
+                                data-skill-key="{{key}}"
+                                title="{{localize 'DG.ItemWindow.Profession.RemoveSkill'}}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </li>
+                {{/each}}
+            </ol>
+        </section>
     </div>
 </div>

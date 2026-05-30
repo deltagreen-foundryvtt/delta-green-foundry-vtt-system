@@ -111,9 +111,13 @@ function GetAttacksFromInput(inputText) {
               }
             }
 
-            // look for armor piercing
             if (attackLine.indexOf("ARMOR PIERCING") >= 0) {
-              // TODO: This should do something.
+              const apMatch = attackLine.match(/ARMOR\s+PIERCING\s*(\d+)/i);
+              const armorPiercing = apMatch?.[1]
+                ? parseInt(apMatch[1], 10)
+                : 5;
+              weaponData.armorPiercing = armorPiercing;
+              weaponData.system.armorPiercing = armorPiercing;
             }
           }
 

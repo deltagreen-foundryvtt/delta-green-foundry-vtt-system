@@ -1,4 +1,4 @@
-import DG, { BASE_TEMPLATE_PATH } from "../config.js";
+import DG, { BASE_TEMPLATE_PATH } from "../config/index.js";
 
 export default class ActorEditStatForm extends foundry.applications.api.HandlebarsApplicationMixin(
   foundry.applications.api.ApplicationV2,

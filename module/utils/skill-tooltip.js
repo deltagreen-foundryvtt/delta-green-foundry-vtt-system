@@ -1,4 +1,4 @@
-/** @typedef {import("./profession-skills.js").ProfessionSkillRef} ProfessionSkillRef */
+/** @typedef {import("../profession/index.js").ProfessionSkillRef} ProfessionSkillRef */
 /** @typedef {"dialog" | "sheet"} SkillTooltipContext */
 
 import { appendRollTargetTooltipSection } from "./roll-target-tooltip.js";

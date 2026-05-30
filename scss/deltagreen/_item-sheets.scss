@@ -1,6 +1,20 @@
 @use "../mixins" as *;
 
 /*
+  Item sheets (ApplicationV2): Foundry .application uses light --color-text-primary,
+  but DG window-content uses light parchment backgrounds. Reset ink, headings, labels,
+  and form fields here so new item tabs stay readable without per-type patches.
+*/
+.deltagreen.item .window-content {
+  color: var(--dg-ink);
+  scrollbar-color: #215112 #111 !important;
+
+  @include dg-window-form-inputs-with-select;
+  @include dg-parchment-content-theme;
+  @include dg-parchment-form-fields;
+}
+
+/*
   Item Sheet Common CSS
 */
 

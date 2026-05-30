@@ -1,0 +1,32 @@
+<div class="item flexrow flex-group-left flex-thin-border special-training-box skill-row">
+    <div class="flexrow">
+        <label class="{{if_gt block.targetNumber 0 'rollable' 'not-rollable'}} skill-label {{block.rollTargetDisplayClass}}"
+               data-action="roll"
+               data-key="{{block.key}}"
+               data-name="{{block.name}}"
+               data-rolltype="special-training"
+               {{#if block.tooltip }}
+               {{#unless (eq @root.skillTooltipDisplay "never") }}
+               data-tooltip="{{block.tooltip}}"
+               {{/unless }}
+               {{/if }}>
+            {{block.displayLabel}}
+        </label>
+        <div class="item-controls skill-and-training-controls custom-skill-edit-controls">
+            <a class="item-control"
+               data-action="specialTrainingAction"
+               data-action-type="edit"
+               data-id="{{block.id}}"
+               {{#unless (eq @root.skillTooltipDisplay "never") }}
+               title="Edit Training"
+               {{/unless }}><i class="fas fa-edit"></i></a>
+            <a class="item-control"
+               data-action="specialTrainingAction"
+               data-action-type="delete"
+               {{#unless (eq @root.skillTooltipDisplay "never") }}
+               title="Delete Training"
+               {{/unless }}
+               data-id="{{block.id}}"><i class="fas fa-trash"></i></a>
+        </div>
+    </div>
+</div>

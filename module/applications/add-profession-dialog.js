@@ -1,4 +1,4 @@
-import { BASE_TEMPLATE_PATH } from "../config.js";
+import { BASE_TEMPLATE_PATH } from "../config/index.js";
 import {
   bindDialogTabs,
   getDialogContentRoot,
@@ -15,7 +15,7 @@ import {
   parseProfessionSkillKey,
   prepareProfessionSkillRows,
   splitProfessionSkillMap,
-} from "../utils/profession-skills.js";
+} from "../profession/index.js";
 import {
   reorderForColumnSorting,
   splitIntoColumns,

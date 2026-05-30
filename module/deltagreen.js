@@ -1,5 +1,5 @@
 // Import Modules
-import DG from "./config.js";
+import DG from "./config/index.js";
 import DeltaGreenActor from "./actor/actor.js";
 import DGAgentSheet from "./sheets/agent-sheet.js";
 import DeltaGreenItem from "./item/item.js";
@@ -10,7 +10,7 @@ import {
   DGLethalityRoll,
   DGDamageRoll,
   DGSanityDamageRoll,
-} from "./roll/roll-classes.js";
+} from "./roll/roll.js";
 import registerSystemSettings from "./settings.js";
 import preloadHandlebarsTemplates from "./templates.js";
 import registerHandlebarsHelpers from "./utils/register-helpers.js";
@@ -39,14 +39,14 @@ import GearItemData from "./data/item/gear.js";
 import TomeItemData from "./data/item/tome.js";
 import RitualItemData from "./data/item/ritual.js";
 import ProfessionItemData from "./data/item/profession.js";
-import DGActiveEffect from "./documents/dg-active-effect.js";
+import DGActiveEffect from "./active-effect/documents/dg-active-effect.js";
 import DGActiveEffectConfig from "./applications/dg-active-effect-config.js";
-import DGActiveEffectTypeDataModel from "./data/active-effect/dg-active-effect-data.js";
-import { syncExhaustionEffect } from "./utils/exhaustion-effect.js";
+import DGActiveEffectTypeDataModel from "./active-effect/data/dg-active-effect-data.js";
+import { syncExhaustionEffect } from "./active-effect/runtime/exhaustion-effect.js";
 import {
   pruneAllAgentsExpiredStimulants,
   pruneExpiredStimulantEffects,
-} from "./utils/stimulant-effect.js";
+} from "./active-effect/runtime/stimulant-effect.js";
 
 const { Actors, Items } = foundry.documents.collections;
 const { DocumentSheetConfig } = foundry.applications.apps;

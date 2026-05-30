@@ -1,11 +1,11 @@
-import { refreshDerivedAfterActiveEffects } from "../utils/active-effect-derived.js";
+import { refreshDerivedAfterActiveEffects } from "../active-effect/runtime/derived.js";
 import { prepareAgentStatSanityTooltips } from "../utils/roll-target-tooltip.js";
 import {
   syncExhaustionEffect,
   updateTouchesExhaustionPhysical,
-} from "../utils/exhaustion-effect.js";
-import { pruneExpiredStimulantEffects } from "../utils/stimulant-effect.js";
-import { sanitizeActiveEffectBackedUpdateData } from "../utils/active-effect-submit.js";
+} from "../active-effect/runtime/exhaustion-effect.js";
+import { pruneExpiredStimulantEffects } from "../active-effect/runtime/stimulant-effect.js";
+import { sanitizeActiveEffectBackedUpdateData } from "../active-effect/runtime/submit.js";
 
 /**
  * Extend the base Actor entity by defining a custom roll data structure which is ideal for the Simple system.

@@ -7,7 +7,7 @@ import {
   prepareAgentSkillFlags,
   prepareBreakingPointHit,
   prepareStatisticsX5,
-} from "./derived-actor-data.js";
+} from "../../data/derived/actor-derived.js";
 
 /**
  * @param {number} current

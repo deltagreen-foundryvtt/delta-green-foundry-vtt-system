@@ -1,4 +1,4 @@
-import DG, { BASE_TEMPLATE_PATH } from "../config.js";
+import DG, { BASE_TEMPLATE_PATH } from "../config/index.js";
 import { getRichTextFieldsForPart } from "../config/rich-text-fields.js";
 import { prepareRichTextContext } from "../utils/rich-text.js";
 

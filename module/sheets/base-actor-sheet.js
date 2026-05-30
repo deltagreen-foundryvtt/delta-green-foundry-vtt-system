@@ -85,7 +85,9 @@ export default class DGActorSheet extends ComposedActorSheetBase {
     if (this.actor.type === "vehicle") return context;
 
     this._sortSkills();
-    this._sortCustomSkills();
+    if (this.actor.type !== "agent") {
+      this._sortCustomSkills();
+    }
 
     context.skillTooltipDisplay = game.settings.get(
       "deltagreen",

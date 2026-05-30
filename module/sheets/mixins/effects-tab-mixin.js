@@ -1,5 +1,5 @@
 import { SUPPORTED_ITEM_TYPES } from "../../active-effect/effect-fields.js";
-import { getTransferSuppressionReasonKey } from "../../documents/dg-active-effect.js";
+import { getTransferSuppressionReasonKey } from "../../active-effect/documents/dg-active-effect.js";
 
 /** @param {typeof foundry.applications.api.ApplicationV2} Base */
 export default function EffectsTabMixin(Base) {

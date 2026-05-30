@@ -1,6 +1,7 @@
 <div class="tab skills {{tabs.skills.cssClass}}"
      data-group="primary"
      data-tab="skills">
+    <div class="skills-tab-scroll">
     <div class="horizontal-bar-section-divider skills-header">
         <span class="skills-header-title">{{localize "DG.Sheet.BlockHeaders.SkillsAndTraining"}}</span>
         {{#if (ne actor.type "agent") }}
@@ -15,37 +16,52 @@
         {{/if}}
     </div>
 
-    <div class="grid grid-3col">
-        {{#each actor.system.sortedSkills as |skill key| }}
-            <div class="flexrow flex-group-left flex-thin-border">
-                <label class="{{if_gt skill.proficiency 0 'rollable' 'not-rollable'}} skill-label"
-                       data-action="roll"
-                       data-key="{{skill.key}}"
-                       data-rolltype="skill"
-                       for="system.skills.{{skill.key}}.proficiency"
-                       data-tooltip="{{ skill.tooltip }}">
-                    {{localizeWithFallback (concat "DG.Skills." skill.key) skill.label }}
-                </label>
-
-                <input class="percentile-skill-input {{skill.rollTargetDisplayClass}}"
-                       type="text"
-                       name="system.skills.{{skill.key}}.proficiency"
-                       value="{{skill.proficiency}}"
-                       data-dtype="Number"
-                       {{disabled skill.isCalculatedValue}} />
-                {{#if (eq ../actor.type "agent") }}
-                    <input class="checkbox-skill-input"
-                           type="checkbox"
-                           name="system.skills.{{skill.key}}.failure"
-                           data-tooltip="{{localize 'DG.Tooltip.SkillFailCheckbox' }}"
-                           {{checked skill.failure}}
-                           {{disabled skill.cannotBeImprovedByFailure }} />
-                {{/if}}
+    <div class="agent-skills-columns grid grid-3col">
+        {{#each skillColumns as |column| }}
+            <div class="agent-skills-column">
+                {{#each column as |skill| }}
+                    {{> "systems/deltagreen/templates/actor/partials/agent-skill-row-partial.html" skill=skill }}
+                {{/each}}
             </div>
         {{/each}}
     </div>
 
-    <div>{{> "systems/deltagreen/templates/actor/partials/custom-skills-partial-agent.html" }}</div>
+    {{> "systems/deltagreen/templates/actor/partials/custom-skills-partial-agent.html" }}
+    </div>
+
+    <div class="skills-tab-footer">
+        <div class="item-controls skill-util-buttons">
+            <div class="skill-util-buttons-row">
+                <a class="item-control typed-skill-add action-pill"
+                   data-action="typedSkillAction"
+                   data-action-type="create">
+                    <i class="fas fa-plus"></i>
+                    {{localize 'DG.Skills.AddTypedOrCustomSkill'}}
+                </a>
+
+                <a class="item-control action-pill"
+                   data-action="specialTrainingAction"
+                   data-action-type="create">
+                    <i class="fas fa-plus"></i>
+                    {{localize 'DG.SpecialTraining.Dialog.CreateSpecialTraining'}}
+                </a>
+
+                <a class="item-control action-pill custom-skills-edit-toggle"
+                   data-action="toggleCustomSkillsEdit"
+                   data-tooltip="{{localize 'DG.Skills.ToggleEditDeleteSkills'}}">
+                    <i class="fas fa-edit"></i>
+                    {{localize 'DG.Skills.EditDeleteTypedSkills'}}
+                </a>
+            </div>
+
+            <div class="skill-util-buttons-row skill-util-buttons-row--full">
+                <a class="item-control action-pill" data-action="applySkillImprovements">
+                    {{localize 'DG.Skills.ApplySkillImprovements.Title'}}
+                    <i class="fas fa-dice"></i>
+                </a>
+            </div>
+        </div>
+    </div>
 
     {{#if showNotesInSkills }}
         {{> "systems/deltagreen/templates/actor/partials/notes-partial.html"}}

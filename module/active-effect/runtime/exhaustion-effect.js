@@ -1,6 +1,6 @@
-import DG from "../config.js";
-import { ROLL_TARGET_FIELD_KEYS } from "../active-effect/effect-fields.js";
-import { getEffectiveSuppressExhaustion } from "./stimulant-effect.js";
+import DG from "../../config/index.js";
+import { ROLL_TARGET_FIELD_KEYS } from "../effect-fields.js";
+import { getEffectiveSuppressExhaustion } from "./agent-condition-sync.js";
 
 /** @type {WeakMap<Actor, Promise<void>>} */
 const syncLocks = new WeakMap();

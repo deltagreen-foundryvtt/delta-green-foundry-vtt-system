@@ -6,28 +6,13 @@
   section.window-content {
     @include dg-window-content;
     @include dg-window-form-inputs-with-select;
-
-    :is(h1, h2, h3, h4, h5, h6) {
-      color: inherit;
-    }
+    @include dg-parchment-content-theme;
+    @include dg-parchment-form-fields;
   }
 
-  /* Foundry sets explicit light-theme tokens on headings/labels; inherit parchment body color. */
-  .standard-form .form-group > label,
-  .form-group > label,
   .dg-dialog__field-label,
   .dg-dialog .dg-dialog__heading,
   .dg-dialog__intro {
-    color: inherit;
-  }
-
-  .dg-dialog input[type="text"],
-  .dg-dialog input[type="number"],
-  .dg-dialog input[type="password"],
-  .dg-dialog select {
-    background-color: rgba(0, 0, 0, 0.05);
-    border: 1px solid rgb(122, 121, 113);
-    border-radius: 3px;
     color: inherit;
   }
 

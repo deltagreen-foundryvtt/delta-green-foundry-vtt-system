@@ -1,6 +1,6 @@
-import DG from "../config.js";
+import DG from "../config/index.js";
 import { ROLL_TARGET_FIELD_KEYS } from "../active-effect/effect-fields.js";
-import { clampPercentileRollTarget } from "./active-effect-derived.js";
+import { clampPercentileRollTarget } from "../active-effect/runtime/derived.js";
 import DGUtils from "./utility-functions.js";
 
 /** @typedef {"system.rollTarget.allSkills"|"system.rollTarget.sanity"|"system.rollTarget.statistics"} RollTargetFieldKey */

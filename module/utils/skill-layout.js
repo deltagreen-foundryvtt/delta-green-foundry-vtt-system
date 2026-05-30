@@ -1,20 +1,4 @@
-/**
- * Splits a flat list into column arrays for vertical stacking (top-to-bottom per column).
- *
- * @template T
- * @param {T[]} arr
- * @param {number} numCols
- * @returns {T[][]}
- */
-export function splitIntoColumns(arr, numCols) {
-  if (numCols <= 1) return [arr];
-  const columns = Array.from({ length: numCols }, () => /** @type {T[]} */ ([]));
-  const perCol = Math.ceil(arr.length / numCols);
-  for (let col = 0; col < numCols; col++) {
-    columns[col] = arr.slice(col * perCol, (col + 1) * perCol);
-  }
-  return columns;
-}
+const AGENT_SKILL_COLUMNS = 3;
 
 /**
  * Reorders a flat array into column-major order for grid display.
@@ -24,7 +8,6 @@ export function splitIntoColumns(arr, numCols) {
  * @returns {object[]}
  */
 export function reorderForColumnSorting(arr, numCols) {
-  const numRows = Math.ceil(arr.length / numCols);
   const reordered = new Array(arr.length);
 
   const baseRowCount = Math.floor(arr.length / numCols);
@@ -54,91 +37,113 @@ export function reorderForColumnSorting(arr, numCols) {
 }
 
 /**
- * @param {object} column
- * @param {object} group
- * @returns {void}
- */
-function appendSkillGroupToColumn(column, group) {
-  column.blocks.push({
-    type: "groupHeader",
-    group: group.group,
-    label: group.label,
-    ...(group.isSpecialTraining ? { isSpecialTraining: true } : {}),
-  });
-
-  const skillType = group.isSpecialTraining ? "training" : "typedSkill";
-  for (const skill of group.skills) {
-    column.blocks.push({ ...skill, type: skillType });
-  }
-
-  column.height += group.rowCount;
-}
-
-/**
- * @param {object[]} groups
- * @param {number} numCols
- * @returns {object[][]}
- */
-function packSkillGroupsByColumn(groups, numCols) {
-  const columns = Array.from({ length: numCols }, () => ({
-    blocks: [],
-    height: 0,
-  }));
-
-  if (groups.length === 0) {
-    return columns.map((col) => col.blocks);
-  }
-
-  const totalHeight = groups.reduce((sum, group) => sum + group.rowCount, 0);
-  const targetHeight = totalHeight / numCols;
-  let colIndex = 0;
-
-  for (const group of groups) {
-    const col = columns[colIndex];
-
-    if (
-      colIndex < numCols - 1 &&
-      col.blocks.length > 0 &&
-      col.height + group.rowCount > targetHeight
-    ) {
-      colIndex += 1;
-    }
-
-    appendSkillGroupToColumn(columns[colIndex], group);
-  }
-
-  return columns.map((col) => col.blocks);
-}
-
-/**
- * @param {object[]} groups
- * @param {number} numCols
- * @returns {object[][]}
- */
-function packSkillGroupsByRow(groups, numCols) {
-  const columns = Array.from({ length: numCols }, () => ({
-    blocks: [],
-    height: 0,
-  }));
-
-  for (let i = 0; i < groups.length; i++) {
-    appendSkillGroupToColumn(columns[i % numCols], groups[i]);
-  }
-
-  return columns.map((col) => col.blocks);
-}
-
-/**
- * Packs skill groups into columns without splitting a group across columns.
+ * Column-major packing (matches legacy reorderForColumnSorting + 3-column grid).
  *
- * @param {object[]} groups
+ * @template T
+ * @param {T[]} items
  * @param {number} numCols
+ * @returns {T[][]}
+ */
+function packItemsColumnMajor(items, numCols) {
+  const reordered = reorderForColumnSorting([...items], numCols);
+  const columns = Array.from(
+    { length: numCols },
+    () => /** @type {T[]} */ ([]),
+  );
+
+  for (let col = 0; col < numCols; col++) {
+    for (let row = 0; row * numCols + col < reordered.length; row++) {
+      const item = reordered[row * numCols + col];
+      if (item !== undefined) {
+        columns[col].push(item);
+      }
+    }
+  }
+
+  return columns;
+}
+
+/**
+ * Row-major packing: alphabetical left-to-right, top-to-bottom across columns.
+ *
+ * @template T
+ * @param {T[]} items
+ * @param {number} numCols
+ * @returns {T[][]}
+ */
+function packItemsRowMajor(items, numCols) {
+  const columns = Array.from(
+    { length: numCols },
+    () => /** @type {T[]} */ ([]),
+  );
+
+  for (let i = 0; i < items.length; i++) {
+    columns[i % numCols].push(items[i]);
+  }
+
+  return columns;
+}
+
+/**
+ * Packs items into column arrays for vertical stacking (top-to-bottom per column).
+ *
+ * @template T
+ * @param {T[]} items
+ * @param {number} numCols
+ * @param {{ sortByColumn?: boolean }} [options]
+ * @returns {T[][]}
+ */
+export function packItemsIntoWeightedColumns(
+  items,
+  numCols,
+  { sortByColumn = false } = {},
+) {
+  if (numCols <= 1) return [items];
+
+  if (items.length === 0) {
+    return Array.from({ length: numCols }, () => /** @type {T[]} */ ([]));
+  }
+
+  if (sortByColumn) {
+    return packItemsColumnMajor(items, numCols);
+  }
+
+  return packItemsRowMajor(items, numCols);
+}
+
+/**
+ * Packs agent skills into sheet columns.
+ *
+ * @param {object[]} sortedSkills
  * @param {boolean} sortByColumn
+ * @param {number} [numCols]
  * @returns {object[][]}
  */
-export function packSkillGroupsIntoColumns(groups, numCols, sortByColumn) {
-  if (sortByColumn) {
-    return packSkillGroupsByColumn(groups, numCols);
+export function prepareAgentSkillColumns(
+  sortedSkills,
+  sortByColumn,
+  numCols = AGENT_SKILL_COLUMNS,
+) {
+  return packItemsIntoWeightedColumns(sortedSkills, numCols, { sortByColumn });
+}
+
+/**
+ * Splits a flat list into column arrays for vertical stacking (top-to-bottom per column).
+ *
+ * @template T
+ * @param {T[]} arr
+ * @param {number} numCols
+ * @returns {T[][]}
+ */
+export function splitIntoColumns(arr, numCols) {
+  if (numCols <= 1) return [arr];
+  const columns = Array.from(
+    { length: numCols },
+    () => /** @type {T[]} */ ([]),
+  );
+  const perCol = Math.ceil(arr.length / numCols);
+  for (let col = 0; col < numCols; col++) {
+    columns[col] = arr.slice(col * perCol, (col + 1) * perCol);
   }
-  return packSkillGroupsByRow(groups, numCols);
+  return columns;
 }

@@ -1,5 +1,5 @@
-import DG from "../config.js";
-import { showDiceSoNicePooledRolls } from "./dice-so-nice.js";
+import DG from "../config/index.js";
+import { showDiceSoNicePooledRolls } from "../integrations/dice-so-nice.js";
 
 export const STAT_KEYS = DG.statistics;
 export const POINT_BUY_TOTAL = 72;
@@ -46,11 +46,7 @@ export function validatePointBuyValues(values) {
   let sum = 0;
   for (const key of STAT_KEYS) {
     const value = Number(values[key]);
-    if (
-      !Number.isInteger(value) ||
-      value < STAT_MIN ||
-      value > STAT_MAX
-    ) {
+    if (!Number.isInteger(value) || value < STAT_MIN || value > STAT_MAX) {
       return { isValid: false, remaining: POINT_BUY_TOTAL - sum };
     }
     sum += value;
@@ -95,13 +91,17 @@ export async function rollStatisticScores({
 export function buildRollStatsChatContent(rolls) {
   const cells = rolls.map(
     (entry, index) =>
-      `<td class="roll-stats-chat-value roll-stats-chat-value--${index % 2 === 0 ? "a" : "b"}">${foundry.utils.escapeHTML(String(entry.total))}</td>`,
+      `<td class="roll-stats-chat-value roll-stats-chat-value--${
+        index % 2 === 0 ? "a" : "b"
+      }">${foundry.utils.escapeHTML(String(entry.total))}</td>`,
   );
   const rows = [];
   for (let i = 0; i < cells.length; i += 3) {
     rows.push(`<tr>${cells.slice(i, i + 3).join("")}</tr>`);
   }
-  return `<table class="roll-stats-chat-table"><tbody>${rows.join("")}</tbody></table>`;
+  return `<table class="roll-stats-chat-table"><tbody>${rows.join(
+    "",
+  )}</tbody></table>`;
 }
 
 /**

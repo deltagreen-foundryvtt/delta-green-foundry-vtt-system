@@ -10,9 +10,9 @@ import {
   prepareSanityAdaptations,
   prepareStatisticsX5,
   removeLegacyRitualSkill,
-} from "../../utils/derived-actor-data.js";
+} from "../../data/derived/actor-derived.js";
 
-const { SchemaField, NumberField, StringField, BooleanField, HTMLField } =
+const { SchemaField, NumberField, StringField, BooleanField } =
   foundry.data.fields;
 
 export default class AgentData extends CharacterData {

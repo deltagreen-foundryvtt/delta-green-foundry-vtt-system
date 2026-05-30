@@ -1,5 +1,5 @@
-import DG from "../config.js";
-import { getStatisticEffectiveValue } from "./derived-actor-data.js";
+import DG from "../../config/index.js";
+import { getStatisticEffectiveValue } from "../../data/derived/actor-derived.js";
 
 /**
  * Strip form values that match post–AE prepared numbers so persisted data stays at base values.
