@@ -22,7 +22,11 @@ export default class RitualItemData extends foundry.abstract.TypeDataModel {
       activationCosts: new StringField({ initial: "" }),
       activationTime: new StringField({ initial: "" }),
       complexity: new StringField({ initial: "Simple" }),
-      handlerNotes: new HTMLField({ initial: "", blank: true, textSearch: true }),
+      handlerNotes: new HTMLField({
+        initial: "",
+        blank: true,
+        textSearch: true,
+      }),
       revealed: new BooleanField({ initial: false }),
     };
   }

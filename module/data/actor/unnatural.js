@@ -17,7 +17,12 @@ export default class UnnaturalData extends CharacterData {
         successLoss: new StringField({ initial: "1" }),
       }),
       schemaVersion: new NumberField({ initial: 1.0 }),
-      notes: new HTMLField({ initial: "", blank: true, textSearch: true }),
+      notes: new HTMLField({
+        initial: "",
+        blank: true,
+        textSearch: true,
+        allowColor: true,
+      }),
       shortDescription: new StringField({ initial: "" }),
       showUntrainedSkills: new BooleanField({ initial: true }),
     };

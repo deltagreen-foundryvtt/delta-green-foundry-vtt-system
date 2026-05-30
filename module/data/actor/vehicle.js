@@ -8,7 +8,11 @@ export default class VehicleData extends foundry.abstract.TypeDataModel {
     return {
       ...SheetSettingsActorData.defineSchema(),
       name: new StringField({ initial: "" }),
-      description: new HTMLField({ initial: "", blank: true, textSearch: true }),
+      description: new HTMLField({
+        initial: "",
+        blank: true,
+        textSearch: true,
+      }),
       shortDescription: new StringField({ initial: "" }),
       health: new SchemaField({
         value: new NumberField({ initial: 10 }),

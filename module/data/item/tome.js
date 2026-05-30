@@ -16,7 +16,11 @@ export default class TomeItemData extends foundry.abstract.TypeDataModel {
         failedLoss: new StringField({ initial: "1D6" }),
         successLoss: new StringField({ initial: "1D4" }),
       }),
-      handlerNotes: new HTMLField({ initial: "", blank: true, textSearch: true }),
+      handlerNotes: new HTMLField({
+        initial: "",
+        blank: true,
+        textSearch: true,
+      }),
       revealed: new BooleanField({ initial: false }),
     };
   }
