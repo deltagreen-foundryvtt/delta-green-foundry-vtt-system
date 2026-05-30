@@ -1,0 +1,115 @@
+/* Profession item sheet */
+.deltagreen .profession-sheet-grid-2col {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.75rem;
+  align-items: start;
+}
+
+.deltagreen .profession-sheet-name {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.deltagreen .tab.profession-skills {
+  --profession-toolbar-label-width: 11rem;
+  --profession-toolbar-secondary-label-width: 7rem;
+}
+
+.deltagreen .tab.profession-skills .profession-skills-section {
+  margin-top: 0.75rem;
+}
+
+.deltagreen .tab.profession-skills .profession-skills-section:first-child {
+  margin-top: 0;
+}
+
+.deltagreen .tab.profession-skills .profession-section-toolbar {
+  display: grid;
+  grid-template-columns:
+    var(--profession-toolbar-label-width)
+    auto
+    var(--profession-toolbar-secondary-label-width)
+    4rem;
+  align-items: center;
+  column-gap: 0.5rem;
+  margin-bottom: 0.35rem;
+}
+
+.deltagreen .tab.profession-skills .profession-skills-toolbar-label {
+  font-weight: bold;
+}
+
+.deltagreen .tab.profession-skills .profession-skills-toolbar-control {
+  justify-self: start;
+}
+
+.deltagreen .tab.profession-skills .profession-bonds-input,
+.deltagreen .tab.profession-skills .profession-option-picks-input {
+  width: 100%;
+  text-align: center;
+}
+
+.deltagreen .tab.profession-skills .profession-skill-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.25rem 1rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.deltagreen .tab.profession-skills .profession-skill-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.15rem 0;
+  min-width: 0;
+}
+
+.deltagreen .tab.profession-skills .profession-skill-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.deltagreen .tab.profession-skills .profession-skill-rating {
+  flex-shrink: 0;
+  min-width: 2.5rem;
+  text-align: right;
+}
+
+.roll-stats-chat-table {
+  width: auto;
+  margin: 0 auto;
+  border-collapse: collapse;
+}
+
+/* Override Foundry row striping; alternate per cell in reading order (checkerboard in 3 cols) */
+.dg-chat-card__body .roll-stats-chat-table tbody tr {
+  background-color: transparent;
+}
+
+.dg-chat-card__body .roll-stats-chat-table td {
+  padding: 0.35rem 1rem;
+  text-align: center;
+  font-weight: bold;
+  font-size: var(--font-size-16, 1rem);
+  border: 1px solid var(--color-border-light-2, rgba(255, 255, 255, 0.2));
+}
+
+.dg-chat-card__body .roll-stats-chat-table td.roll-stats-chat-value--a {
+  background-color: var(--table-row-color-odd, transparent);
+}
+
+.dg-chat-card__body .roll-stats-chat-table td.roll-stats-chat-value--b {
+  background-color: var(--table-row-color-even, rgba(255, 255, 255, 0.1));
+}
+
+.dg-chat-card__body .roll-stats-chat-table .roll-stats-chat-value {
+  min-width: 2rem;
+}

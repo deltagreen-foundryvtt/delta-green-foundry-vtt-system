@@ -1,0 +1,28 @@
+/* TinyMCE iframe (legacy); theme is not available inside the iframe — keep Special Elite. */
+.tox .tox-editor-container,
+.tox .tox-edit-area {
+  font-family: "SpecialElite", sans-serif !important;
+}
+
+.cowboy-style {
+  .editor-host .editor .editor-content,
+  .editor-host prose-mirror .editor-content,
+  .editor-host prose-mirror .editor-content .ProseMirror,
+  .editor-host .tox,
+  .editor-host .tox-tinymce,
+  .editor-host .tox .tox-edit-area {
+    font-family: "SpecialElite", sans-serif !important;
+  }
+}
+
+.outlaw-style,
+.program-style {
+  .editor-host .editor .editor-content,
+  .editor-host prose-mirror .editor-content,
+  .editor-host prose-mirror .editor-content .ProseMirror,
+  .editor-host .tox,
+  .editor-host .tox-tinymce,
+  .editor-host .tox .tox-edit-area {
+    font-family: "PublicSans", sans-serif !important;
+  }
+}

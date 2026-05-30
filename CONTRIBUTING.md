@@ -12,7 +12,7 @@
 
 ### Formatters
 
-- JavaScript, JSON, CSS: [Prettier](https://prettier.io/docs/install)
+- JavaScript, JSON, SCSS: [Prettier](https://prettier.io/docs/install)
 - Handlebars: [DJLint](https://djlint.com/docs/getting-started/)
 
 ### Linters
@@ -20,12 +20,13 @@
 - JavaScript: [Eslint](https://eslint.org/docs/latest/use/getting-started)
 - Markdown: [Markdownlint](https://github.com/markdownlint/markdownlint)
 - Handlebars: DJLint (see above)
-- CSS: VSCode Built-in
+- SCSS: VSCode Built-in
 
 ### Misc
 
 - [EditorConfig](https://editorconfig.org/) - Used to standardize file configurations like tabs vs. spaces, end-of-line characters, etc.
 - [FVTT CLI](https://github.com/foundryvtt/foundryvtt-cli) - Used to package document JSON files into LevelDB packs, and vice-versa. In simpler terms, this lets us convert documents in compendia into JSON files, OR turn those JSON files back into documents in the compendia.
+- [Sass](https://sass-lang.com/) (via npm) - Compiles `scss/` source into the `css/` files Foundry loads at runtime.
 
 ### VSCode Extensions
 
@@ -81,7 +82,25 @@ npm -v
 
 2. Install `djlint` (doesn't come through NPM). This requires `Python` and `pip`; instructions for installing these are specific to your operating system, and beyond the scope of this guide.
 
-### 4. Set Up Your Code Editor
+### 4. Compile Stylesheets
+
+Styles live in [`scss/`](scss/). Foundry loads compiled output from [`css/`](css/), which is **not** committed to git — you must build it locally.
+
+1. Run a one-off compile (required after a fresh clone, or before testing if you are not using watch mode):
+
+   ```bash
+   npm run build:css
+   ```
+
+2. While actively editing styles, run Sass in watch mode in a **separate terminal** (leave it running):
+
+   ```bash
+   npm run watch:css
+   ```
+
+   Edit files under `scss/`; output is written to `css/`. Foundry's hot reload (configured in `system.json`) picks up changes to the compiled CSS when watch mode is running.
+
+### 5. Set Up Your Code Editor
 
 We recommend [Visual Studio Code](https://code.visualstudio.com/) for working on this project, but you're welcome to use any editor. The following extensions are **auto-recommended** by VSCode, but here they are again for special instructions, manual installation, or reference.
 
@@ -106,7 +125,7 @@ Once these extensions are installed, your editor should automatically highlight 
 
 Your pull request will automatically be checked for linting and formatting via GitHub Actions. If your changes don't pass, they can't be merged (see [Branching and Pull Requests](#branching-commits-and-pull-requests)).
 
-### 5. Set Up a Local Foundry VTT Test Instance
+### 6. Set Up a Local Foundry VTT Test Instance
 
 1. We **highly** recommend setting up a separate instance of Foundry from your main installation. This way you are not at risk of breaking things in live worlds.
 
@@ -136,7 +155,7 @@ Your pull request will automatically be checked for linting and formatting via G
    mklink /D "%localappdata%/FoundryVTT/Data/systems/deltagreen" "%cd%/delta-green-foundry-vtt-system"
    ```
 
-### 6. Start Developing
+### 7. Start Developing
 
 - Use the developer console (`F12` in most browsers) to inspect logs and debug issues.
 - Make changes to code and refresh the browser to see them take effect.
@@ -448,6 +467,8 @@ Make sure your code is clean and ready:
 - ✅ You’ve manually tested your change in a local Foundry world.
 - ✅ `npm run lint` shows no errors
 - ✅ `npm run format:check` passes
+- ✅ `npm run build:css` succeeds (required if you changed anything under `scss/`)
+- ✅ If you changed styles, you tested with `npm run watch:css` running and confirmed the UI looks correct
 - ✅ Your editor doesn’t show linting/formatting warnings.
 
 We use a GitHub Action to enforce code quality. If your code doesn’t meet the linting and formatting standards, your PR cannot be merged until those checks pass.
@@ -467,8 +488,9 @@ It is difficult to create a one-size-fits-all procedure for testing, because eac
 
 1. Prepare your environment
 
+   - **Styles:** On a fresh clone, run `npm run build:css` (or keep `npm run watch:css` running) so Foundry has compiled CSS to load.
    - Test in a safe environment (**HIGHLY RECOMMENDED**):
-     - We highly recommend [setting up an installation of Foundry separate from your main instance](#5-set-up-a-local-foundry-vtt-test-instance).
+     - We highly recommend [setting up an installation of Foundry separate from your main instance](#6-set-up-a-local-foundry-vtt-test-instance).
      - This way, you are never at risk of breaking anything in your main worlds.
      - If you do not follow the above advice, be aware that opening your main world while you have an in-progress (non-release) version of the system installed **will almost certainly break things in a way that cannot be fixed**. To go back to the release version of the system, uninstall the test build, and reinstall from the in-Foundry system browser.
    - Update to the target build:

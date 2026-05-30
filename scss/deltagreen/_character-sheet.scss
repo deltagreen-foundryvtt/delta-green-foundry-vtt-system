@@ -1,0 +1,265 @@
+.deltagreen .sheet-header {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 400px;
+  flex: 0 0 auto;
+  overflow: hidden;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  margin-bottom: 8px;
+}
+
+.deltagreen .sheet-header .profile-img {
+  height: 100px;
+  flex: 0 0 100px;
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 100px;
+
+  cursor: var(--cursor-pointer); /* Variable name from Foundry */
+
+  border: 1px solid var(--dg-ink);
+  margin-right: 5px;
+}
+
+.deltagreen .sheet-header .header-fields {
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.deltagreen .sheet-header h1.charname {
+  height: 55px;
+  font-family: inherit;
+  font-size: 2rem;
+  padding: 0px;
+  border-bottom: 0;
+  margin-bottom: 0;
+}
+
+.deltagreen .sheet-header h1.charname input {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+.deltagreen .resource-label {
+  font-weight: bold;
+}
+
+.sheet nav.sheet-tabs {
+  border-bottom: transparent !important;
+  border-top: transparent !important;
+}
+
+.deltagreen .tabs {
+  height: 1.5rem;
+  line-height: 1.5rem;
+  text-align: center;
+  vertical-align: middle;
+  margin-bottom: 0px !important;
+  padding-bottom: 0px !important;
+}
+
+.deltagreen .tabs [data-action="tab"] {
+  font-weight: bold;
+  color: inherit;
+  vertical-align: middle !important;
+  height: inherit;
+  line-height: inherit;
+  padding-inline: 5px;
+  border-radius: 5px 5px 0px 0px;
+  border-color: var(--dg-ink);
+  border: gray;
+  border-width: 1px 1px 0px 1px;
+  border-style: solid;
+}
+
+.deltagreen .tabs [data-action="tab"].active {
+  text-shadow: none;
+  font-style: italic;
+  border-color: var(--dg-ink);
+  border-width: 2px 2px 0px 2px;
+  border-style: solid;
+}
+
+.deltagreen .tab {
+  height: 100%;
+  overflow-y: auto;
+
+  border-color: var(--dg-ink);
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 3px;
+
+  padding: 5px;
+}
+
+.deltagreen .program-style .tabs [data-action="tab"].active {
+  background-color: var(--dg-surface-dark);
+  color: var(--dg-on-dark);
+}
+
+.deltagreen .cowboy-style .tabs [data-action="tab"].active {
+  background-color: rgba(156, 115, 18, 0.3);
+  color: var(--dg-ink);
+}
+
+.deltagreen .items-list {
+  list-style: none;
+  /*margin: 7px 0; */
+  padding: 0;
+  overflow-y: auto;
+}
+
+.deltagreen .items-list .item-header {
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.deltagreen .items-list .item {
+  min-height: 30px;
+  line-height: 24px;
+  padding: 3px 0;
+  border-bottom: 1px solid #bbb;
+}
+
+.deltagreen .items-list .item .item-image {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 24px;
+  flex: 0 0 24px;
+  margin-right: 5px;
+}
+
+.deltagreen .items-list .item .item-bond-damage {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 24px;
+  flex: 0 0 24px;
+  margin: 0;
+  align-self: center;
+  justify-self: center;
+}
+
+.deltagreen .items-list .item img {
+  display: block;
+}
+
+.deltagreen .items-list .item-name {
+  display: flex;
+  align-content: center;
+
+  word-wrap: break-word;
+
+  margin: 0;
+}
+
+.deltagreen .items-list .item-controls {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 86px;
+  flex: 0 0 86px;
+  text-align: right;
+}
+
+.deltagreen .skill-and-training-controls {
+  flex: 0 0 35px;
+}
+
+.deltagreen .action-pill,
+.deltagreen button.action-pill {
+  padding: 2px;
+  border-radius: 2.5px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  background-color: rgba(0, 0, 0, 0.185);
+  color: inherit;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+}
+
+.deltagreen button.action-pill {
+  appearance: none;
+}
+
+.deltagreen[id^="dg-settings"] {
+  .window-content > div.flexcol {
+    gap: 1rem;
+  }
+
+  .form-group label {
+    flex: unset;
+  }
+}
+
+a.btn-tiny {
+  height: 26px;
+  margin-left: 5px;
+  margin-right: 5px;
+  font-size: 13px;
+  padding-top: 1px;
+  padding-bottom: 1px;
+  padding-right: 5px;
+  padding-left: 5px;
+
+  text-decoration: none;
+  background-color: #eeeeee;
+  color: #333333;
+
+  border-radius: 4px;
+  line-height: 25px;
+  border: 1px solid #333333;
+  min-width: 20px;
+  text-align: center;
+}
+
+span.left-aligned-label {
+  justify-content: left;
+  margin-left: 5px;
+}
+
+span.max-attribute-value-label {
+  border: 1px solid rgb(122, 121, 113);
+  border-radius: 3px;
+  padding-top: 3px;
+  padding-bottom: 1px;
+  padding-left: 3px;
+  padding-right: 3px;
+  height: 26px;
+}
+
+.deltagreen .skill-label {
+  margin: 2px;
+  align-content: flex-start;
+}
+
+.deltagreen .skill-type-label {
+  margin: 2px;
+}
+
+input.percentile-skill-input {
+  flex: 0 0 40px;
+  margin: 0 5px;
+  height: 1.2rem;
+  align-self: center;
+  text-align: center;
+}
+
+input.checkbox-skill-input {
+  flex: 0 0 20px;
+  line-height: 10px;
+  width: 1px;
+}
+
+input.checkbox-skill-input:disabled {
+  visibility: hidden;
+}

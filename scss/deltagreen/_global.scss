@@ -1,0 +1,8 @@
+@use "../mixins" as *;
+
+/* Global styles */
+
+.deltagreen section.window-content {
+  @include dg-window-content;
+  @include dg-window-form-inputs;
+}

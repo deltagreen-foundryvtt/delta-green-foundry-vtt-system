@@ -1,0 +1,109 @@
+/* Delta Green stylized chat cards */
+.deltagreen.chat-card.dg-chat-card {
+  border: 2px solid var(--dg-ink);
+  border-radius: 3px;
+  overflow: hidden;
+  margin: 0;
+}
+
+.dg-chat-card__header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0;
+  background: var(--dg-surface-dark);
+  color: var(--dg-on-dark);
+  padding: 6px 0;
+}
+
+.dg-chat-card__icon-slot {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  aspect-ratio: 1 / 1;
+  box-sizing: border-box;
+  margin-left: 8px;
+  overflow: hidden;
+}
+
+.dg-chat-card__icon {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.dg-chat-card__titles {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 8px 0 8px;
+}
+
+.dg-chat-card__speaker {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: bold;
+  color: var(--dg-on-dark);
+  line-height: 1.2;
+}
+
+.dg-chat-card__label {
+  font-size: 0.8rem;
+  color: var(--dg-on-dark);
+  line-height: 1.25;
+  margin-top: 2px;
+}
+
+.dg-chat-card__body {
+  border-color: var(--dg-ink);
+  border-width: 0;
+  border-style: solid;
+  border-radius: 0;
+  padding: 5px;
+  background: inherit;
+}
+
+.dg-chat-card__body .dice-roll {
+  margin-top: 0.5em;
+}
+
+.chat-message:has(.dg-chat-card) .message-header,
+.chat-message.dg-chat-card-message .message-header {
+  display: none;
+}
+
+.rollback-section {
+  order: 99;
+  display: flex;
+  margin-top: 5px;
+  align-items: center;
+  justify-content: center;
+
+  > i {
+    margin: 5px;
+  }
+}
+
+[data-action="rollback-skill-failure-state"] {
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
+  min-height: unset;
+  width: 20px;
+  height: 20px;
+  margin-left: 5px;
+  font-size: 12px;
+}
+
+.strike {
+  text-decoration: line-through;
+}

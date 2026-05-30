@@ -5,7 +5,9 @@
   "main": "deltagreen.js",
   "scripts": {
     "lint": "eslint .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "build:css": "sass scss:css --style=expanded --no-source-map",
+    "watch:css": "sass scss:css --watch --style=expanded --source-map"
   },
   "repository": {
     "type": "git",
@@ -25,5 +27,7 @@
     "eslint-config-prettier": "^9.0.0",
     "@foundryvtt/foundryvtt-cli": "^1.1.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "sass": "^1.89.0"
+  }
 }

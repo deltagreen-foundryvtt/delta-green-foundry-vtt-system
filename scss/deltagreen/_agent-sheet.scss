@@ -1,0 +1,581 @@
+.agent-sheet {
+  .window-content {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    grid-template-rows: auto 1fr;
+    column-gap: 8px;
+    width: 100%;
+    height: 100%;
+  }
+
+  .left-bar {
+    grid-column: 1;
+    grid-row: 1 / -1;
+    padding: 3px;
+  }
+
+  .left-bar .profession-subname-link {
+    display: block;
+    box-sizing: border-box;
+    padding: 1px 2px;
+    line-height: var(--line-height-18, 1.125rem);
+    text-decoration: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .stats-wrapper {
+    margin-top: 8px;
+    margin-bottom: 8px;
+  }
+
+  .mb-8 {
+    margin-bottom: 8px;
+  }
+
+  .luck {
+    display: flex;
+    justify-content: center;
+  }
+
+  .luck .bolded-label {
+    text-align: center;
+  }
+
+  /* Override core nav.tabs gap/space-evenly and v1-compat space-around so tabs can overlap */
+  .window-content > nav.sheet-tabs {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: start;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    margin-bottom: 0;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0;
+    justify-content: flex-start;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  .tabs [data-action="tab"] {
+    flex: 1 1 0;
+    min-width: 0;
+    position: relative;
+    text-align: center;
+    margin-left: -14px;
+    padding-inline: 3px;
+    font-size: 11px;
+    overflow: visible;
+    box-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.16),
+      -1px 0 2px rgba(0, 0, 0, 0.1),
+      1px 0 2px rgba(0, 0, 0, 0.1);
+
+    > span {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    &:first-child {
+      margin-left: 0;
+    }
+
+    &:nth-child(1) {
+      z-index: 1;
+    }
+    &:nth-child(2) {
+      z-index: 2;
+    }
+    &:nth-child(3) {
+      z-index: 3;
+    }
+    &:nth-child(4) {
+      z-index: 4;
+    }
+    &:nth-child(5) {
+      z-index: 5;
+    }
+    &:nth-child(6) {
+      z-index: 6;
+    }
+    &:nth-child(7) {
+      z-index: 7;
+    }
+  }
+
+  /* Opaque tab fills so stacked borders only show on the tab in front (all themes) */
+  .window-content.program-style {
+    --dg-agent-tab-inactive-bg: rgb(186, 184, 181);
+    --dg-agent-tab-active-bg: var(--dg-surface-dark);
+    --dg-agent-tab-active-color: var(--dg-on-dark);
+  }
+
+  .window-content.cowboy-style,
+  .window-content.outlaw-style {
+    --dg-agent-tab-inactive-bg: rgb(210, 190, 150);
+    --dg-agent-tab-active-bg: rgb(194, 168, 110);
+    --dg-agent-tab-active-color: var(--dg-ink);
+  }
+
+  .window-content .tabs [data-action="tab"]:not(.active) {
+    background: var(--dg-agent-tab-inactive-bg);
+  }
+
+  .window-content .tabs [data-action="tab"].active {
+    background: var(--dg-agent-tab-active-bg);
+    color: var(--dg-agent-tab-active-color);
+  }
+
+  /* Pin the about tab to the right without opening a gap before it */
+  .tabs [data-action="tab"][data-tab="effects"] {
+    margin-right: auto;
+  }
+
+  .tabs [data-action="tab"][data-tab="about"] {
+    flex: 0 0 auto;
+    min-width: unset;
+    margin-left: -14px;
+  }
+
+  .window-content > [data-application-part="rightBar"],
+  .window-content > .right-bar {
+    grid-column: 2;
+    grid-row: 2;
+    width: 100%;
+    min-height: 0;
+    box-sizing: border-box;
+    padding-right: 0;
+    margin-right: 0;
+  }
+
+  .right-bar {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .right-bar > .tab {
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: 0;
+    box-sizing: border-box;
+  }
+
+  /* Match V1: flat top edge on panel; active tab overlaps the panel top border */
+  .right-bar > .tab.active {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+
+  .tabs [data-action="tab"].active {
+    z-index: 10;
+    margin-bottom: -2px;
+    padding-bottom: 2px;
+    box-shadow:
+      0 2px 6px rgba(0, 0, 0, 0.22),
+      -2px 0 5px rgba(0, 0, 0, 0.14),
+      2px 0 5px rgba(0, 0, 0, 0.14);
+  }
+
+  .profile-img {
+    width: 100%;
+    height: 194px;
+    object-fit: cover;
+    object-position: center top;
+  }
+
+  .physical-stats-outer-grid-3col {
+    display: contents;
+  }
+
+  .physical-stats-outer-grid-3col,
+  .resources {
+    font-size: 12px;
+  }
+
+  .resources {
+    margin-bottom: 8px;
+  }
+
+  .resources .resource-inner-grid-3col {
+    grid-template-columns: auto auto auto;
+    justify-content: center;
+    column-gap: 2px;
+  }
+
+  .resources .resource-inner-grid-3col input {
+    box-sizing: border-box;
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 1px;
+    line-height: calc(1.5rem - 4px);
+  }
+
+  .resources .resource-inner-grid-3col .max-resource-value {
+    box-sizing: border-box;
+    width: 1.5rem;
+    height: 1.5rem;
+    min-width: 1.5rem;
+    min-height: 1.5rem;
+  }
+
+  .breaking-point-inline {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    align-items: center;
+    column-gap: 6px;
+    border: none;
+    padding: 0;
+    background: none;
+
+    .breaking-point-label {
+      margin: 0;
+      white-space: nowrap;
+      justify-self: start;
+    }
+
+    .breaking-point-input {
+      width: 2.5rem;
+      min-width: 2.5rem;
+      max-width: 2.5rem;
+      padding: 1px;
+      text-align: center;
+      font-size: 12px;
+      justify-self: end;
+    }
+
+    .fa-refresh {
+      text-decoration: none;
+      font-size: 12px;
+      justify-self: end;
+    }
+  }
+
+  .exhausted-section.resource {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    column-gap: 8px;
+    row-gap: 4px;
+    border: none;
+    margin-bottom: 8px;
+    padding: 0;
+    background: none;
+
+    .exhaustion-label {
+      justify-self: start;
+    }
+
+    .labeled-resource-checkbox,
+    input[type="number"] {
+      justify-self: end;
+    }
+  }
+
+  .stats {
+    input {
+      margin: 1px;
+    }
+
+    .ae-input-host--stat input {
+      margin: 0;
+    }
+  }
+
+  .skill-util-buttons {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: 8px;
+    width: 100%;
+    margin: 5px 0;
+    box-sizing: border-box;
+
+    .action-pill {
+      flex: 1 1 0;
+      min-width: 0;
+      margin: 0;
+      text-align: center;
+    }
+
+    .typed-skill-add {
+      margin-right: 0;
+    }
+
+    a[data-action="applySkillImprovements"] {
+      float: none;
+    }
+
+    .custom-skills-edit-toggle {
+      flex: 0 0 auto;
+      min-width: 2rem;
+      padding-inline: 6px;
+    }
+  }
+
+  .custom-skill-group-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 1.35rem;
+    height: auto;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    padding: 2px 4px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    line-height: 1.2;
+  }
+
+  &.custom-skills-edit-mode .custom-skills-edit-toggle {
+    background-color: rgba(0, 0, 0, 0.45);
+    outline: 1px solid var(--dg-ink);
+  }
+
+  &.custom-skills-edit-mode .program-style .custom-skills-edit-toggle {
+    background-color: var(--dg-surface-dark);
+    color: var(--dg-on-dark);
+  }
+
+  .typed-skill-row {
+    min-height: 27px;
+    align-items: center;
+  }
+
+  .custom-skill-controls-slot {
+    position: relative;
+    display: flex;
+    flex: 0 0 70px;
+    min-width: 70px;
+    min-height: 1.2rem;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .custom-skill-play-controls {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    justify-content: flex-end;
+    min-height: 1.2rem;
+  }
+
+  .custom-skill-controls-slot .custom-skill-edit-controls {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 2px;
+    margin: 0;
+  }
+
+  .special-training-box .custom-skill-edit-controls {
+    position: static;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 2px;
+    margin: 0;
+  }
+
+  &:not(.custom-skills-edit-mode) .custom-skill-edit-controls {
+    display: none;
+  }
+
+  &.custom-skills-edit-mode .custom-skill-play-controls {
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .typed-skills-columns {
+    align-items: start;
+  }
+
+  .typed-skills-column {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+  }
+
+  .skill-and-training-controls {
+    display: flex;
+    flex-direction: row;
+    flex: 0 0 auto;
+    gap: 2px;
+  }
+
+  .scenario-information-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: 12px;
+    row-gap: 8px;
+    align-items: start;
+    width: 100%;
+    box-sizing: border-box;
+    padding-bottom: 10px;
+  }
+
+  .scenario-information-left,
+  .scenario-information-right {
+    min-width: 0;
+  }
+
+  .scenario-information-left.bio-grid-2col {
+    grid-template-columns: minmax(4rem, max-content) minmax(0, 1fr);
+    padding-bottom: 0;
+  }
+
+  .scenario-information-corruption {
+    display: block;
+    flex: none;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding-bottom: 10px;
+  }
+
+  .scenario-information-yellow-sign-row {
+    display: grid;
+    grid-template-columns: max-content max-content max-content;
+    column-gap: 8px;
+    align-items: center;
+    flex: none;
+    width: fit-content;
+    max-width: 100%;
+  }
+
+  .scenario-information-corruption-row {
+    display: grid;
+    grid-template-columns: max-content max-content;
+    column-gap: 8px;
+    align-items: center;
+    flex: none;
+    width: fit-content;
+    max-width: 100%;
+    margin-top: 8px;
+  }
+
+  .scenario-information-yellow-sign-row > *,
+  .scenario-information-corruption-row > * {
+    flex: none;
+  }
+
+  .scenario-information-corruption-label {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0;
+    flex: none;
+    white-space: nowrap;
+  }
+
+  .scenario-information-corruption-label > .yellow-king {
+    flex: none;
+    display: inline-block;
+  }
+
+  .scenario-information-corruption-row input[type="number"] {
+    width: 2.5rem;
+    min-width: 2.5rem;
+  }
+
+  .adaptation-grid-4col {
+    display: grid;
+    grid-template-columns: 1fr 25px 25px 25px;
+    align-content: center;
+    align-items: center;
+    row-gap: 0;
+    margin-bottom: 0;
+
+    > label {
+      justify-self: start;
+    }
+
+    > input.labeled-resource-checkbox {
+      justify-self: end;
+    }
+  }
+
+  .adaptation-grid-4col .adapted-label-slot {
+    grid-column: 1 / -1;
+    min-height: 1.35em;
+  }
+
+  .adaptation-grid-4col .adapted-label-slot .adapted-label {
+    display: block;
+    margin: 0;
+  }
+
+  .adaptation-block {
+    border: 1px solid var(--dg-ink);
+    padding: 3px;
+  }
+
+  .left-bar-tabs {
+    font-size: 11px;
+    margin-bottom: 4px;
+  }
+
+  .left-bar-tab-panels .tab:not(.active) {
+    display: none;
+  }
+
+  .left-bar-action-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 8px;
+  }
+
+  .left-bar-action-pill {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0 0 8px;
+    text-align: center;
+    padding-block: 4px; /* +8px height vs default 2px .action-pill padding */
+  }
+
+  .left-bar-action-stack .left-bar-action-pill {
+    margin-bottom: 0;
+  }
+
+  .left-bar-action-stack .left-bar-action-pill[data-action="takeStimulants"] {
+    margin-bottom: 5px;
+  }
+
+  .exhausted-section.resource input.is-inactive {
+    color: #888;
+    background-color: rgba(0, 0, 0, 0.04);
+    border-color: #bbb;
+  }
+
+  .suppress-exhaustion.resource {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    column-gap: 8px;
+    margin-bottom: 8px;
+
+    label.is-crossed-out {
+      color: #888;
+      text-decoration: line-through;
+    }
+
+    input:disabled {
+      opacity: 0.45;
+    }
+  }
+}

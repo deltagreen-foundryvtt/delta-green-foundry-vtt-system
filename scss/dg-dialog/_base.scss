@@ -1,0 +1,98 @@
+/* Delta Green — shared DialogV2 styling (.dg-dialog-app) */
+
+@use "../mixins" as *;
+
+.dg-dialog-app {
+  section.window-content {
+    @include dg-window-content;
+    @include dg-window-form-inputs-with-select;
+
+    :is(h1, h2, h3, h4, h5, h6) {
+      color: inherit;
+    }
+  }
+
+  /* Foundry sets explicit light-theme tokens on headings/labels; inherit parchment body color. */
+  .standard-form .form-group > label,
+  .form-group > label,
+  .dg-dialog__field-label,
+  .dg-dialog .dg-dialog__heading,
+  .dg-dialog__intro {
+    color: inherit;
+  }
+
+  .dg-dialog input[type="text"],
+  .dg-dialog input[type="number"],
+  .dg-dialog input[type="password"],
+  .dg-dialog select {
+    background-color: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgb(122, 121, 113);
+    border-radius: 3px;
+    color: inherit;
+  }
+
+  .dg-dialog__field-label,
+  .dg-dialog .dg-dialog__heading {
+    font-weight: bold;
+  }
+
+  .dg-dialog__intro {
+    margin: 0 0 0.5rem;
+    line-height: 1.4;
+  }
+
+  .dg-dialog__messages {
+    margin-top: 0.5rem;
+  }
+
+  .dg-dialog__message--error,
+  .dg-dialog .validation-error {
+    color: var(--color-text-error, #c00);
+    font-weight: bold;
+    margin: 0.25rem 0;
+  }
+
+  .dg-dialog__message--warning,
+  .dg-dialog .cap-warning {
+    color: var(--color-text-warning, #c60);
+    font-weight: bold;
+    margin: 0.25rem 0;
+  }
+
+  .form-footer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+
+    > button {
+      flex: 1 1 0;
+      min-width: 0;
+      @include dg-dark-button;
+
+      &:disabled {
+        background-color: #555;
+        color: #f0f0f0;
+        border-color: #555;
+        opacity: 1;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  &--pick-statistics .form-footer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    > button[data-action="skip"] {
+      grid-column: 1 / -1;
+    }
+  }
+
+  &--stimulants .form-footer,
+  &--modify-roll .form-footer {
+    display: none;
+  }
+}
