@@ -1,3 +1,5 @@
+import { showDgDialog } from "../applications/dg-dialog.js";
+
 function GetAttacksFromInput(inputText) {
   const attacks = [];
   try {
@@ -661,14 +663,16 @@ async function GetUserInput() {
             </div>
     </form>`;
 
-  new foundry.applications.api.DialogV2({
-    window: { title: "Stat Block Parser" },
+  await showDgDialog({
+    modifier: "stat-parser",
     content,
+    window: { title: "Stat Block Parser" },
     buttons: [
       {
         label: "PARSE",
         action: "roll",
-        callback: (event, button, dialog) => {
+        default: true,
+        callback: (_event, _button, dialog) => {
           const textInput =
             dialog.element.querySelector("[name=parse-input]")?.value;
 
@@ -679,9 +683,9 @@ async function GetUserInput() {
         },
       },
     ],
-  }).render(true);
+  });
 }
 
 export default async function ParseDeltaGreenStatBlock() {
-  GetUserInput();
+  await GetUserInput();
 }

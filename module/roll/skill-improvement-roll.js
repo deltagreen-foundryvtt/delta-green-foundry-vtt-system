@@ -1,5 +1,6 @@
 import { createDGChatMessage } from "../chat/dg-chat-card.js";
 import DG from "../config/index.js";
+import { formatProfessionSkillLabel } from "../profession/index.js";
 
 /**
  * @param {"1"|"d3"|"d4"|"d4-1"} baseFormula
@@ -68,23 +69,24 @@ export async function createSkillImprovementChatMessage({
   failedTypedSkills,
   resultObj,
 }) {
-  const localizeFailedSkills = (skillsArray) => {
+  const localizeFailedSkills = (skillsArray, kind) => {
     return skillsArray.map((skill) => {
       const increment = resultObj[skill.key] ?? 1;
       const label =
-        skill.label ?? game.i18n.localize(`DG.Skills.${skill.key}`);
-      const groupLabel = skill.group
-        ? `${game.i18n.localize(
-            `DG.TypeSkills.${skill.group.replace(/\s+/g, "")}`,
-          )} (${label})`
-        : label;
+        kind === "typed"
+          ? formatProfessionSkillLabel({
+              kind: "typed",
+              group: skill.group,
+              label: skill.label,
+            })
+          : formatProfessionSkillLabel({ kind: "fixed", key: skill.key });
 
-      return `${groupLabel}: <b>+${increment}%</b>`;
+      return `${label}: <b>+${increment}%</b>`;
     });
   };
 
-  const failedSkillNames = localizeFailedSkills(failedSkills);
-  const failedTypedSkillNames = localizeFailedSkills(failedTypedSkills);
+  const failedSkillNames = localizeFailedSkills(failedSkills, "fixed");
+  const failedTypedSkillNames = localizeFailedSkills(failedTypedSkills, "typed");
 
   const content = [...failedSkillNames, ...failedTypedSkillNames].join(", ");
   const label = game.i18n.format(
