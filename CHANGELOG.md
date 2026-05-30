@@ -28,6 +28,7 @@
 ### **Under the Hood:**
 
 - [#323](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/323) - Refactored roll logic and split into util functions
+- [#233](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/233) - Refactored CSS to Sass
 
 ## Version 1.6.6 - 2026-04-15
 
