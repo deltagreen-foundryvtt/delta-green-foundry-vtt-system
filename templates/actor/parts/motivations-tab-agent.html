@@ -32,10 +32,7 @@
                 {{#if_eq item.type 'motivation' }}
 
                     <li class="item flexrow {{#if item.system.acuteEpisode}}acute-episode-active{{/if}}" data-item-id="{{item.id}}">
-                        <span class="item-name"
-                              {{#if item.system.crossedOut }}
-                              style="text-decoration: line-through"
-                              {{/if }}>
+                        <span class="item-name {{#if item.system.crossedOut }}is-crossed-out{{/if}}">
                             {{item.name}}
                         </span>
 

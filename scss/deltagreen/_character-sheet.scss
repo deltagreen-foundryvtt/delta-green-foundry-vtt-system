@@ -113,6 +113,11 @@
   color: var(--dg-ink);
 }
 
+.deltagreen .items-list .item-name.items-list-name-col {
+  flex: 1 1 55%;
+  min-width: 0;
+}
+
 .deltagreen .items-list {
   list-style: none;
   /*margin: 7px 0; */

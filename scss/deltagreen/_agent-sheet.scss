@@ -1,4 +1,7 @@
 .agent-sheet {
+  --dg-agent-section-gap: 8px;
+  --dg-agent-list-row-border: 1px solid rgba(33, 33, 33, 0.25);
+
   .window-content {
     display: grid;
     grid-template-columns: 240px 1fr;
@@ -708,5 +711,232 @@
     input:disabled {
       opacity: 0.45;
     }
+  }
+
+  /* Shared tab helpers */
+  .agent-tab-hint {
+    margin: 6px 0 0;
+    font-size: 12px;
+    font-style: italic;
+    color: rgba(0, 0, 0, 0.55);
+  }
+
+  .is-crossed-out {
+    color: #888;
+    text-decoration: line-through;
+  }
+
+  .items-list .item {
+    border-bottom: var(--dg-agent-list-row-border);
+  }
+
+  .effects-list .effect {
+    border-bottom: var(--dg-agent-list-row-border);
+  }
+
+  /* Combat tab */
+  .tab.combat > div + div {
+    margin-top: var(--dg-agent-section-gap);
+  }
+
+  .tab.combat .first-aid-inline {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    column-gap: 8px;
+    margin-bottom: var(--dg-agent-section-gap);
+    border: none;
+    padding: 0;
+    background: none;
+
+    .first-aid-label {
+      margin: 0;
+      justify-self: start;
+    }
+
+    .labeled-resource-checkbox {
+      justify-self: end;
+    }
+  }
+
+  .tab.combat .wounds-block {
+    .bolded-label {
+      display: block;
+      margin: 0 0 4px;
+      font-size: 12px;
+    }
+
+    .wounds {
+      box-sizing: border-box;
+      width: 100%;
+      min-height: 5rem;
+      margin: 0;
+      padding: 4px 6px;
+      resize: vertical;
+      border: 1px solid var(--dg-ink);
+      border-radius: 3px;
+      font-size: 12px;
+    }
+  }
+
+  .tab.combat .items-list .item-header,
+  .tab.combat .items-list .item:not(.item-header) {
+    display: grid;
+    grid-template-columns: 24px minmax(0, 1fr) minmax(4rem, auto) minmax(3rem, auto) 86px;
+    align-items: center;
+    column-gap: 5px;
+  }
+
+  .tab.combat .items-list .item:not(.item-header) > .flexrow {
+    display: contents;
+  }
+
+  .tab.combat .items-list .item:not(.item-header) .item-image {
+    margin-right: 0;
+  }
+
+  .tab.combat .items-list .item-header .item-image,
+  .tab.combat .items-list .item-header > span:not(.centered-item-property):not(.item-controls) {
+    min-width: 0;
+  }
+
+  /* Psychological tab */
+  .tab.motivations > div + div {
+    margin-top: var(--dg-agent-section-gap);
+  }
+
+  .tab.motivations .items-list .item-header .acute-episode-col,
+  .tab.motivations .items-list .item .acute-episode-col {
+    flex: 0 0 5.5rem;
+    text-align: center;
+  }
+
+  /* Equipment tab */
+  .tab.gear > div + div {
+    margin-top: var(--dg-agent-section-gap);
+  }
+
+  .tab.gear .items-list .centered-item-property {
+    flex: 0 0 auto;
+  }
+
+  /* Personal tab */
+  .tab.personal .bio-grid-2col,
+  .tab.personal .bio-grid-5col {
+    grid-template-columns: minmax(4rem, max-content) minmax(0, 1fr);
+    row-gap: 6px;
+    padding-bottom: var(--dg-agent-section-gap);
+    font-size: 12px;
+
+    span,
+    .bio-grid-label {
+      margin: 1px;
+    }
+
+    input.fill-remaining-space {
+      margin: 1px;
+    }
+  }
+
+  .tab.personal .bio-grid-5col {
+    grid-template-columns: minmax(4rem, max-content) minmax(0, 1fr) 20px minmax(
+        4rem,
+        max-content
+      ) minmax(0, 1fr);
+  }
+
+  .tab.personal .notes-wrapper {
+    margin-top: var(--dg-agent-section-gap);
+  }
+
+  /* Effects tab */
+  .tab.effects .effect-add {
+    margin-bottom: var(--dg-agent-section-gap);
+
+    .action-pill {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      width: 100%;
+      max-width: 100%;
+      text-align: center;
+    }
+  }
+
+  .tab.effects .effect-header {
+    box-sizing: border-box;
+    margin-top: var(--dg-agent-section-gap);
+    margin-bottom: 3px;
+    padding: 6px 8px;
+    background: var(--dg-surface-dark);
+    color: var(--dg-on-dark);
+    border: 0;
+    border-radius: 3px;
+    min-height: 30px;
+    font-weight: bold;
+    line-height: 1.2;
+    text-align: center;
+
+    &:first-of-type {
+      margin-top: 0;
+    }
+
+    .effect-source,
+    .effect-controls {
+      display: none;
+    }
+
+    .effect-label {
+      flex: 1 1 100%;
+      text-align: center;
+    }
+  }
+
+  .tab.effects .effects-list .effect {
+    min-height: 30px;
+    padding: 3px 0;
+  }
+
+  /* About tab */
+  .tab.about .about-section-header {
+    display: none;
+  }
+
+  .tab.about .dg-about-links {
+    display: flex;
+    flex-direction: column;
+    gap: var(--dg-agent-section-gap);
+    margin-bottom: var(--dg-agent-section-gap);
+
+    a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--dg-agent-section-gap);
+      box-sizing: border-box;
+      width: 100%;
+      padding: 6px 8px;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 2.5px;
+      background-color: rgba(0, 0, 0, 0.185);
+      font-weight: bold;
+
+      i {
+        flex: 0 0 auto;
+      }
+
+      span {
+        flex: 0 0 auto;
+        line-height: 1.4;
+        text-align: center;
+      }
+    }
+  }
+
+  .tab.about .dg-about-legal p {
+    margin: 0.5rem 0;
+    font-size: 12px;
   }
 }
