@@ -1,5 +1,7 @@
 import DG from "../config/index.js";
 
+const { ForcedDeletion } = foundry.data.operators;
+
 const MIGRATION_VERSION = 2;
 const ACTOR_TYPES_WITH_SKILLS = ["agent", "npc", "unnatural"];
 const OBSOLETE_WORLD_SETTINGS = [
@@ -41,8 +43,12 @@ export default async function runWorldMigration() {
   for (const actor of actors) {
     if (actor.system.skills?.ritual) {
       await actor.update({
-        "system.skills.-=ritual": null,
-        "system.schemaVersion": MIGRATION_VERSION,
+        system: {
+          skills: {
+            ritual: new ForcedDeletion(),
+          },
+          schemaVersion: MIGRATION_VERSION,
+        },
       });
       migratedActors += 1;
     }

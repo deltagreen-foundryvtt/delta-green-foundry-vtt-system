@@ -10,7 +10,7 @@
                 <input class="centered"
                        type="text"
                        name="system.statistics.{{key}}.value"
-                       value="{{lookup @root.sourceStatistics key 'value'}}"
+                       value="{{lookup (lookup @root.sourceStatistics key) 'value'}}"
                        data-dtype="Number" />
             </div>
             <div>
