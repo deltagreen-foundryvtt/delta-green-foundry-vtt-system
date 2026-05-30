@@ -18,8 +18,8 @@
   "version": "dev",
   "compatibility": {
     "minimum": "13",
-    "verified": "13",
-    "maximum": "13"
+    "verified": "14",
+    "maximum": "14"
   },
   "flags": {
     "hotReload": {
@@ -203,10 +203,41 @@
   "secondaryTokenAttribute": "wp",
   "documentTypes": {
     "Actor": {
-      "agent": {},
-      "unnatural": {},
-      "npc": {},
-      "vehicle": {}
+      "agent": {
+        "htmlFields": ["physical.description"]
+      },
+      "unnatural": {
+        "htmlFields": ["notes"]
+      },
+      "npc": {
+        "htmlFields": ["notes"]
+      },
+      "vehicle": {
+        "htmlFields": ["description"]
+      }
+    },
+    "Item": {
+      "weapon": {
+        "htmlFields": ["description"]
+      },
+      "armor": {
+        "htmlFields": ["description"]
+      },
+      "motivation": {
+        "htmlFields": ["description"]
+      },
+      "bond": {
+        "htmlFields": ["description"]
+      },
+      "gear": {
+        "htmlFields": ["description"]
+      },
+      "tome": {
+        "htmlFields": ["description", "handlerNotes"]
+      },
+      "ritual": {
+        "htmlFields": ["description", "handlerNotes"]
+      }
     }
   }
 }
