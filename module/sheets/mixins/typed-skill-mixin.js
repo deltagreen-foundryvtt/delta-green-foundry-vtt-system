@@ -6,6 +6,7 @@ import {
 } from "../../profession/constants.js";
 
 const { renderTemplate } = foundry.applications.handlebars;
+const { ForcedDeletion } = foundry.data.operators;
 
 /**
  * @param {string} [selectedGroup]
@@ -39,7 +40,13 @@ export default function TypedSkillMixin(Base) {
           });
           break;
         case "delete":
-          this.actor.update({ [`system.typedSkills.-=${typedskill}`]: null });
+          this.actor.update({
+            system: {
+              typedSkills: {
+                [typedskill]: new ForcedDeletion(),
+              },
+            },
+          });
           break;
         default:
           break;
