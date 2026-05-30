@@ -1,4 +1,22 @@
 /**
+ * Splits a flat list into column arrays for vertical stacking (top-to-bottom per column).
+ *
+ * @template T
+ * @param {T[]} arr
+ * @param {number} numCols
+ * @returns {T[][]}
+ */
+export function splitIntoColumns(arr, numCols) {
+  if (numCols <= 1) return [arr];
+  const columns = Array.from({ length: numCols }, () => /** @type {T[]} */ ([]));
+  const perCol = Math.ceil(arr.length / numCols);
+  for (let col = 0; col < numCols; col++) {
+    columns[col] = arr.slice(col * perCol, (col + 1) * perCol);
+  }
+  return columns;
+}
+
+/**
  * Reorders a flat array into column-major order for grid display.
  *
  * @param {object[]} arr

@@ -1,7 +1,12 @@
 import { BASE_TEMPLATE_PATH } from "../config.js";
 import {
+  bindDialogTabs,
+  getDialogContentRoot,
+  showDgDialog,
+} from "./dg-dialog.js";
+import {
   BONUS_SKILL_COUNT,
-  buildSkillCatalog,
+  buildBonusSkillCatalog,
   buildSortedFixedSkillRows,
   buildSortedTypedSkillRows,
   computeSkillValues,
@@ -11,10 +16,17 @@ import {
   prepareProfessionSkillRows,
   splitProfessionSkillMap,
 } from "../utils/profession-skills.js";
-import { reorderForColumnSorting } from "../utils/skill-layout.js";
+import {
+  reorderForColumnSorting,
+  splitIntoColumns,
+} from "../utils/skill-layout.js";
+import {
+  applySkillTooltipDisplayMode,
+  buildSkillTooltip,
+} from "../utils/skill-tooltip.js";
 
-const { DialogV2 } = foundry.applications.api;
-const ADD_PROFESSION_SKILL_COLUMNS = 4;
+const CHARACTER_CREATION_OPTION_COLUMNS = 2;
+const ADD_PROFESSION_SKILL_COLUMNS = 2;
 const { renderTemplate } = foundry.applications.handlebars;
 
 /**
@@ -29,8 +41,8 @@ export async function showPickSkillsDialog(professionItem, actor) {
 }
 
 /**
- * @param {{ sortLabel: string, rowId: string, label: string, value: number, isModified: boolean }[]} rows
- * @returns {{ rowId: string, label: string, value: number, isModified: boolean }[]}
+ * @param {{ sortLabel: string, rowId: string, label: string, value: number, isModified: boolean, tooltip?: string }[]} rows
+ * @returns {{ rowId: string, label: string, value: number, isModified: boolean, tooltip: string }[]}
  */
 function orderSkillRowsForDisplay(rows) {
   const sorted = [...rows].sort((a, b) =>
@@ -41,11 +53,12 @@ function orderSkillRowsForDisplay(rows) {
     ? reorderForColumnSorting(sorted, ADD_PROFESSION_SKILL_COLUMNS)
     : sorted;
 
-  return ordered.map(({ rowId, label, value, isModified }) => ({
+  return ordered.map(({ rowId, label, value, isModified, tooltip }) => ({
     rowId,
     label,
     value,
     isModified: Boolean(isModified),
+    tooltip: tooltip ?? "",
   }));
 }
 
@@ -82,7 +95,7 @@ class AddProfessionDialogController {
     /** @type {string[]} */
     this.bondRelationships = [];
 
-    /** @type {DialogV2 | null} */
+    /** @type {import("foundry.applications.api.DialogV2").default | null} */
     this.dialog = null;
     this.submitted = false;
   }
@@ -94,16 +107,21 @@ class AddProfessionDialogController {
     const content = await this.#buildTemplate();
     this.submitted = false;
 
-    return DialogV2.wait({
+    return showDgDialog({
+      modifier: "character-creation",
       content,
       window: {
         title: game.i18n.localize("DG.Profession.Dialog.Title"),
       },
-      position: { width: 960 },
-      classes: ["add-profession-dialog-app"],
+      position: { width: 1080, height: 780 },
       form: { closeOnSubmit: false },
-      render: async (_event, dialog) => {
+      onRender: async (dialog) => {
         this.dialog = dialog;
+        const root = this.#contentRoot();
+        if (root) {
+          bindDialogTabs(root);
+          applySkillTooltipDisplayMode(root);
+        }
         this.#bindListeners();
         await this.#refreshUi();
       },
@@ -144,7 +162,10 @@ class AddProfessionDialogController {
   }
 
   #bondCount() {
-    return Number(this.professionItem.system.bonds) || 0;
+    return Math.max(
+      1,
+      Math.trunc(Number(this.professionItem.system.bonds) || 1),
+    );
   }
 
   #computeContext() {
@@ -181,7 +202,7 @@ class AddProfessionDialogController {
 
   /**
    * @param {ReturnType<computeSkillValues>} computed
-   * @returns {{ rowId: string, label: string, value: number }[]}
+   * @returns {{ rowId: string, label: string, value: number, isModified: boolean, tooltip: string, sortLabel: string }[]}
    */
   #buildSkillDisplayRows(computed) {
     const modifiedFixed = new Set(computed.modifiedFixedKeys ?? []);
@@ -195,14 +216,26 @@ class AddProfessionDialogController {
         value: r.value,
         sortLabel: r.sortLabel,
         isModified: modifiedFixed.has(r.key),
+        tooltip: buildSkillTooltip("dialog", null, {
+          kind: "fixed",
+          key: r.key,
+        }),
       })),
-      ...typedRows.map((r) => ({
-        rowId: r.storageKey,
-        label: r.label,
-        value: r.value,
-        sortLabel: r.sortLabel,
-        isModified: modifiedTyped.has(r.storageKey),
-      })),
+      ...typedRows.map((r) => {
+        const data = computed.typedValues[r.storageKey];
+        return {
+          rowId: r.storageKey,
+          label: r.label,
+          value: r.value,
+          sortLabel: r.sortLabel,
+          isModified: modifiedTyped.has(r.storageKey),
+          tooltip: buildSkillTooltip("dialog", null, {
+            kind: "typed",
+            group: data?.group ?? "",
+            label: r.label,
+          }),
+        };
+      }),
     ]);
   }
 
@@ -221,18 +254,14 @@ class AddProfessionDialogController {
       ...row,
       isChooseOne: Boolean(this.optionSkillMeta[row.key]?.chooseOne),
     }));
+    const optionColumns = splitIntoColumns(
+      optionRows,
+      CHARACTER_CREATION_OPTION_COLUMNS,
+    );
 
     const automaticChooseOneRows = this.#buildAutomaticChooseOneRows();
 
-    const capWarnings = computed.capWarnings.map((w) => ({
-      warning: game.i18n.format("DG.Profession.Dialog.CapWarning", {
-        skill: w.label,
-        attempted: w.attempted,
-        waste: w.waste,
-      }),
-    }));
-
-    const bondCount = Number(this.professionItem.system.bonds) || 0;
+    const bondCount = this.#bondCount();
     const bondRows = Array.from({ length: bondCount }, (_, index) => ({
       index,
       number: index + 1,
@@ -246,26 +275,25 @@ class AddProfessionDialogController {
       }),
     );
 
+    const showSkillOptionsTab = this.optionPicks > 0;
+
     return renderTemplate(`${BASE_TEMPLATE_PATH}/dialog/add-profession.html`, {
       skillRows,
-      showOptionSkills: this.optionPicks > 0,
+      showSkillOptionsTab,
+      defaultTabSkillOptions: showSkillOptionsTab,
+      defaultTabBonus: !showSkillOptionsTab,
       optionPicks: this.optionPicks,
-      optionRows,
+      optionColumns,
       automaticChooseOneRows,
-      catalog: buildSkillCatalog(),
+      catalog: buildBonusSkillCatalog(),
       bonusSlots,
-      validationMessages: formatProfessionValidationMessages(
-        computed.validationErrors,
-        { optionPicks: this.optionPicks },
-      ),
-      capWarnings,
-      bondCount,
+      ...this.#getDisplayMessages(computed),
       bondRows,
     });
   }
 
   #contentRoot() {
-    return this.dialog?.element?.querySelector(".dialog-content");
+    return this.dialog ? getDialogContentRoot(this.dialog) : null;
   }
 
   #bindListeners() {
@@ -304,7 +332,6 @@ class AddProfessionDialogController {
   #onOptionCheckChange(checkbox) {
     const key = checkbox.value;
     const isChooseOne = checkbox.dataset.isChooseOne === "true";
-    const root = this.#contentRoot();
 
     if (checkbox.checked) {
       if (this.checkedOptionKeys.size >= this.optionPicks) {
@@ -312,18 +339,14 @@ class AddProfessionDialogController {
         return;
       }
       this.checkedOptionKeys.add(key);
-      if (isChooseOne && root) {
-        const nameInput = root.querySelector(
-          `[data-choose-one-key="${CSS.escape(key)}"]`,
-        );
+      if (isChooseOne) {
+        const nameInput = this.#getOptionChooseOneInput(key);
         if (nameInput) nameInput.disabled = false;
       }
     } else {
       this.checkedOptionKeys.delete(key);
-      if (isChooseOne && root) {
-        const nameInput = root.querySelector(
-          `[data-choose-one-key="${CSS.escape(key)}"]`,
-        );
+      if (isChooseOne) {
+        const nameInput = this.#getOptionChooseOneInput(key);
         if (nameInput) {
           nameInput.disabled = true;
           nameInput.value = "";
@@ -332,6 +355,20 @@ class AddProfessionDialogController {
       }
     }
     this.#refreshUi();
+  }
+
+  /**
+   * @param {string} key
+   * @returns {HTMLInputElement | null}
+   */
+  #getOptionChooseOneInput(key) {
+    const root = this.#contentRoot();
+    if (!root) return null;
+    return root.querySelector(
+      `[data-option-choose-one="true"][data-choose-one-key="${CSS.escape(
+        key,
+      )}"]`,
+    );
   }
 
   /**
@@ -392,9 +429,7 @@ class AddProfessionDialogController {
       );
       if (cb) cb.checked = true;
       if (!this.optionSkillMeta[key]?.chooseOne) continue;
-      const nameInput = root.querySelector(
-        `[data-choose-one-key="${CSS.escape(key)}"]`,
-      );
+      const nameInput = this.#getOptionChooseOneInput(key);
       if (nameInput) {
         nameInput.disabled = false;
         nameInput.value = this.chooseOneLabels[key] ?? "";
@@ -403,7 +438,9 @@ class AddProfessionDialogController {
 
     for (const row of this.#buildAutomaticChooseOneRows()) {
       const nameInput = root.querySelector(
-        `[data-choose-one-key="${CSS.escape(row.key)}"]`,
+        `.character-creation-choose-one-section [data-choose-one-key="${CSS.escape(
+          row.key,
+        )}"]`,
       );
       if (nameInput) nameInput.value = this.chooseOneLabels[row.key] ?? "";
     }
@@ -422,40 +459,84 @@ class AddProfessionDialogController {
 
   /**
    * @param {ReturnType<computeSkillValues>} computed
+   * @returns {{
+   *   validationMessages: string[],
+   *   capWarnings: { warning: string }[],
+   *   atCapMessages: string[],
+   * }}
+   */
+  #getDisplayMessages(computed) {
+    const atCapPrefix = "bonusAtCap:";
+    const mainErrors = computed.validationErrors.filter(
+      (code) => !code.startsWith(atCapPrefix),
+    );
+    const atCapErrors = computed.validationErrors.filter((code) =>
+      code.startsWith(atCapPrefix),
+    );
+
+    return {
+      validationMessages: formatProfessionValidationMessages(mainErrors, {
+        optionPicks: this.optionPicks,
+      }),
+      capWarnings: computed.capWarnings.map((w) => ({
+        warning: game.i18n.format("DG.Profession.Dialog.CapWarning", {
+          skill: w.label,
+          attempted: w.attempted,
+          waste: w.waste,
+        }),
+      })),
+      atCapMessages: formatProfessionValidationMessages(atCapErrors, {
+        optionPicks: this.optionPicks,
+      }),
+    };
+  }
+
+  /**
+   * @param {ReturnType<computeSkillValues>} computed
    * @returns {string}
    */
   #buildMessagesHtml(computed) {
-    const validationHtml = formatProfessionValidationMessages(
-      computed.validationErrors,
-      { optionPicks: this.optionPicks },
-    )
-      .map(
-        (message) =>
-          `<p class="validation-error">${foundry.utils.escapeHTML(
-            message,
-          )}</p>`,
-      )
-      .join("");
+    const { validationMessages, capWarnings, atCapMessages } =
+      this.#getDisplayMessages(computed);
 
-    const capHtml = computed.capWarnings
+    const toErrorHtml = (messages) =>
+      messages
+        .map(
+          (message) =>
+            `<p class="dg-dialog__message--error">${foundry.utils.escapeHTML(
+              message,
+            )}</p>`,
+        )
+        .join("");
+
+    const capHtml = capWarnings
       .map(
         (w) =>
-          `<p class="cap-warning">${foundry.utils.escapeHTML(
-            game.i18n.format("DG.Profession.Dialog.CapWarning", {
-              skill: w.label,
-              attempted: w.attempted,
-              waste: w.waste,
-            }),
+          `<p class="dg-dialog__message--warning">${foundry.utils.escapeHTML(
+            w.warning,
           )}</p>`,
       )
       .join("");
 
-    return validationHtml + capHtml;
+    return (
+      toErrorHtml(validationMessages) + capHtml + toErrorHtml(atCapMessages)
+    );
+  }
+
+  /**
+   * @param {string} tooltip
+   * @returns {string}
+   */
+  #tooltipAttr(tooltip) {
+    if (!tooltip) return "";
+    return ` data-tooltip="${foundry.utils.escapeHTML(tooltip)}"`;
   }
 
   async #refreshUi() {
     const root = this.#contentRoot();
     if (!root) return;
+
+    this.#syncFormStateFromDom();
 
     const computed = this.#compute();
 
@@ -466,15 +547,18 @@ class AddProfessionDialogController {
       body.innerHTML = rows
         .map((r) => {
           const modifiedClass = r.isModified ? " is-modified" : "";
-          return `<div class="add-profession-skill-entry${modifiedClass}" data-skill-row="${foundry.utils.escapeHTML(
+          return `<div class="dg-dialog__skill-entry${modifiedClass}" data-skill-row="${foundry.utils.escapeHTML(
             r.rowId,
-          )}"><span class="add-profession-skill-label">${foundry.utils.escapeHTML(
+          )}"><span class="dg-dialog__skill-label"${this.#tooltipAttr(
+            r.tooltip,
+          )}>${foundry.utils.escapeHTML(
             r.label,
-          )}</span><span class="add-profession-skill-value" data-skill-value>${
+          )}</span><span class="dg-dialog__skill-value" data-skill-value>${
             r.value
           }%</span></div>`;
         })
         .join("");
+      applySkillTooltipDisplayMode(body);
     }
 
     const messagesEl = root.querySelector("[data-profession-messages]");
@@ -537,13 +621,9 @@ class AddProfessionDialogController {
       });
     }
 
-    if (bondDocs.length) {
-      await this.actor.createEmbeddedDocuments("Item", bondDocs);
-    }
+    await this.actor.createEmbeddedDocuments("Item", bondDocs);
 
     this.submitted = true;
     await this.dialog?.close();
   }
 }
-
-export default { showPickSkillsDialog };

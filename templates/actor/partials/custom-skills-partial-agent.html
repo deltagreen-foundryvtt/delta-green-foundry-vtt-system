@@ -53,18 +53,13 @@
                                    data-target="{{block.proficiency}}"
                                    data-label="{{block.label}}"
                                    {{#unless (eq ../../skillTooltipDisplay "never") }}
-                                   {{#if block.proficiency }}
-                                   data-tooltip="{{localize 'DG.Tooltip.SkillLabel' }}"
-                                   {{/if }}
-                                   {{#unless block.proficiency }}
-                                   data-tooltip="{{localize 'DG.Tooltip.CannotRollSkillLabel' }}"
-                                   {{/unless }}
+                                   data-tooltip="{{block.tooltip}}"
                                    {{/unless }}>
                                 {{block.label}}
                             </label>
                             <div class="custom-skill-controls-slot">
                                 <div class="custom-skill-play-controls">
-                                    <input class="percentile-skill-input"
+                                    <input class="percentile-skill-input {{block.rollTargetDisplayClass}}"
                                            type="text"
                                            name="system.typedSkills.{{block.key}}.proficiency"
                                            value="{{block.proficiency}}"
@@ -108,14 +103,14 @@
                 {{#if_eq block.type "training" }}
                     <div class="item flexrow flex-group-left flex-thin-border special-training-box">
                         <div class="flexrow">
-                            <label class="{{if_gt block.targetNumber 0 'rollable' 'not-rollable'}} skill-label"
+                            <label class="{{if_gt block.targetNumber 0 'rollable' 'not-rollable'}} skill-label {{block.rollTargetDisplayClass}}"
                                    data-action="roll"
                                    data-key="{{block.key}}"
                                    data-name="{{block.name}}"
                                    data-rolltype="special-training"
-                                   {{#if block.attributeTooltip }}
+                                   {{#if block.tooltip }}
                                    {{#unless (eq ../../skillTooltipDisplay "never") }}
-                                   data-tooltip="{{localize block.attributeTooltip}}"
+                                   data-tooltip="{{block.tooltip}}"
                                    {{/unless }}
                                    {{/if }}>
                                 {{block.displayLabel}}

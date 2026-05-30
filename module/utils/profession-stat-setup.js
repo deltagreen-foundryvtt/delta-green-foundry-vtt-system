@@ -94,8 +94,8 @@ export async function rollStatisticScores({
  */
 export function buildRollStatsChatContent(rolls) {
   const cells = rolls.map(
-    (entry) =>
-      `<td class="roll-stats-chat-value">${foundry.utils.escapeHTML(String(entry.total))}</td>`,
+    (entry, index) =>
+      `<td class="roll-stats-chat-value roll-stats-chat-value--${index % 2 === 0 ? "a" : "b"}">${foundry.utils.escapeHTML(String(entry.total))}</td>`,
   );
   const rows = [];
   for (let i = 0; i < cells.length; i += 3) {

@@ -1,11 +1,11 @@
-<div class="modify-roll-dialog">
+<div class="dg-dialog dg-dialog--modify-roll modify-roll-dialog">
     <div class="form-group">
         <label>{{localize "DG.ModifySkillRollDialogue.Test"}}</label>
         <span class="modify-roll-readonly">{{data.label}}</span>
     </div>
     <div class="form-group">
         <label>{{localize "DG.ModifySkillRollDialogue.OriginalTarget"}}</label>
-        <span class="modify-roll-readonly">
+        <span class="modify-roll-readonly {{data.targetDisplayClass}}">
             {{#if data.hideTarget}}??{{else}}{{data.originalTarget}}%{{/if}}
         </span>
     </div>
@@ -17,7 +17,7 @@
     </div>
 
     <section class="modify-roll-section modify-roll-quick-section">
-        <h3>{{localize "DG.ModifySkillRollDialogue.QuickModifiersHeader"}}</h3>
+        <h3 class="dg-dialog__heading">{{localize "DG.ModifySkillRollDialogue.QuickModifiersHeader"}}</h3>
         <p class="modify-roll-hint">{{localize "DG.ModifySkillRollDialogue.QuickModifiersHint"}}</p>
         <div class="modify-roll-quick-grid">
             {{#each quickModifiers}}
@@ -30,7 +30,7 @@
     </section>
 
     <section class="modify-roll-section modify-roll-custom-section">
-        <h3>{{localize "DG.ModifySkillRollDialogue.CustomModifierHeader"}}</h3>
+        <h3 class="dg-dialog__heading">{{localize "DG.ModifySkillRollDialogue.CustomModifierHeader"}}</h3>
         <p class="modify-roll-hint">{{localize "DG.ModifySkillRollDialogue.CustomModifierHint"}}</p>
         <div class="modify-roll-custom-row">
             <input type="number"

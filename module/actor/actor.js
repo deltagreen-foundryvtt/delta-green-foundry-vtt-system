@@ -1,4 +1,5 @@
 import { refreshDerivedAfterActiveEffects } from "../utils/active-effect-derived.js";
+import { prepareAgentStatSanityTooltips } from "../utils/roll-target-tooltip.js";
 import {
   syncExhaustionEffect,
   updateTouchesExhaustionPhysical,
@@ -15,6 +16,7 @@ export default class DeltaGreenActor extends Actor {
   prepareData() {
     super.prepareData();
     refreshDerivedAfterActiveEffects(this);
+    if (this.type === "agent") prepareAgentStatSanityTooltips(this);
   }
 
   /** @override */

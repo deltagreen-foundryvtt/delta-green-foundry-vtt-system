@@ -1,5 +1,11 @@
 import DG from "../../config.js";
 import { reorderForColumnSorting } from "../../utils/skill-layout.js";
+import { getRollTargetDisplayClassFromModifier } from "../../utils/active-effect-derived.js";
+import {
+  applySkillTooltipDisplayMode,
+  buildAgentSpecialTrainingTooltip,
+  buildSkillTooltip,
+} from "../../utils/skill-tooltip.js";
 
 /** @param {typeof foundry.applications.api.ApplicationV2} Base */
 export default function SkillPrepMixin(Base) {
@@ -81,6 +87,13 @@ export default function SkillPrepMixin(Base) {
           skill.sortLabel = skill.key;
         }
 
+        skill.tooltip = buildSkillTooltip(
+          "sheet",
+          this.actor,
+          { kind: "typed", group: skill.group, label: skill.label },
+          { proficiency: Number(skill.proficiency) || 0 },
+        );
+
         sortedCustomSkills.push(skill);
       }
 
@@ -113,13 +126,12 @@ export default function SkillPrepMixin(Base) {
     /** @returns {void} */
     _prepareSkillTooltips() {
       for (const skill of Object.values(this.actor.system.sortedSkills)) {
-        skill.tooltip = game.i18n.localize(`DG.Skills.Tooltip.${skill.key}`);
-        if (!skill.proficiency) {
-          skill.tooltip = skill.tooltip.concat(
-            "<br><br>",
-            game.i18n.localize("DG.Tooltip.CannotRollSkillLabel"),
-          );
-        }
+        skill.tooltip = buildSkillTooltip(
+          "sheet",
+          this.actor,
+          { kind: "fixed", key: skill.key },
+          { proficiency: Number(skill.proficiency) || 0 },
+        );
       }
     }
 
@@ -166,7 +178,36 @@ export default function SkillPrepMixin(Base) {
 
         simplifiedTraining.attributeLabel = attributeLabel;
         simplifiedTraining.attributeTooltip = attributeTooltip;
+
+        if (this.actor.type === "agent") {
+          const rollTarget = this.actor.system.rollTarget;
+          let modifier = 0;
+
+          if (rollTarget) {
+            if (DG.statistics.includes(training.attribute)) {
+              modifier = Number(rollTarget.statistics) || 0;
+            } else {
+              modifier = Number(rollTarget.allSkills) || 0;
+            }
+          }
+
+          simplifiedTraining.rollTargetDisplayClass =
+            getRollTargetDisplayClassFromModifier(modifier);
+        }
+
         simplifiedTraining.displayLabel = `${simplifiedTraining.name} (${attributeLabel}, ${simplifiedTraining.targetNumber}%)`;
+
+        if (this.actor.type === "agent" && attributeTooltip) {
+          const rollTargetKey = DG.statistics.includes(training.attribute)
+            ? "system.rollTarget.statistics"
+            : "system.rollTarget.allSkills";
+          simplifiedTraining.tooltip = buildAgentSpecialTrainingTooltip(
+            this.actor,
+            attributeTooltip,
+            rollTargetKey,
+            simplifiedTraining.targetNumber,
+          );
+        }
 
         return simplifiedTraining;
       });
@@ -201,73 +242,7 @@ export default function SkillPrepMixin(Base) {
      * @param {HTMLElement} root
      */
     _tooltipsSettings(root) {
-      const mode = game.settings.get("deltagreen", "skillTooltipDisplay");
-
-      if (mode !== "hoverShift" && mode !== "never") return;
-
-      const nodes = root.querySelectorAll("[data-tooltip],[title]");
-
-      if (mode === "never") {
-        nodes.forEach((el) => {
-          if (el.dataset.shiftTooltipInstalled === "true") return;
-          el.removeAttribute("data-tooltip");
-          el.removeAttribute("title");
-          el.dataset.shiftTooltipInstalled = "true";
-        });
-        return;
-      }
-
-      nodes.forEach((el) => {
-        if (el.dataset.shiftTooltipInstalled === "true") return;
-
-        let html = el.getAttribute("data-tooltip");
-        let isHtml = true;
-
-        if (!html) {
-          const title = el.getAttribute("title");
-          if (title) {
-            html = foundry.utils.escapeHTML(title);
-            isHtml = false;
-          }
-        }
-
-        if (!html) return;
-
-        el.removeAttribute("data-tooltip");
-        el.removeAttribute("title");
-        el.dataset.shiftTooltipInstalled = "true";
-
-        const opts = isHtml ? { html } : { text: html };
-
-        const show = () => game.tooltip.activate(el, opts);
-        const hide = () => game.tooltip.deactivate();
-
-        const onKey = (ev) => {
-          if (ev.key !== "Shift") return;
-          if (!document.body.contains(el)) {
-            window.removeEventListener("keydown", onKey);
-            window.removeEventListener("keyup", onKey);
-            return;
-          }
-          if (ev.type === "keydown") show();
-          else hide();
-        };
-
-        const onEnter = (ev) => {
-          if (ev.shiftKey) show();
-          window.addEventListener("keydown", onKey);
-          window.addEventListener("keyup", onKey);
-        };
-
-        const onLeave = () => {
-          hide();
-          window.removeEventListener("keydown", onKey);
-          window.removeEventListener("keyup", onKey);
-        };
-
-        el.addEventListener("pointerenter", onEnter, { passive: true });
-        el.addEventListener("pointerleave", onLeave, { passive: true });
-      });
+      applySkillTooltipDisplayMode(root);
     }
   };
 }

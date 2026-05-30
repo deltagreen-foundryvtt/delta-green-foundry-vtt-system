@@ -13,6 +13,10 @@ import {
   isDiceSoNiceAvailable,
   waitForDiceSoNiceMessageAnimation,
 } from "../utils/dice-so-nice.js";
+import {
+  clampPercentileRollTarget,
+  getRollTargetDisplayClassFromModifier,
+} from "../utils/active-effect-derived.js";
 
 const { renderTemplate } = foundry.applications.handlebars;
 
@@ -187,9 +191,14 @@ export class DGPercentileRoll extends DGRoll {
       }
     }
 
+    const rollTargetModifier = this.rollTargetModifier;
+    const targetDisplayClass =
+      getRollTargetDisplayClassFromModifier(rollTargetModifier);
+
     return showPercentileRollModifyDialog({
       label: this.localizedKey,
       target: this.target,
+      targetDisplayClass,
       hideTarget: hideSanTarget,
       defaultModifier: customModifierTarget,
       actor: this.actor,
@@ -342,6 +351,7 @@ export class DGPercentileRoll extends DGRoll {
    */
   createLabel() {
     const startOfLabel = `<b>${this.localizedKey}`;
+    const rollTargetModifier = this.rollTargetModifier;
     const endOfLabel = `${game.i18n.localize("DG.Roll.Target")} ${
       this.effectiveTarget
     }`;
@@ -352,8 +362,6 @@ export class DGPercentileRoll extends DGRoll {
           .localize("DG.Roll.Inhuman")
           .toUpperCase()}]</b> ${endOfLabel}`
       : `${startOfLabel}</b><br> ${endOfLabel}%`;
-
-    const rollTargetModifier = this.rollTargetModifier;
 
     if (this.modifier || rollTargetModifier) {
       label += ` (${this.target}%`;
@@ -391,13 +399,19 @@ export class DGPercentileRoll extends DGRoll {
     }
   }
 
-  /** @deprecated Use rollTargetModifier via Active Effects instead. */
-  get exhausted() {
-    const modifier = this.rollTargetModifier;
-    return {
-      isExhausted: modifier !== 0,
-      exhaustedCheckPenalty: modifier,
-    };
+  /**
+   * Target after roll-target Active Effects, before dialog modifier.
+   * @returns {number|null}
+   */
+  get rollTargetEffectiveTarget() {
+    if (!this.target || Number.isNaN(this.target)) return null;
+
+    const rollTargetModifier = this.rollTargetModifier;
+    if (!rollTargetModifier) return parseInt(this.target);
+
+    return clampPercentileRollTarget(this.target, rollTargetModifier, {
+      allowOver99: this.target > 99 && this.type === "stat",
+    });
   }
 
   /**
@@ -487,7 +501,9 @@ export class DGPercentileRoll extends DGRoll {
     target = parseInt(this.target);
 
     if (rollTargetModifier) {
-      target += rollTargetModifier;
+      target = clampPercentileRollTarget(target, rollTargetModifier, {
+        allowOver99: this.target > 99 && this.type === "stat",
+      });
     }
 
     if (this.modifier && !Number.isNaN(this.modifier)) {

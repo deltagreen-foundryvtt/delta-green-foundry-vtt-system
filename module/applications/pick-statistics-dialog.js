@@ -1,6 +1,6 @@
 import { BASE_TEMPLATE_PATH } from "../config.js";
+import { showDgDialog } from "./dg-dialog.js";
 
-const { DialogV2 } = foundry.applications.api;
 const { renderTemplate } = foundry.applications.handlebars;
 
 /** @typedef {'roll' | 'assign' | 'skip'} PickStatisticsChoice */
@@ -14,13 +14,13 @@ export async function showPickStatisticsDialog() {
     {},
   );
 
-  return DialogV2.wait({
+  return showDgDialog({
+    modifier: "pick-statistics",
     content,
     window: {
       title: game.i18n.localize("DG.ProfessionSetup.PickStatistics.Title"),
     },
     position: { width: 480 },
-    classes: ["pick-statistics-dialog-app"],
     close: () => null,
     buttons: [
       {
@@ -51,5 +51,3 @@ export async function showPickStatisticsDialog() {
     ],
   });
 }
-
-export default { showPickStatisticsDialog };

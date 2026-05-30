@@ -14,9 +14,90 @@ import {
  * @param {number} base
  * @returns {string}
  */
-function getActiveEffectModificationClass(current, base) {
+export function getActiveEffectModificationClass(current, base) {
   if (current == null || base == null || current === base) return "";
   return current > base ? "ae-mod-increase" : "ae-mod-decrease";
+}
+
+/**
+ * Sheet color for roll-target modifiers (uses modifier sign, not clamped effective vs base).
+ * @param {number} modifier
+ * @returns {string}
+ */
+export function getRollTargetDisplayClassFromModifier(modifier) {
+  const numericModifier = Number(modifier) || 0;
+  if (!numericModifier) return "";
+  return numericModifier > 0 ? "ae-mod-increase" : "ae-mod-decrease";
+}
+
+/**
+ * Apply a roll-target Active Effect modifier with the same clamp rules as percentile rolls.
+ * @param {number} base
+ * @param {number} modifier
+ * @param {{ allowOver99?: boolean }} [options]
+ * @returns {number}
+ */
+export function clampPercentileRollTarget(
+  base,
+  modifier,
+  { allowOver99 = false } = {},
+) {
+  const numericBase = Number(base);
+  const numericModifier = Number(modifier) || 0;
+  if (!numericModifier || !Number.isFinite(numericBase)) return numericBase;
+
+  let target = Math.round(numericBase + numericModifier);
+  target = Math.max(1, target);
+  if (!allowOver99) {
+    target = Math.min(target, 99);
+  }
+  return target;
+}
+
+/**
+ * @param {object} entry
+ * @param {number} modifier
+ */
+function attachRollTargetDisplay(entry, modifier) {
+  const numericModifier = Number(modifier) || 0;
+  if (!numericModifier) {
+    entry.rollTargetDisplayClass = "";
+    return;
+  }
+
+  entry.rollTargetDisplayClass =
+    getRollTargetDisplayClassFromModifier(numericModifier);
+}
+
+/**
+ * Sheet display for agent roll-target Active Effects (skills, stats x5, SAN).
+ * @param {Actor} actor
+ * @returns {void}
+ */
+export function prepareAgentRollTargetDisplay(actor) {
+  if (actor.type !== "agent") return;
+
+  const system = actor.system;
+  const rollTarget = system.rollTarget;
+  if (!rollTarget) return;
+
+  const allSkillsMod = Number(rollTarget.allSkills) || 0;
+  const sanityMod = Number(rollTarget.sanity) || 0;
+  const statisticsMod = Number(rollTarget.statistics) || 0;
+
+  for (const skill of Object.values(system.skills ?? {})) {
+    attachRollTargetDisplay(skill, allSkillsMod);
+  }
+
+  for (const skill of Object.values(system.typedSkills ?? {})) {
+    attachRollTargetDisplay(skill, allSkillsMod);
+  }
+
+  attachRollTargetDisplay(system.sanity, sanityMod);
+
+  for (const stat of Object.values(system.statistics ?? {})) {
+    attachRollTargetDisplay(stat, statisticsMod);
+  }
 }
 
 /**
@@ -82,6 +163,7 @@ export function refreshDerivedAfterActiveEffects(actor) {
 
   const sourceStatistics = actor._source?.system?.statistics;
   prepareStatisticsX5(system.statistics, sourceStatistics);
+  prepareAgentRollTargetDisplay(actor);
   applyAgentResourceMaxBonuses(system, sourceStatistics);
   setSkillTargetProficiencies(system.skills);
   setSkillTargetProficiencies(system.typedSkills);

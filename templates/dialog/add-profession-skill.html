@@ -1,6 +1,6 @@
-<form class="add-profession-skill-dialog">
-    <div class="form-group">
-        <label for="profession-skill-select">{{localize "DG.ItemWindow.Profession.Skill"}}</label>
+<div class="dg-dialog dg-dialog--add-profession-skill">
+    <div class="dg-dialog__field form-group">
+        <label class="dg-dialog__field-label" for="profession-skill-select">{{localize "DG.ItemWindow.Profession.Skill"}}</label>
         <select id="profession-skill-select" name="skillCatalogId">
             <option value="">{{localize "DG.ItemWindow.Profession.SelectSkill"}}</option>
             {{#each catalog}}
@@ -8,8 +8,8 @@
             {{/each}}
         </select>
     </div>
-    <div class="form-group">
-        <label for="profession-skill-rating">{{localize "DG.ItemWindow.Profession.Rating"}}</label>
+    <div class="dg-dialog__field form-group">
+        <label class="dg-dialog__field-label" for="profession-skill-rating">{{localize "DG.ItemWindow.Profession.Rating"}}</label>
         <input id="profession-skill-rating"
                type="number"
                name="skillRating"
@@ -19,7 +19,7 @@
     </div>
     <div class="form-group stacked profession-typed-label-group hidden">
         <div class="profession-typed-name-field">
-            <label for="profession-typed-label">{{localize "DG.ItemWindow.Profession.SkillType"}}</label>
+            <label class="dg-dialog__field-label" for="profession-typed-label">{{localize "DG.ItemWindow.Profession.SkillType"}}</label>
             <input id="profession-typed-label"
                    type="text"
                    name="typedSkillLabel"
@@ -36,4 +36,4 @@
             <p class="profession-choose-one-hint notes">{{localize "DG.ItemWindow.Profession.ChooseOneHint"}}</p>
         </div>
     </div>
-</form>
+</div>

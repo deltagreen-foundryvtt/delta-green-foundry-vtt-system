@@ -38,15 +38,23 @@
     format("truetype"); /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
 }
 
+/* Color tokens — near-black ink and dark surfaces (avoid pure #000) */
+:root {
+  --dg-ink: #212121;
+  --dg-surface-dark: #1a1a1a;
+  --dg-surface-dark-hover: #2a2a2a;
+  --dg-on-dark: #f5f5f0;
+}
+
 /* Global styles */
 
 .deltagreen section.window-content {
   scrollbar-color: #215112 #111 !important;
   padding: 0.5rem;
-  color: black; /* Override for when in Foundry's dark mode */
+  color: var(--dg-ink); /* Override for when in Foundry's dark mode */
 
   input[type="checkbox"]:checked::before {
-    color: black; /* Override for when in Foundry's dark mode */
+    color: var(--dg-ink); /* Override for when in Foundry's dark mode */
   }
 
   input[type="text"],
@@ -79,7 +87,8 @@
   font-family: "PublicSans", sans-serif !important;
 }
 
-.outlaw-style .cowboy-style .tabs [data-action="tab"] {
+.outlaw-style .tabs [data-action="tab"],
+.cowboy-style .tabs [data-action="tab"] {
   background: rgba(173, 151, 101, 0.3);
 }
 
@@ -121,7 +130,7 @@
 
 .rollable:hover,
 .rollable:focus {
-  color: #000;
+  color: var(--dg-ink);
   text-shadow: 0 0 5px #374e13;
   cursor: pointer;
 }
@@ -332,7 +341,7 @@ explicitly define a number of rows, rather than columns. */
 
   cursor: var(--cursor-pointer); /* Variable name from Foundry */
 
-  border: 1px solid black;
+  border: 1px solid var(--dg-ink);
   margin-right: 5px;
 }
 
@@ -383,7 +392,7 @@ explicitly define a number of rows, rather than columns. */
   line-height: inherit;
   padding-inline: 5px;
   border-radius: 5px 5px 0px 0px;
-  border-color: #000;
+  border-color: var(--dg-ink);
   border: gray;
   border-width: 1px 1px 0px 1px;
   border-style: solid;
@@ -392,7 +401,7 @@ explicitly define a number of rows, rather than columns. */
 .deltagreen .tabs [data-action="tab"].active {
   text-shadow: none;
   font-style: italic;
-  border: #000;
+  border-color: var(--dg-ink);
   border-width: 2px 2px 0px 2px;
   border-style: solid;
 }
@@ -401,7 +410,7 @@ explicitly define a number of rows, rather than columns. */
   height: 100%;
   overflow-y: auto;
 
-  border-color: #000;
+  border-color: var(--dg-ink);
   border-width: 2px;
   border-style: solid;
   border-radius: 3px;
@@ -410,13 +419,13 @@ explicitly define a number of rows, rather than columns. */
 }
 
 .deltagreen .program-style .tabs [data-action="tab"].active {
-  background-color: #000000;
-  color: #ffffff;
+  background-color: var(--dg-surface-dark);
+  color: var(--dg-on-dark);
 }
 
 .deltagreen .cowboy-style .tabs [data-action="tab"].active {
   background-color: rgba(156, 115, 18, 0.3);
-  color: #000000;
+  color: var(--dg-ink);
 }
 
 .deltagreen .items-list {
@@ -606,6 +615,10 @@ input.percentile-skill-input {
 .deltagreen .stats .ae-input-host--stat input {
   width: 100%;
   margin: 0;
+}
+
+.deltagreen .left-bar .stats .agent-left-bar-stat-grid {
+  grid-template-columns: auto 1fr;
 }
 
 /* Hide input text only when an AE overlay is showing the effective value */
@@ -880,7 +893,7 @@ textarea.wounds {
   grid-template-columns: 100%;
   align-items: center;
   justify-content: center;
-  border: 1.5px solid #000000;
+  border: 1.5px solid var(--dg-ink);
   padding: 5px;
   grid-gap: 3px;
   text-align: center;
@@ -908,67 +921,77 @@ div.max-resource-value {
 
 .physical-stats-and-feature {
   border-radius: 2px;
-  border: 1.5px solid #000000;
+  border: 1.5px solid var(--dg-ink);
 }
 
 .attributes-wrapper {
   margin-block-end: 12px;
 }
 
-div.horizontal-bar-section-divider {
-  display: grid;
-  grid-template-columns: 100%;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-
+div.horizontal-bar-section-divider,
+div.horizontal-bar-section-divider.skills-header,
+div.horizontal-bar-section-header {
+  box-sizing: border-box;
   margin-bottom: 3px;
+  background: var(--dg-surface-dark);
+  color: var(--dg-on-dark);
+  border-radius: 3px;
+  line-height: 1.2;
+  min-height: 30px;
+  height: auto;
+  padding: 6px 8px;
+  text-align: center;
+}
 
-  background: #000;
-  color: #fff;
-  height: 30px;
-
-  border-radius: 3px 3px 3px 3px;
+div.horizontal-bar-section-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 div.horizontal-bar-section-divider.skills-header {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  justify-content: center;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  text-align: center;
+}
 
-  margin-bottom: 3px;
-
-  background: #000;
-  color: #fff;
-  height: 30px;
-
-  border-radius: 3px 3px 3px 3px;
+/* Agent sheet: only the title — center in a single column (not grid column 2 of 3). */
+div.horizontal-bar-section-divider.skills-header:not(:has(.toggle-untrained)) {
+  grid-template-columns: 1fr;
 }
 
 .horizontal-bar-section-divider .skills-header-title {
   grid-column: 2;
+  margin: 0;
+  line-height: 1.2;
+}
+
+div.horizontal-bar-section-divider.skills-header:not(:has(.toggle-untrained))
+  .skills-header-title {
+  grid-column: 1;
+  justify-self: center;
 }
 
 .horizontal-bar-section-divider .toggle-untrained {
   grid-column: 3;
   padding-right: 0.5rem;
   justify-self: end;
+  align-self: center;
+  line-height: 1.2;
 }
 
 div.horizontal-bar-section-header {
-  display: grid;
-  grid-template-columns: 100%;
-  justify-content: center;
+  display: flex;
   align-items: center;
-  text-align: center;
+  justify-content: center;
+  min-height: 50px;
+  padding: 10px 8px;
+}
 
-  margin-bottom: 3px;
-
-  background: #000;
-  color: #fff;
-  height: 50px;
+/* Special Elite cap height sits high in the em box; nudge section headers down slightly. */
+.cowboy-style div.horizontal-bar-section-divider:not(.custom-skill-group-label),
+.cowboy-style div.horizontal-bar-section-header {
+  padding-block: 8px 4px;
 }
 
 .physical-description-label {
@@ -1162,7 +1185,7 @@ div.horizontal-bar-section-header {
   -ms-flex: 0 0 100px;
   flex: 0 0 100px;
   height: 100px;
-  border: 0px solid black;
+  border: 0px solid var(--dg-ink);
 }
 
 input.item-sheet-short-input {
@@ -1577,14 +1600,36 @@ a[data-action="applySkillImprovements"] {
   font-weight: bold;
 }
 
+.deltagreen input.percentile-skill-input.ae-mod-increase,
+.deltagreen input.centered.ae-mod-increase {
+  color: #00a82d;
+  -webkit-text-fill-color: #00a82d;
+  font-weight: bold;
+}
+
 .deltagreen .max-resource-value.ae-mod-increase > div,
 .deltagreen .max-resource-value.ae-mod-decrease > div {
   font-weight: bold;
 }
 
+table.dg-roll-target-tooltip {
+  margin-top: 0.25em;
+  border-collapse: collapse;
+}
+
+table.dg-roll-target-tooltip td {
+  padding: 1px 6px 1px 0;
+  vertical-align: top;
+}
+
+table.dg-roll-target-tooltip td:last-child {
+  text-align: right;
+  white-space: nowrap;
+}
+
 /* Delta Green stylized chat cards */
 .deltagreen.chat-card.dg-chat-card {
-  border: 2px solid #000;
+  border: 2px solid var(--dg-ink);
   border-radius: 3px;
   overflow: hidden;
   margin: 0;
@@ -1595,8 +1640,8 @@ a[data-action="applySkillImprovements"] {
   flex-direction: row;
   align-items: center;
   gap: 0;
-  background: #1a1a1a;
-  color: #f5f5f0;
+  background: var(--dg-surface-dark);
+  color: var(--dg-on-dark);
   padding: 6px 0;
 }
 
@@ -1636,24 +1681,28 @@ a[data-action="applySkillImprovements"] {
   margin: 0;
   font-size: 0.95rem;
   font-weight: bold;
-  color: #f5f5f0;
+  color: var(--dg-on-dark);
   line-height: 1.2;
 }
 
 .dg-chat-card__label {
   font-size: 0.8rem;
-  color: #f5f5f0;
+  color: var(--dg-on-dark);
   line-height: 1.25;
   margin-top: 2px;
 }
 
 .dg-chat-card__body {
-  border-color: #000;
+  border-color: var(--dg-ink);
   border-width: 0;
   border-style: solid;
   border-radius: 0;
   padding: 5px;
   background: inherit;
+}
+
+.dg-chat-card__body .dice-roll {
+  margin-top: 0.5em;
 }
 
 .chat-message:has(.dg-chat-card) .message-header,
@@ -1800,14 +1849,27 @@ a[data-action="applySkillImprovements"] {
     }
   }
 
-  /* Opaque inactive tabs so overlapping borders only show on the tab in front */
-  .window-content.program-style .tabs [data-action="tab"]:not(.active) {
-    background-color: rgb(186, 184, 181);
+  /* Opaque tab fills so stacked borders only show on the tab in front (all themes) */
+  .window-content.program-style {
+    --dg-agent-tab-inactive-bg: rgb(186, 184, 181);
+    --dg-agent-tab-active-bg: var(--dg-surface-dark);
+    --dg-agent-tab-active-color: var(--dg-on-dark);
   }
 
-  .window-content.cowboy-style .tabs [data-action="tab"]:not(.active),
-  .window-content.outlaw-style .tabs [data-action="tab"]:not(.active) {
-    background-color: rgb(210, 190, 150);
+  .window-content.cowboy-style,
+  .window-content.outlaw-style {
+    --dg-agent-tab-inactive-bg: rgb(210, 190, 150);
+    --dg-agent-tab-active-bg: rgb(194, 168, 110);
+    --dg-agent-tab-active-color: var(--dg-ink);
+  }
+
+  .window-content .tabs [data-action="tab"]:not(.active) {
+    background: var(--dg-agent-tab-inactive-bg);
+  }
+
+  .window-content .tabs [data-action="tab"].active {
+    background: var(--dg-agent-tab-active-bg);
+    color: var(--dg-agent-tab-active-color);
   }
 
   /* Pin the about tab to the right without opening a gap before it */
@@ -1969,10 +2031,6 @@ a[data-action="applySkillImprovements"] {
     }
   }
 
-  .horizontal-bar-section-divider.skills-header {
-    display: flex;
-  }
-
   .skill-util-buttons {
     display: flex;
     flex-direction: row;
@@ -2023,12 +2081,12 @@ a[data-action="applySkillImprovements"] {
 
   &.custom-skills-edit-mode .custom-skills-edit-toggle {
     background-color: rgba(0, 0, 0, 0.45);
-    outline: 1px solid #000;
+    outline: 1px solid var(--dg-ink);
   }
 
   &.custom-skills-edit-mode .program-style .custom-skills-edit-toggle {
-    background-color: #000;
-    color: #fff;
+    background-color: var(--dg-surface-dark);
+    color: var(--dg-on-dark);
   }
 
   .typed-skill-row {
@@ -2200,7 +2258,7 @@ a[data-action="applySkillImprovements"] {
   }
 
   .adaptation-block {
-    border: 1px solid black;
+    border: 1px solid var(--dg-ink);
     padding: 3px;
   }
 
@@ -2280,7 +2338,7 @@ a[data-action="applySkillImprovements"] {
 
   border-radius: 50%;
   background: var(--color-border-dark, #444);
-  color: #fff;
+  color: var(--dg-on-dark);
 
   font-size: 12px;
 
@@ -2402,134 +2460,6 @@ a[data-action="applySkillImprovements"] {
   white-space: nowrap;
 }
 
-.stimulants-dialog {
-  display: grid;
-  grid-template-columns: 10rem 1fr;
-  gap: 12px;
-  align-items: center;
-}
-
-.stimulants-dialog .stimulants-option {
-  display: contents;
-}
-
-.stimulants-dialog .stimulants-choice-btn {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 4px 8px;
-  border-radius: 3px;
-  font-size: 0.8rem;
-  font-weight: bold;
-  background: var(--color-control-bg, rgba(255, 255, 255, 0.14));
-  color: var(--color-text-light-primary, #eee);
-  border: 1px solid var(--color-border-light-2, rgba(255, 255, 255, 0.35));
-  cursor: pointer;
-  white-space: nowrap;
-  text-align: center;
-}
-
-.stimulants-dialog .stimulants-choice-btn:hover {
-  background: var(--color-control-bg-hover, rgba(255, 255, 255, 0.22));
-  border-color: var(--color-border-light-highlight, rgba(255, 255, 255, 0.5));
-}
-
-.stimulants-dialog .stimulants-explanation {
-  margin: 0;
-  font-size: var(--font-size-12);
-  color: var(--color-text-light-secondary, rgba(255, 255, 255, 0.75));
-  line-height: 1.35;
-}
-
-.stimulants-dialog-app .form-footer {
-  display: none;
-}
-
-.modify-roll-dialog-app .form-footer {
-  display: none;
-}
-
-.modify-roll-dialog .form-group {
-  margin-bottom: 0.5rem;
-}
-
-.modify-roll-dialog .modify-roll-readonly {
-  flex: 1;
-  font-weight: bold;
-}
-
-.modify-roll-dialog .modify-roll-section {
-  margin-top: 1rem;
-  padding-top: 0.75rem;
-  border-top: 1px solid var(--color-border-light-2, rgba(255, 255, 255, 0.2));
-}
-
-.modify-roll-dialog .modify-roll-section h3 {
-  margin: 0 0 0.35rem;
-  font-size: var(--font-size-14, 0.875rem);
-  font-weight: bold;
-}
-
-.modify-roll-dialog .modify-roll-hint {
-  margin: 0 0 0.65rem;
-  font-size: var(--font-size-12);
-  color: var(--color-text-light-secondary, rgba(255, 255, 255, 0.75));
-  line-height: 1.35;
-}
-
-.modify-roll-dialog .modify-roll-quick-grid {
-  display: grid;
-  grid-template-columns: 5rem 1fr;
-  gap: 10px 12px;
-  align-items: center;
-}
-
-.modify-roll-dialog .modify-roll-quick-option {
-  display: contents;
-}
-
-.modify-roll-dialog .modify-roll-quick-btn,
-.modify-roll-dialog .modify-roll-submit-btn {
-  box-sizing: border-box;
-  padding: 4px 8px;
-  border-radius: 3px;
-  font-size: 0.8rem;
-  font-weight: bold;
-  background: var(--color-control-bg, rgba(255, 255, 255, 0.14));
-  color: var(--color-text-light-primary, #eee);
-  border: 1px solid var(--color-border-light-2, rgba(255, 255, 255, 0.35));
-  cursor: pointer;
-  white-space: nowrap;
-  text-align: center;
-}
-
-.modify-roll-dialog .modify-roll-quick-btn:hover,
-.modify-roll-dialog .modify-roll-submit-btn:hover {
-  background: var(--color-control-bg-hover, rgba(255, 255, 255, 0.22));
-  border-color: var(--color-border-light-highlight, rgba(255, 255, 255, 0.5));
-}
-
-.modify-roll-dialog .modify-roll-quick-explanation {
-  margin: 0;
-  font-size: var(--font-size-12);
-  color: var(--color-text-light-secondary, rgba(255, 255, 255, 0.75));
-  line-height: 1.35;
-}
-
-.modify-roll-dialog .modify-roll-custom-row {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-}
-
-.modify-roll-dialog .modify-roll-custom-row input[type="number"] {
-  flex: 0 0 5rem;
-  text-align: center;
-}
-
-.modify-roll-dialog .modify-roll-submit-btn {
-  flex: 0 0 auto;
-  min-width: 5rem;
-}
 
 .deltagreen .effects-list .effect-controls {
   display: flex;
@@ -2640,454 +2570,6 @@ a[data-action="applySkillImprovements"] {
   text-align: right;
 }
 
-.add-profession-skill-dialog-app .add-profession-skill-dialog .profession-typed-label-group.hidden,
-.deltagreen .add-profession-skill-dialog .profession-typed-label-group.hidden {
-  display: none;
-}
-
-.add-profession-skill-dialog-app .add-profession-skill-dialog .profession-typed-label-group,
-.add-profession-skill-dialog-app .standard-form .add-profession-skill-dialog .profession-typed-label-group,
-.deltagreen .add-profession-skill-dialog .profession-typed-label-group,
-.standard-form .add-profession-skill-dialog .profession-typed-label-group {
-  flex-direction: column;
-  align-items: stretch;
-  gap: 0.5rem;
-}
-
-.add-profession-skill-dialog-app .add-profession-skill-dialog .profession-typed-label-group > *,
-.add-profession-skill-dialog-app .standard-form .add-profession-skill-dialog .profession-typed-label-group > *,
-.deltagreen .add-profession-skill-dialog .profession-typed-label-group > *,
-.standard-form .add-profession-skill-dialog .profession-typed-label-group > * {
-  flex: 0 0 auto;
-  width: 100%;
-  max-width: 100%;
-}
-
-.add-profession-skill-dialog-app .add-profession-skill-dialog .profession-typed-name-field,
-.add-profession-skill-dialog-app .add-profession-skill-dialog .profession-choose-one-field,
-.add-profession-skill-dialog-app .standard-form .add-profession-skill-dialog .profession-typed-name-field,
-.add-profession-skill-dialog-app .standard-form .add-profession-skill-dialog .profession-choose-one-field,
-.deltagreen .add-profession-skill-dialog .profession-typed-name-field,
-.deltagreen .add-profession-skill-dialog .profession-choose-one-field,
-.standard-form .add-profession-skill-dialog .profession-typed-name-field,
-.standard-form .add-profession-skill-dialog .profession-choose-one-field {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.2rem;
-}
-
-.add-profession-skill-dialog-app .add-profession-skill-dialog .profession-typed-name-field > label,
-.add-profession-skill-dialog-app .standard-form .add-profession-skill-dialog .profession-typed-name-field > label,
-.deltagreen .add-profession-skill-dialog .profession-typed-name-field > label,
-.standard-form .add-profession-skill-dialog .profession-typed-name-field > label {
-  flex: none;
-  width: 100%;
-  line-height: 1.3;
-}
-
-.deltagreen .add-profession-skill-dialog .profession-typed-name-field input {
-  width: 100%;
-}
-
-.deltagreen .add-profession-skill-dialog .profession-choose-one-field {
-  padding-top: 0.25rem;
-}
-
-/* Add Profession dialog */
-.add-profession-dialog-app h3 {
-  font-size: var(--font-size-14);
-  font-weight: bold;
-  margin: 0.5rem 0 0.35rem;
-  line-height: 1.2;
-}
-
-.add-profession-skill-dialog-app .add-profession-skill-dialog .profession-choose-one-checkbox,
-.deltagreen .add-profession-skill-dialog .profession-choose-one-checkbox {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  margin: 0;
-}
-
-.add-profession-skill-dialog-app .add-profession-skill-dialog .profession-choose-one-hint,
-.deltagreen .add-profession-skill-dialog .profession-choose-one-hint {
-  margin: 0.25rem 0 0;
-}
-
-.add-profession-dialog-app .add-profession-choose-one-section {
-  margin-bottom: 0.75rem;
-}
-
-.add-profession-dialog-app .add-profession-choose-one-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-}
-
-.add-profession-dialog-app .add-profession-choose-one-row {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-}
-
-.add-profession-dialog-app .add-profession-choose-one-row input {
-  width: 100%;
-}
-
-.add-profession-dialog-app .add-profession-option-row .option-choose-one-label {
-  width: 100%;
-}
-
-.add-profession-dialog-app .add-profession-skills-section {
-  margin-bottom: 0.75rem;
-}
-
-.add-profession-dialog-app .add-profession-skills-columns-header {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0.75rem;
-  margin-bottom: 0.25rem;
-  font-size: var(--font-size-12);
-  font-weight: bold;
-}
-
-.add-profession-dialog-app .add-profession-skill-col-header {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 0.5rem;
-  padding: 0 0.15rem;
-}
-
-.add-profession-dialog-app .add-profession-skills-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0.2rem 0.75rem;
-  max-height: 16rem;
-  overflow-y: auto;
-}
-
-.add-profession-dialog-app .add-profession-skill-entry {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 0.25rem 0.5rem;
-  align-items: center;
-  min-width: 0;
-}
-
-.add-profession-dialog-app .add-profession-skill-label {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.add-profession-dialog-app .add-profession-skill-value {
-  text-align: right;
-  min-width: 2.5rem;
-}
-
-.add-profession-dialog-app .add-profession-skill-entry.is-modified .add-profession-skill-label,
-.add-profession-dialog-app .add-profession-skill-entry.is-modified .add-profession-skill-value {
-  color: var(--color-text-success, #2d8a3e);
-}
-
-.add-profession-dialog-app .add-profession-options-section {
-  margin-bottom: 0.75rem;
-}
-
-.add-profession-dialog-app .add-profession-option-list {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.35rem 0.75rem;
-  margin: 0 0 0.75rem;
-  padding: 0;
-}
-
-.add-profession-dialog-app .add-profession-option-row {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.25rem;
-  min-width: 0;
-}
-
-.add-profession-dialog-app .add-profession-option-row > label {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.35rem;
-  width: 100%;
-  min-width: 0;
-}
-
-.add-profession-dialog-app .add-profession-option-row .option-skill-label {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  min-width: 0;
-  flex: 1 1 auto;
-}
-
-.add-profession-dialog-app .add-profession-option-row .option-typed-label {
-  width: 100%;
-}
-
-.add-profession-dialog-app .add-profession-bonus-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.5rem 0.75rem;
-  margin-bottom: 0.75rem;
-}
-
-.add-profession-dialog-app .add-profession-bonus-slot {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 0.35rem;
-  min-width: 0;
-}
-
-.add-profession-dialog-app .add-profession-bonus-slot select {
-  flex: 0 1 11rem;
-  width: 11rem;
-  max-width: 42%;
-  min-width: 7rem;
-}
-
-.add-profession-dialog-app .add-profession-bonus-slot .bonus-typed-label {
-  flex: 1 1 0;
-  min-width: 5rem;
-  width: auto;
-}
-
-.add-profession-dialog-app .add-profession-bonus-slot .bonus-typed-label.hidden {
-  display: none;
-}
-
-.add-profession-dialog-app .cap-warning,
-.add-profession-dialog-app .validation-error {
-  color: var(--color-text-error, #c00);
-  font-weight: bold;
-  margin: 0.25rem 0;
-}
-
-.add-profession-dialog-app .add-profession-bonds-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.75rem;
-}
-
-.add-profession-dialog-app .add-profession-bond-row {
-  display: grid;
-  grid-template-columns: auto 1fr 1fr 3.5rem;
-  gap: 0.35rem 0.5rem;
-  align-items: end;
-  min-width: 0;
-}
-
-.add-profession-dialog-app .add-profession-bond-row .bond-row-label {
-  font-weight: bold;
-  white-space: nowrap;
-  padding-bottom: 0.15rem;
-}
-
-.add-profession-dialog-app .add-profession-bond-field {
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
-  min-width: 0;
-  font-size: var(--font-size-12);
-}
-
-.add-profession-dialog-app .add-profession-bond-field-label {
-  white-space: nowrap;
-}
-
-.add-profession-dialog-app .add-profession-bond-field input {
-  width: 100%;
-  min-width: 0;
-}
-
-.add-profession-dialog-app .add-profession-bond-field-score input {
-  text-align: center;
-}
-
-.add-profession-dialog-app .form-footer {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  align-items: stretch;
-  gap: 0.5rem;
-  margin-top: 0.75rem;
-}
-
-.add-profession-dialog-app .form-footer > button {
-  flex: 1 1 0;
-  min-width: 0;
-}
-
-.deltagreen .profession-assigned-row {
-  margin-bottom: 0.75rem;
-}
-
-.pick-statistics-dialog-app .pick-statistics-intro {
-  margin: 0 0 0.5rem;
-  line-height: 1.4;
-}
-
-.pick-statistics-dialog-app .form-footer {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.5rem;
-  margin-top: 0.75rem;
-}
-
-.pick-statistics-dialog-app .form-footer > button[data-action="skip"] {
-  grid-column: 1 / -1;
-}
-
-.roll-stats-dialog-app .roll-stats-layout {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 1rem;
-  align-items: start;
-}
-
-.roll-stats-dialog-app .roll-stats-pool-section {
-  min-width: 5.5rem;
-}
-
-.roll-stats-dialog-app .roll-stats-pool-hint {
-  margin: 0.75rem 0 0;
-  font-size: var(--font-size-12, 0.75rem);
-  text-align: center;
-  color: var(--color-text-dark-secondary, rgba(255, 255, 255, 0.65));
-}
-
-.roll-stats-dialog-app .roll-stats-pool {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  width: 3rem;
-  min-height: 3rem;
-  padding: 0.5rem;
-  border: 1px dashed var(--color-border-light-2, rgba(255, 255, 255, 0.25));
-  border-radius: 4px;
-}
-
-.roll-stats-dialog-app .roll-stats-pool.drag-over {
-  border-color: var(--color-border-highlight, #ff6400);
-  background: rgba(255, 100, 0, 0.08);
-}
-
-.roll-stats-dialog-app .roll-stat-token {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  padding: 0;
-  font-weight: bold;
-  font-size: var(--font-size-16, 1rem);
-  border: 1px solid var(--color-border-light-2, rgba(255, 255, 255, 0.25));
-  border-radius: 4px;
-  background: var(--color-bg-option, rgba(0, 0, 0, 0.15));
-  cursor: grab;
-  user-select: none;
-  box-sizing: border-box;
-}
-
-.roll-stats-dialog-app .roll-stat-token.is-dragging {
-  opacity: 0.5;
-  cursor: grabbing;
-}
-
-.roll-stats-dialog-app .roll-stats-assignment-section {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-}
-
-.roll-stats-dialog-app .roll-stat-row {
-  display: grid;
-  grid-template-columns: 3rem auto;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.roll-stats-dialog-app .roll-stat-label {
-  font-weight: bold;
-}
-
-.roll-stats-dialog-app .roll-stat-slot {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  flex: 0 0 auto;
-  padding: 0;
-  border: 1px dashed var(--color-border-light-2, rgba(255, 255, 255, 0.25));
-  border-radius: 4px;
-  box-sizing: border-box;
-}
-
-.roll-stats-dialog-app .roll-stat-slot.drag-over {
-  border-color: var(--color-border-highlight, #ff6400);
-  background: rgba(255, 100, 0, 0.08);
-}
-
-.roll-stats-dialog-app .roll-stat-slot .roll-stat-token {
-  cursor: grab;
-  width: 100%;
-  height: 100%;
-}
-
-.roll-stats-dialog-app .form-footer {
-  display: flex;
-  flex-direction: row;
-  gap: 0.5rem;
-  margin-top: 0.75rem;
-}
-
-.assign-stats-dialog-app .assign-stats-remaining {
-  margin: 0 0 0.75rem;
-  font-weight: bold;
-}
-
-.assign-stats-dialog-app .assign-stats-remaining.is-invalid {
-  color: var(--color-text-warning, #ff9200);
-}
-
-.assign-stats-dialog-app .assign-stats-rows {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-}
-
-.assign-stats-dialog-app .assign-stats-row {
-  display: grid;
-  grid-template-columns: 3rem 1fr;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.assign-stats-dialog-app .assign-stats-label {
-  font-weight: bold;
-}
-
-.assign-stats-dialog-app .assign-stats-row input {
-  width: 100%;
-  text-align: center;
-}
-
-.assign-stats-dialog-app .form-footer {
-  display: flex;
-  flex-direction: row;
-  gap: 0.5rem;
-  margin-top: 0.75rem;
-}
 
 .roll-stats-chat-table {
   width: auto;
@@ -3095,7 +2577,12 @@ a[data-action="applySkillImprovements"] {
   border-collapse: collapse;
 }
 
-.roll-stats-chat-table td {
+/* Override Foundry row striping; alternate per cell in reading order (checkerboard in 3 cols) */
+.dg-chat-card__body .roll-stats-chat-table tbody tr {
+  background-color: transparent;
+}
+
+.dg-chat-card__body .roll-stats-chat-table td {
   padding: 0.35rem 1rem;
   text-align: center;
   font-weight: bold;
@@ -3103,6 +2590,14 @@ a[data-action="applySkillImprovements"] {
   border: 1px solid var(--color-border-light-2, rgba(255, 255, 255, 0.2));
 }
 
-.roll-stats-chat-table .roll-stats-chat-value {
+.dg-chat-card__body .roll-stats-chat-table td.roll-stats-chat-value--a {
+  background-color: var(--table-row-color-odd, transparent);
+}
+
+.dg-chat-card__body .roll-stats-chat-table td.roll-stats-chat-value--b {
+  background-color: var(--table-row-color-even, rgba(255, 255, 255, 0.1));
+}
+
+.dg-chat-card__body .roll-stats-chat-table .roll-stats-chat-value {
   min-width: 2rem;
 }

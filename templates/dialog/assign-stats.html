@@ -1,11 +1,11 @@
-<form class="assign-stats-dialog">
+<div class="dg-dialog dg-dialog--assign-stats">
     <p class="assign-stats-remaining" data-points-remaining>
         {{localize "DG.ProfessionSetup.AssignStats.PointsRemaining" remaining=remaining}}
     </p>
     <div class="assign-stats-rows">
         {{#each stats}}
-        <label class="assign-stats-row">
-            <span class="assign-stats-label">{{label}}</span>
+        <label class="assign-stats-row dg-dialog__field">
+            <span class="assign-stats-label dg-dialog__field-label">{{label}}</span>
             <input type="number"
                    name="stat-{{key}}"
                    data-stat-key="{{key}}"
@@ -16,4 +16,4 @@
         </label>
         {{/each}}
     </div>
-</form>
+</div>

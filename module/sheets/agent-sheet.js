@@ -16,9 +16,8 @@ import {
   hasActiveStimulantEffect,
 } from "../utils/stimulant-effect.js";
 import { assignProfessionToAgent } from "../applications/profession-setup-flow.js";
+import { showDgDialog } from "../applications/dg-dialog.js";
 import { PROFESSION_OPTION_PICKS_KEY } from "../data/item/profession.js";
-
-const { DialogV2 } = foundry.applications.api;
 const { renderTemplate } = foundry.applications.handlebars;
 
 const AgentSheetBase = EffectsTabMixin(DGActorSheet);
@@ -362,7 +361,8 @@ export default class DGAgentSheet extends AgentSheetBase {
     );
 
     let penalty = null;
-    const confirmed = await DialogV2.wait({
+    const confirmed = await showDgDialog({
+      modifier: "exhaust-agent",
       content,
       window: {
         title: game.i18n.localize("DG.Physical.ExhaustDialogTitle"),
@@ -401,6 +401,7 @@ export default class DGAgentSheet extends AgentSheetBase {
     await createAgentResourceChatMessage({
       actor,
       token: this.token,
+      roll: wpRoll,
       contentKey: "DG.Physical.Chat.Exhausted",
       labelKey: "DG.Physical.Chat.ExhaustedLabel",
       i18nData: {
@@ -424,6 +425,7 @@ export default class DGAgentSheet extends AgentSheetBase {
       return;
     }
 
+    const wasExhausted = DGAgentSheet._isActorExhausted(actor);
     const wpRoll = await new Roll("1d6").evaluate();
     const gain = wpRoll.total;
     const currentWp = Number(actor.system.wp.value) || 0;
@@ -441,8 +443,12 @@ export default class DGAgentSheet extends AgentSheetBase {
     await createAgentResourceChatMessage({
       actor,
       token: this.token,
+      roll: wpRoll,
       contentKey: "DG.Physical.Chat.Rested",
       labelKey: "DG.Physical.Chat.RestedLabel",
+      extraContentKey: wasExhausted
+        ? "DG.Physical.Chat.RestedNoLongerExhausted"
+        : null,
       i18nData: {
         name: actor.name,
         gain,
@@ -477,12 +483,12 @@ export default class DGAgentSheet extends AgentSheetBase {
       {},
     );
 
-    const choice = await DialogV2.wait({
+    const choice = await showDgDialog({
+      modifier: "stimulants",
       content,
       window: {
         title: game.i18n.localize("DG.Physical.StimulantsDialogTitle"),
       },
-      classes: ["stimulants-dialog-app"],
       buttons: [
         {
           action: "regular",
@@ -639,7 +645,8 @@ export default class DGAgentSheet extends AgentSheetBase {
       },
     );
 
-    return foundry.applications.api.DialogV2.wait({
+    return showDgDialog({
+      modifier: "apply-skill-improvements",
       content,
       window: {
         title: game.i18n.localize("DG.Skills.ApplySkillImprovements.Title"),

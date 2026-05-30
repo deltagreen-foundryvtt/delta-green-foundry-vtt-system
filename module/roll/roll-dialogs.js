@@ -1,7 +1,7 @@
+import { showDgDialog } from "../applications/dg-dialog.js";
 import DGUtils from "../utils/utility-functions.js";
 
 const { renderTemplate } = foundry.applications.handlebars;
-const { DialogV2 } = foundry.applications.api;
 
 const PERCENTILE_ROLL_DIALOG_TEMPLATE =
   "systems/deltagreen/templates/dialog/modify-percentile-roll.html";
@@ -55,6 +55,7 @@ function readMessageMode(dialog) {
 export async function showPercentileRollModifyDialog({
   label,
   target,
+  targetDisplayClass = "",
   hideTarget = false,
   defaultModifier = 20,
   actor = null,
@@ -68,6 +69,7 @@ export async function showPercentileRollModifyDialog({
     data: {
       label,
       originalTarget: target,
+      targetDisplayClass,
       targetModifier: defaultModifier,
       hideTarget,
     },
@@ -101,9 +103,9 @@ export async function showPercentileRollModifyDialog({
       }),
   }));
 
-  return DialogV2.wait({
+  return showDgDialog({
+    modifier: "modify-roll",
     content,
-    classes: ["modify-roll-dialog-app"],
     form: { closeOnSubmit: false },
     position: { width: 420 },
     window: {
@@ -170,7 +172,8 @@ export async function showDamageRollModifyDialog({ itemName, formula }) {
     },
   });
 
-  return DialogV2.wait({
+  return showDgDialog({
+    modifier: "modify-damage-roll",
     content,
     window: {
       title: game.i18n.localize("DG.ModifySkillRollDialogue.Title"),

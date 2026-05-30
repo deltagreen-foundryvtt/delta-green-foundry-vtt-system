@@ -21,10 +21,12 @@
 - [#209](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/209) - Added **Profession** item type with partial chargen automation
 
 ### **Bug Fixes:**
+
 - [#392](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/392) - Fixed sheet rolls
 - [#394](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/394) - Unified actor and item description fields on schema with shared ProseMirror preparation
 
 ### **Under the Hood:**
+
 - [#323](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/323) - Refactored roll logic and split into util functions
 
 ## Version 1.6.6 - 2026-04-15

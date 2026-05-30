@@ -8,14 +8,14 @@
         <div>???</div>
     </div>
 {{else}}
-    <input class="centered
+    <input class="centered {{actor.system.sanity.rollTargetDisplayClass}}
                   {{#if actor.system.sanity.breakingPointHit }}
                       breaking-point-hit{{/if }}"
            type="text"
            name="system.sanity.value"
            value="{{actor.system.sanity.value }}"
            data-dtype="Number"
-           data-tooltip="{{localize 'DG.Tooltip.CurrentSanityPartOne' }}{{actor.system.sanity.currentBreakingPoint }}{{localize 'DG.Tooltip.CurrentSanityPartTwo' }}" />
+           data-tooltip="{{actor.system.sanity.tooltip}}" />
     <span>/</span>
     <div class="max-resource-value {{actor.system.sanity.maxDisplayClass}}"
          data-tooltip="{{localize 'DG.Tooltip.MaximumSanity'}}">
