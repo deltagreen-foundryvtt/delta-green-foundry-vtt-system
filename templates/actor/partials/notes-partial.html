@@ -2,5 +2,5 @@
     <div class="horizontal-bar-section-divider">
         <span>{{localize "DG.Sheet.BlockHeaders.PhysicalDescriptionNotes"}}</span>
     </div>
-    <div class="editor-host">{{{enrichedDescription}}}</div>
+    {{> "systems/deltagreen/templates/partials/prose-mirror-host.html" html=richText.description}}
 </section>

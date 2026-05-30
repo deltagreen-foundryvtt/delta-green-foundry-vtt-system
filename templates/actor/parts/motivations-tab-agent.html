@@ -1,0 +1,71 @@
+{{!-- Psychological Tab (formerly 'Mental', formerly 'Motivations') --}}
+<div class="tab motivations {{tabs.motivations.cssClass}}"
+     data-group="primary"
+     data-tab="motivations">
+
+    {{> "systems/deltagreen/templates/actor/partials/bonds-section-partial.html" }}
+
+    <div class="horizontal-bar-section-divider">
+        <span>{{localize "DG.Sheet.BlockHeaders.MotivationsAndDisorders"}}</span>
+    </div>
+
+    <div>
+        <ol class="items-list">
+
+            <li class="item flexrow item-header">
+                <div class="item-name">{{localize 'DG.Mental.Motivations'}}</div>
+                <div class="item-name">{{localize 'DG.Mental.Disorders'}}</div>
+                <div class="item-name acute-episode-col">{{localize 'DG.ItemWindow.Motivations.AcuteEpisode'}}</div>
+                <div class="item-controls">
+                    <a class="item-control action-pill"
+                       data-action="itemAction"
+                       data-action-type="create"
+                       data-item-type="motivation"
+                       title="Create item">
+                        <i class="fas fa-plus"></i>
+                        {{localize 'DG.Generic.AddButtonLabel'}}
+                    </a>
+                </div>
+            </li>
+
+            {{#each actor.items as |item id| }}
+                {{#if_eq item.type 'motivation' }}
+
+                    <li class="item flexrow {{#if item.system.acuteEpisode}}acute-episode-active{{/if}}" data-item-id="{{item.id}}">
+                        <span class="item-name {{#if item.system.crossedOut }}is-crossed-out{{/if}}">
+                            {{item.name}}
+                        </span>
+
+                        <span class="item-name">
+                            {{#if item.system.crossedOut }}{{item.system.disorder}}{{/if}}
+                        </span>
+
+                        <span class="acute-episode-col">
+                            <input type="checkbox"
+                                   {{checked item.system.acuteEpisode}}
+                                   data-action="toggleAcuteEpisode"
+                                   data-item-id="{{item.id}}"
+                                   title="{{localize 'DG.ItemWindow.Motivations.AcuteEpisodeTooltip'}}" />
+                        </span>
+
+                        <div class="item-controls">
+                            <a class="item-control"
+                               data-action="itemAction"
+                               data-action-type="edit"
+                               title="Edit Item">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a class="item-control"
+                               data-action="itemAction"
+                               data-action-type="delete"
+                               title="Delete Item">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </div>
+                    </li>
+
+                {{/if_eq}}
+            {{/each}}
+        </ol>
+    </div>
+</div>

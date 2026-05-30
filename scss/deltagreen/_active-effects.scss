@@ -1,0 +1,76 @@
+/* AE-backed inputs: overlay shows effective value; focus reveals base value for editing */
+.deltagreen .ae-input-host {
+  position: relative;
+  display: inline-flex;
+  flex: 0 0 40px;
+  margin: 0 5px;
+  height: auto;
+  align-self: center;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.deltagreen .ae-input-host input {
+  position: relative;
+  z-index: 0;
+  width: 100%;
+  margin: 0;
+}
+
+/* Typography + inset come from the input (mirrored in JS); only layer + AE colors here */
+.deltagreen .ae-input-host .ae-input-display {
+  position: absolute;
+  z-index: 1;
+  display: block;
+  overflow: hidden;
+  box-sizing: border-box;
+  pointer-events: none;
+  border: none;
+  background: transparent;
+}
+
+.deltagreen .stats .physical-stats-outer-grid-3col .ae-input-host--stat {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  flex: none;
+  margin: 1px;
+  height: auto;
+  align-self: auto;
+  box-sizing: border-box;
+}
+
+.deltagreen .stats .ae-input-host--stat input {
+  width: 100%;
+  margin: 0;
+}
+
+.deltagreen .left-bar .stats .agent-left-bar-stat-grid {
+  grid-template-columns: auto 1fr;
+}
+
+/* Hide input text only when an AE overlay is showing the effective value */
+.deltagreen .ae-input-host:has(.ae-input-display):not(:focus-within) input {
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  caret-color: transparent;
+}
+
+.deltagreen .ae-input-host:has(.ae-input-display):focus-within input {
+  color: var(--input-text-color);
+  -webkit-text-fill-color: var(--input-text-color);
+  caret-color: auto;
+}
+
+.deltagreen .ae-input-host:focus-within .ae-input-display {
+  display: none;
+}
+
+.deltagreen .ae-input-host .ae-input-display.ae-mod-increase {
+  color: #00a82d;
+}
+
+.deltagreen .ae-input-host .ae-input-display.ae-mod-decrease {
+  color: #ff8a8a;
+}

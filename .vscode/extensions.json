@@ -5,7 +5,8 @@
     "esbenp.prettier-vscode",
     "monosans.djlint",
     "DavidAnson.vscode-markdownlint",
-    "EditorConfig.EditorConfig"
+    "EditorConfig.EditorConfig",
+    "syler.sass-indented"
   ],
   "unwantedRecommendations": []
 }

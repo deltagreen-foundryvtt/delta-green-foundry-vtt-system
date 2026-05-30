@@ -15,3 +15,7 @@ deltagreen.lock
 
 # Ignore npm modules
 node_modules
+
+# Sass build output (source lives in scss/)
+css/*.css
+css/*.css.map

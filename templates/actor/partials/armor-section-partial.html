@@ -1,0 +1,75 @@
+<div>
+    <div class="horizontal-bar-section-divider">
+        <span>{{localize 'DG.Gear.Armor'}}</span>
+    </div>
+    <ol class="items-list">
+        <li class="item flexrow item-header">
+
+            <div class="item-image">
+                {{#if actor.system.settings.sorting.armorSortAlphabetical }}
+                    <a data-action="toggleItemSortMode" data-gear-type="armor">
+                        <i class="fa-solid fa-arrow-down-a-z"></i>
+                    </a>
+                {{else}}
+                    <a data-action="toggleItemSortMode" data-gear-type="armor">
+                        <i class="fa-solid fa-arrow-down-short-wide"></i>
+                    </a>
+                {{/if}}
+            </div>
+            <div class="item-name">
+                <span>{{localize 'DG.Gear.Name'}} <a data-action="browsePack" data-pack-type="armor"><i class="fas fa-search"></i></a></span>
+            </div>
+            <span class="centered-item-property">{{localize 'DG.Gear.ArmorRating'}}</span>
+            <span class="centered-item-property">{{localize 'DG.Gear.Equipped'}}</span>
+            <div class="item-controls">
+                <a class="item-control action-pill"
+                   data-action="itemAction"
+                   data-action-type="create"
+                   title="Create item"
+                   data-item-type="armor"><i class="fas fa-plus"></i> {{localize 'DG.Generic.AddButtonLabel'}}</a>
+            </div>
+
+        </li>
+
+        {{#each actor.armor as |item id| }}
+
+            <li class="item flexrow" data-item-id="{{item._id}}">
+
+                <div class="item-image">
+                    <img src="{{item.img}}" title="{{item.name}}" width="24" height="24" />
+                </div>
+
+                <span class="item-name">{{item.name}}</span>
+
+                <span class="centered-item-property">{{item.system.protection}}</span>
+
+                <a class="centered-item-property"
+                   data-action="toggle"
+                   data-prop="system.equipped"
+                   data-item-id="{{item._id}}"
+                   title="{{localize 'DG.Tooltip.ToggleEquippedState'}}">
+                    {{#if item.system.equipped }}
+                        <i class="fas fa-check"></i>
+                    {{else}}
+                        <i class="fas fa-times"></i>
+                    {{/if}}
+                </a>
+
+                <div class="item-controls">
+                    <a class="item-control"
+                       data-action="itemAction"
+                       data-action-type="edit"
+                       title="Edit Item">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <a class="item-control"
+                       data-action="itemAction"
+                       data-action-type="delete"
+                       title="Delete Item">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                </div>
+            </li>
+        {{/each}}
+    </ol>
+</div>

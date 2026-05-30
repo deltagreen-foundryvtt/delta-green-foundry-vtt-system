@@ -1,0 +1,18 @@
+<header class="">
+    <div class="bond-sheet-grid-2col">
+        <img class="item-img" src="{{item.img}}" data-action="editImage" title="{{item.name}}" />
+        <div class="bond-sheet-horizontal-grid-2col">
+
+            <span class="resource-label">{{localize 'DG.Bonds.Name'}}:</span>
+            <input name="name" type="text" value="{{item.name}}" placeholder="{{localize 'DG.Bonds.Name'}}" />
+
+            <span class="resource-label">{{localize 'DG.Bonds.Score'}}:</span>
+            <input type="text" name="system.score" value="{{item.system.score}}" data-dtype="Number"
+                   title="{{localize 'DG.ItemWindow.Bonds.ScoreTooltip'}}" />
+
+            <span class="resource-label">{{localize 'DG.Bonds.Relationship'}}:</span>
+            <input type="text" name="system.relationship" value="{{item.system.relationship}}" data-dtype="String" />
+
+        </div>
+    </div>
+</header>

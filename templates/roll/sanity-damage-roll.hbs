@@ -1,0 +1,29 @@
+<div class="dice-roll" data-action="expandRoll">
+  <div class="dice-result">
+    <div class="dice-formula">{{lowFormula}} / {{highFormula}}</div>
+    <div class="dice-tooltip">
+      <div class="wrapper">
+        <section class="tooltip-part">
+          <div class="dice">
+            <header class="part-header flexrow">
+              <span class="part-formula">{{lowFormula}}</span>
+              <span class="part-total">{{lowResult}}</span>
+            </header>
+            <ol class="dice-rolls">
+              <li class="roll die d{{lowFaces}}">{{lowResult}}</li>
+            </ol>
+            <hr>
+            <header class="part-header flexrow">
+              <span class="part-formula">{{highFormula}}</span>
+              <span class="part-total">{{highResult}}</span>
+            </header>
+            <ol class="dice-rolls">
+              <li class="roll die d{{highFaces}}">{{highResult}}</li>
+            </ol>
+          </div>
+        </section>
+      </div>
+    </div>
+    <h4 class="dice-total">{{lowResult}} / {{highResult}}</h4>
+  </div>
+</div>

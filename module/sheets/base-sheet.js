@@ -1,4 +1,6 @@
-import DG, { BASE_TEMPLATE_PATH } from "../config.js";
+import DG, { BASE_TEMPLATE_PATH } from "../config/index.js";
+import getRichTextFieldsForPart from "../config/rich-text-fields.js";
+import { prepareRichTextContext } from "../utils/rich-text.js";
 
 const HbsAppMixin = foundry.applications.api.HandlebarsApplicationMixin;
 
@@ -29,8 +31,32 @@ const DGSheetMixin = (Base) => {
       // Add the document to the context under a descriptive name (i.e. "actor", "item")
       context[docName] = this.document;
 
+      context.richText = {};
+
       return context;
     }
+
+    /** @inheritdoc */
+    async _preparePartContext(partId, context, options) {
+      context = await super._preparePartContext(partId, context, options);
+
+      const { documentName } = this.document;
+      const fieldSpecs = getRichTextFieldsForPart(documentName, partId, {
+        actorType: this.document.type,
+        itemType: this.document.type,
+        showNotesInSkills: context.showNotesInSkills,
+      });
+
+      if (fieldSpecs.length) {
+        Object.assign(
+          context.richText,
+          await prepareRichTextContext(this.document, fieldSpecs),
+        );
+      }
+
+      return context;
+    }
+
     /** @inheritdoc */
 
     async _onFirstRender(context, options) {

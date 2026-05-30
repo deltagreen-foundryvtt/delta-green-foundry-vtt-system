@@ -24,6 +24,12 @@ jobs:
       - name: Build Packs
         uses: ./.github/actions/build-packs
 
+      - name: Node Setup
+        uses: ./.github/actions/setup-node
+
+      - name: Build CSS
+        run: npm run build:css
+
       - name: Get Version
         id: get_version
         uses: dhkatz/get-version-action@v3.0.0

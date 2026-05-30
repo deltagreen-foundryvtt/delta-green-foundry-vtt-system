@@ -1,0 +1,163 @@
+<div class="dg-dialog dg-dialog--character-creation">
+    <div class="dg-dialog__layout dg-dialog__layout--two-column">
+        <div class="dg-dialog__column dg-dialog__column--left">
+            <header class="character-creation-skill-totals-header">
+                <h3 class="dg-dialog__heading">{{localize "DG.Profession.Dialog.SkillTotalsHeader"}}</h3>
+                <p class="dg-dialog__intro">{{localize "DG.Profession.Dialog.SkillTotalsHint"}}</p>
+            </header>
+            <section class="character-creation-skills-section">
+                <div class="character-creation-skills-columns-header">
+                    <div class="character-creation-skill-col-header">
+                        <span>{{localize "DG.Profession.Dialog.Skill"}}</span>
+                        <span>{{localize "DG.Profession.Dialog.Value"}}</span>
+                    </div>
+                    <div class="character-creation-skill-col-header">
+                        <span>{{localize "DG.Profession.Dialog.Skill"}}</span>
+                        <span>{{localize "DG.Profession.Dialog.Value"}}</span>
+                    </div>
+                </div>
+                <div class="character-creation-skills-grid" data-profession-skills-body>
+                    {{#each skillRows}}
+                        <div class="dg-dialog__skill-entry{{#if isModified}} is-modified{{/if}}"
+                             data-skill-row="{{rowId}}">
+                            <span class="dg-dialog__skill-label"
+                                  {{#if tooltip}}data-tooltip="{{tooltip}}"{{/if}}>{{label}}</span>
+                            <span class="dg-dialog__skill-value" data-skill-value>{{value}}%</span>
+                        </div>
+                    {{/each}}
+                </div>
+            </section>
+
+            {{#if automaticChooseOneRows.length}}
+                <section class="character-creation-choose-one-section">
+                    <h3 class="dg-dialog__heading character-creation-section-heading">{{localize "DG.Profession.Dialog.ChooseOneNamesHeader"}}</h3>
+                    <div class="character-creation-choose-one-list">
+                        {{#each automaticChooseOneRows}}
+                            <label class="character-creation-choose-one-row dg-dialog__field">
+                                <span class="dg-dialog__field-label">{{localize "DG.Profession.Dialog.ChooseOneNameLabel" group=groupLabel}}</span>
+                                <input type="text"
+                                       name="chooseOneLabel-{{key}}"
+                                       data-choose-one-key="{{key}}"
+                                       value=""
+                                       placeholder="{{localize 'DG.Profession.Dialog.SkillTypePlaceholder'}}" />
+                            </label>
+                        {{/each}}
+                    </div>
+                </section>
+            {{/if}}
+        </div>
+
+        <div class="dg-dialog__column dg-dialog__column--right">
+            <nav class="tabs sheet-tabs character-creation-tabs" data-character-creation-tabs>
+                {{#if showSkillOptionsTab}}
+                    <a class="item{{#if defaultTabSkillOptions}} active{{/if}}"
+                       data-action="tab"
+                       data-tab="skill-options">{{localize "DG.Profession.Dialog.Tab.SkillOptions"}}</a>
+                {{/if}}
+                <a class="item{{#if defaultTabBonus}} active{{/if}}"
+                   data-action="tab"
+                   data-tab="bonus-skills">{{localize "DG.Profession.Dialog.Tab.BonusSkills"}}</a>
+                <a class="item"
+                   data-action="tab"
+                   data-tab="bonds">{{localize "DG.Profession.Dialog.Tab.Bonds"}}</a>
+            </nav>
+
+            <div class="dg-dialog__tab-panels">
+                {{#if showSkillOptionsTab}}
+                    <div class="tab{{#if defaultTabSkillOptions}} active{{/if}}"
+                         data-tab="skill-options">
+                        <h3 class="dg-dialog__heading character-creation-section-heading">{{localize "DG.Profession.Dialog.SkillsOptionsHeader" picks=optionPicks}}</h3>
+                        <div class="character-creation-option-list">
+                            {{#each optionColumns}}
+                                <div class="character-creation-option-column">
+                                    {{#each this}}
+                                        <div class="character-creation-option-row" data-option-key="{{key}}">
+                                            <label>
+                                                <input type="checkbox"
+                                                       name="optionSkillChecked"
+                                                       value="{{key}}"
+                                                       data-option-key="{{key}}"
+                                                       data-is-choose-one="{{isChooseOne}}" />
+                                                <span class="option-skill-label">{{label}}</span>
+                                                <span class="option-skill-rating">({{rating}}%)</span>
+                                            </label>
+                                            {{#if isChooseOne}}
+                                                <input type="text"
+                                                       class="option-choose-one-label"
+                                                       name="chooseOneLabel-{{key}}"
+                                                       data-choose-one-key="{{key}}"
+                                                       data-option-choose-one="true"
+                                                       placeholder="{{localize 'DG.Profession.Dialog.SkillTypePlaceholder'}}"
+                                                       disabled />
+                                            {{/if}}
+                                        </div>
+                                    {{/each}}
+                                </div>
+                            {{/each}}
+                        </div>
+                    </div>
+                {{/if}}
+
+                <div class="tab{{#if defaultTabBonus}} active{{/if}}"
+                     data-tab="bonus-skills">
+                    <p class="dg-dialog__intro character-creation-bonus-intro">{{localize "DG.Profession.Dialog.BonusSkillsIntro"}}</p>
+                    <div class="character-creation-bonus-grid">
+                        {{#each bonusSlots}}
+                            <div class="character-creation-bonus-slot" data-bonus-index="{{index}}">
+                                <select name="bonusSkill-{{index}}" data-bonus-index="{{index}}">
+                                    <option value="">{{localize "DG.Profession.Dialog.SelectSkill"}}</option>
+                                    {{#each ../catalog}}
+                                        <option value="{{id}}">{{label}}</option>
+                                    {{/each}}
+                                </select>
+                                <input type="text"
+                                       class="bonus-typed-label hidden"
+                                       name="bonusTypedLabel-{{index}}"
+                                       data-bonus-typed-index="{{index}}"
+                                       placeholder="{{localize 'DG.Profession.Dialog.SkillTypePlaceholder'}}" />
+                            </div>
+                        {{/each}}
+                    </div>
+                </div>
+
+                <div class="tab"
+                     data-tab="bonds">
+                    <p class="dg-dialog__intro character-creation-bonds-intro">{{localize "DG.Profession.Dialog.BondsIntro"}}</p>
+                    <div class="character-creation-bonds-list">
+                        {{#each bondRows}}
+                            <div class="character-creation-bond-row">
+                                <label class="character-creation-bond-field">
+                                    <span class="character-creation-bond-field-label dg-dialog__field-label">{{localize "DG.Profession.Dialog.BondFieldLabel" number=number}}</span>
+                                    <input type="text" name="bondName-{{index}}" />
+                                </label>
+                                <label class="character-creation-bond-field">
+                                    <span class="character-creation-bond-field-label dg-dialog__field-label">{{localize "DG.Bonds.Relationship"}}</span>
+                                    <input type="text" name="bondRelationship-{{index}}" />
+                                </label>
+                                <label class="character-creation-bond-field character-creation-bond-field-score">
+                                    <span class="character-creation-bond-field-label dg-dialog__field-label">{{localize "DG.Bonds.Score"}}</span>
+                                    <input type="number"
+                                           name="bondScore-{{index}}"
+                                           value="{{chaScore}}"
+                                           disabled />
+                                </label>
+                            </div>
+                        {{/each}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="dg-dialog__messages" data-profession-messages>
+                {{#each validationMessages}}
+                    <p class="dg-dialog__message--error">{{this}}</p>
+                {{/each}}
+                {{#each capWarnings}}
+                    <p class="dg-dialog__message--warning">{{warning}}</p>
+                {{/each}}
+                {{#each atCapMessages}}
+                    <p class="dg-dialog__message--error">{{this}}</p>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+</div>

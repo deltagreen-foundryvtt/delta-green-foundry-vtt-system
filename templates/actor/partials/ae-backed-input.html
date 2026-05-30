@@ -1,0 +1,22 @@
+{{#if displayClass}}
+<div class="ae-input-host{{#if hostClass}} {{hostClass}}{{/if}}">
+    <input type="text"
+           class="{{inputClass}}"
+           id="{{inputId}}"
+           name="{{name}}"
+           value="{{base}}"
+           data-dtype="{{dtype}}"
+           {{#if disabled}}disabled{{/if}} />
+    <span class="ae-input-display {{inputClass}} {{displayClass}}"
+          data-ae-modifier="{{aeModifier}}"
+          aria-hidden="true">{{effective}}</span>
+</div>
+{{else}}
+<input type="text"
+       class="{{inputClass}}"
+       id="{{inputId}}"
+       name="{{name}}"
+       value="{{base}}"
+       data-dtype="{{dtype}}"
+       {{#if disabled}}disabled{{/if}} />
+{{/if}}

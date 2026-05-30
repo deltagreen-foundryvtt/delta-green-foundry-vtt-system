@@ -1,0 +1,109 @@
+import { createDGChatMessage } from "../chat/dg-chat-card.js";
+import DG from "../config/index.js";
+import { formatProfessionSkillLabel } from "../profession/index.js";
+
+/**
+ * @param {"1"|"d3"|"d4"|"d4-1"} baseFormula
+ * @returns {string}
+ */
+export function getSkillImprovementFormulaAsPercent(baseFormula) {
+  const flat = baseFormula === "1";
+  const formula = flat ? "1" : `1${baseFormula}`;
+  return `${formula}%`.toUpperCase();
+}
+
+/**
+ * Generates and evaluates skill improvement rolls for failed skills.
+ *
+ * @param {Actor} actor
+ * @param {string} baseFormula
+ * @param {object[]} failedSkills
+ * @param {object[]} failedTypedSkills
+ * @returns {Promise<Record<string, number>>}
+ */
+export async function evaluateSkillImprovementRolls(
+  actor,
+  baseFormula,
+  failedSkills,
+  failedTypedSkills,
+) {
+  const totalFailures = failedSkills.length + failedTypedSkills.length;
+
+  if (!Object.keys(DG.skillImprovementFormulas).includes(baseFormula)) {
+    throw new Error(`Unknown roll formula: ${baseFormula}`);
+  }
+
+  const resultObj = {};
+  if (baseFormula === "1") {
+    return resultObj;
+  }
+
+  const rollPromises = [];
+  for (let i = 0; i < totalFailures; i++) {
+    rollPromises.push(new Roll(baseFormula, actor.system).evaluate());
+  }
+  const rolls = await Promise.all(rollPromises);
+
+  [...failedSkills, ...failedTypedSkills].forEach((skill, index) => {
+    resultObj[skill.key] = rolls[index].total;
+  });
+
+  return resultObj;
+}
+
+/**
+ * @param {object} params
+ * @param {Actor} params.actor
+ * @param {TokenDocument|null} [params.token]
+ * @param {string} params.baseFormula
+ * @param {object[]} params.failedSkills
+ * @param {object[]} params.failedTypedSkills
+ * @param {Record<string, number>} params.resultObj
+ * @returns {Promise<ChatMessage>}
+ */
+export async function createSkillImprovementChatMessage({
+  actor,
+  token = null,
+  baseFormula,
+  failedSkills,
+  failedTypedSkills,
+  resultObj,
+}) {
+  const localizeFailedSkills = (skillsArray, kind) => {
+    return skillsArray.map((skill) => {
+      const increment = resultObj[skill.key] ?? 1;
+      const label =
+        kind === "typed"
+          ? formatProfessionSkillLabel({
+              kind: "typed",
+              group: skill.group,
+              label: skill.label,
+            })
+          : formatProfessionSkillLabel({ kind: "fixed", key: skill.key });
+
+      return `${label}: <b>+${increment}%</b>`;
+    });
+  };
+
+  const failedSkillNames = localizeFailedSkills(failedSkills, "fixed");
+  const failedTypedSkillNames = localizeFailedSkills(
+    failedTypedSkills,
+    "typed",
+  );
+
+  const content = [...failedSkillNames, ...failedTypedSkillNames].join(", ");
+  const label = game.i18n.format(
+    "DG.Skills.ApplySkillImprovements.ChatFlavor",
+    {
+      formula: getSkillImprovementFormulaAsPercent(baseFormula),
+    },
+  );
+
+  return createDGChatMessage({
+    actor,
+    token,
+    label,
+    content,
+    messageMode: game.settings.get("core", "messageMode"),
+  });
+}

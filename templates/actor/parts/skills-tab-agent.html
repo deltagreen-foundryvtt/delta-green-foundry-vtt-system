@@ -1,0 +1,69 @@
+<div class="tab skills {{tabs.skills.cssClass}}"
+     data-group="primary"
+     data-tab="skills">
+    <div class="skills-tab-scroll">
+    <div class="horizontal-bar-section-divider skills-header">
+        <span class="skills-header-title">{{localize "DG.Sheet.BlockHeaders.SkillsAndTraining"}}</span>
+        {{#if (ne actor.type "agent") }}
+            <a class="toggle-untrained"
+               data-action="toggle"
+               data-prop="system.showUntrainedSkills">
+                {{localize (concat 'DG.UnnaturalSheet.' (ifThen actor.system.showUntrainedSkills 'Show' 'Hide') 'UntrainedSkillsLabel')}}
+                {{!-- djlint:off --}}
+                <i class="far fa-eye{{#if actor.system.showUntrainedSkills }}-slash{{/if }}"></i>
+                {{!-- djlint:on --}}
+            </a>
+        {{/if}}
+    </div>
+
+    <div class="agent-skills-columns grid grid-3col">
+        {{#each skillColumns as |column| }}
+            <div class="agent-skills-column">
+                {{#each column as |skill| }}
+                    {{> "systems/deltagreen/templates/actor/partials/agent-skill-row-partial.html" skill=skill }}
+                {{/each}}
+            </div>
+        {{/each}}
+    </div>
+
+    {{> "systems/deltagreen/templates/actor/partials/custom-skills-partial-agent.html" }}
+    </div>
+
+    <div class="skills-tab-footer">
+        <div class="item-controls skill-util-buttons">
+            <div class="skill-util-buttons-row">
+                <a class="item-control typed-skill-add action-pill"
+                   data-action="typedSkillAction"
+                   data-action-type="create">
+                    <i class="fas fa-plus"></i>
+                    {{localize 'DG.Skills.AddTypedOrCustomSkill'}}
+                </a>
+
+                <a class="item-control action-pill"
+                   data-action="specialTrainingAction"
+                   data-action-type="create">
+                    <i class="fas fa-plus"></i>
+                    {{localize 'DG.SpecialTraining.Dialog.CreateSpecialTraining'}}
+                </a>
+
+                <a class="item-control action-pill custom-skills-edit-toggle"
+                   data-action="toggleCustomSkillsEdit"
+                   data-tooltip="{{localize 'DG.Skills.ToggleEditDeleteSkills'}}">
+                    <i class="fas fa-edit"></i>
+                    {{localize 'DG.Skills.EditDeleteTypedSkills'}}
+                </a>
+            </div>
+
+            <div class="skill-util-buttons-row skill-util-buttons-row--full">
+                <a class="item-control action-pill" data-action="applySkillImprovements">
+                    {{localize 'DG.Skills.ApplySkillImprovements.Title'}}
+                    <i class="fas fa-dice"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    {{#if showNotesInSkills }}
+        {{> "systems/deltagreen/templates/actor/partials/notes-partial.html"}}
+    {{/if}}
+</div>
