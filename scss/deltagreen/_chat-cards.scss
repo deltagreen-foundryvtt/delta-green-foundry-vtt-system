@@ -76,9 +76,23 @@
   margin-top: 0.5em;
 }
 
+/* Hide redundant Foundry header fields; card supplies speaker/label. Keep message-metadata
+   (delete/dismiss) — core ChatLog handles data-action="deleteMessage" on .message-delete. */
+.chat-message:has(.dg-chat-card) .message-header .message-sender,
+.chat-message:has(.dg-chat-card) .message-header .flavor-text,
+.chat-message:has(.dg-chat-card) .message-header .whisper-to,
+.chat-message.dg-chat-card-message .message-header .message-sender,
+.chat-message.dg-chat-card-message .message-header .flavor-text,
+.chat-message.dg-chat-card-message .message-header .whisper-to {
+  display: none;
+}
+
 .chat-message:has(.dg-chat-card) .message-header,
 .chat-message.dg-chat-card-message .message-header {
-  display: none;
+  justify-content: flex-end;
+  min-height: 0;
+  margin: 0;
+  padding: 0 4px 2px;
 }
 
 .rollback-section {
