@@ -39,7 +39,20 @@ export default class DGActorSheet extends ComposedActorSheetBase {
   /** @override - Singular reference to the actor templates path */
   static TEMPLATE_PATH = /** @type {const} */ (`${super.TEMPLATE_PATH}/actor`);
 
-  /** Holds base/shared parts of sheets for subclasses to reference. */
+  /** Gear tab section partials shared by NPC/unnatural/vehicle gear tabs and agent combat tab. */
+  static get GEAR_SECTION_PARTIALS() {
+    return [
+      `${this.TEMPLATE_PATH}/partials/weapons-section-partial.html`,
+      `${this.TEMPLATE_PATH}/partials/armor-section-partial.html`,
+      `${this.TEMPLATE_PATH}/partials/other-gear-section-partial.html`,
+    ];
+  }
+
+  /**
+   * Base/shared sheet parts for subclasses.
+   * ApplicationV2: every template referenced via {@code {{> "path"}}} in a PART's render
+   * tree must be listed in that PART's {@code templates} array.
+   */
   static BASE_PARTS = /** @type {const} */ ({
     header: {
       template: `${this.TEMPLATE_PATH}/parts/header.html`,
@@ -62,6 +75,7 @@ export default class DGActorSheet extends ComposedActorSheetBase {
     },
     gear: {
       template: `${this.TEMPLATE_PATH}/parts/gear-tab.html`,
+      templates: this.GEAR_SECTION_PARTIALS,
       scrollable: [""],
     },
     about: {
