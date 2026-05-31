@@ -8,8 +8,10 @@ export const PROFESSION_OPTION_PICKS_KEY = "optionPicks";
 export default class ProfessionItemData extends foundry.abstract.TypeDataModel {
   /** @inheritdoc */
   static migrateData(source, options, _state) {
-    const bonds = Number(source.bonds);
-    if (!Number.isFinite(bonds) || bonds < 1) source.bonds = 1;
+    if ("bonds" in source) {
+      const bonds = Number(source.bonds);
+      if (!Number.isFinite(bonds) || bonds < 1) source.bonds = 1;
+    }
     return super.migrateData(source, options, _state);
   }
 
