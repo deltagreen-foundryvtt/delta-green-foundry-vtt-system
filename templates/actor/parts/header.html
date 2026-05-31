@@ -19,10 +19,22 @@
                 </div>
                 <div class="profession">
                     <h2 class="profession">
+                        {{#if (eq actor.type "vehicle") }}
+                        <input name="system.shortDescription"
+                               type="text"
+                               value="{{actor.system.shortDescription}}"
+                               placeholder="{{subnameInfoPlaceholder}}" />
+                        {{else if (eq actor.type "unnatural") }}
+                        <input name="system.shortDescription"
+                               type="text"
+                               value="{{actor.system.shortDescription}}"
+                               placeholder="{{subnameInfoPlaceholder}}" />
+                        {{else}}
                         <input name="system.biography.profession"
                                type="text"
                                value="{{actor.system.biography.profession}}"
                                placeholder="{{subnameInfoPlaceholder}}" />
+                        {{/if}}
                     </h2>
                 </div>
             </div>
