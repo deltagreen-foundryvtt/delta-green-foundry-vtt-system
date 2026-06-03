@@ -1,4 +1,4 @@
-import DG from "../config.js";
+import DG, { BASE_TEMPLATE_PATH } from "../config.js";
 import {
   DGDamageRoll,
   DGLethalityRoll,
@@ -799,139 +799,31 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
     }
   }
 
-  _showNewEditTypeSkillDialog(targetSkill) {
-    // TO DO: BUILD DIALOG TO CAPTURE UPDATED DATA
+  async _showNewEditTypeSkillDialog(targetSkill) {
+    const { label: currentLabel, group: currentGroup } =
+      this.actor.system.typedSkills[targetSkill];
 
-    const { typedSkills } = this.actor.system;
-    const currentLabel = typedSkills[targetSkill].label;
-    const currentGroup = typedSkills[targetSkill].group;
-
-    let htmlContent = `<div>`;
-    htmlContent += `     <label>${
-      game.i18n.translations.DG?.Skills?.SkillGroup ?? "Skill Group"
-    }:</label>`;
-    htmlContent += `     <select name="new-type-skill-group" />`;
-
-    if (currentGroup === game.i18n.translations.DG?.TypeSkills?.Art ?? "Art") {
-      htmlContent += `          <option value="Art" selected>${
-        game.i18n.translations.DG?.TypeSkills?.Art ?? "Art"
-      }</option>`;
-    } else {
-      htmlContent += `          <option value="Art">${
-        game.i18n.translations.DG?.TypeSkills?.Art ?? "Art"
-      }</option>`;
-    }
-
-    if (
-      currentGroup === game.i18n.translations.DG?.TypeSkills?.Craft ??
-      "Craft"
-    ) {
-      htmlContent += `          <option value="Craft" selected>${
-        game.i18n.translations.DG?.TypeSkills?.Craft ?? "Craft"
-      }</option>`;
-    } else {
-      htmlContent += `          <option value="Craft">${
-        game.i18n.translations.DG?.TypeSkills?.Craft ?? "Craft"
-      }</option>`;
-    }
-
-    if (
-      currentGroup === game.i18n.translations.DG?.TypeSkills?.ForeignLanguage ??
-      "Foreign Language"
-    ) {
-      htmlContent += `          <option value="ForeignLanguage" selected>${
-        game.i18n.translations.DG?.TypeSkills?.ForeignLanguage ??
-        "Foreign Language"
-      }</option>`;
-    } else {
-      htmlContent += `          <option value="ForeignLanguage">${
-        game.i18n.translations.DG?.TypeSkills?.ForeignLanguage ??
-        "Foreign Language"
-      }</option>`;
-    }
-
-    if (
-      currentGroup === game.i18n.translations.DG?.TypeSkills?.MilitaryScience ??
-      "Military Science"
-    ) {
-      htmlContent += `          <option value="MilitaryScience" selected>${
-        game.i18n.translations.DG?.TypeSkills?.MilitaryScience ??
-        "Military Science"
-      }</option>`;
-    } else {
-      htmlContent += `          <option value="MilitaryScience">${
-        game.i18n.translations.DG?.TypeSkills?.MilitaryScience ??
-        "Military Science"
-      }</option>`;
-    }
-
-    if (
-      currentGroup === game.i18n.translations.DG?.TypeSkills?.Pilot ??
-      "Pilot"
-    ) {
-      htmlContent += `          <option value="Pilot" selected>${
-        game.i18n.translations.DG?.TypeSkills?.Pilot ?? "Pilot"
-      }</option>`;
-    } else {
-      htmlContent += `          <option value="Pilot">${
-        game.i18n.translations.DG?.TypeSkills?.Pilot ?? "Pilot"
-      }</option>`;
-    }
-
-    if (
-      currentGroup === game.i18n.translations.DG?.TypeSkills?.Science ??
-      "Science"
-    ) {
-      htmlContent += `          <option value="Science" selected>${
-        game.i18n.translations.DG?.TypeSkills?.Science ?? "Science"
-      }</option>`;
-    } else {
-      htmlContent += `          <option value="Science">${
-        game.i18n.translations.DG?.TypeSkills?.Science ?? "Science"
-      }</option>`;
-    }
-
-    if (
-      currentGroup === game.i18n.translations.DG?.TypeSkills?.Other ??
-      "Other"
-    ) {
-      htmlContent += `          <option value="Other" selected>${
-        game.i18n.translations.DG?.TypeSkills?.Other ?? "Other"
-      }</option>`;
-    } else {
-      htmlContent += `          <option value="Other">${
-        game.i18n.translations.DG?.TypeSkills?.Other ?? "Other"
-      }</option>`;
-    }
-
-    htmlContent += `     </select>`;
-    htmlContent += `</div>`;
-
-    htmlContent += `<div>`;
-    htmlContent += `     <label>${
-      game.i18n.translations.DG?.Skills.SkillName ?? "Skill Name"
-    }</label>`;
-    htmlContent += `     <input type="text" name="new-type-skill-label" value="${currentLabel}" />`;
-    htmlContent += `</div>`;
+    const content = await foundry.applications.handlebars.renderTemplate(
+      `${BASE_TEMPLATE_PATH}/dialog/typed-skill.html`,
+      DGActorSheet._buildTypedSkillDialogContext(currentGroup, currentLabel),
+    );
 
     new DialogV2({
-      content: htmlContent,
+      content,
       window: {
-        title:
-          game.i18n.translations.DG?.Skills?.EditTypedOrCustomSkill ??
-          "Edit Typed or Custom Skill",
+        title: game.i18n.localize("DG.Skills.EditTypedOrCustomSkill"),
       },
       buttons: [
         {
           default: true,
-          action: "add",
-          label: game.i18n.translations.DG?.Skills?.EditSkill ?? "Edit Skill",
+          action: "edit",
+          label: game.i18n.localize("DG.Skills.EditSkill"),
           callback: (event, button, dialog) => {
             const newTypeSkillLabel = dialog.element.querySelector(
-              "[name='new-type-skill-label']",
+              "[name='skill-label']",
             )?.value;
             const newTypeSkillGroup = dialog.element.querySelector(
-              "[name='new-type-skill-group']",
+              "[name='skill-group']",
             )?.value;
             this._updateTypedSkill(
               targetSkill,
@@ -944,72 +836,62 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
     }).render(true);
   }
 
-  _showNewTypeSkillDialog() {
-    let htmlContent = "";
-
-    htmlContent += `<div>`;
-    htmlContent += `     <label>${
-      game.i18n.translations.DG?.Skills?.SkillGroup ?? "Skill Group"
-    }:</label>`;
-    htmlContent += `     <select name="new-type-skill-group" />`;
-    htmlContent += `          <option value="Art">${
-      game.i18n.translations.DG?.TypeSkills?.Art ?? "Art"
-    }</option>`;
-    htmlContent += `          <option value="Craft">${
-      game.i18n.translations.DG?.TypeSkills?.Craft ?? "Craft"
-    }</option>`;
-    htmlContent += `          <option value="ForeignLanguage">${
-      game.i18n.translations.DG?.TypeSkills?.ForeignLanguage ??
-      "Foreign Language"
-    }</option>`;
-    htmlContent += `          <option value="MilitaryScience">${
-      game.i18n.translations.DG?.TypeSkills?.MilitaryScience ??
-      "Military Science"
-    }</option>`;
-    htmlContent += `          <option value="Pilot">${
-      game.i18n.translations.DG?.TypeSkills?.Pilot ?? "Pilot"
-    }</option>`;
-    htmlContent += `          <option value="Science">${
-      game.i18n.translations.DG?.TypeSkills?.Science ?? "Science"
-    }</option>`;
-    htmlContent += `          <option value="Other">${
-      game.i18n.translations.DG?.TypeSkills?.Other ?? "Other"
-    }</option>`;
-    htmlContent += `     </select>`;
-    htmlContent += `</div>`;
-
-    htmlContent += `<div>`;
-    htmlContent += `     <label>${
-      game.i18n.translations.DG?.Skills.SkillName ?? "Skill Name"
-    }</label>`;
-    htmlContent += `     <input type="text" name="new-type-skill-label" />`;
-    htmlContent += `</div>`;
+  async _showNewTypeSkillDialog() {
+    const content = await foundry.applications.handlebars.renderTemplate(
+      `${BASE_TEMPLATE_PATH}/dialog/typed-skill.html`,
+      DGActorSheet._buildTypedSkillDialogContext(),
+    );
 
     new DialogV2({
-      content: htmlContent,
+      content,
       window: {
-        title:
-          game.i18n.translations.DG?.Skills?.AddTypedOrCustomSkill ??
-          "Add Typed or Custom Skill",
+        title: game.i18n.localize("DG.Skills.AddTypedOrCustomSkill"),
       },
       default: "add",
       buttons: [
         {
           default: true,
           action: "add",
-          label: game.i18n.translations.DG?.Skills?.AddSkill ?? "Add Skill",
+          label: game.i18n.localize("DG.Skills.AddSkill"),
           callback: (event, button, dialog) => {
             const newTypeSkillLabel = dialog.element.querySelector(
-              "[name='new-type-skill-label']",
+              "[name='skill-label']",
             )?.value;
             const newTypeSkillGroup = dialog.element.querySelector(
-              "[name='new-type-skill-group']",
+              "[name='skill-group']",
             )?.value;
             this._addNewTypedSkill(newTypeSkillLabel, newTypeSkillGroup);
           },
         },
       ],
     }).render(true);
+  }
+
+  /**
+   * Builds the template context for the typed skill dialog.
+   *
+   * @param {string|null} [currentGroup=null] - The currently selected group key, or null for a new skill.
+   * @param {string} [currentLabel=""] - The current label, or empty for a new skill.
+   * @returns {{groups: Array<{value: string, label: string, selected: boolean}>, currentLabel: string}}
+   */
+  static _buildTypedSkillDialogContext(currentGroup = null, currentLabel = "") {
+    const groupKeys = [
+      "Art",
+      "Craft",
+      "ForeignLanguage",
+      "MilitaryScience",
+      "Pilot",
+      "Science",
+      "Other",
+    ];
+    return {
+      groups: groupKeys.map((key) => ({
+        value: key,
+        label: game.i18n.localize(`DG.TypeSkills.${key}`),
+        selected: key === currentGroup,
+      })),
+      currentLabel,
+    };
   }
 
   _addNewTypedSkill(newSkillLabel, newSkillGroup) {

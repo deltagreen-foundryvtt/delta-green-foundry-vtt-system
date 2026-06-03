@@ -1,0 +1,17 @@
+<form class="flexcol">
+    <div class="flexrow">
+        <label>{{localize "DG.Skills.SkillGroup"}}:</label>
+        <select name="skill-group">
+            {{#each groups}}
+                <option value="{{value}}"
+                        {{#if selected}}selected{{/if}}>{{label}}</option>
+            {{/each}}
+        </select>
+    </div>
+    <div class="flexrow">
+        <label>{{localize "DG.Skills.SkillName"}}</label>
+        <input type="text"
+               name="skill-label"
+               value="{{currentLabel}}" />
+    </div>
+</form>
