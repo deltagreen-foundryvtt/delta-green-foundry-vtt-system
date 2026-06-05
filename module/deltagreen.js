@@ -215,20 +215,98 @@ function addEventListenerToChatMessage(element) {
   element.addEventListener("click", (event) => {
     const btnWithAction = event.target.closest("button[data-action]");
     const message = event.target.closest("li[data-message-id]");
-
     const { messageId } = message?.dataset || {};
-    if (btnWithAction && messageId) {
-      handleInlineActions(btnWithAction, messageId);
-    }
+    if (!btnWithAction || !messageId) return;
+    handleInlineActions(btnWithAction, messageId);
   });
 }
 
-Hooks.on("renderChatLog", async (app, element) => {
+function getHideUnnaturalRole(message) {
+  const role = message.getFlag("deltagreen", "hideUnnatural");
+  if (role === "player" || role === "gm") return role;
+  return null;
+}
+
+function getHideUnnaturalGmMessage(message) {
+  const role = getHideUnnaturalRole(message);
+  if (!role) return null;
+  if (role === "gm") return message;
+
+  const pairId = message.getFlag("deltagreen", "hideUnnaturalPair");
+  return pairId ? game.messages.get(pairId) ?? null : null;
+}
+
+function isHideUnnaturalRevealed(message) {
+  const gmMessage = getHideUnnaturalGmMessage(message);
+  return !!gmMessage && !gmMessage.whisper?.length;
+}
+
+function shouldSuppressHideUnnaturalMessage(message) {
+  const role = getHideUnnaturalRole(message);
+  if (role === "gm") {
+    return !game.user.isGM && !isHideUnnaturalRevealed(message);
+  }
+  if (role === "player") {
+    return isHideUnnaturalRevealed(message) || game.user.isGM;
+  }
+  return false;
+}
+
+function applyHideUnnaturalChatClass(messageElement, message) {
+  const role = getHideUnnaturalRole(message);
+  if (!role) return;
+
+  messageElement.classList.add(`hide-unnatural-${role}`);
+  messageElement.classList.toggle(
+    "hide-unnatural-suppressed",
+    shouldSuppressHideUnnaturalMessage(message),
+  );
+}
+
+function getHideUnnaturalPairIds(message) {
+  const pairId = message.getFlag("deltagreen", "hideUnnaturalPair");
+  return pairId ? [message.id, pairId] : [message.id];
+}
+
+async function refreshHideUnnaturalPair(message) {
+  // Let Foundry finish merging the updated document on receiving clients.
+  await new Promise((resolve) => {
+    requestAnimationFrame(resolve);
+  });
+
+  const { chat } = ui;
+  if (!chat) return;
+
+  const pairedMessages = getHideUnnaturalPairIds(message)
+    .map((id) => game.messages.get(id))
+    .filter(Boolean);
+
+  await Promise.all(
+    pairedMessages.map((pairedMessage) =>
+      chat.updateMessage(pairedMessage, { notify: false }),
+    ),
+  );
+}
+
+Hooks.on("renderChatLog", (app, element) => {
   addEventListenerToChatMessage(element);
 });
 
-Hooks.on("renderChatMessageHTML", async (app, element, context) => {
-  // ignore non chat card notifications
-  if (!context.canClose) return;
-  addEventListenerToChatMessage(element);
+Hooks.on("renderChatMessageHTML", (app, element) => {
+  if (!game.settings.get(DG.ID, "hideUnnaturalPercentages")) return;
+
+  const messageElement = element.closest("li[data-message-id]");
+  const messageId = messageElement?.dataset.messageId;
+  if (!messageId) return;
+
+  const message = game.messages.get(messageId);
+  if (!message?.getFlag("deltagreen", "hideUnnatural")) return;
+
+  applyHideUnnaturalChatClass(messageElement, message);
+});
+
+Hooks.on("updateChatMessage", (message, changes) => {
+  if (!message.getFlag("deltagreen", "hideUnnatural")) return;
+  if (!("whisper" in changes)) return;
+  refreshHideUnnaturalPair(message).catch(() => {});
 });

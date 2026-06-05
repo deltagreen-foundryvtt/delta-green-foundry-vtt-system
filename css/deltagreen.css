@@ -553,10 +553,6 @@ input.checkbox-skill-input:disabled {
   margin-bottom: 5px;
 }
 
-.deltagreen .sheet-header .charname input {
-  /* font-family: "SpecialElite", sans-serif; */
-}
-
 .deltagreen .sheet-header h2.profession {
   font-family: inherit;
   font-size: 1.5rem;
@@ -1381,6 +1377,28 @@ a[data-action="applySkillImprovements"] {
   }
 }
 
+/* Style roll-details to appear as part of the same message */
+.deltagreen .dice-roll-details {
+  margin-top: -0.5rem;
+  padding-top: 0;
+}
+
+.chat-message .dice-roll-details {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* Make whispered roll-details messages appear connected to previous message */
+.chat-message[data-whisper-to-user] .dice-roll-details {
+  border-top: none;
+  margin-top: -0.25rem;
+  padding-top: 0.25rem;
+}
+
+/* Hide unnatural percentage roll pairs — players see minimal, GMs see full details */
+.chat-message.hide-unnatural-suppressed {
+  display: none !important;
+}
 .stats-wrapper {
   position: relative;
 }
