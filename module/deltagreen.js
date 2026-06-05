@@ -215,113 +215,98 @@ function addEventListenerToChatMessage(element) {
   element.addEventListener("click", (event) => {
     const btnWithAction = event.target.closest("button[data-action]");
     const message = event.target.closest("li[data-message-id]");
-
     const { messageId } = message?.dataset || {};
-    if (btnWithAction && messageId) {
-      handleInlineActions(btnWithAction, messageId);
-    }
+    if (!btnWithAction || !messageId) return;
+    handleInlineActions(btnWithAction, messageId);
   });
 }
 
-/**
- * Helper function to apply CSS class to a message element
- * @param {string} messageId - The message ID
- */
-function applyMessageCssClass(messageId) {
-  const messageElement = document.querySelector(
-    `li[data-message-id="${messageId}"]`,
-  );
-  if (messageElement) {
-    const message = game.messages.get(messageId);
-    if (message) {
-      const cssClass =
-        message.getFlag?.("deltagreen", "cssClass") ||
-        message.flags?.deltagreen?.cssClass;
-      if (cssClass && !messageElement.classList.contains(cssClass)) {
-        messageElement.classList.add(cssClass);
-      }
-
-      // For GM-only messages, hide from non-GM users
-      if (cssClass === "gmonly-hideunnaturalresults") {
-        if (!game.user.isGM) {
-          messageElement.classList.add("hide-from-players");
-        } else {
-          messageElement.classList.remove("hide-from-players");
-        }
-      }
-    }
-  }
+function getHideUnnaturalRole(message) {
+  const role = message.getFlag("deltagreen", "hideUnnatural");
+  if (role === "player" || role === "gm") return role;
+  return null;
 }
 
-Hooks.on("renderChatLog", async (app, element) => {
-  addEventListenerToChatMessage(element);
+function getHideUnnaturalGmMessage(message) {
+  const role = getHideUnnaturalRole(message);
+  if (!role) return null;
+  if (role === "gm") return message;
 
-  // Apply custom CSS class to messages with the flag (on the <li> element)
-  const messageElements = element.querySelectorAll("li[data-message-id]");
-  for (const msgElement of messageElements) {
-    const { messageId } = msgElement.dataset;
-    const message = game.messages.get(messageId);
-    if (message) {
-      const cssClass =
-        message.getFlag?.("deltagreen", "cssClass") ||
-        message.flags?.deltagreen?.cssClass;
-      if (cssClass && !msgElement.classList.contains(cssClass)) {
-        msgElement.classList.add(cssClass);
-      }
+  const pairId = message.getFlag("deltagreen", "hideUnnaturalPair");
+  return pairId ? game.messages.get(pairId) ?? null : null;
+}
 
-      // For GM-only messages, hide from non-GM users
-      if (cssClass === "gmonly-hideunnaturalresults") {
-        if (!game.user.isGM) {
-          msgElement.classList.add("hide-from-players");
-        } else {
-          msgElement.classList.remove("hide-from-players");
-        }
-      }
-    }
+function isHideUnnaturalRevealed(message) {
+  const gmMessage = getHideUnnaturalGmMessage(message);
+  return !!gmMessage && !gmMessage.whisper?.length;
+}
+
+function shouldSuppressHideUnnaturalMessage(message) {
+  const role = getHideUnnaturalRole(message);
+  if (role === "gm") {
+    return !game.user.isGM && !isHideUnnaturalRevealed(message);
   }
+  if (role === "player") {
+    return isHideUnnaturalRevealed(message) || game.user.isGM;
+  }
+  return false;
+}
+
+function applyHideUnnaturalChatClass(messageElement, message) {
+  const role = getHideUnnaturalRole(message);
+  if (!role) return;
+
+  messageElement.classList.add(`hide-unnatural-${role}`);
+  messageElement.classList.toggle(
+    "hide-unnatural-suppressed",
+    shouldSuppressHideUnnaturalMessage(message),
+  );
+}
+
+function getHideUnnaturalPairIds(message) {
+  const pairId = message.getFlag("deltagreen", "hideUnnaturalPair");
+  return pairId ? [message.id, pairId] : [message.id];
+}
+
+async function refreshHideUnnaturalPair(message) {
+  // Let Foundry finish merging the updated document on receiving clients.
+  await new Promise((resolve) => {
+    requestAnimationFrame(resolve);
+  });
+
+  const { chat } = ui;
+  if (!chat) return;
+
+  const pairedMessages = getHideUnnaturalPairIds(message)
+    .map((id) => game.messages.get(id))
+    .filter(Boolean);
+
+  await Promise.all(
+    pairedMessages.map((pairedMessage) =>
+      chat.updateMessage(pairedMessage, { notify: false }),
+    ),
+  );
+}
+
+Hooks.on("renderChatLog", (app, element) => {
+  addEventListenerToChatMessage(element);
 });
 
-// Hook into message creation to apply class for new messages
-Hooks.on("createChatMessage", async (message) => {
-  const cssClass =
-    message.getFlag?.("deltagreen", "cssClass") ||
-    message.flags?.deltagreen?.cssClass;
-  if (cssClass) {
-    // Use requestAnimationFrame to wait for DOM to be ready (more reliable than setTimeout)
-    requestAnimationFrame(() => {
-      applyMessageCssClass(message.id);
-    });
-  }
-});
+Hooks.on("renderChatMessageHTML", (app, element) => {
+  if (!game.settings.get(DG.ID, "hideUnnaturalPercentages")) return;
 
-Hooks.on("renderChatMessageHTML", async (app, element, context) => {
-  // ignore non chat card notifications
-  if (!context.canClose) return;
-  addEventListenerToChatMessage(element);
-
-  // Apply custom CSS class to messages with the flag
   const messageElement = element.closest("li[data-message-id]");
-  if (messageElement) {
-    const { messageId } = messageElement.dataset;
-    if (messageId) {
-      const message = game.messages.get(messageId);
-      if (message) {
-        const cssClass =
-          message.getFlag?.("deltagreen", "cssClass") ||
-          message.flags?.deltagreen?.cssClass;
-        if (cssClass && !messageElement.classList.contains(cssClass)) {
-          messageElement.classList.add(cssClass);
-        }
+  const messageId = messageElement?.dataset.messageId;
+  if (!messageId) return;
 
-        // For GM-only messages, hide from non-GM users
-        if (cssClass === "gmonly-hideunnaturalresults") {
-          if (!game.user.isGM) {
-            messageElement.classList.add("hide-from-players");
-          } else {
-            messageElement.classList.remove("hide-from-players");
-          }
-        }
-      }
-    }
-  }
+  const message = game.messages.get(messageId);
+  if (!message?.getFlag("deltagreen", "hideUnnatural")) return;
+
+  applyHideUnnaturalChatClass(messageElement, message);
+});
+
+Hooks.on("updateChatMessage", (message, changes) => {
+  if (!message.getFlag("deltagreen", "hideUnnatural")) return;
+  if (!("whisper" in changes)) return;
+  refreshHideUnnaturalPair(message).catch(() => {});
 });

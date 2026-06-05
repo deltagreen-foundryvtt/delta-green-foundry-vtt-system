@@ -1,6 +1,15 @@
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "eslint.enable": true,
+  "eslint.useFlatConfig": false,
+  "eslint.run": "onType",
+  "eslint.probe": ["javascript"],
+  "eslint.workingDirectories": [{ "mode": "auto" }],
+  "eslint.lintTask.enable": true,
   "cSpell.words": ["deltagreen", "Hypergeometry"],
 
   "files.associations": {

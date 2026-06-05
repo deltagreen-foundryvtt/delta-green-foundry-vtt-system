@@ -289,16 +289,18 @@ export class DGPercentileRoll extends DGRoll {
       !foundry.utils.getProperty(this.actor, `${this.skillPath}.failure`) &&
       game.settings.get(DG.ID, "skillFailure");
 
-    const html = await renderTemplate(
-      "systems/deltagreen/templates/roll/percentile-roll.hbs",
-      {
-        styleOverride,
-        resultString,
-        formula: this.formula,
-        total: this.total,
-        failureMark,
-      },
-    );
+    const rollTemplate =
+      "systems/deltagreen/templates/roll/percentile-roll.hbs";
+    const rollChatData = {
+      styleOverride,
+      resultString,
+      formula: this.formula,
+      total: this.total,
+    };
+    const html = await renderTemplate(rollTemplate, {
+      ...rollChatData,
+      failureMark,
+    });
 
     // if hiding unnatural percentages, send dual messages (public minimal + GM whisper)
     const hideUnnaturalSetting = game.settings.get(
@@ -310,18 +312,11 @@ export class DGPercentileRoll extends DGRoll {
       const minimalLabel = `${game.i18n.localize("DG.Roll.Rolling")} <b>${
         this.localizedKey
       }</b>`;
-      // Minimal HTML for players (using template with hideDetails)
-      const minimalHtml = await renderTemplate(
-        "systems/deltagreen/templates/roll/percentile-roll.hbs",
-        {
-          styleOverride,
-          resultString,
-          formula: this.formula,
-          total: this.total,
-          failureMark: false,
-          hideDetails: true,
-        },
-      );
+      const minimalHtml = await renderTemplate(rollTemplate, {
+        ...rollChatData,
+        failureMark: false,
+        hideDetails: true,
+      });
 
       // Send public message (minimal) and whispered message to GM (full)
       const publicMessage = await ChatMessage.create({
@@ -329,36 +324,29 @@ export class DGPercentileRoll extends DGRoll {
         content: minimalHtml,
         flavor: minimalLabel,
         rolls: [this],
-        flags: {
-          deltagreen: {
-            cssClass: "player-hideunnaturalresults",
-          },
-        },
+        flags: { deltagreen: { hideUnnatural: "player" } },
       });
 
       const gmUsers = game.users.filter((u) => u.isGM && u.active);
       if (gmUsers.length > 0) {
-        // Create details-only template for GM whisper
-        const detailsHtml = await renderTemplate(
-          "systems/deltagreen/templates/roll/roll-hideunnaturalresults-gmdetails.hbs",
-          {
-            formula: this.formula,
-            total: this.total,
-            target: this.effectiveTarget,
-          },
-        );
-
-        await ChatMessage.create({
+        const gmMessage = await ChatMessage.create({
           speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-          content: detailsHtml,
+          content: html,
+          flavor: label,
           whisper: gmUsers.map((u) => u.id),
           rolls: [this],
           flags: {
             deltagreen: {
-              cssClass: "gmonly-hideunnaturalresults",
+              hideUnnatural: "gm",
+              hideUnnaturalPair: publicMessage.id,
             },
           },
         });
+        await publicMessage.setFlag(
+          "deltagreen",
+          "hideUnnaturalPair",
+          gmMessage.id,
+        );
       }
 
       if (diceSoNice) {
