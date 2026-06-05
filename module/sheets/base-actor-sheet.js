@@ -1278,16 +1278,6 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
       item,
     };
 
-    // Sanity roll: show choice modal only when adaptation automation is enabled.
-    if (
-      dataset.rolltype === "sanity" &&
-      game.settings.get(DG.ID, "automateAdaptationTicks")
-    ) {
-      const sanityChoice = await this.constructor._showSanityChoiceDialog();
-      if (!sanityChoice) return;
-      rollOptions.sanityChoice = sanityChoice;
-    }
-
     // Create a default 1d100 roll just in case.
     let roll = new Roll("1d100", {});
     switch (dataset.rolltype) {
@@ -1365,6 +1355,17 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
    * @async
    */
   async processRoll(event, roll) {
+    const automateSanity =
+      roll.type === "sanity" &&
+      game.settings.get(DG.ID, "automateAdaptationTicks");
+
+    // Sanity roll: source choice when adaptation automation is enabled.
+    if (automateSanity && !roll.sanityChoice?.value) {
+      const sanityChoice = await this.constructor._showSanityChoiceDialog();
+      if (!sanityChoice) return;
+      roll.sanityChoice = sanityChoice;
+    }
+
     // Open dialog if user requests it (no dialog for Sanity Damage rolls)
     if (
       (event.shiftKey || event.which === 3) &&
@@ -1383,7 +1384,7 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
 
     // Sanity roll: if agent is adapted to the chosen source (violence/helplessness), auto-succeed.
     if (
-      roll.type === "sanity" &&
+      automateSanity &&
       roll.sanityChoice?.value &&
       roll.actor?.system?.sanity?.adaptations
     ) {

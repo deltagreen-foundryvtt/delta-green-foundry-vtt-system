@@ -173,7 +173,6 @@
   "DG.Roll.RollingDamageFor": "Rolling DAMAGE for",
   "DG.Roll.Or": "Or",
   "DG.Roll.Roll": "Roll",
-  "DG.Roll.Cancel": "Cancel",
 
   "DG.SanityRoll.DialogTitle": "Sanity Roll",
   "DG.SanityRoll.DialogPrompt": "Choose the source of this sanity roll:",
@@ -181,6 +180,7 @@
   "DG.SanityRoll.Helplessness": "Helplessness",
   "DG.SanityRoll.Unnatural": "Unnatural",
   "DG.SanityRoll.None": "None",
+  "DG.SanityRoll.BPShort": "BP",
   "DG.SanityRoll.SelectedChoice": "Selected: {choice}",
 
   "DG.Physical.Wounds": "Wounds",

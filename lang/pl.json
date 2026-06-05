@@ -437,5 +437,6 @@
   "DG.SanityRoll.Unnatural": "Nienaturalne",
   "DG.SanityRoll.DialogPrompt": "Wybierz źródło tego rzutu poczytalności:",
   "DG.SanityRoll.DialogTitle": "Rzut Poczytalności",
-  "DG.SanityRoll.None": "Brak"
+  "DG.SanityRoll.None": "Brak",
+  "DG.SanityRoll.BPShort": "PZ"
 }

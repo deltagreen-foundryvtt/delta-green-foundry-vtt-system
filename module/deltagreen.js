@@ -180,12 +180,6 @@ const _adaptationStateBeforeUpdate = new Map();
 // Store previous sanity value when sanity is updated (for temporary-insane notification)
 const _sanityValueBeforeUpdate = new Map();
 
-function _wasAdapted(adaptations, source) {
-  const a =
-    source === "violence" ? adaptations.violence : adaptations.helplessness;
-  return a?.incident1 && a?.incident2 && a?.incident3;
-}
-
 /**
  * Send a sanity-related chat message (adaptation, temp insanity, breaking point).
  * Uses the user's roll visibility setting. Message is formatted with
@@ -208,25 +202,45 @@ async function _notifySanityChat(actor, messageKey, formatData = {}) {
   await ChatMessage.create(chatData);
 }
 
+const ADAPTATION_SOURCES = ["violence", "helplessness"];
+
 /**
- * If the agent hit temp insanity or breaking point, clear adaptation incident
- * checkboxes for the last sanity roll source (violence/helplessness) when not
- * yet adapted to that source.
+ * Next adaptation incident checkbox to tick (incident1 → incident2 → incident3).
+ *
+ * @param {{ incident1?: boolean, incident2?: boolean }} adaptation
+ * @returns {"incident1"|"incident2"|"incident3"}
  */
-async function _clearAdaptationCheckboxesForLastSanitySourceIfNotAdapted(
+function _getNextAdaptationIncident(adaptation) {
+  if (!adaptation.incident1) return "incident1";
+  if (!adaptation.incident2) return "incident2";
+  return "incident3";
+}
+
+/**
+ * Clear adaptation incident checkboxes for the given sources when not adapted.
+ *
+ * @param {Actor} actor
+ * @param {string[]} sources  e.g. ["violence"] or ADAPTATION_SOURCES
+ */
+async function _clearAdaptationCheckboxesForSourcesIfNotAdapted(
   actor,
+  sources,
 ) {
   if (!game.settings.get(DG.ID, "automateAdaptationTicks")) return;
 
-  const lastSource = actor.getFlag(DG.ID, "lastSanityRollSource");
-  if (lastSource !== "violence" && lastSource !== "helplessness") return;
   const { adaptations } = actor.system.sanity ?? {};
-  if (!adaptations || _wasAdapted(adaptations, lastSource)) return;
-  await actor.update({
-    [`system.sanity.adaptations.${lastSource}.incident1`]: false,
-    [`system.sanity.adaptations.${lastSource}.incident2`]: false,
-    [`system.sanity.adaptations.${lastSource}.incident3`]: false,
-  });
+  if (!adaptations) return;
+
+  const updateData = {};
+  for (const source of sources) {
+    const adaptation = adaptations[source];
+    if (adaptation && !adaptation.isAdapted) {
+      updateData[`system.sanity.adaptations.${source}.incident1`] = false;
+      updateData[`system.sanity.adaptations.${source}.incident2`] = false;
+      updateData[`system.sanity.adaptations.${source}.incident3`] = false;
+    }
+  }
+  if (Object.keys(updateData).length) await actor.update(updateData);
 }
 
 /**
@@ -247,11 +261,7 @@ async function _tickAdaptationForLastSanitySourceIfNotAdapted(actor) {
     lastSource === "violence" ? adaptations.violence : adaptations.helplessness;
   if (!adaptation || adaptation.isAdapted) return;
 
-  const nextIncident = adaptation.incident1
-    ? adaptation.incident2
-      ? "incident3"
-      : "incident2"
-    : "incident1";
+  const nextIncident = _getNextAdaptationIncident(adaptation);
 
   await actor.update({
     [`system.sanity.adaptations.${lastSource}.${nextIncident}`]: true,
@@ -310,23 +320,26 @@ Hooks.on("preUpdateActor", (actor, change) => {
   const { adaptations } = actor.system.sanity ?? {};
   if (!adaptations) return;
   _adaptationStateBeforeUpdate.set(actor.id, {
-    violence: _wasAdapted(adaptations, "violence"),
-    helplessness: _wasAdapted(adaptations, "helplessness"),
+    violence: adaptations.violence?.isAdapted ?? false,
+    helplessness: adaptations.helplessness?.isAdapted ?? false,
   });
 });
 
 Hooks.on("updateActor", async (actor, _change) => {
   if (actor.type !== "agent") return;
+
+  const automateSanity = game.settings.get(DG.ID, "automateAdaptationTicks");
+
   const adaptationBefore = _adaptationStateBeforeUpdate.get(actor.id);
   _adaptationStateBeforeUpdate.delete(actor.id);
   const sanityBefore = _sanityValueBeforeUpdate.get(actor.id);
   _sanityValueBeforeUpdate.delete(actor.id);
 
-  if (adaptationBefore) {
+  if (automateSanity && adaptationBefore) {
     const { adaptations } = actor.system.sanity ?? {};
     if (adaptations) {
-      const nowViolence = _wasAdapted(adaptations, "violence");
-      const nowHelplessness = _wasAdapted(adaptations, "helplessness");
+      const nowViolence = adaptations.violence?.isAdapted ?? false;
+      const nowHelplessness = adaptations.helplessness?.isAdapted ?? false;
       if (!adaptationBefore.violence && nowViolence)
         await _notifySanityChat(actor, "DG.Messages.AdaptedToSanity", {
           adaptationType: game.i18n.localize("DG.Mental.AdaptedToViolence"),
@@ -338,34 +351,52 @@ Hooks.on("updateActor", async (actor, _change) => {
     }
   }
 
-  if (sanityBefore && actor.system.sanity?.value != null) {
-    const { value: valueBefore, aboveBreakingPoint } =
-      typeof sanityBefore === "number"
-        ? { value: sanityBefore, aboveBreakingPoint: true }
-        : sanityBefore;
-    const valueNow = actor.system.sanity.value;
-    const drop = valueBefore - valueNow;
-    const { currentBreakingPoint } = actor.system.sanity;
-    const hitBreakingPoint =
-      aboveBreakingPoint &&
-      typeof currentBreakingPoint === "number" &&
-      valueNow <= currentBreakingPoint;
-    if (drop >= 5 || hitBreakingPoint) {
-      await _clearAdaptationCheckboxesForLastSanitySourceIfNotAdapted(actor);
-      if (drop >= 5)
-        await _notifySanityChat(actor, "DG.Messages.BecameTemporaryInsane");
-      if (hitBreakingPoint)
-        await _notifySanityChat(actor, "DG.Messages.HitBreakingPoint");
-    } else if (drop > 0) {
-      await _tickAdaptationForLastSanitySourceIfNotAdapted(actor);
-    }
+  if (!automateSanity || !sanityBefore || actor.system.sanity?.value == null) {
+    return;
+  }
 
-    // After reacting to a sanity drop once (adaptation tick or reset),
-    // clear the last sanity roll source so repeated SAN changes for the
-    // same roll do not trigger additional adaptation changes.
-    if (drop > 0) {
-      await actor.setFlag(DG.ID, "lastSanityRollSource", "none");
+  const { value: valueBefore, aboveBreakingPoint } =
+    typeof sanityBefore === "number"
+      ? { value: sanityBefore, aboveBreakingPoint: true }
+      : sanityBefore;
+  const valueNow = actor.system.sanity.value;
+  const drop = valueBefore - valueNow;
+  const { currentBreakingPoint } = actor.system.sanity;
+  const hitBreakingPoint =
+    aboveBreakingPoint &&
+    typeof currentBreakingPoint === "number" &&
+    valueNow <= currentBreakingPoint;
+
+  // Tick/clear call actor.update() from inside updateActor. That is safe today
+  // because nested updates only touch incident checkboxes: SAN value is unchanged,
+  // so drop === 0 on the nested pass and tick/clear do not run again.
+  if (drop >= 5) {
+    if (!hitBreakingPoint) {
+      const lastSource = actor.getFlag(DG.ID, "lastSanityRollSource");
+      if (lastSource === "violence" || lastSource === "helplessness") {
+        await _clearAdaptationCheckboxesForSourcesIfNotAdapted(actor, [
+          lastSource,
+        ]);
+      }
     }
+    await _notifySanityChat(actor, "DG.Messages.BecameTemporaryInsane");
+  }
+  if (hitBreakingPoint) {
+    await _clearAdaptationCheckboxesForSourcesIfNotAdapted(
+      actor,
+      ADAPTATION_SOURCES,
+    );
+    await _notifySanityChat(actor, "DG.Messages.HitBreakingPoint");
+  }
+  if (drop > 0 && drop < 5 && !hitBreakingPoint) {
+    await _tickAdaptationForLastSanitySourceIfNotAdapted(actor);
+  }
+
+  // After reacting to a sanity drop once (adaptation tick or reset),
+  // clear the last sanity roll source so repeated SAN changes for the
+  // same roll do not trigger additional adaptation changes.
+  if (drop > 0) {
+    await actor.setFlag(DG.ID, "lastSanityRollSource", "none");
   }
 });
 

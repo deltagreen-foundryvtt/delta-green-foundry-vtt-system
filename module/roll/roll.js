@@ -5,6 +5,27 @@ import DG from "../config.js";
 const { renderTemplate } = foundry.applications.handlebars;
 const { DialogV2 } = foundry.applications.api;
 
+const ADAPTED_SANITY_CHOICE_LABEL_KEYS = {
+  Violence: "DG.Mental.AdaptedToViolence",
+  Helplessness: "DG.Mental.AdaptedToHelplessness",
+};
+
+/**
+ * Chat label for a sanity roll source (adapted override, hide "None", else choice label).
+ *
+ * @param {DGPercentileRoll} roll
+ * @returns {string|null}
+ */
+function _getSanityChoiceLabel(roll) {
+  const sanityChoiceValue = roll.sanityChoice?.value;
+  if (roll.treatAsSuccess && sanityChoiceValue) {
+    const key = ADAPTED_SANITY_CHOICE_LABEL_KEYS[sanityChoiceValue];
+    if (key) return game.i18n.localize(key);
+  }
+  if (sanityChoiceValue === "None") return null;
+  return roll.sanityChoice?.label ?? null;
+}
+
 export class DGRoll extends Roll {
   /**
    * NOTE: This class will rarely be called on its own. It should generally be extended. Look to DGPercentileRoll as an example.
@@ -295,21 +316,7 @@ export class DGPercentileRoll extends DGRoll {
       !foundry.utils.getProperty(this.actor, `${this.skillPath}.failure`) &&
       game.settings.get(DG.ID, "skillFailure");
 
-    const sanityChoiceValue = this.sanityChoice?.value;
-    const adaptedKey =
-      this.treatAsSuccess && sanityChoiceValue
-        ? {
-            Violence: "DG.Mental.AdaptedToViolence",
-            Helplessness: "DG.Mental.AdaptedToHelplessness",
-          }[sanityChoiceValue]
-        : null;
-    // Adaptation label takes precedence over source; otherwise show sanity roll source (but hide "None").
-    const sanityChoiceLabel =
-      adaptedKey != null
-        ? game.i18n.localize(adaptedKey)
-        : sanityChoiceValue === "None"
-        ? null
-        : this.sanityChoice?.label ?? null;
+    const sanityChoiceLabel = _getSanityChoiceLabel(this);
 
     const html = await renderTemplate(
       "systems/deltagreen/templates/roll/percentile-roll.hbs",
@@ -420,14 +427,17 @@ export class DGPercentileRoll extends DGRoll {
       : `${startOfLabel}</b><br> ${endOfLabel}%`;
 
     if (mode === "sanity") {
-      let sanPointsTillBP =
-        this.actor.system.sanity.value -
-        this.actor.system.sanity.currentBreakingPoint;
-      if (sanPointsTillBP <= 0) {
-        sanPointsTillBP = 0;
+      endOfLabel = `${this.localizedKey}: <b>${this.effectiveTarget}</b>`;
+      if (game.settings.get(DG.ID, "automateAdaptationTicks")) {
+        let sanPointsTillBP =
+          this.actor.system.sanity.value -
+          this.actor.system.sanity.currentBreakingPoint;
+        if (sanPointsTillBP <= 0) {
+          sanPointsTillBP = 0;
+        }
+        const bpShort = game.i18n.localize("DG.SanityRoll.BPShort");
+        endOfLabel += `<span class="card-bp">${bpShort}: <b>${sanPointsTillBP}</b></span>`;
       }
-      endOfLabel = `${this.localizedKey}: <b>${this.effectiveTarget}</b>
-      <span class="card-bp">BP: <b>${sanPointsTillBP}</b></span>`;
 
       label = this.isInhuman
         ? // "Inhuman" stat being rolled. See function for details.
