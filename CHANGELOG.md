@@ -1,5 +1,9 @@
 # Release/Patch Notes
 
+Version 1.7.1 - 2026-06-06
+
+[delgar89](https://github.com/delgar89) updated the Polish translation.
+
 ## Version 1.7.0 - 2026-xx-xx
 
 > Thanks to [hknmtt](https://github.com/hknmtt) for updating the Brazilian translation.
