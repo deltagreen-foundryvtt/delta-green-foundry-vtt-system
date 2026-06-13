@@ -385,11 +385,15 @@
   overflow: hidden;
 }
 
-.dg-dialog--character-creation
-  .dg-dialog__column--right
-  > .dg-dialog__messages {
-  flex: 0 0 auto;
+.dg-dialog--character-creation .dg-dialog__column--right > .dg-dialog__messages,
+.dg-dialog--hard-experience .dg-dialog__column--right > .dg-dialog__messages {
+  flex: 0 0 6rem;
+  height: 6rem;
+  min-height: 6rem;
+  max-height: 6rem;
+  overflow-y: auto;
   margin-top: 0.5rem;
+  scrollbar-color: #215112 #111 !important;
 }
 
 /* Character creation tabs — same equal-width overlap as agent sheet */
@@ -491,33 +495,44 @@
     2px 0 5px rgba(0, 0, 0, 0.14);
 }
 
-.dg-dialog--character-creation .dg-dialog__tab-panels > .tab.active {
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-}
-
 .dg-dialog--character-creation .dg-dialog__tab-panels {
-  flex: 1;
-  min-height: 0;
-}
-
-.dg-dialog--character-creation .dg-dialog__tab-panels > .tab {
-  display: none;
-  overflow-y: auto;
-  max-height: 28rem;
-}
-
-.dg-dialog--character-creation .dg-dialog__tab-panels > .tab.active {
-  display: block;
-}
-
-.dg-dialog--character-creation .character-creation-skills-section {
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
   min-height: 0;
   overflow: hidden;
+}
+
+.dg-dialog--character-creation .dg-dialog__tab-panels > .tab {
+  display: none;
+  overflow-y: auto;
+  min-height: 0;
+  scrollbar-color: #215112 #111 !important;
+}
+
+.dg-dialog--character-creation .dg-dialog__tab-panels > .tab.active {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.dg-dialog--character-creation .character-creation-skill-totals {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
   margin-bottom: 0.5rem;
+  scrollbar-color: #215112 #111 !important;
+}
+
+.dg-dialog--character-creation .character-creation-skills-section {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0;
 }
 
 .dg-dialog--character-creation .character-creation-skill-totals-header {
@@ -559,10 +574,6 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 0.2rem 0.75rem;
-  flex: 1 1 auto;
-  min-height: 0;
-  overflow-y: auto;
-  scrollbar-color: #215112 #111 !important;
 }
 
 .dg-dialog--character-creation .dg-dialog__skill-entry {
@@ -775,4 +786,98 @@
 
 .dg-dialog--character-creation .character-creation-bond-field-score input {
   text-align: center;
+}
+
+/* Damaged Veterans */
+.dg-dialog-app.dg-dialog-app--damaged-veterans.application,
+.dg-dialog-app.dg-dialog-app--things-disorder.application {
+  display: flex;
+  flex-direction: column;
+}
+
+.dg-dialog--damaged-veterans .damaged-veterans-options,
+.dg-dialog--things-disorder .things-disorder-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.dg-dialog--damaged-veterans label.checkbox.damaged-veterans-option,
+.dg-dialog--things-disorder label.checkbox.things-disorder-option,
+.dg-dialog--hard-experience label.checkbox.hard-experience-bond-option {
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: inherit;
+  line-height: 1.4;
+}
+
+.dg-dialog--damaged-veterans label.checkbox.damaged-veterans-option > input[type="radio"],
+.dg-dialog--things-disorder label.checkbox.things-disorder-option > input[type="radio"],
+.dg-dialog--hard-experience label.checkbox.hard-experience-bond-option > input[type="radio"] {
+  margin-top: 0.15rem;
+}
+
+.dg-dialog--damaged-veterans .damaged-veterans-option-text strong {
+  font-weight: bold;
+}
+
+/* Hard Experience — reuse character creation two-column layout */
+.dg-dialog-app.dg-dialog-app--hard-experience.application {
+  display: flex;
+  flex-direction: column;
+}
+
+.dg-dialog-app.dg-dialog-app--hard-experience.application > .window-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.dg-dialog-app.dg-dialog-app--hard-experience .dialog-form {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: 100%;
+  overflow: hidden;
+}
+
+.dg-dialog-app.dg-dialog-app--hard-experience
+  .dialog-form
+  > .dialog-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.dg-dialog--hard-experience.dg-dialog {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.dg-dialog--hard-experience .hard-experience-bonus-section {
+  margin-bottom: 1rem;
+}
+
+.dg-dialog--hard-experience .hard-experience-bond-removal {
+  flex: 0 0 auto;
+}
+
+.dg-dialog--hard-experience .hard-experience-bond-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
 }

@@ -1,4 +1,8 @@
 import { BASE_TEMPLATE_PATH } from "../config/index.js";
+import {
+  getDisorderLabel,
+  isKnownDisorderId,
+} from "../profession/disorders.js";
 import DGSheetMixin from "./base-sheet.js";
 import EffectsTabMixin from "./mixins/effects-tab-mixin.js";
 import ProfessionItemMixin from "./mixins/profession-item-mixin.js";
@@ -248,6 +252,13 @@ export default class DGItemSheet extends ItemSheetBase {
     }
 
     context.owner = this.document.isOwner;
+
+    if (this.item.type === "motivation" && this.item.system.disorder) {
+      context.disorderUsesKnownId = isKnownDisorderId(
+        this.item.system.disorder,
+      );
+      context.disorderLabel = getDisorderLabel(this.item.system.disorder);
+    }
 
     return context;
   }

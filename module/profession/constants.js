@@ -28,6 +28,10 @@ export const TYPED_GROUP_I18N = {
 export const BONUS_SKILL_COUNT = 8;
 export const BONUS_SKILL_INCREMENT = 20;
 
+export const HARD_EXPERIENCE_BONUS_COUNT = 5;
+export const HARD_EXPERIENCE_BONUS_INCREMENT = 10;
+export const HARD_EXPERIENCE_SKILL_CAP = 90;
+
 /** @type {ReadonlySet<string>} */
 export const BONUS_SKILL_CATALOG_EXCLUDED_FIXED = new Set(["unnatural"]);
 export const SKILL_CAP = 80;
