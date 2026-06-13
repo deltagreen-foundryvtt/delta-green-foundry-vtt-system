@@ -143,12 +143,21 @@ function getBonusTrackBaseValue(trackKey, baseFixed, baseTyped, defaults) {
 }
 
 /**
- * Bonus skill slots that would waste 20+ points over the creation cap (skill below 80).
+ * @typedef {object} BonusPickOptions
+ * @property {number} [count]
+ * @property {number} [increment]
+ * @property {number} [cap]
+ * @property {number} [maxWaste]
+ */
+
+/**
+ * Bonus skill slots that would waste points over the creation cap.
  *
  * @param {Record<string, number>} baseFixed
  * @param {Record<string, { group: string, label: string, value: number }>} baseTyped
  * @param {string[]} bonusCatalogIds
  * @param {string[]} bonusTypedLabels
+ * @param {BonusPickOptions} [options]
  * @returns {string[]}
  */
 export function collectBonusCapValidationErrors(
@@ -156,6 +165,12 @@ export function collectBonusCapValidationErrors(
   baseTyped,
   bonusCatalogIds,
   bonusTypedLabels,
+  {
+    count = BONUS_SKILL_COUNT,
+    increment = BONUS_SKILL_INCREMENT,
+    cap = SKILL_CAP,
+    maxWaste = MAX_ALLOWED_BONUS_WASTE,
+  } = {},
 ) {
   const defaults = getAgentSkillDefaults();
   /** @type {Record<string, number>} */
@@ -163,7 +178,7 @@ export function collectBonusCapValidationErrors(
   /** @type {(string | null)[]} */
   const slotTrackKeys = [];
 
-  for (let i = 0; i < BONUS_SKILL_COUNT; i++) {
+  for (let i = 0; i < count; i++) {
     const catalogId = bonusCatalogIds?.[i];
     if (!catalogId) {
       slotTrackKeys.push(null);
@@ -182,23 +197,23 @@ export function collectBonusCapValidationErrors(
   /** @type {Set<string>} */
   const violatingTrackKeys = new Set();
 
-  for (const [trackKey, count] of Object.entries(counts)) {
+  for (const [trackKey, countForTrack] of Object.entries(counts)) {
     const base = getBonusTrackBaseValue(
       trackKey,
       baseFixed,
       baseTyped,
       defaults,
     );
-    const final = base + count * BONUS_SKILL_INCREMENT;
-    const waste = Math.max(0, final - SKILL_CAP);
-    if (base < SKILL_CAP && waste >= MAX_ALLOWED_BONUS_WASTE) {
+    const final = base + countForTrack * increment;
+    const waste = Math.max(0, final - cap);
+    if (base < cap && waste >= maxWaste) {
       violatingTrackKeys.add(trackKey);
     }
   }
 
   /** @type {string[]} */
   const errors = [];
-  for (let i = 0; i < BONUS_SKILL_COUNT; i++) {
+  for (let i = 0; i < count; i++) {
     const trackKey = slotTrackKeys[i];
     if (trackKey && violatingTrackKeys.has(trackKey)) {
       const base = getBonusTrackBaseValue(
@@ -207,13 +222,128 @@ export function collectBonusCapValidationErrors(
         baseTyped,
         defaults,
       );
-      const count = counts[trackKey] ?? 0;
-      const final = base + count * BONUS_SKILL_INCREMENT;
-      const waste = Math.max(0, final - SKILL_CAP);
+      const countForTrack = counts[trackKey] ?? 0;
+      const final = base + countForTrack * increment;
+      const waste = Math.max(0, final - cap);
 
       errors.push(`bonusWaste:${i}|${waste}|${trackKey}`);
     }
   }
 
   return errors;
+}
+
+/**
+ * @param {Record<string, number>} baseFixed
+ * @param {Record<string, { group: string, label: string, value: number }>} baseTyped
+ * @param {{ bonusCatalogIds?: string[], bonusTypedLabels?: string[] }} formState
+ * @param {BonusPickOptions} [options]
+ * @returns {{
+ *   fixedValues: Record<string, number>,
+ *   typedValues: Record<string, { group: string, label: string, value: number }>,
+ *   modifiedFixedKeys: string[],
+ *   modifiedTypedKeys: string[],
+ *   validationErrors: string[],
+ *   isValid: boolean,
+ * }}
+ */
+export function applyBonusSkillPicks(
+  baseFixed,
+  baseTyped,
+  formState,
+  {
+    count = BONUS_SKILL_COUNT,
+    increment = BONUS_SKILL_INCREMENT,
+    cap = SKILL_CAP,
+    maxWaste = MAX_ALLOWED_BONUS_WASTE,
+  } = {},
+) {
+  const defaults = getAgentSkillDefaults();
+  const fixedValues = { ...baseFixed };
+  const typedValues = foundry.utils.deepClone(baseTyped);
+  /** @type {Set<string>} */
+  const modifiedFixedKeys = new Set();
+  /** @type {Set<string>} */
+  const modifiedTypedKeys = new Set();
+  /** @type {Record<string, number>} */
+  const bonusCounts = {};
+
+  const bonusIds = formState.bonusCatalogIds ?? [];
+  const bonusLabels = formState.bonusTypedLabels ?? [];
+
+  for (let i = 0; i < count; i++) {
+    const catalogId = bonusIds[i];
+    if (catalogId) {
+      const typedLabel = bonusLabels[i] ?? "";
+      const ref = catalogIdToSkillRef(catalogId, typedLabel);
+      if (ref) {
+        if (ref.kind === "fixed") modifiedFixedKeys.add(ref.key);
+        else modifiedTypedKeys.add(formatProfessionSkillKey(ref));
+
+        const trackKey = getBonusTrackKey(ref);
+        bonusCounts[trackKey] = (bonusCounts[trackKey] ?? 0) + 1;
+      }
+    }
+  }
+
+  for (const [trackKey, pickCount] of Object.entries(bonusCounts)) {
+    const bonus = pickCount * increment;
+    if (trackKey.startsWith("fixed:")) {
+      const key = trackKey.slice(6);
+      fixedValues[key] = (fixedValues[key] ?? defaults[key] ?? 0) + bonus;
+    } else {
+      const ref = parseProfessionSkillKey(trackKey);
+      if (ref?.kind === "typed") {
+        const base = typedValues[trackKey]?.value ?? 0;
+        typedValues[trackKey] = {
+          group: ref.group,
+          label: ref.label,
+          value: base + bonus,
+        };
+      }
+    }
+  }
+
+  for (const key of Object.keys(fixedValues)) {
+    if (fixedValues[key] > cap) fixedValues[key] = cap;
+  }
+  for (const data of Object.values(typedValues)) {
+    if (data.value > cap) data.value = cap;
+  }
+
+  /** @type {string[]} */
+  const validationErrors = [];
+
+  for (let i = 0; i < count; i++) {
+    const catalogId = bonusIds[i];
+    if (!catalogId) {
+      validationErrors.push(`bonus${i}`);
+    } else {
+      const ref = catalogIdToSkillRef(catalogId, bonusLabels[i] ?? "");
+      if (!ref) {
+        validationErrors.push(`bonus${i}`);
+      } else if (ref.kind === "typed" && !bonusLabels[i]?.trim()) {
+        validationErrors.push(`bonusType${i}`);
+      }
+    }
+  }
+
+  validationErrors.push(
+    ...collectBonusCapValidationErrors(
+      baseFixed,
+      baseTyped,
+      bonusIds,
+      bonusLabels,
+      { count, increment, cap, maxWaste },
+    ),
+  );
+
+  return {
+    fixedValues,
+    typedValues,
+    modifiedFixedKeys: [...modifiedFixedKeys],
+    modifiedTypedKeys: [...modifiedTypedKeys],
+    validationErrors,
+    isValid: validationErrors.length === 0,
+  };
 }

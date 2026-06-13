@@ -1,3 +1,4 @@
+import { getDisorderLabel } from "../profession/disorders.js";
 import DGUtils from "./utility-functions.js";
 
 export default function registerHandlebarsHelpers() {
@@ -98,6 +99,14 @@ export default function registerHandlebarsHelpers() {
 
   Handlebars.registerHelper("playerHasGamemasterPrivileges", () => {
     return game.user.isGM;
+  });
+
+  Handlebars.registerHelper("dgDisorderLabel", (value) => {
+    try {
+      return getDisorderLabel(value);
+    } catch {
+      return value ?? "";
+    }
   });
 
   Handlebars.registerHelper("showImpossibleLandscapesContent", () => {

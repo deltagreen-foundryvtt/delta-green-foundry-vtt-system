@@ -131,6 +131,90 @@ export function applyAgentResourceMaxBonuses(model, sourceStatistics) {
   );
 }
 
+/**
+ * Compute agent HP/WP maximums from current statistics (including AE bonuses on max).
+ * @param {Actor} actor
+ * @returns {{ healthMax: number, wpMax: number }}
+ */
+export function computeAgentResourceMaximums(actor) {
+  const { system } = actor;
+  const sourceStatistics = actor._source?.system?.statistics;
+
+  const healthMax = cleanDerivedNumber(
+    system,
+    "health.max",
+    calculateHealthMax(system.statistics, sourceStatistics) +
+      (system.health.maxBonus ?? 0),
+  );
+  const wpMax = cleanDerivedNumber(
+    system,
+    "wp.max",
+    getStatisticEffectiveValue(system.statistics.pow, sourceStatistics?.pow) +
+      (system.wp.maxBonus ?? 0),
+  );
+
+  return { healthMax, wpMax };
+}
+
+/**
+ * @param {Actor} actor
+ * @param {string} veteranPath
+ * @returns {number}
+ */
+export function computeAgentBreakingPoint(actor, veteranPath) {
+  const sourceStatistics = actor._source?.system?.statistics;
+  const pow = getStatisticEffectiveValue(
+    actor.system.statistics.pow,
+    sourceStatistics?.pow,
+  );
+
+  if (veteranPath === "thingsMan") {
+    const sanity = Number(actor.system.sanity.value) || 0;
+    return Math.max(0, sanity - pow);
+  }
+
+  const fullStartingSan = pow * 5;
+  return Math.max(0, fullStartingSan - pow);
+}
+
+/**
+ * Persist agent HP/WP max from current statistics, fill both resources to max,
+ * initialize SAN for fresh recruits, and set breaking point after chargen.
+ * @param {Actor} actor
+ * @param {string} [veteranPath]
+ * @returns {Promise<void>}
+ */
+export async function finalizeAgentStartingResources(
+  actor,
+  veteranPath = "freshRecruit",
+) {
+  if (actor.type !== "agent") return;
+
+  const { healthMax, wpMax } = computeAgentResourceMaximums(actor);
+  const breakingPoint = computeAgentBreakingPoint(actor, veteranPath);
+
+  /** @type {Record<string, unknown>} */
+  const updateData = {
+    "system.health.max": healthMax,
+    "system.health.value": healthMax,
+    "system.wp.max": wpMax,
+    "system.wp.value": wpMax,
+    "system.sanity.currentBreakingPoint": breakingPoint,
+  };
+
+  const persistedSanity = Number(actor._source?.system?.sanity?.value) ?? 0;
+  if (veteranPath === "freshRecruit" && persistedSanity >= 100) {
+    const sourceStatistics = actor._source?.system?.statistics;
+    const pow = getStatisticEffectiveValue(
+      actor.system.statistics.pow,
+      sourceStatistics?.pow,
+    );
+    updateData["system.sanity.value"] = pow * 5;
+  }
+
+  await actor.update(updateData);
+}
+
 export function setSkillTargetProficiencies(skills) {
   for (const skill of Object.values(skills)) {
     skill.targetProficiency = skill.proficiency;

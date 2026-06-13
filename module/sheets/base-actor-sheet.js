@@ -165,15 +165,4 @@ export default class DGActorSheet extends ComposedActorSheetBase {
     this._tooltipsSettings(element);
     this._bindAeBackedInputs(element);
   }
-
-  /** @override */
-  _getHeaderControls() {
-    const controls = super._getHeaderControls();
-    controls.push({
-      action: "rollLuck",
-      label: "DG.RollLuck",
-      icon: "fas fa-dice",
-    });
-    return controls;
-  }
 }
