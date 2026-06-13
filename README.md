@@ -35,4 +35,4 @@ If there is a need to manually install the system, go to _Game Systems_ and clic
 
 ## System Documentation
 
-You may find documentation for the system in [this folder](https://github.com/TheLastScrub/delta-green-foundry-vtt-system/blob/master/documentation/home.md).
+You may find documentation for the system in [this folder](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/blob/master/documentation/home.md).

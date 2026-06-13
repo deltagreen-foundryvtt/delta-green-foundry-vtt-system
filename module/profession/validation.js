@@ -118,7 +118,7 @@ export function validateProfessionFormState(
  */
 export function formatProfessionValidationMessages(
   errors,
-  { optionPicks = 0 } = {},
+  { optionPicks = 0, bonusCount = BONUS_SKILL_COUNT, skillCap = 80 } = {},
 ) {
   const messages = [];
   const seen = new Set();
@@ -136,8 +136,8 @@ export function formatProfessionValidationMessages(
   let needsBonusSkillType = false;
   /** @type {Set<string>} */
   const typedNameRequiredGroups = new Set();
-  /** @type {string[]} */
-  const bonusWasteTrackKeys = [];
+  /** @type {Set<string>} */
+  const bonusWasteTrackKeys = new Set();
 
   for (const code of errors) {
     if (code === "optionPicks") {
@@ -149,7 +149,7 @@ export function formatProfessionValidationMessages(
     } else {
       const bonusWaste = code.match(/^bonusWaste:\d+\|(\d+)\|(.+)$/);
       if (bonusWaste) {
-        bonusWasteTrackKeys.push(bonusWaste[2]);
+        bonusWasteTrackKeys.add(bonusWaste[2]);
       } else if (code.startsWith("bonusType")) {
         needsBonusSkillType = true;
       } else if (/^bonus\d+$/.test(code)) {
@@ -184,7 +184,7 @@ export function formatProfessionValidationMessages(
   if (needsBonusSkill) {
     push(
       game.i18n.format("DG.Profession.Dialog.BonusSkillRequired", {
-        count: BONUS_SKILL_COUNT,
+        count: bonusCount,
       }),
     );
   }

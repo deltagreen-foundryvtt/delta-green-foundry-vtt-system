@@ -1,0 +1,17 @@
+<div class="dg-dialog dg-dialog--things-disorder">
+    <p class="dg-dialog__intro">{{localize "DG.DamagedVeterans.ThingsMan.Dialog.Intro"}}</p>
+    <fieldset class="things-disorder-options">
+        <legend class="sr-only">{{localize "DG.DamagedVeterans.ThingsMan.Dialog.Title"}}</legend>
+        {{#each disorders}}
+            <label class="checkbox things-disorder-option">
+                <input type="radio"
+                       name="thingsDisorder"
+                       value="{{value}}"
+                       {{#if checked}}checked{{/if}}
+                       {{#if @first}}required{{/if}} />
+                <span>{{localize labelKey}}</span>
+            </label>
+        {{/each}}
+    </fieldset>
+    <div class="dg-dialog__messages" data-things-disorder-messages hidden></div>
+</div>

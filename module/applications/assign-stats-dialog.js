@@ -12,7 +12,7 @@ import { getDialogContentRoot, showDgDialog } from "./dg-dialog.js";
 
 const { renderTemplate } = foundry.applications.handlebars;
 
-/** @typedef {'submitted' | 'cancelled'} AssignStatsResult */
+/** @typedef {'submitted' | 'back'} AssignStatsOutcome */
 
 /**
  * @param {DialogV2} dialog
@@ -84,14 +84,14 @@ function bindAssignStatsListeners(dialog, values) {
 
 /**
  * @param {Actor} actor
- * @returns {Promise<AssignStatsResult>}
+ * @returns {Promise<{ outcome: 'submitted' } | { outcome: 'back' } | null>}
  */
 export default async function showAssignStatsDialog(actor) {
   /** @type {Record<string, number>} */
   const values = getDefaultPointBuyValues();
   const { remaining } = validatePointBuyValues(values);
-  /** @type {AssignStatsResult} */
-  let result = "cancelled";
+  /** @type {{ outcome: 'submitted' } | { outcome: 'back' } | null} */
+  let result = null;
 
   const content = await renderTemplate(
     `${BASE_TEMPLATE_PATH}/dialog/assign-stats.html`,
@@ -119,10 +119,10 @@ export default async function showAssignStatsDialog(actor) {
     close: () => result,
     buttons: [
       {
-        action: "cancel",
-        label: game.i18n.localize("Cancel"),
+        action: "back",
+        label: game.i18n.localize("DG.ProfessionSetup.GoBack"),
         callback: async (_event, _button, dialog) => {
-          result = "cancelled";
+          result = { outcome: "back" };
           await dialog.close();
         },
       },
@@ -137,7 +137,7 @@ export default async function showAssignStatsDialog(actor) {
           if (!isValid) return false;
 
           await applyAgentStatistics(actor, { ...values });
-          result = "submitted";
+          result = { outcome: "submitted" };
           await dialog.close();
           return false;
         },

@@ -19,11 +19,19 @@
                title="{{localize 'DG.ItemWindow.Motivations.IsDisorderTooltip'}}" />
         {{#if item.system.crossedOut }}
             <span class="resource-label">{{localize 'DG.ItemWindow.Motivations.Disorder'}}:</span>
-            <input type="text"
-                   name="system.disorder"
-                   value="{{item.system.disorder}}"
-                   data-dtype="String"
-                   title="{{localize 'DG.ItemWindow.Motivations.DisorderNameTooltip'}}" />
+            {{#if disorderUsesKnownId}}
+                <span class="disorder-display">{{disorderLabel}}</span>
+                <input type="hidden"
+                       name="system.disorder"
+                       value="{{item.system.disorder}}"
+                       data-dtype="String" />
+            {{else}}
+                <input type="text"
+                       name="system.disorder"
+                       value="{{item.system.disorder}}"
+                       data-dtype="String"
+                       title="{{localize 'DG.ItemWindow.Motivations.DisorderNameTooltip'}}" />
+            {{/if}}
             <span class="resource-label">{{localize 'DG.ItemWindow.Motivations.AcuteEpisode'}}:</span>
             <input type="checkbox"
                    name="system.acuteEpisode"
