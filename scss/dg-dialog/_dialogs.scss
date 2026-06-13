@@ -814,9 +814,15 @@
   line-height: 1.4;
 }
 
-.dg-dialog--damaged-veterans label.checkbox.damaged-veterans-option > input[type="radio"],
-.dg-dialog--things-disorder label.checkbox.things-disorder-option > input[type="radio"],
-.dg-dialog--hard-experience label.checkbox.hard-experience-bond-option > input[type="radio"] {
+.dg-dialog--damaged-veterans
+  label.checkbox.damaged-veterans-option
+  > input[type="radio"],
+.dg-dialog--things-disorder
+  label.checkbox.things-disorder-option
+  > input[type="radio"],
+.dg-dialog--hard-experience
+  label.checkbox.hard-experience-bond-option
+  > input[type="radio"] {
   margin-top: 0.15rem;
 }
 
@@ -847,9 +853,7 @@
   overflow: hidden;
 }
 
-.dg-dialog-app.dg-dialog-app--hard-experience
-  .dialog-form
-  > .dialog-content {
+.dg-dialog-app.dg-dialog-app--hard-experience .dialog-form > .dialog-content {
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
