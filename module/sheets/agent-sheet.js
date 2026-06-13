@@ -78,9 +78,9 @@ export default class DGAgentSheet extends AgentSheetBase {
       ],
     },
     leftBarRestSanity: {
-      initial: "rest",
+      initial: "sanity",
       labelPrefix: "DG.Navigation.Agent.LeftBar",
-      tabs: [{ id: "rest" }, { id: "sanity" }],
+      tabs: [{ id: "sanity" }, { id: "rest" }],
     },
   });
 

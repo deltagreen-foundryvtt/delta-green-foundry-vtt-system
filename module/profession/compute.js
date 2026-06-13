@@ -1,10 +1,6 @@
+import { SKILL_CAP } from "./constants.js";
 import {
-  BONUS_SKILL_COUNT,
-  BONUS_SKILL_INCREMENT,
-  SKILL_CAP,
-} from "./constants.js";
-import {
-  catalogIdToSkillRef,
+  applyBonusSkillPicks,
   collectBonusCapValidationErrors,
 } from "./catalog.js";
 import {
@@ -143,53 +139,11 @@ export default function computeSkillValues(
     }
   }
 
-  /** @type {Record<string, number>} */
-  const bonusCounts = {};
-
-  const bonusIds = formState.bonusCatalogIds ?? [];
-  const bonusLabels = formState.bonusTypedLabels ?? [];
-
-  for (let i = 0; i < BONUS_SKILL_COUNT; i++) {
-    const catalogId = bonusIds[i];
-    if (catalogId) {
-      const typedLabel = bonusLabels[i] ?? "";
-      const ref = catalogIdToSkillRef(catalogId, typedLabel);
-      if (ref) {
-        if (ref.kind === "fixed") modifiedFixedKeys.add(ref.key);
-        else modifiedTypedKeys.add(formatProfessionSkillKey(ref));
-
-        let trackKey;
-        if (ref.kind === "fixed") {
-          trackKey = `fixed:${ref.key}`;
-        } else {
-          trackKey = formatProfessionSkillKey(ref);
-        }
-        bonusCounts[trackKey] = (bonusCounts[trackKey] ?? 0) + 1;
-      }
-    }
-  }
-
   /** Pre-bonus base for cap warnings */
   const baseFixed = { ...fixedValues };
   const baseTyped = foundry.utils.deepClone(typedValues);
 
-  for (const [trackKey, count] of Object.entries(bonusCounts)) {
-    const bonus = count * BONUS_SKILL_INCREMENT;
-    if (trackKey.startsWith("fixed:")) {
-      const key = trackKey.slice(6);
-      fixedValues[key] = (fixedValues[key] ?? defaults[key] ?? 0) + bonus;
-    } else {
-      const ref = parseProfessionSkillKey(trackKey);
-      if (ref?.kind === "typed") {
-        const base = typedValues[trackKey]?.value ?? 0;
-        typedValues[trackKey] = {
-          group: ref.group,
-          label: ref.label,
-          value: base + bonus,
-        };
-      }
-    }
-  }
+  const bonusResult = applyBonusSkillPicks(baseFixed, baseTyped, formState);
 
   /** @type {{ label: string, attempted: number, waste: number }[]} */
   const capWarnings = [];
@@ -204,13 +158,13 @@ export default function computeSkillValues(
     }
   };
 
-  for (const [key, final] of Object.entries(fixedValues)) {
+  for (const [key, final] of Object.entries(bonusResult.fixedValues)) {
     const base = baseFixed[key] ?? defaults[key] ?? 0;
     const ref = /** @type {FixedSkillRef} */ ({ kind: "fixed", key });
     checkCap(formatProfessionSkillLabel(ref), base, final);
   }
 
-  for (const [storageKey, data] of Object.entries(typedValues)) {
+  for (const [storageKey, data] of Object.entries(bonusResult.typedValues)) {
     const base = baseTyped[storageKey]?.value ?? 0;
     const ref = /** @type {TypedSkillRef} */ ({
       kind: "typed",
@@ -218,14 +172,6 @@ export default function computeSkillValues(
       label: data.label,
     });
     checkCap(formatProfessionSkillLabel(ref), base, data.value);
-  }
-
-  /** Apply cap for display (values shown capped at 80) */
-  for (const key of Object.keys(fixedValues)) {
-    if (fixedValues[key] > SKILL_CAP) fixedValues[key] = SKILL_CAP;
-  }
-  for (const data of Object.values(typedValues)) {
-    if (data.value > SKILL_CAP) data.value = SKILL_CAP;
   }
 
   const validationErrors = validateProfessionFormState(optionPicks, formState, {
@@ -240,18 +186,22 @@ export default function computeSkillValues(
     ...collectBonusCapValidationErrors(
       baseFixed,
       baseTyped,
-      bonusIds,
-      bonusLabels,
+      formState.bonusCatalogIds ?? [],
+      formState.bonusTypedLabels ?? [],
     ),
   );
 
   return {
-    fixedValues,
-    typedValues,
+    fixedValues: bonusResult.fixedValues,
+    typedValues: bonusResult.typedValues,
     capWarnings,
     isValid: validationErrors.length === 0,
     validationErrors,
-    modifiedFixedKeys: [...modifiedFixedKeys],
-    modifiedTypedKeys: [...modifiedTypedKeys],
+    modifiedFixedKeys: [
+      ...new Set([...modifiedFixedKeys, ...bonusResult.modifiedFixedKeys]),
+    ],
+    modifiedTypedKeys: [
+      ...new Set([...modifiedTypedKeys, ...bonusResult.modifiedTypedKeys]),
+    ],
   };
 }

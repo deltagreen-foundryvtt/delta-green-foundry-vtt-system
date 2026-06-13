@@ -11,7 +11,7 @@ import { getDialogContentRoot, showDgDialog } from "./dg-dialog.js";
 
 const { renderTemplate } = foundry.applications.handlebars;
 
-/** @typedef {'submitted' | 'cancelled'} RollStatsResult */
+/** @typedef {'submitted' | 'back'} RollStatsOutcome */
 
 /**
  * @param {object} state
@@ -183,7 +183,7 @@ function bindRollStatsListeners(state, dialog) {
  * @param {Actor} actor
  * @param {object} [options]
  * @param {TokenDocument|null} [options.token]
- * @returns {Promise<RollStatsResult>}
+ * @returns {Promise<{ outcome: 'submitted' } | { outcome: 'back' } | null>}
  */
 export default async function showRollStatsDialog(
   actor,
@@ -207,8 +207,8 @@ export default async function showRollStatsDialog(
     assignments: Object.fromEntries(STAT_KEYS.map((key) => [key, null])),
     dragRollIndex: null,
   };
-  /** @type {RollStatsResult} */
-  let result = "cancelled";
+  /** @type {{ outcome: 'submitted' } | { outcome: 'back' } | null} */
+  let result = null;
 
   const content = await renderTemplate(
     `${BASE_TEMPLATE_PATH}/dialog/roll-stats.html`,
@@ -233,10 +233,10 @@ export default async function showRollStatsDialog(
     close: () => result,
     buttons: [
       {
-        action: "cancel",
-        label: game.i18n.localize("Cancel"),
+        action: "back",
+        label: game.i18n.localize("DG.ProfessionSetup.GoBack"),
         callback: async (_event, _button, dialog) => {
-          result = "cancelled";
+          result = { outcome: "back" };
           await dialog.close();
         },
       },
@@ -261,7 +261,7 @@ export default async function showRollStatsDialog(
           }
 
           await applyAgentStatistics(actor, valuesByKey);
-          result = "submitted";
+          result = { outcome: "submitted" };
           await dialog.close();
           return false;
         },

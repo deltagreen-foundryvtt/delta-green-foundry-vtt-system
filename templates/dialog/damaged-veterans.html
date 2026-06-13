@@ -1,0 +1,19 @@
+<div class="dg-dialog dg-dialog--damaged-veterans">
+    <p class="dg-dialog__intro">{{localize "DG.DamagedVeterans.Dialog.Intro"}}</p>
+    <fieldset class="damaged-veterans-options">
+        <legend class="sr-only">{{localize "DG.DamagedVeterans.Dialog.Title"}}</legend>
+        {{#each options}}
+            <label class="checkbox damaged-veterans-option">
+                <input type="radio"
+                       name="damagedVeteranPath"
+                       value="{{value}}"
+                       {{#if checked}}checked{{/if}}
+                       {{#if @first}}required{{/if}} />
+                <span class="damaged-veterans-option-text">
+                    <strong>{{localize labelKey}}</strong> {{localize bodyKey}}
+                </span>
+            </label>
+        {{/each}}
+    </fieldset>
+    <div class="dg-dialog__messages" data-damaged-veterans-messages hidden></div>
+</div>

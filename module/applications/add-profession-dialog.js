@@ -5,10 +5,14 @@ import {
   showDgDialog,
 } from "./dg-dialog.js";
 import {
+  buildSkillDisplayRows,
+  renderValidationMessagesHtml,
+  updateSkillGridBody,
+} from "./character-creation-ui.js";
+import {
   BONUS_SKILL_COUNT,
   buildBonusSkillCatalog,
-  buildSortedFixedSkillRows,
-  buildSortedTypedSkillRows,
+  buildCharacterCreationPayload,
   computeSkillValues,
   formatProfessionValidationMessages,
   getTypedGroupDisplayName,
@@ -16,58 +20,49 @@ import {
   prepareProfessionSkillRows,
   splitProfessionSkillMap,
 } from "../profession/index.js";
-import {
-  reorderForColumnSorting,
-  splitIntoColumns,
-} from "../utils/skill-layout.js";
-import {
-  applySkillTooltipDisplayMode,
-  buildSkillTooltip,
-} from "../utils/skill-tooltip.js";
+import { splitIntoColumns } from "../utils/skill-layout.js";
+import { applySkillTooltipDisplayMode } from "../utils/skill-tooltip.js";
 
 const CHARACTER_CREATION_OPTION_COLUMNS = 2;
-const ADD_PROFESSION_SKILL_COLUMNS = 2;
 const { renderTemplate } = foundry.applications.handlebars;
+
+/**
+ * @typedef {object} CharacterCreationDraft
+ * @property {string[]} checkedOptionKeys
+ * @property {Record<string, string>} chooseOneLabels
+ * @property {string[]} bonusCatalogIds
+ * @property {string[]} bonusTypedLabels
+ * @property {string[]} bondNames
+ * @property {string[]} bondRelationships
+ */
 
 /**
  * @param {Item} professionItem
  * @param {Actor} actor
- * @returns {Promise<boolean>}
+ * @param {object} [options]
+ * @param {CharacterCreationDraft} [options.draft]
+ * @returns {Promise<{ outcome: 'submitted', payload: import("../profession/commit-character-creation.js").CharacterCreationPayload, draft: CharacterCreationDraft } | null>}
  */
-export default async function showPickSkillsDialog(professionItem, actor) {
+export default async function showPickSkillsDialog(
+  professionItem,
+  actor,
+  { draft } = {},
+) {
   // eslint-disable-next-line no-use-before-define -- class defined below in this module
-  const controller = new AddProfessionDialogController(professionItem, actor);
+  const controller = new AddProfessionDialogController(professionItem, actor, {
+    draft,
+  });
   return controller.run();
-}
-
-/**
- * @param {{ sortLabel: string, rowId: string, label: string, value: number, isModified: boolean, tooltip?: string }[]} rows
- * @returns {{ rowId: string, label: string, value: number, isModified: boolean, tooltip: string }[]}
- */
-function orderSkillRowsForDisplay(rows) {
-  const sorted = [...rows].sort((a, b) =>
-    a.sortLabel.localeCompare(b.sortLabel, game.i18n.lang),
-  );
-
-  const ordered = game.settings.get("deltagreen", "sortSkills")
-    ? reorderForColumnSorting(sorted, ADD_PROFESSION_SKILL_COLUMNS)
-    : sorted;
-
-  return ordered.map(({ rowId, label, value, isModified, tooltip }) => ({
-    rowId,
-    label,
-    value,
-    isModified: Boolean(isModified),
-    tooltip: tooltip ?? "",
-  }));
 }
 
 class AddProfessionDialogController {
   /**
    * @param {Item} professionItem
    * @param {Actor} actor
+   * @param {object} [options]
+   * @param {CharacterCreationDraft} [options.draft]
    */
-  constructor(professionItem, actor) {
+  constructor(professionItem, actor, { draft } = {}) {
     this.professionItem = professionItem;
     this.actor = actor;
 
@@ -83,29 +78,33 @@ class AddProfessionDialogController {
     this.optionPicks = optionPicks;
 
     /** @type {Set<string>} */
-    this.checkedOptionKeys = new Set();
+    this.checkedOptionKeys = new Set(draft?.checkedOptionKeys ?? []);
     /** @type {Record<string, string>} */
-    this.chooseOneLabels = {};
+    this.chooseOneLabels = { ...(draft?.chooseOneLabels ?? {}) };
     /** @type {string[]} */
-    this.bonusCatalogIds = Array(BONUS_SKILL_COUNT).fill("");
+    this.bonusCatalogIds = draft?.bonusCatalogIds
+      ? [...draft.bonusCatalogIds]
+      : Array(BONUS_SKILL_COUNT).fill("");
     /** @type {string[]} */
-    this.bonusTypedLabels = Array(BONUS_SKILL_COUNT).fill("");
+    this.bonusTypedLabels = draft?.bonusTypedLabels
+      ? [...draft.bonusTypedLabels]
+      : Array(BONUS_SKILL_COUNT).fill("");
     /** @type {string[]} */
-    this.bondNames = [];
+    this.bondNames = draft?.bondNames ? [...draft.bondNames] : [];
     /** @type {string[]} */
-    this.bondRelationships = [];
+    this.bondRelationships = draft?.bondRelationships
+      ? [...draft.bondRelationships]
+      : [];
 
     /** @type {import("foundry.applications.api.DialogV2").default | null} */
     this.dialog = null;
-    this.submitted = false;
+    /** @type {{ outcome: 'submitted', payload: import("../profession/commit-character-creation.js").CharacterCreationPayload, draft: CharacterCreationDraft } | null} */
+    this.result = null;
   }
 
-  /**
-   * @returns {Promise<boolean>}
-   */
   async run() {
     const content = await this.#buildTemplate();
-    this.submitted = false;
+    this.result = null;
 
     return showDgDialog({
       modifier: "character-creation",
@@ -123,14 +122,16 @@ class AddProfessionDialogController {
           applySkillTooltipDisplayMode(root);
         }
         this.#bindListeners();
+        this.#restoreFormSelections();
         await this.#refreshUi();
       },
-      close: () => this.submitted,
+      close: () => this.result,
       buttons: [
         {
           action: "cancel",
           label: game.i18n.localize("Cancel"),
           callback: async (_event, _button, dialog) => {
+            this.result = null;
             await dialog.close();
             return false;
           },
@@ -158,6 +159,19 @@ class AddProfessionDialogController {
       bonusTypedLabels: [...this.bonusTypedLabels],
       bondNames: [...this.bondNames],
       bondRelationships: [...this.bondRelationships],
+    };
+  }
+
+  /** @returns {CharacterCreationDraft} */
+  #getDraft() {
+    const formState = this.#getFormState();
+    return {
+      checkedOptionKeys: [...formState.checkedOptionKeys],
+      chooseOneLabels: formState.chooseOneLabels,
+      bonusCatalogIds: formState.bonusCatalogIds,
+      bonusTypedLabels: formState.bonusTypedLabels,
+      bondNames: formState.bondNames,
+      bondRelationships: formState.bondRelationships,
     };
   }
 
@@ -200,52 +214,13 @@ class AddProfessionDialogController {
       .filter(Boolean);
   }
 
-  /**
-   * @param {ReturnType<computeSkillValues>} computed
-   * @returns {{ rowId: string, label: string, value: number, isModified: boolean, tooltip: string, sortLabel: string }[]}
-   */
-  #buildSkillDisplayRows(computed) {
-    const modifiedFixed = new Set(computed.modifiedFixedKeys ?? []);
-    const modifiedTyped = new Set(computed.modifiedTypedKeys ?? []);
-    const fixedRows = buildSortedFixedSkillRows(computed.fixedValues);
-    const typedRows = buildSortedTypedSkillRows(computed.typedValues);
-    return orderSkillRowsForDisplay([
-      ...fixedRows.map((r) => ({
-        rowId: r.key,
-        label: r.label,
-        value: r.value,
-        sortLabel: r.sortLabel,
-        isModified: modifiedFixed.has(r.key),
-        tooltip: buildSkillTooltip("dialog", null, {
-          kind: "fixed",
-          key: r.key,
-        }),
-      })),
-      ...typedRows.map((r) => {
-        const data = computed.typedValues[r.storageKey];
-        return {
-          rowId: r.storageKey,
-          label: r.label,
-          value: r.value,
-          sortLabel: r.sortLabel,
-          isModified: modifiedTyped.has(r.storageKey),
-          tooltip: buildSkillTooltip("dialog", null, {
-            kind: "typed",
-            group: data?.group ?? "",
-            label: r.label,
-          }),
-        };
-      }),
-    ]);
-  }
-
   async #buildTemplate() {
     const computed = this.#compute();
     const chaScore =
       this.actor.system.statistics.cha.effectiveValue ??
       this.actor.system.statistics.cha.value;
 
-    const skillRows = this.#buildSkillDisplayRows(computed);
+    const skillRows = buildSkillDisplayRows(computed);
 
     const optionRows = prepareProfessionSkillRows(
       this.optionSkills,
@@ -456,15 +431,17 @@ class AddProfessionDialogController {
         typedInput.value = this.bonusTypedLabels[i] ?? "";
       }
     }
+
+    for (let i = 0; i < this.#bondCount(); i++) {
+      const nameInput = root.querySelector(`[name="bondName-${i}"]`);
+      if (nameInput) nameInput.value = this.bondNames[i] ?? "";
+      const relInput = root.querySelector(`[name="bondRelationship-${i}"]`);
+      if (relInput) relInput.value = this.bondRelationships[i] ?? "";
+    }
   }
 
   /**
    * @param {ReturnType<computeSkillValues>} computed
-   * @returns {{
-   *   validationMessages: string[],
-   *   capWarnings: { warning: string }[],
-   *   wasteMessages: string[],
-   * }}
    */
   #getDisplayMessages(computed) {
     const wastePrefix = "bonusWaste:";
@@ -500,16 +477,6 @@ class AddProfessionDialogController {
     const { validationMessages, capWarnings, wasteMessages } =
       this.#getDisplayMessages(computed);
 
-    const toErrorHtml = (messages) =>
-      messages
-        .map(
-          (message) =>
-            `<p class="dg-dialog__message--error">${foundry.utils.escapeHTML(
-              message,
-            )}</p>`,
-        )
-        .join("");
-
     const capHtml = capWarnings
       .map(
         (w) =>
@@ -520,17 +487,10 @@ class AddProfessionDialogController {
       .join("");
 
     return (
-      toErrorHtml(validationMessages) + capHtml + toErrorHtml(wasteMessages)
+      renderValidationMessagesHtml(validationMessages) +
+      capHtml +
+      renderValidationMessagesHtml(wasteMessages)
     );
-  }
-
-  /**
-   * @param {string} tooltip
-   * @returns {string}
-   */
-  #tooltipAttr(tooltip) {
-    if (!tooltip) return "";
-    return ` data-tooltip="${foundry.utils.escapeHTML(tooltip)}"`;
   }
 
   async #refreshUi() {
@@ -540,27 +500,12 @@ class AddProfessionDialogController {
     this.#syncFormStateFromDom();
 
     const computed = this.#compute();
+    const rows = buildSkillDisplayRows(computed);
 
-    const rows = this.#buildSkillDisplayRows(computed);
-
-    const body = root.querySelector("[data-profession-skills-body]");
-    if (body) {
-      body.innerHTML = rows
-        .map((r) => {
-          const modifiedClass = r.isModified ? " is-modified" : "";
-          return `<div class="dg-dialog__skill-entry${modifiedClass}" data-skill-row="${foundry.utils.escapeHTML(
-            r.rowId,
-          )}"><span class="dg-dialog__skill-label"${this.#tooltipAttr(
-            r.tooltip,
-          )}>${foundry.utils.escapeHTML(
-            r.label,
-          )}</span><span class="dg-dialog__skill-value" data-skill-value>${
-            r.value
-          }%</span></div>`;
-        })
-        .join("");
-      applySkillTooltipDisplayMode(body);
-    }
+    updateSkillGridBody(
+      root.querySelector("[data-profession-skills-body]"),
+      rows,
+    );
 
     const messagesEl = root.querySelector("[data-profession-messages]");
     if (messagesEl) {
@@ -571,8 +516,6 @@ class AddProfessionDialogController {
       'button[data-action="submit"]',
     );
     if (submitBtn) submitBtn.disabled = !computed.isValid;
-
-    this.#restoreFormSelections();
   }
 
   async #onSubmit() {
@@ -580,51 +523,15 @@ class AddProfessionDialogController {
     const computed = this.#compute();
     if (!computed.isValid) return;
 
-    const updateData = {};
-    for (const [key, value] of Object.entries(computed.fixedValues)) {
-      updateData[`system.skills.${key}.proficiency`] = value;
-      updateData[`system.skills.${key}.failure`] = false;
-    }
-
-    const typedSkills = { ...(this.actor.system.typedSkills ?? {}) };
-    for (const [, data] of Object.entries(computed.typedValues)) {
-      const id = foundry.utils.randomID();
-      typedSkills[id] = {
-        label: data.label,
-        group: data.group,
-        proficiency: data.value,
-        failure: false,
-      };
-    }
-    updateData["system.typedSkills"] = typedSkills;
-
-    updateData["system.biography.profession"] = this.professionItem.name;
-
-    await this.actor.update(updateData);
-
-    const chaScore =
-      this.actor.system.statistics.cha.effectiveValue ??
-      this.actor.system.statistics.cha.value;
-    const bondCount = this.#bondCount();
-    const bondDocs = [];
-
-    for (let i = 0; i < bondCount; i++) {
-      const name = this.bondNames[i]?.trim() ?? "";
-      const relationship = this.bondRelationships[i]?.trim() ?? "";
-
-      bondDocs.push({
-        name,
-        type: "bond",
-        system: {
-          score: chaScore,
-          relationship,
-        },
-      });
-    }
-
-    await this.actor.createEmbeddedDocuments("Item", bondDocs);
-
-    this.submitted = true;
+    const draft = this.#getDraft();
+    this.result = {
+      outcome: "submitted",
+      payload: buildCharacterCreationPayload(computed, this.professionItem, {
+        bondNames: this.bondNames,
+        bondRelationships: this.bondRelationships,
+      }),
+      draft,
+    };
     await this.dialog?.close();
   }
 }

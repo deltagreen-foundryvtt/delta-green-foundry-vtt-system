@@ -1,0 +1,80 @@
+<div class="dg-dialog dg-dialog--hard-experience dg-dialog--character-creation">
+    <div class="dg-dialog__layout dg-dialog__layout--two-column">
+        <div class="dg-dialog__column dg-dialog__column--left">
+            <div class="character-creation-skill-totals">
+                <header class="character-creation-skill-totals-header">
+                    <h3 class="dg-dialog__heading">{{localize "DG.Profession.Dialog.SkillTotalsHeader"}}</h3>
+                    <p class="dg-dialog__intro">{{localize "DG.Profession.Dialog.SkillTotalsHint"}}</p>
+                </header>
+                <section class="character-creation-skills-section">
+                    <div class="character-creation-skills-columns-header">
+                        <div class="character-creation-skill-col-header">
+                            <span>{{localize "DG.Profession.Dialog.Skill"}}</span>
+                            <span>{{localize "DG.Profession.Dialog.Value"}}</span>
+                        </div>
+                        <div class="character-creation-skill-col-header">
+                            <span>{{localize "DG.Profession.Dialog.Skill"}}</span>
+                            <span>{{localize "DG.Profession.Dialog.Value"}}</span>
+                        </div>
+                    </div>
+                    <div class="character-creation-skills-grid" data-hard-experience-skills-body>
+                        {{#each skillRows}}
+                            <div class="dg-dialog__skill-entry{{#if isModified}} is-modified{{/if}}"
+                                 data-skill-row="{{rowId}}">
+                                <span class="dg-dialog__skill-label"
+                                      {{#if tooltip}}data-tooltip="{{tooltip}}"{{/if}}>{{label}}</span>
+                                <span class="dg-dialog__skill-value" data-skill-value>{{value}}%</span>
+                            </div>
+                        {{/each}}
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <div class="dg-dialog__column dg-dialog__column--right">
+            <section class="hard-experience-bonus-section">
+                <p class="dg-dialog__intro character-creation-bonus-intro">{{localize "DG.HardExperience.Dialog.BonusIntro"}}</p>
+                <div class="character-creation-bonus-grid">
+                    {{#each bonusSlots}}
+                        <div class="character-creation-bonus-slot" data-bonus-index="{{index}}">
+                            <select name="bonusSkill-{{index}}" data-bonus-index="{{index}}">
+                                <option value="">{{localize "DG.Profession.Dialog.SelectSkill"}}</option>
+                                {{#each ../catalog}}
+                                    <option value="{{id}}">{{label}}</option>
+                                {{/each}}
+                            </select>
+                            <input type="text"
+                                   class="bonus-typed-label hidden"
+                                   name="bonusTypedLabel-{{index}}"
+                                   data-bonus-typed-index="{{index}}"
+                                   placeholder="{{localize 'DG.Profession.Dialog.SkillTypePlaceholder'}}" />
+                        </div>
+                    {{/each}}
+                </div>
+            </section>
+
+            <section class="hard-experience-bond-removal">
+                <h3 class="dg-dialog__heading character-creation-section-heading">{{localize "DG.HardExperience.Dialog.BondRemovalHeader"}}</h3>
+                <p class="dg-dialog__intro">{{localize "DG.HardExperience.Dialog.BondRemovalIntro"}}</p>
+                <fieldset class="hard-experience-bond-options">
+                    {{#each bondRows}}
+                        <label class="checkbox hard-experience-bond-option">
+                            <input type="radio"
+                                   name="removedBondIndex"
+                                   value="{{index}}"
+                                   {{#if checked}}checked{{/if}}
+                                   {{#if @first}}required{{/if}} />
+                            <span>{{name}}{{#if relationship}} — {{relationship}}{{/if}}</span>
+                        </label>
+                    {{/each}}
+                </fieldset>
+            </section>
+
+            <div class="dg-dialog__messages" data-hard-experience-messages>
+                {{#each validationMessages}}
+                    <p class="dg-dialog__message--error">{{this}}</p>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+</div>
