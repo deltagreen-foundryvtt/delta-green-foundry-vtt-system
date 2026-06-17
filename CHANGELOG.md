@@ -24,6 +24,7 @@
 
 - [#392](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/392) - Fixed sheet rolls
 - [#394](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/394) - Unified actor and item description fields on schema with shared ProseMirror preparation
+- [#396](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/396) - Fixed typed skill dialog when editing existing skill
 
 ### **Under the Hood:**
 
