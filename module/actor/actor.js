@@ -314,14 +314,14 @@ export default class DeltaGreenActor extends Actor {
     try {
       let alreadyAdded = false;
 
-      for (const item of this.items) {
-        const flag = await item.getFlag("deltagreen", "SystemName");
+      const flags = await Promise.all(
+        this.items.map((item) => item.getFlag("deltagreen", "SystemName")),
+      );
 
-        if (flag === "unarmed-attack" || item.name === "Unarmed Attack") {
-          alreadyAdded = true;
-          break;
-        }
-      }
+      alreadyAdded = this.items.some(
+        (item, index) =>
+          flags[index] === "unarmed-attack" || item.name === "Unarmed Attack",
+      );
 
       if (alreadyAdded === true) {
         return;
@@ -333,23 +333,27 @@ export default class DeltaGreenActor extends Actor {
       const itemIndex = await handToHandPack.getIndex();
       const toAdd = []; // createEmbeddedDocument expects an array
 
-      for (const idx of itemIndex) {
-        const _temp = await handToHandPack.getDocument(idx._id);
+      const documents = await Promise.all(
+        itemIndex.map((idx) => handToHandPack.getDocument(idx._id)),
+      );
 
-        if (_temp.name === "Unarmed Attack") {
-          toAdd.push(_temp);
+      for (const doc of documents) {
+        if (doc.name === "Unarmed Attack") {
+          toAdd.push(doc);
         }
       }
 
       const newItems = await this.createEmbeddedDocuments("Item", toAdd);
 
-      for (const item of newItems) {
-        await item.setFlag("deltagreen", "AutoAdded", true);
+      await Promise.all(
+        newItems.map(async (item) => {
+          await item.setFlag("deltagreen", "AutoAdded", true);
 
-        if (item.name === "Unarmed Attack") {
-          await item.setFlag("deltagreen", "SystemName", "unarmed-attack");
-        }
-      }
+          if (item.name === "Unarmed Attack") {
+            await item.setFlag("deltagreen", "SystemName", "unarmed-attack");
+          }
+        }),
+      );
     } catch (ex) {
       console.log("Error adding unarmed strike item to Actor.");
       console.log(ex);
@@ -382,9 +386,9 @@ export default class DeltaGreenActor extends Actor {
         // create the item on the actor
         const newItems = await this.createEmbeddedDocuments("Item", toAdd);
 
-        for (const item of newItems) {
-          await item.setFlag("deltagreen", "AutoAdded", true);
-        }
+        await Promise.all(
+          newItems.map((item) => item.setFlag("deltagreen", "AutoAdded", true)),
+        );
       }
     } catch (ex) {
       console.log(ex);

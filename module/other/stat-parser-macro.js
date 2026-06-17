@@ -613,24 +613,26 @@ async function RegexParseNpcStatBlock(inputStr, actorType) {
   }
 
   if (attacks !== null && attacks.length > 0) {
-    for (const a of attacks) {
-      await newActors[0].AddWeaponItemToSheet(
-        a.name,
-        a.description,
-        a.damage,
-        a.skill,
-        a.skillModifier,
-        a.customSkillTarget,
-        a.armorPiercing,
-        a.lethality,
-        a.isLethal,
-        a.range,
-        a.killRadius,
-        a.ammo,
-        a.expense,
-        a.equipped,
-      );
-    }
+    await Promise.all(
+      attacks.map((a) =>
+        newActors[0].AddWeaponItemToSheet(
+          a.name,
+          a.description,
+          a.damage,
+          a.skill,
+          a.skillModifier,
+          a.customSkillTarget,
+          a.armorPiercing,
+          a.lethality,
+          a.isLethal,
+          a.range,
+          a.killRadius,
+          a.ammo,
+          a.expense,
+          a.equipped,
+        ),
+      ),
+    );
   }
 
   newActors[0].sheet.render(true);
