@@ -1005,9 +1005,21 @@
       border-radius: 2.5px;
       background-color: rgba(0, 0, 0, 0.185);
       font-weight: bold;
+      color: var(--dg-ink);
+
+      &:hover,
+      &:focus-visible {
+        color: var(--color-text-dark-header, #406539);
+        text-decoration: underline;
+      }
+
+      &:visited {
+        color: var(--dg-ink);
+      }
 
       i {
         flex: 0 0 auto;
+        color: inherit;
       }
 
       span {

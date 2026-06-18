@@ -191,16 +191,42 @@ div .exhausted-section {
   margin-bottom: 1rem;
 }
 
-.tab.about .dg-about-links a {
+.deltagreen .tab.about .dg-about-links a {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   width: fit-content;
   max-width: 100%;
+  color: var(--dg-ink);
+
+  &:hover,
+  &:focus-visible {
+    color: var(--color-text-dark-header, #406539);
+    text-decoration: underline;
+  }
+
+  &:visited {
+    color: var(--dg-ink);
+  }
 }
 
-.tab.about .dg-about-links a i {
+.deltagreen .tab.about .dg-about-links a i {
   flex: 0 0 auto;
+  color: inherit;
+}
+
+.deltagreen .tab.about .dg-about-legal a {
+  color: var(--dg-ink);
+
+  &:hover,
+  &:focus-visible {
+    color: var(--color-text-dark-header, #406539);
+    text-decoration: underline;
+  }
+
+  &:visited {
+    color: var(--dg-ink);
+  }
 }
 
 .tab.about .dg-about-links a span {
