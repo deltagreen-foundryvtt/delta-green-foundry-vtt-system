@@ -21,8 +21,8 @@
                 {{localize 'DG.Gear.Name'}}
                 <a data-action="browsePack" data-pack-type="weapon"><i class="fas fa-search"></i></a>
             </span>
-            <span class="centered-item-property">{{localize 'DG.Gear.DamageOrLethality'}}</span>
-            <span class="centered-item-property">{{localize 'DG.Gear.ArmorPiercing'}}</span>
+            <span class="centered-item-property weapons-col-damage">{{localize 'DG.Gear.DamageOrLethality'}}</span>
+            <span class="centered-item-property weapons-col-armor-piercing">{{localize 'DG.Gear.ArmorPiercing'}}</span>
             <div class="item-controls">
                 <a class="item-control action-pill"
                    data-action="itemAction"
@@ -48,65 +48,60 @@
                                 data-rolltype="weapon"
                                 data-key="{{item.system.skill}}"
                                 title="{{localize 'DG.Tooltip.SkillLabel'}} ({{localizeWeaponSkill item.system.skill}})">
-                            <i class="fas fa-dice" inert></i>
+                            <i class="fas fa-dice" aria-hidden="true"></i>
                         </button>
                     </span>
                 </div>
 
-                <span class="centered-item-property">
-                    {{#if item.system.lethality }}
-                        {{#if item.system.isLethal }}
-                            <a class="item-control dg-red"
-                               data-action="toggle"
-                               data-prop="system.isLethal"
-                               data-item-id="{{item._id}}"
-                               title="Toggle Lethality (Current Lethality: {{item.system.lethality}}%)">
-                                <i class="fas fa-skull-crossbones"></i>
-                            </a>
+                {{#if (hasWeaponDamageAndLethality item)}}
+                <span class="centered-item-property weapons-col-damage rollable"
+                      data-action="roll"
+                      data-rolltype="damage-or-lethality"
+                      data-iid="{{item._id}}"
+                      title="{{localize 'DG.Gear.DamageOrLethality'}}">
+                    {{toUpperCase item.system.damage}}
+                    {{#if_eq item.system.skill 'unarmed_combat' }}
+                        {{actor.system.statistics.str.meleeDamageBonusFormula}}
+                    {{/if_eq}}
+                    {{#if_eq item.system.skill 'melee_weapons' }}
+                        {{actor.system.statistics.str.meleeDamageBonusFormula}}
+                    {{/if_eq}}
+                    / {{item.system.lethality}}%
+                    <i class="fas fa-dice" aria-hidden="true"></i>
+                </span>
+                {{else}}
+                    {{#if (hasWeaponDamage item.system.damage)}}
+                <span class="centered-item-property weapons-col-damage rollable"
+                      data-action="roll"
+                      data-rolltype="damage"
+                      data-iid="{{item._id}}"
+                      title="{{localize 'DG.Gear.DamageOrLethality'}}">
+                    {{toUpperCase item.system.damage}}
+                    {{#if_eq item.system.skill 'unarmed_combat' }}
+                        {{actor.system.statistics.str.meleeDamageBonusFormula}}
+                    {{/if_eq}}
+                    {{#if_eq item.system.skill 'melee_weapons' }}
+                        {{actor.system.statistics.str.meleeDamageBonusFormula}}
+                    {{/if_eq}}
+                    <i class="fas fa-dice" aria-hidden="true"></i>
+                </span>
+                    {{else}}
+                        {{#if (hasWeaponLethality item.system.lethality)}}
+                <span class="centered-item-property weapons-col-damage rollable"
+                      data-action="roll"
+                      data-rolltype="lethality"
+                      data-iid="{{item._id}}"
+                      title="{{localize 'DG.ItemWindow.Weapons.LethalityTooltip'}}">
+                    {{item.system.lethality}}%
+                    <i class="fas fa-dice" aria-hidden="true"></i>
+                </span>
                         {{else}}
-                            <a class="item-control"
-                               data-action="toggle"
-                               data-prop="system.isLethal"
-                               data-item-id="{{item._id}}"
-                               title="Toggle Lethality (Currently No Lethality)">
-                                <i class="fas fa-user-injured"></i>
-                            </a>
+                <span class="centered-item-property weapons-col-damage"></span>
                         {{/if}}
                     {{/if}}
+                {{/if}}
 
-                    {{#unless item.system.isLethal}}
-                        <button type="button"
-                                class="rollable inline-roll"
-                                data-action="roll"
-                                data-rolltype="damage"
-                                data-iid="{{item._id}}"
-                                title="{{localize 'DG.Gear.DamageOrLethality'}}">
-                            {{toUpperCase item.system.damage}}
-                            {{#if_eq item.system.skill 'unarmed_combat' }}
-                                {{actor.system.statistics.str.meleeDamageBonusFormula}}
-                            {{/if_eq}}
-                            {{#if_eq item.system.skill 'melee_weapons' }}
-                                {{actor.system.statistics.str.meleeDamageBonusFormula}}
-                            {{/if_eq}}
-                            <i class="fas fa-dice" inert></i>
-                        </button>
-                    {{/unless}}
-
-                    {{#if item.system.isLethal }}
-                        <button type="button"
-                                class="rollable inline-roll"
-                                data-action="roll"
-                                data-rolltype="lethality"
-                                data-iid="{{item._id}}"
-                                title="{{localize 'DG.ItemWindow.Weapons.LethalityTooltip'}}">
-                            {{item.system.lethality}}%
-                            <i class="fas fa-dice" inert></i>
-                        </button>
-                    {{/if}}
-
-                </span>
-
-                <span class="centered-item-property">{{item.system.armorPiercing}}</span>
+                <span class="centered-item-property weapons-col-armor-piercing">{{item.system.armorPiercing}}</span>
 
                 <div class="item-controls">
                     <a class="item-control"
