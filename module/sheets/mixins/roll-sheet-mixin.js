@@ -36,8 +36,14 @@ export default function RollSheetMixin(Base) {
      * @private
      */
     static async _onRoll(event, target) {
-      if (target.classList.contains("not-rollable") || event.which === 2)
+      if (event.which === 2) return;
+
+      if (target.classList.contains("not-rollable")) {
+        if (target.dataset.rolltype === "stat") {
+          ui.notifications.warn("DG.Roll.CannotRollStat", { localize: true });
+        }
         return;
+      }
 
       const item = this.actor.items.get(target.dataset.iid);
       const roll = createDGRollFromDataset(target.dataset, {
