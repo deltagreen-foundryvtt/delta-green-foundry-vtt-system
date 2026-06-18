@@ -256,6 +256,20 @@ export class DGPercentileRoll extends DGRoll {
   }
 
   /**
+   * i18n key for a user-facing warning when this roll must not be made, or null if allowed.
+   * @returns {string|null}
+   */
+  get blockedRollMessage() {
+    if (this.type !== "stat") return null;
+
+    const x5 = Number(this.target);
+    if (!Number.isFinite(x5) || x5 < 1) {
+      return "DG.Roll.CannotRollStat";
+    }
+    return null;
+  }
+
+  /**
    * Create label based on result of roll
    *
    * todo: do we want make isInhuman more similar to base label?
@@ -392,7 +406,7 @@ export class DGPercentileRoll extends DGRoll {
 
     const { rollTargetModifier } = this;
 
-    if (!this.target || Number.isNaN(this.target)) {
+    if (this.target == null || Number.isNaN(this.target)) {
       return null;
     }
 

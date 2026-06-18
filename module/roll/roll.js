@@ -100,6 +100,11 @@ export async function processDGRoll(event, roll) {
   const shiftKey = event?.shiftKey ?? false;
   const which = event?.which ?? 0;
 
+  if (roll instanceof DGPercentileRoll && roll.blockedRollMessage) {
+    ui.notifications.warn(roll.blockedRollMessage, { localize: true });
+    return;
+  }
+
   if (shiftKey || which === 3) {
     if (!(roll instanceof DGSanityDamageRoll)) {
       const dialogData = await roll.showDialog();

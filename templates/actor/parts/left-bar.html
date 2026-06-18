@@ -25,7 +25,7 @@
             <div class="flex-group-center flex-mid-border">
                 <div>
                     <div class="physical-stats-outer-grid-3col agent-left-bar-stat-grid">
-                        <label class="rollable resource-label"
+                        <label class="{{if_gt statistic.x5 0 'rollable' 'not-rollable'}} resource-label"
                                data-action="roll"
                                data-rolltype="stat"
                                data-key="{{key}}"

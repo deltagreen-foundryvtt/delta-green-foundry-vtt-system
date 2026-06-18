@@ -168,6 +168,7 @@
   "DG.Roll.For": "For",
   "DG.Roll.Damage": "Damage",
   "DG.Roll.Roll": "Roll",
+  "DG.Roll.CannotRollStat": "A statistic of 0 cannot be rolled.",
   "DG.Physical.Wounds": "Wounds",
   "DG.Physical.FirstAidLabel": "First Aid Has Already Been Attempted: ",
   "DG.Physical.ExhaustionPenalty": "Penalty:",
