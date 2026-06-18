@@ -1,4 +1,5 @@
 import { getDGRollToken } from "../../chat/dg-chat-card.js";
+import { showDamageOrLethalityChoiceDialog } from "../../roll/roll-dialogs.js";
 import { createDGRollFromDataset, processDGRoll } from "../../roll/roll.js";
 
 /** @param {typeof foundry.applications.api.ApplicationV2} Base */
@@ -36,11 +37,27 @@ export default function RollSheetMixin(Base) {
      * @private
      */
     static async _onRoll(event, target) {
-      if (target.classList.contains("not-rollable") || event.which === 2)
+      if (event.which === 2) return;
+
+      if (target.classList.contains("not-rollable")) {
+        if (target.dataset.rolltype === "stat") {
+          ui.notifications.warn("DG.Roll.CannotRollStat", { localize: true });
+        }
         return;
+      }
 
       const item = this.actor.items.get(target.dataset.iid);
-      const roll = createDGRollFromDataset(target.dataset, {
+      const rollDataset = { ...target.dataset };
+
+      if (rollDataset.rolltype === "damage-or-lethality") {
+        const choice = await showDamageOrLethalityChoiceDialog({
+          itemName: item?.name ?? "",
+        });
+        if (!choice) return;
+        rollDataset.rolltype = choice;
+      }
+
+      const roll = createDGRollFromDataset(rollDataset, {
         actor: this.actor,
         item,
         element: target,

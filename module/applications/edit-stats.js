@@ -1,4 +1,5 @@
 import DG, { BASE_TEMPLATE_PATH } from "../config/index.js";
+import { applyDialogTheme } from "./dg-dialog.js";
 
 export default class ActorEditStatForm extends foundry.applications.api.HandlebarsApplicationMixin(
   foundry.applications.api.ApplicationV2,
@@ -11,9 +12,13 @@ export default class ActorEditStatForm extends foundry.applications.api.Handleba
   /** @override */
   static DEFAULT_OPTIONS = {
     tag: "form",
-    classes: [DG.ID, "edit-stat-form"],
-    window: { title: "Edit statistics form", resizable: true },
-    position: { width: 400, height: 200 },
+    classes: [DG.ID, "edit-stat-form", "dg-dialog-app"],
+    window: {
+      title: "DG.EditStats.Title",
+      resizable: true,
+      contentClasses: ["standard-form"],
+    },
+    position: { width: 600, height: "auto" },
     actions: {},
     form: {
       handler: this.formHandler,
@@ -29,10 +34,17 @@ export default class ActorEditStatForm extends foundry.applications.api.Handleba
   });
 
   /** @override */
+  async _onRender(context, options) {
+    await super._onRender(context, options);
+    applyDialogTheme(this);
+  }
+
+  /** @override */
   async _prepareContext(options) {
     return {
       ...(await super._prepareContext(options)),
       actor: this.actor,
+      statKeys: DG.statistics,
       sourceStatistics:
         this.actor._source?.system?.statistics ?? this.actor.system.statistics,
     };

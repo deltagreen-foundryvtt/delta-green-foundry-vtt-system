@@ -7,6 +7,8 @@ const PERCENTILE_ROLL_DIALOG_TEMPLATE =
   "systems/deltagreen/templates/dialog/modify-percentile-roll.html";
 const DAMAGE_ROLL_DIALOG_TEMPLATE =
   "systems/deltagreen/templates/dialog/modify-damage-roll.html";
+const DAMAGE_OR_LETHALITY_ROLL_DIALOG_TEMPLATE =
+  "systems/deltagreen/templates/dialog/damage-or-lethality-roll.html";
 
 const QUICK_MODIFIER_PRESETS = [
   {
@@ -211,6 +213,44 @@ export async function showDamageRollModifyDialog({ itemName, formula }) {
 
           return { newFormula, messageMode };
         },
+      },
+    ],
+  });
+}
+
+/**
+ * @param {object} options
+ * @param {string} options.itemName
+ * @returns {Promise<"damage"|"lethality"|void>}
+ */
+export async function showDamageOrLethalityChoiceDialog({ itemName }) {
+  const content = await renderTemplate(
+    DAMAGE_OR_LETHALITY_ROLL_DIALOG_TEMPLATE,
+    {
+      itemName,
+    },
+  );
+
+  return showDgDialog({
+    modifier: "damage-or-lethality",
+    content,
+    window: {
+      title: game.i18n.localize("DG.DamageOrLethalityRoll.Title"),
+    },
+    close: () => null,
+    buttons: [
+      {
+        default: true,
+        label: game.i18n.localize("DG.DamageOrLethalityRoll.RollDamage"),
+        action: "damage",
+        icon: "fas fa-dice",
+        callback: () => "damage",
+      },
+      {
+        label: game.i18n.localize("DG.DamageOrLethalityRoll.RollLethality"),
+        action: "lethality",
+        icon: "fas fa-skull-crossbones",
+        callback: () => "lethality",
       },
     ],
   });

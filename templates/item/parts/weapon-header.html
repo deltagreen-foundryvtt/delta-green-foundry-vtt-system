@@ -63,17 +63,13 @@
     <span class="resource-label">{{localize 'DG.ItemWindow.Weapons.SkillModifier'}}:</span>
     <input type="text" name="system.skillModifier" value="{{item.system.skillModifier}}" data-dtype="Number"/>
 
-    {{#unless item.system.isLethal}}
-      <span class="resource-label">{{localize 'DG.ItemWindow.Weapons.Damage'}}:</span>
-      <input type="text" name="system.damage" value="{{item.system.damage}}" data-dtype="String"/>
-    {{/unless}}
+    <span class="resource-label">{{localize 'DG.ItemWindow.Weapons.Damage'}}:</span>
+    <input type="text" name="system.damage" value="{{item.system.damage}}" data-dtype="String"/>
 
-    {{#if item.system.isLethal}}
-      <span class="resource-label">{{localize 'DG.ItemWindow.Weapons.Lethality'}} %:</span>
-      <input type="text" name="system.lethality" value="{{item.system.lethality}}" data-dtype="Number"
-        title="{{localize 'DG.ItemWindow.Weapons.LethalityTooltip'}}"
-      />
-    {{/if}}
+    <span class="resource-label">{{localize 'DG.ItemWindow.Weapons.Lethality'}} %:</span>
+    <input type="text" name="system.lethality" value="{{item.system.lethality}}" data-dtype="Number"
+      title="{{localize 'DG.ItemWindow.Weapons.LethalityTooltip'}}"
+    />
 
     <span class="resource-label">{{localize 'DG.ItemWindow.Weapons.Ammo'}}:</span>
     <input type="text" name="system.ammo" value="{{item.system.ammo}}" data-dtype="String"/>

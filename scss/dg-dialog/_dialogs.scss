@@ -814,9 +814,15 @@
   line-height: 1.4;
 }
 
-.dg-dialog--damaged-veterans label.checkbox.damaged-veterans-option > input[type="radio"],
-.dg-dialog--things-disorder label.checkbox.things-disorder-option > input[type="radio"],
-.dg-dialog--hard-experience label.checkbox.hard-experience-bond-option > input[type="radio"] {
+.dg-dialog--damaged-veterans
+  label.checkbox.damaged-veterans-option
+  > input[type="radio"],
+.dg-dialog--things-disorder
+  label.checkbox.things-disorder-option
+  > input[type="radio"],
+.dg-dialog--hard-experience
+  label.checkbox.hard-experience-bond-option
+  > input[type="radio"] {
   margin-top: 0.15rem;
 }
 
@@ -847,9 +853,7 @@
   overflow: hidden;
 }
 
-.dg-dialog-app.dg-dialog-app--hard-experience
-  .dialog-form
-  > .dialog-content {
+.dg-dialog-app.dg-dialog-app--hard-experience .dialog-form > .dialog-content {
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
@@ -880,4 +884,47 @@
   margin: 0;
   padding: 0;
   border: 0;
+}
+
+/* Edit statistics */
+.dg-dialog--edit-stats .edit-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem 0.5rem;
+}
+
+.dg-dialog--edit-stats .edit-stats-stat-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.dg-dialog--edit-stats .edit-stats-value-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  align-items: stretch;
+}
+
+.dg-dialog--edit-stats .edit-stats-value-row input {
+  width: 100%;
+  text-align: center;
+}
+
+.dg-dialog--edit-stats .edit-stats-feature-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.dg-dialog--edit-stats .edit-stats-feature-row textarea {
+  width: 100%;
+  min-height: 2.5rem;
+  resize: vertical;
+}
+
+/* Damage or lethality roll choice */
+.dg-dialog--damage-or-lethality .damage-or-lethality-weapon {
+  margin: 0.5rem 0 0;
 }
