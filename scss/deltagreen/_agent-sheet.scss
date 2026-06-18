@@ -1,6 +1,7 @@
 .agent-sheet {
   --dg-agent-section-gap: 8px;
   --dg-agent-list-row-border: 1px solid rgba(33, 33, 33, 0.25);
+  --weapons-col-damage-trail: 60px;
 
   .window-content {
     display: grid;
@@ -794,10 +795,42 @@
   .tab.combat .items-list .item:not(.item-header) {
     display: grid;
     grid-template-columns:
-      24px minmax(0, 1fr) minmax(4rem, auto) minmax(3rem, auto)
+      24px minmax(0, 1fr)
+      minmax(0, calc(4.25rem + var(--weapons-col-damage-trail)))
+      minmax(0, 3.5rem)
       86px;
     align-items: center;
-    column-gap: 5px;
+    column-gap: 10px;
+  }
+
+  .tab.combat .items-list .weapons-col-damage,
+  .tab.combat .items-list .weapons-col-armor-piercing {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 0;
+    text-align: center;
+    white-space: normal;
+    line-height: 1.2;
+    overflow-wrap: break-word;
+    box-sizing: border-box;
+  }
+
+  .tab.combat .items-list .weapons-col-damage {
+    padding: 0 calc(2px + var(--weapons-col-damage-trail)) 0 2px;
+  }
+
+  .tab.combat .items-list .weapons-col-armor-piercing {
+    padding: 0 2px;
+  }
+
+  .tab.combat .items-list .weapons-col-damage[data-action="roll"],
+  .tab.gear .items-list .weapons-col-damage[data-action="roll"] {
+    cursor: pointer;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    overflow-wrap: normal;
+    gap: 0.15em;
   }
 
   .tab.combat .items-list .item:not(.item-header) > .flexrow {
@@ -840,8 +873,35 @@
     margin-top: var(--dg-agent-section-gap);
   }
 
-  .tab.gear .items-list .centered-item-property {
-    flex: 0 0 auto;
+  .tab.gear .items-list .weapons-col-damage {
+    flex: 0 0 calc(4.25rem + var(--weapons-col-damage-trail));
+    max-width: calc(4.25rem + var(--weapons-col-damage-trail));
+  }
+
+  .tab.gear .items-list .weapons-col-armor-piercing {
+    flex: 0 0 3.5rem;
+    max-width: 3.5rem;
+  }
+
+  .tab.gear .items-list .weapons-col-damage,
+  .tab.gear .items-list .weapons-col-armor-piercing {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 0;
+    text-align: center;
+    white-space: normal;
+    line-height: 1.2;
+    overflow-wrap: break-word;
+    box-sizing: border-box;
+  }
+
+  .tab.gear .items-list .weapons-col-damage {
+    padding: 0 calc(2px + var(--weapons-col-damage-trail)) 0 2px;
+  }
+
+  .tab.gear .items-list .weapons-col-armor-piercing {
+    padding: 0 2px;
   }
 
   /* Personal tab */

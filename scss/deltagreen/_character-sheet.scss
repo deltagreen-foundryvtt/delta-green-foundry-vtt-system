@@ -205,6 +205,23 @@
   }
 }
 
+.deltagreen[id^="dg-settings"] section.window-content {
+  color: var(--color-text-primary);
+
+  .form-group > label {
+    color: var(--color-form-label);
+  }
+
+  .hint {
+    color: var(--color-form-hint);
+  }
+
+  input[type="checkbox"]:checked::before,
+  input[type="radio"]:checked::before {
+    color: var(--color-text-primary);
+  }
+}
+
 a.btn-tiny {
   height: 26px;
   margin-left: 5px;

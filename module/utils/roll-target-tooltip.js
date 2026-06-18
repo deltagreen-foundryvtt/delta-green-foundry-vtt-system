@@ -178,6 +178,22 @@ export function appendRollTargetTooltipSection(
 }
 
 /**
+ * @param {string} existingTooltip
+ * @param {string} [feature]
+ * @returns {string}
+ */
+export function appendDistinguishingFeatureSection(existingTooltip, feature) {
+  const trimmed = String(feature ?? "").trim();
+  if (!trimmed) return existingTooltip;
+
+  const label = game.i18n.localize("DG.EditStats.DistinguishingFeature");
+  const escaped = foundry.utils.escapeHTML(trimmed);
+  const section = `<br><br>${foundry.utils.escapeHTML(label)}: ${escaped}`;
+  if (!existingTooltip) return section;
+  return `${existingTooltip}${section}`;
+}
+
+/**
  * Stat and sanity roll-target tooltips for the agent sheet left bar (not skills).
  *
  * @param {Actor} actor
@@ -191,8 +207,12 @@ export function prepareAgentStatSanityTooltips(actor) {
   for (const [key, stat] of Object.entries(system.statistics ?? {})) {
     const base = Number(stat.x5) || 0;
     const existing = game.i18n.localize(`DG.Attributes.Tooltip.${key}`);
-    stat.tooltip = appendRollTargetTooltipSection(
+    const withFeature = appendDistinguishingFeatureSection(
       existing,
+      stat.distinguishing_feature,
+    );
+    stat.tooltip = appendRollTargetTooltipSection(
+      withFeature,
       actor,
       "system.rollTarget.statistics",
       base,

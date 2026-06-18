@@ -122,4 +122,24 @@ export default function registerHandlebarsHelpers() {
 
     return result;
   });
+
+  Handlebars.registerHelper("hasWeaponDamage", (damage) => {
+    const trimmed = String(damage ?? "").trim();
+    return trimmed !== "" && trimmed !== "0";
+  });
+
+  Handlebars.registerHelper("hasWeaponLethality", (lethality) => {
+    const value = Number(lethality);
+    return Number.isFinite(value) && value > 0;
+  });
+
+  Handlebars.registerHelper("hasWeaponDamageAndLethality", (item) => {
+    const damage = item?.system?.damage;
+    const lethality = item?.system?.lethality;
+    const trimmed = String(damage ?? "").trim();
+    const hasDamage = trimmed !== "" && trimmed !== "0";
+    const hasLethality =
+      Number.isFinite(Number(lethality)) && Number(lethality) > 0;
+    return hasDamage && hasLethality;
+  });
 }

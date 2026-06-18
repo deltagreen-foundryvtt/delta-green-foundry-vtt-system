@@ -69,7 +69,9 @@
 }
 
 button.rollable.inline-roll {
-  display: inline;
+  display: inline-block;
+  width: max-content;
+  max-width: 100%;
   margin: 0;
   padding: 0;
   border: none;
@@ -78,6 +80,8 @@ button.rollable.inline-roll {
   color: var(--dg-ink);
   line-height: inherit;
   vertical-align: baseline;
+  text-align: inherit;
+  box-sizing: border-box;
 
   > i {
     color: inherit;
