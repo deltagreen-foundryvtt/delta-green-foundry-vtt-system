@@ -3,31 +3,32 @@
      data-tab="about">
     <div class="about-section-header"></div>
 
-    <div class="flex horizontal-flex-column">
-        <div>
-            <a class="fas fa-question-circle"
-               title="{{localize 'DG.About.OnlineHelpTooltip'}}"
-               href="https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/blob/master/documentation/home.md">
-                {{localize 'DG.About.OnlineHelp'}}
-            </a>
-        </div>
-        <div>
-            <a class="fas fa-bug"
-               title="{{localize 'DG.About.OnlineBugTrackerTooltip'}}"
-               href="https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues">
-                {{localize 'DG.About.OnlineBugTracker'}}
-            </a>
-        </div>
-        <div>
-            <a class="fas fa-plus-circle"
-               title="{{localize 'DG.About.Changelogtip'}}"
-               href="https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/blob/master/CHANGELOG.md">
-                {{localize 'DG.About.Changelog'}}
-            </a>
-        </div>
-        <div>
-            <p>{{localize 'DG.About.Copyright'}}</p>
-            <p>{{{localize 'DG.About.License'}}}</p>
-        </div>
+    <div class="dg-about-links flex horizontal-flex-column">
+        <a href="https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/blob/master/documentation/home.md"
+           target="_blank"
+           rel="noopener"
+           data-tooltip="{{localize 'DG.About.OnlineHelpTooltip'}}">
+            <i class="fas fa-question-circle" inert></i>
+            <span>{{localize 'DG.About.OnlineHelp'}}</span>
+        </a>
+        <a href="https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues"
+           target="_blank"
+           rel="noopener"
+           data-tooltip="{{localize 'DG.About.OnlineBugTrackerTooltip'}}">
+            <i class="fas fa-bug" inert></i>
+            <span>{{localize 'DG.About.OnlineBugTracker'}}</span>
+        </a>
+        <a href="https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/blob/master/CHANGELOG.md"
+           target="_blank"
+           rel="noopener"
+           data-tooltip="{{localize 'DG.About.Changelogtip'}}">
+            <i class="fas fa-plus-circle" inert></i>
+            <span>{{localize 'DG.About.Changelog'}}</span>
+        </a>
+    </div>
+
+    <div class="dg-about-legal">
+        <p>{{localize 'DG.About.Copyright'}}</p>
+        <p>{{{localize 'DG.About.License'}}}</p>
     </div>
 </div>

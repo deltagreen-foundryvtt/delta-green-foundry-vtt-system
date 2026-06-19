@@ -1,7 +1,7 @@
 import HumanSkillsActorData from "./base/human-skills.js";
 import CharacterData from "./base/character.js";
 
-const { SchemaField, NumberField, StringField, BooleanField } =
+const { SchemaField, NumberField, StringField, BooleanField, HTMLField } =
   foundry.data.fields;
 
 export default class NPCData extends CharacterData {
@@ -19,7 +19,7 @@ export default class NPCData extends CharacterData {
       biography: new SchemaField({
         profession: new StringField({ initial: "" }),
       }),
-      notes: new StringField({ initial: "" }),
+      notes: new HTMLField({ initial: "", blank: true, textSearch: true }),
       shortDescription: new StringField({ initial: "" }),
       showUntrainedSkills: new BooleanField({ initial: true }),
     };
