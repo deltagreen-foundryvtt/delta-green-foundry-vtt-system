@@ -6,6 +6,7 @@
   "scripts": {
     "lint": "eslint .",
     "format:check": "prettier --check .",
+    "format:fix": "prettier --write .",
     "build:css": "sass scss:css --style=expanded --no-source-map",
     "watch:css": "sass scss:css --watch --style=expanded --source-map"
   },

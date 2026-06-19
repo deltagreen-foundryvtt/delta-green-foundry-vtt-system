@@ -3,9 +3,7 @@
   "DG.AgentNameFieldTooltip": "NAZWISKO, IMIE (PSEUDONIM/KRYPTONIM, JESLI DOTYCZY)",
   "DG.RollLuck": "Test Szczęścia",
   "DG.Luck": "Szczęście",
-
   "DG.FallbackText.newItem": "Nowy {type}",
-
   "DG.Skills.accounting": "Księgowość",
   "DG.Skills.alertness": "Czujność",
   "DG.Skills.anthropology": "Antropologia",
@@ -44,7 +42,6 @@
   "DG.Skills.unarmed_combat": "Walka Bez Broni",
   "DG.Skills.unnatural": "Zjawiska Nadnaturalne",
   "DG.Skills.flight": "Latanie",
-
   "DG.Skills.Tooltip.accounting": "Wykrywanie finansowych sygnałów ostrzegawczych, takich jak ukryte aktywa, firmy fasadowe lub defraudacje.",
   "DG.Skills.Tooltip.alertness": "Dostrzegaj ukryte zagrożenia, subtelne ruchy lub ciche dźwięki, zanim staną się one niebezpieczeństwem.",
   "DG.Skills.Tooltip.anthropology": "Zrozumienie przekonań, zachowań i tematów tabu w współczesnych kulturach i społeczeństwach.",
@@ -82,7 +79,6 @@
   "DG.Skills.Tooltip.swim": "Przetrwanie w wodzie pod przymusem - ratowanie innych, ucieczka lub znoszenie niebezpieczeństw.",
   "DG.Skills.Tooltip.unarmed_combat": "Poskromienie lub zranienie przeciwników przy użyciu pięści, chwytów, kopnięć i innych technik walki wręcz.",
   "DG.Skills.Tooltip.unnatural": "Rozpoznawanie, badanie lub przypominanie sobie prawd o bytach i siłach wykraczających poza ludzkie zrozumienie.",
-
   "DG.Skills.AddTypedOrCustomSkill": "Dodaj Typową/Niestandardową Umiejętność",
   "DG.Skills.AddSkill": "Dodaj Umiejętność",
   "DG.Skills.Apply": "Zastosuj",
@@ -95,7 +91,6 @@
   "DG.Skills.EditSkill": "Edytuj Umiejętność",
   "DG.Skills.SkillGroup": "Grupa Umiejętności",
   "DG.Skills.SkillName": "Nazwa Umiejętności",
-
   "DG.TypeSkills.Art": "Sztuka",
   "DG.TypeSkills.Craft": "Rzemiosło",
   "DG.TypeSkills.ForeignLanguage": "Język Obcy",
@@ -103,7 +98,6 @@
   "DG.TypeSkills.Pilot": "Pilotowanie",
   "DG.TypeSkills.Science": "Nauka",
   "DG.TypeSkills.Other": "Inne",
-
   "DG.TypeSkills.Tooltip.Art": "Twórz lub oceniaj dzieła artystyczne i wykrywaj fałszerstwa w danej dziedzinie.",
   "DG.TypeSkills.Tooltip.Craft": "Budowanie, naprawianie lub sabotowanie specjalistycznych narzędzi lub systemów, takich jak silniki, zamki lub okablowanie.",
   "DG.TypeSkills.Tooltip.ForeignLanguage": "Mówisz, czytasz i rozumiesz dany język.",
@@ -111,7 +105,6 @@
   "DG.TypeSkills.Tooltip.Pilot": "Kontrolowanie i nawigowanie pojazdami powietrznymi, morskimi lub kosmicznymi w krytycznych sytuacjach lub warunkach.",
   "DG.TypeSkills.Tooltip.Science": "Zastosowanie specjalistycznej wiedzy naukowej do interpretacji lub badania świata fizycznego.",
   "DG.TypeSkills.Tooltip.Other": "Inne",
-
   "DG.SpecialTraining.Dialog.CreateSpecialTraining": "Dodaj Dodatkowe Szkolenie",
   "DG.SpecialTraining.Dialog.DropDown.CustomSkills": "Niestandardowe Umiejętności",
   "DG.SpecialTraining.Dialog.DropDown.Skills": "Umiejętności",
@@ -120,7 +113,6 @@
   "DG.SpecialTraining.Dialog.NameLabel": "Nazwa",
   "DG.SpecialTraining.Dialog.SkillLabel": "Umiejętność lub Statystyka",
   "DG.SpecialTraining.Dialog.Title": "Stwórz/Edytuj Dodatkowe Szkolenie",
-
   "DG.Attributes.HP": "PW",
   "DG.Attributes.WP": "PSW",
   "DG.Attributes.SAN": "PP",
@@ -130,7 +122,6 @@
   "DG.Attributes.int": "INT",
   "DG.Attributes.pow": "MOC",
   "DG.Attributes.cha": "CHA",
-
   "DG.Attributes.Tooltip.HP": "Punkty Wytrzymałości, postać traci przytomność przy 2 PW i umiera przy 0 PW.",
   "DG.Attributes.Tooltip.WP": "Punkty Siły Woli to paliwo mentalne. Agenci potrzebują Punktów Siły Woli, aby kontynuować mimo wyczerpania lub mentalnych trudności. Zobacz stronę 47 w Podręczniku Agenta po więcej szczegółów.",
   "DG.Attributes.Tooltip.SAN": "Kliknij, aby wykonać test na Poczytalność...",
@@ -140,7 +131,6 @@
   "DG.Attributes.Tooltip.int": "Zobacz stronę 19 Podręcznika Agenta – Inteligencja",
   "DG.Attributes.Tooltip.pow": "Zobacz stronę 19 Podręcznika Agenta – Siła Woli",
   "DG.Attributes.Tooltip.cha": "Zobacz stronę 19 Podręcznika Agenta – Charyzma",
-
   "DG.Navigation.Agent.skills": "Umiejętności",
   "DG.Navigation.Agent.physical": "Statystyki",
   "DG.Navigation.Agent.motivations": "Psychika",
@@ -151,7 +141,6 @@
   "DG.Navigation.NPC.gear": "Ataki i Zdolności",
   "DG.Navigation.Vehicle.gear": "Wyposażenie",
   "DG.Navigation.Vehicle.notes": "Uwagi",
-
   "DG.About.Changelog": "DZIENNIK ZMIAN (ONLINE)",
   "DG.About.Copyright": "Opublikowano przez Arc Dream Publishing na mocy umowy z Delta Green Partnership. Własność intelektualna znana jako Delta Green jest znakiem towarowym i prawem autorskim należącym do Delta Green Partnership, które udzieliło tutaj licencji na jej wykorzystanie.",
   "DG.About.License": "Zawartość tego systemu jest licencjonowana zgodnie z warunkami dołączonego pliku <a href=\"systems/deltagreen/LICENSE.txt\">licencyjnego</a>, z wyjątkiem tych elementów, które są składnikami własności intelektualnej Delta Green.",
@@ -159,9 +148,7 @@
   "DG.About.OnlineHelpTooltip": "Uruchom przeglądarkę z dokumentacją online na GitHubie.",
   "DG.About.OnlineBugTracker": "Pytania, zgłoszenia błędów lub prośby o funkcje (ONLINE)",
   "DG.About.OnlineBugTrackerTooltip": "Uruchom przeglądarkę z trackerem błędów na GitHubie.",
-
   "DG.Roll.Rolling": "Rzut na",
-  "DG.Roll.Target": "Cel: ",
   "DG.Roll.Success": "Sukces",
   "DG.Roll.Failure": "Porażka",
   "DG.Roll.CriticalSuccess": "Krytyczny sukces!",
@@ -173,14 +160,11 @@
   "DG.Roll.RollingDamageFor": "Rzut na Obrażenia",
   "DG.Roll.Or": "Lub",
   "DG.Roll.Roll": "Rzuć",
-
   "DG.Physical.Wounds": "Rany",
   "DG.Physical.FirstAidLabel": "Pierwsza pomoc została już podjęta: ",
   "DG.Physical.Exhausted": "Wyczerpany:",
   "DG.Physical.ExhaustionPenalty": "Kara:",
-
   "DG.Generic.AddButtonLabel": "Dodaj",
-
   "DG.Mental.BreakingPoint": "Punkt Załamania: ",
   "DG.Mental.Tooltip.BreakingPoint": "Punkt Załamania to dokładna wartość Poczytalności, przy której Twój Agent został wystarczająco wyczerpany traumą, by rozwinąć nową, długotrwałą chorobę psychiczną. Jeśli Poczytalność osiągnie ten punkt lub spadnie poniżej niego, odejmij Siłę Woli Agenta od nowej Poczytalności. To będzie nowy Punkt Załamania Twojego Agenta.",
   "DG.Mental.Reset": "Reset",
@@ -191,7 +175,6 @@
   "DG.Mental.AdaptedToHelplessness": "Adaptacja do bezsilności",
   "DG.Mental.Motivations": "Motywacje",
   "DG.Mental.Disorders": "Zaburzenia",
-
   "DG.Gear.WeaponTypes.Firearms": "Broń Palna",
   "DG.Gear.WeaponTypes.Melee": "Walka wręcz",
   "DG.Gear.Weapons": "Broń",
@@ -202,7 +185,6 @@
   "DG.Gear.ArmorPiercing": "Przebicie Pancerza",
   "DG.Gear.ArmorRating": "Siła Pancerza",
   "DG.Gear.Equipped": "Wyposażony",
-
   "DG.CV.Sex": "Płeć",
   "DG.CV.SexPlaceholder": "Płeć",
   "DG.CV.AgeAndDoB": "Wiek i Data Ur.",
@@ -213,12 +195,10 @@
   "DG.CV.NationalityPlaceholder": "Narodowość",
   "DG.CV.Education": "Edukacja",
   "DG.CV.EducationPlaceholder": "Edukacja lub Szkolenie",
-
   "DG.Bonds.Bond": "Więź",
   "DG.Bonds.Name": "Nazwa",
   "DG.Bonds.Score": "Wynik",
   "DG.Bonds.NewBond": "Nowa Więź",
-
   "DG.Tooltip.MaximumHP": "Maksymalne Punkty Wytrzymałości to średnia STR + CON, zaokrąglona w górę.",
   "DG.Tooltip.MaximumWP": "Maksymalne PSW to wartość MOC.",
   "DG.Tooltip.CurrentSanityPartOne": "Aktualne PP, aktualny punkt załamania to ",
@@ -234,17 +214,14 @@
   "DG.Tooltip.AdaptedToHelplessness": "Zaadaptowanie do bezsilności oznacza, że motywacja agenta cierpi, gdy wycofuje się z otaczającego go świata. Gdy tylko agent dostosuje się do bezsilności, trwale traci 1D6 MOC.",
   "DG.Tooltip.ToggleEquippedState": "Kliknij, aby przełączyć stan wyposażenia.",
   "DG.Tooltip.Exhaustion": "Agent, który pracuje zbyt długo lub stawia czoła ekstremalnemu niebezpieczeństwu i obrażeniom bez odpoczynku, staje się wyczerpany. Kiedy to nastąpi, zależy od Oficera Prowadzącego, ale dobrą zasadą jest, że nieprzespana noc lub odmowa odpoczynku po utracie PP lub Punktów Wytrzymałości prowadzi do wyczerpania.",
-
   "DG.Gear.Expense.NA": "N/A albo Brak",
   "DG.Gear.Expense.Incidental": "Drobny",
   "DG.Gear.Expense.Standard": "Standardowy",
   "DG.Gear.Expense.Unusual": "Niezwykły",
   "DG.Gear.Expense.Major": "Poważny",
   "DG.Gear.Expense.Extreme": "Ekstremalny",
-
   "DG.ItemWindow.Bonds.Description": "Opis/Rozwój",
   "DG.ItemWindow.Bonds.ScoreTooltip": "Wyższy wynik oznacza silniejszą relację między agentem a więzią.",
-
   "DG.ItemWindow.Motivations.Attributes": "Atrybuty",
   "DG.ItemWindow.Motivations.Motivation": "Motywacja",
   "DG.ItemWindow.Motivations.Description": "Opis/Uwagi",
@@ -255,19 +232,16 @@
   "DG.ItemWindow.Motivations.IsDisorderTooltip": "Zaznacz to, jeśli dodajesz zaburzenie, lub jeśli istniejąca motywacja została utracona na skutek zyskania zaburzenia.",
   "DG.ItemWindow.Motivations.DisorderHasBeenCured": "Zaburzenie zostało \"wyleczone\"",
   "DG.ItemWindow.Motivations.DisorderHasBeenCuredTooltip": "Krytyczny sukces w teście terapii może 'wyleczyć' zaburzenie. Może ono powrócić przy następnym osiągnięciu punktu złamania. Zobacz sekcję Terapia na stronach 78-79 Podręcznika Agenta.",
-
   "DG.ItemWindow.Gear.Attributes": "Atrybuty",
   "DG.ItemWindow.Gear.Description": "Opis",
   "DG.ItemWindow.Gear.NamePlaceholder": "Nazwa",
   "DG.ItemWindow.Gear.Expense": "Koszt",
   "DG.ItemWindow.Gear.Equipped": "Wyposażony",
-
   "DG.ItemWindow.Armor.Description": "Opis",
   "DG.ItemWindow.Armor.NamePlaceholder": "Nazwa",
   "DG.ItemWindow.Armor.ArmorRating": "Siła Pancerza",
   "DG.ItemWindow.Armor.Expense": "Koszt",
   "DG.ItemWindow.Armor.Equipped": "Wyposażony",
-
   "DG.ItemWindow.Weapons.Description": "Opis",
   "DG.ItemWindow.Weapons.NamePlaceholder": "Nazwa",
   "DG.ItemWindow.Weapons.Skill": "Umiejętność",
@@ -281,27 +255,21 @@
   "DG.ItemWindow.Weapons.Ammo": "Amunicja (Ilość/Typ)",
   "DG.ItemWindow.Weapons.Range": "Zasięg",
   "DG.ItemWindow.Weapons.KillRadius": "Zasięg Śmierci",
-
   "DG.ModifySkillRollDialogue.Title": "Modyfikuj Rzut",
   "DG.ModifySkillRollDialogue.Test": "Test:",
   "DG.ModifySkillRollDialogue.OriginalTarget": "Oryginalny Cel:",
   "DG.ModifySkillRollDialogue.TargetModifier": "Modyfikator Celu:",
   "DG.ModifySkillRollDialogue.ModifierTooltip": "Podaj dodatni lub ujemny modyfikator, aby dodać/odjąć od celu dla testu umiejętności.",
-
   "DG.ModifyDamageRollDialogue.Weapon": "Broń:",
   "DG.ModifyDamageRollDialogue.OuterModifierTooltip": "Użyj tego pola, aby zmodyfikować zewnętrzną część formuły, na przykład aby podwoić wynik.",
   "DG.ModifyDamageRollDialogue.InnerModifierTooltip": "Użyj tego pola, aby dodać modyfikator stały, np. '+1' lub inną jednostkową kostkę, np. '+1d4'.",
-
   "DG.Roll.Inhuman": "Nieludzki",
   "DG.Tooltip.BreakPoint": "Aktualny Punkt Załamania, resetowany, gdy aktualne PP spada do tego punktu lub poniżej. Początkowy punkt złamania to PP - MOC.",
   "DG.Tooltip.BreakPointReset": "Zresetuj Punkt Załamania, aby wynosił aktualne PP - PSW.",
   "DG.Skills.ritual": "Rytuał",
-
   "DG.RollMode": "Tryb Rzutu",
   "DG.Bonds.Relationship": "Relacja",
-
   "DG.TypeSkills.Subskills.Painting": "Malarstwo",
-
   "DG.Sheet.BlockHeaders.Attributes": "ATRYBUTY",
   "DG.Sheet.BlockHeaders.Statistics": "STATYSTYKI",
   "DG.Sheet.BlockHeaders.PhysicalDescriptionNotes": "OPIS FIZYCZNY / UWAGI",
@@ -311,9 +279,7 @@
   "DG.Sheet.BlockHeaders.MotivationsAndDisorders": "MOTYWACJE I ZABURZENIA",
   "DG.Sheet.BlockHeaders.PersonalInfoCV": "DANE OSOBOWE / CV",
   "DG.Sheet.BlockHeaders.BondsRelationshipsContacts": "WIĘZI / RELACJE / KONTAKTY",
-
   "DG.AgentSheet.ProfessionPlaceholder": "ZAWÓD (RANGA, JEŚLI DOTYCZY)",
-
   "DG.UnnaturalSheet.HideUntrainedSkillsLabel": "Ukryj Niewyuczone",
   "DG.UnnaturalSheet.NotesLabel": "Uwagi",
   "DG.UnnaturalSheet.ShortDescriptionPlaceholder": "Opis stworzenia lub typu stworzenia",
@@ -321,39 +287,31 @@
   "DG.UnnaturalSheet.Tabs.NotesTabLabel": "Umiejętności i Uwagi",
   "DG.UnnaturalSheet.Tabs.ItemsTabLabel": "Ataki i Zdolności",
   "DG.NPCSheet.BreakPointAbbreviation": "BP",
-
   "DG.ImpossibleLanscapes.IHaveSeenThe": "WIDZIAŁEM",
   "DG.ImpossibleLanscapes.YellowSign": "ŻÓŁTY ZNAK",
   "DG.ImpossibleLanscapes.CorruptionFirstHalf": "Zepsu",
   "DG.ImpossibleLanscapes.CorruptionSecondHalf": "cie",
   "DG.ImpossibleLanscapes.Gift": "Dar",
   "DG.ImpossibleLanscapes.Insight": "Wgląd",
-
   "DG.VehicleSheet.NotesTabName": "Uwagi",
   "DG.VehicleSheet.GearTabName": "Wyposażenie",
   "DG.VehicleSheet.NotesLabel": "UWAGI",
   "DG.VehicleSheet.DescriptionPlaceHolder": "Opis pojazdu",
-
   "DG.Generic.CheckDamagedBondsBoxUntilNextHomeScene": "Zaznacz pole uszkodzonej więzi, dopóki kolejna scena w domu się nie skończy.",
   "DG.Generic.ClearAll": "Wyczyść zaznaczenia",
-
   "DG.Generic.SanDamage": "Utrata PP",
-
   "DG.ItemWindow.Weapons.CustomSkillTarget": "Cel",
   "DG.ItemWindow.Weapons.SkillModifier": "Modyfikator Umiejętności",
   "DG.ItemWindow.Custom": "Niestandardowy",
-
   "DG.Sheet.class.item": "Karta Przedmiotu",
   "DG.Sheet.class.agent": "Karta Agenta",
   "DG.Sheet.class.npc": "Karta NPC",
   "DG.Sheet.class.unnatural": "Karta Nadnaturalnego",
   "DG.Sheet.class.vehicle": "Karta Pojazdu",
-
   "TYPES.Actor.agent": "Agent",
   "TYPES.Actor.npc": "NPC",
   "TYPES.Actor.unnatural": "Nadnaturalne",
   "TYPES.Actor.vehicle": "Pojazd",
-
   "TYPES.Item.armor": "Pancerz",
   "TYPES.Item.bond": "Więź",
   "TYPES.Item.gear": "Wyposażenie",
@@ -361,13 +319,10 @@
   "TYPES.Item.weapon": "Broń",
   "TYPES.Item.tome": "Księga",
   "TYPES.Item.ritual": "Rytuał",
-
   "DG.Gear.Tomes": "KSIĘGI",
   "DG.Gear.Rituals": "RYTUAŁY",
-
   "DG.Tomes.Name": "Nazwa",
   "DG.Ritual.Name": "Nazwa",
-
   "DG.Tome.Name": "Nazwa",
   "DG.Tome.Language": "Język",
   "DG.Tome.StudyTime": "Czas Nauki",
@@ -379,15 +334,12 @@
   "DG.ItemWindow.Tome.StudySanityDamage": "Uszkodzenie PP po Studiowaniu",
   "DG.ItemWindow.Tome.HandlerOnlyTabHeader": "Tylko dla Oficera Prowadzącego",
   "DG.ItemWindow.Tome.HandlerNotes": "Uwagi dla Oficera Prowadzącego",
-
   "DG.ItemWindow.Ritual.ActivationSanityDamage": "Utrata PP przy Aktywacji",
   "DG.ItemWindow.Ritual.ActivationTime": "Czas Aktywacji",
   "DG.ItemWindow.Ritual.ActivationCosts": "Koszt Aktywacji",
   "DG.ItemWindow.Ritual.StudyTime": "Czas Nauki",
   "DG.ItemWindow.Ritual.LearnedSanityDamage": "Utrata PP po Nauce",
-
   "DG.MissionPaused": "Misja wstrzymana",
-
   "DG.Settings.charactersheet.name": "Styl karty postaci",
   "DG.Settings.charactersheet.hint": "Wybierz styl kart postaci. „Program” to nowocześniejszy, rządowy styl, natomiast „Kowboj/Banita” to starszy, bardziej surowy styl przypominający maszynę do pisania.",
   "DG.Settings.charactersheet.cowboys": "Kowboje",
@@ -412,15 +364,12 @@
   "DG.Settings.skillFailure.name": "Automatyczne zaznaczanie niepowodzenia w umiejętności",
   "DG.Settings.skillFailure.hint": "Aktywuj tę opcję, aby zawsze zaznaczać pole niepowodzenia po nieudanym teście umiejętności. Oficer prowadzący może cofnąć tę akcję z wiadomości na czacie dotyczącej rzutu.",
   "DG.Settings.Saved": "Bieżące ustawienia zostały zapisane.",
-
   "DG.SettingsMenu.automation.name": "Menu automatyzacji",
   "DG.SettingsMenu.automation.label": "Menu automatyzacji",
   "DG.SettingsMenu.automation.title": "Ustawienia automatyzacji",
-
   "DG.SettingsMenu.handler.name": "Ustawienia Oficera Prowadzącego",
   "DG.SettingsMenu.handler.label": "Ustawienia Oficera Prowadzącego",
   "DG.SettingsMenu.handler.title": "Ustawienia tylko dla Oficera prowadzącego",
-
   "DG.Messages.Skillsmark.Marked": "Ta umiejętność jest oznaczona.",
   "DG.Messages.Skillsmark.Tooltip": "Zobacz str. 29 Podręcznika Agenta."
 }

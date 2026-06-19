@@ -3,10 +3,8 @@
   "DG.AgentNameFieldTooltip": "EFTERNAMN, FÖRNAMN (OCH ALIAS OM RELEVANT)",
   "DG.RollLuck": "Turkast",
   "DG.Luck": "Tur",
-
   "DG.FallbackText.ProfessionAndOrRank": "YRKE",
   "DG.FallbackText.newItem": "Ny {type}",
-
   "DG.Skills.accounting": "Bokföring",
   "DG.Skills.alertness": "Vaksamhet",
   "DG.Skills.anthropology": "Antropologi",
@@ -45,7 +43,6 @@
   "DG.Skills.unarmed_combat": "Slagsmål",
   "DG.Skills.unnatural": "Onaturligt",
   "DG.Skills.flight": "Flyg",
-
   "DG.Skills.AddTypedOrCustomSkill": "Lägg till anpassad färdighet",
   "DG.Skills.AddSkill": "Lägg till färdighet",
   "DG.Skills.Apply": "Tillämpa",
@@ -58,7 +55,6 @@
   "DG.Skills.EditSkill": "Redigera färdighet",
   "DG.Skills.SkillGroup": "Färdighetsgrupp",
   "DG.Skills.SkillName": "Färdighetsnamn",
-
   "DG.TypeSkills.Art": "Konst",
   "DG.TypeSkills.Craft": "Hantverk",
   "DG.TypeSkills.ForeignLanguage": "Främmande språk",
@@ -66,7 +62,6 @@
   "DG.TypeSkills.Pilot": "Pilot",
   "DG.TypeSkills.Science": "Vetenskap",
   "DG.TypeSkills.Other": "Annat",
-
   "DG.SpecialTraining.Dialog.CreateSpecialTraining": "Lägg till specialträning",
   "DG.SpecialTraining.Dialog.DropDown.CustomSkills": "Anpassade färdigheter",
   "DG.SpecialTraining.Dialog.DropDown.Skills": "Färdigheter",
@@ -75,7 +70,6 @@
   "DG.SpecialTraining.Dialog.NameLabel": "Namn",
   "DG.SpecialTraining.Dialog.SkillLabel": "Färdighet eller statistik",
   "DG.SpecialTraining.Dialog.Title": "Skapa/Redigera specialträning",
-
   "DG.Attributes.HP": "HP",
   "DG.Attributes.WP": "VP",
   "DG.Attributes.SAN": "PSY",
@@ -85,21 +79,17 @@
   "DG.Attributes.int": "INT",
   "DG.Attributes.pow": "VIL",
   "DG.Attributes.cha": "KAR",
-
   "DG.Navigation.Skills": "Färdigheter",
   "DG.Navigation.Physical": "Statistik",
   "DG.Navigation.Mental": "Psykologi",
   "DG.Navigation.Gear": "Utrustning",
   "DG.Navigation.CV": "Personligt",
   "DG.Navigation.Contacts": "Kontakter",
-
   "DG.About.OnlineHelp": "Systemdokumentation på (ONLINE)",
   "DG.About.OnlineHelpTooltip": "Starta webbläsare med online GitHub-hjälp.",
   "DG.About.OnlineBugTracker": "Frågor, buggrapporter eller funktionsförfrågningar (ONLINE)",
   "DG.About.OnlineBugTrackerTooltip": "Starta webbläsare med GitHub-issue tracker.",
-
   "DG.Roll.Rolling": "Slår för",
-  "DG.Roll.Target": "Mål: ",
   "DG.Roll.Success": "Träff",
   "DG.Roll.Failure": "Miss",
   "DG.Roll.Critical": "Kritisk",
@@ -110,14 +100,11 @@
   "DG.Roll.RollingDamageFor": "Slår SKADA för",
   "DG.Roll.Or": "Eller",
   "DG.Roll.Roll": "Slå",
-
   "DG.Physical.Wounds": "Sår",
   "DG.Physical.FirstAidLabel": "Första hjälpen har redan försökts: ",
   "DG.Physical.Exhausted": "Utmattad:",
   "DG.Physical.ExhaustionPenalty": "Nedsättning:",
-
   "DG.Generic.AddButtonLabel": "Lägg till",
-
   "DG.Mental.BreakingPoint": "Brytpunkt: ",
   "DG.Mental.Reset": "Reset",
   "DG.Mental.SanityLossIncidentsLabel": "Episoder av PSY-förlust utan att bli galen",
@@ -127,7 +114,6 @@
   "DG.Mental.AdaptedToHelplessness": "Anpassad till hjälplöshet",
   "DG.Mental.Motivations": "Motivation",
   "DG.Mental.Disorders": "Störningar",
-
   "DG.Gear.Weapons": "Vapen",
   "DG.Gear.Armor": "Kroppskydd",
   "DG.Gear.OtherGear": "Annan utrustning",
@@ -136,7 +122,6 @@
   "DG.Gear.ArmorPiercing": "Genomträngande",
   "DG.Gear.ArmorRating": "Skyddsnivå",
   "DG.Gear.Equipped": "Utrustad",
-
   "DG.CV.Sex": "Kön",
   "DG.CV.SexPlaceholder": "Kön",
   "DG.CV.AgeAndDoB": "Ålder och födelsedatum",
@@ -147,12 +132,10 @@
   "DG.CV.NationalityPlaceholder": "Nationalitet",
   "DG.CV.Education": "Utbildning",
   "DG.CV.EducationPlaceholder": "Utbildning eller skola",
-
   "DG.Bonds.Bond": "Kamrat",
   "DG.Bonds.Name": "Namn",
   "DG.Bonds.Score": "Poäng",
   "DG.Bonds.NewBond": "Ny Kamrat",
-
   "DG.Attributes.Tooltip.HP": "Hälsopoäng, en karaktär blir medvetslös vid 2 HP och dör vid 0 HP.",
   "DG.Tooltip.MaximumHP": "Maximala hälsopoäng är hälften av STY + FYS, avrundat UPP.",
   "DG.Attributes.Tooltip.WP": "Viljepoäng är mentalt bränsle. Agenter behöver viljepoäng för att fortsätta trots utmattning eller mentalt påfrestande situationer. Se sidan 47 i Agenthandboken för mer detaljer.",
@@ -171,17 +154,14 @@
   "DG.Tooltip.AdaptedToHelplessness": "Att vara anpassad till hjälplöshet innebär att din agent förlorat sin personliga drivkraft och drar sig tillbaka från världen omkring dem. När din agent är anpassad till hjälplöshet förlorar agenten permanent 1D6 VIL.",
   "DG.Tooltip.ToggleEquippedState": "Klicka för att välja om din agent har saken med sig eller ej.",
   "DG.Tooltip.Exhaustion": "En agent som arbetat för länge eller varit under press länge utan sömn blir utmattad.",
-
   "DG.Gear.Expense.NA": "Ingen",
   "DG.Gear.Expense.Incidental": "Småsak",
   "DG.Gear.Expense.Standard": "Standard",
   "DG.Gear.Expense.Unusual": "Ovanlig",
   "DG.Gear.Expense.Major": "Stor",
   "DG.Gear.Expense.Extreme": "Extrem",
-
   "DG.ItemWindow.Bonds.Description": "Beskrivning/Utvecklingar",
   "DG.ItemWindow.Bonds.ScoreTooltip": "Högre poäng representerar ett starkare förhållande mellan agenten och Kamraten.",
-
   "DG.ItemWindow.Motivations.Attributes": "Egenskaper",
   "DG.ItemWindow.Motivations.Motivation": "Motivation",
   "DG.ItemWindow.Motivations.Description": "Beskrivning/Anteckningar",
@@ -192,19 +172,16 @@
   "DG.ItemWindow.Motivations.IsDisorderTooltip": "Kryssa i detta om du lägger till en störning, eller om en befintlig motivation har förlorats på grund av att du fått en störning.",
   "DG.ItemWindow.Motivations.DisorderHasBeenCured": "Störning har blivit \"botad\"",
   "DG.ItemWindow.Motivations.DisorderHasBeenCuredTooltip": "En kritisk framgång på ett terapi-turkast kan 'bota' en störning.  Den kan dock återkomma nästa gång en brytpunkt nås. Se Terapisektionen på sidorna 78-79 i Agenthandboken.",
-
   "DG.ItemWindow.Gear.Attributes": "Egenskaper",
   "DG.ItemWindow.Gear.Description": "Beskrivning",
   "DG.ItemWindow.Gear.NamePlaceholder": "Namn",
   "DG.ItemWindow.Gear.Expense": "Kostnad",
   "DG.ItemWindow.Gear.Equipped": "Utrustad",
-
   "DG.ItemWindow.Armor.Description": "Beskrivning",
   "DG.ItemWindow.Armor.NamePlaceholder": "Namn",
   "DG.ItemWindow.Armor.ArmorRating": "Skyddsnivå",
   "DG.ItemWindow.Armor.Expense": "Kostnad",
   "DG.ItemWindow.Armor.Equipped": "Utrustad",
-
   "DG.ItemWindow.Weapons.Description": "Beskrivning",
   "DG.ItemWindow.Weapons.NamePlaceholder": "Namn",
   "DG.ItemWindow.Weapons.Skill": "Färdighet",
@@ -218,27 +195,21 @@
   "DG.ItemWindow.Weapons.Ammo": "Ammo (Mängd/Typ)",
   "DG.ItemWindow.Weapons.Range": "Räckvidd",
   "DG.ItemWindow.Weapons.KillRadius": "Dödsradie",
-
   "DG.ModifySkillRollDialogue.Title": "Modifiera kast",
   "DG.ModifySkillRollDialogue.Test": "Slag:",
   "DG.ModifySkillRollDialogue.OriginalTarget": "Ursprungligt mål:",
   "DG.ModifySkillRollDialogue.TargetModifier": "Modifiera mål:",
   "DG.ModifySkillRollDialogue.ModifierTooltip": "Ange en positiv eller negativ modifiering här.",
-
   "DG.ModifyDamageRollDialogue.Weapon": "Vapen:",
   "DG.ModifyDamageRollDialogue.OuterModifierTooltip": "Använd detta fält för att modifiera den yttre delen av formeln, som att dubbla resultatet.",
   "DG.ModifyDamageRollDialogue.InnerModifierTooltip": "Använd detta fält för att lägga till en platt modifierare såsom '+1' eller en annan tärningsterm såsom '+1d4'.",
-
   "DG.Roll.Inhuman": "Omänsklig",
   "DG.Tooltip.BreakPoint": "Den nuvarande brytpunkten, återställs när nuvarande Stabilitet faller till eller under detta värde.  Startvärdet på brytpunkten är PSY minus VIL.",
   "DG.Tooltip.BreakPointReset": "Återställ brytpunkten till att vara nuvarande PSY minus VP.",
   "DG.Skills.ritual": "Ritual",
-
   "DG.RollMode": "Tärningskast-läge",
   "DG.Bonds.Relationship": "Relation",
-
   "DG.TypeSkills.Subskills.Painting": "Målning",
-
   "DG.Sheet.BlockHeaders.Attributes": "EGENSKAPER",
   "DG.Sheet.BlockHeaders.Statistics": "STATISTIK",
   "DG.Sheet.BlockHeaders.PhysicalDescriptionNotes": "ANTECKNINGAR",
@@ -248,7 +219,6 @@
   "DG.Sheet.BlockHeaders.MotivationsAndDisorders": "MOTIVATIONER OCH STÖRNINGAR",
   "DG.Sheet.BlockHeaders.PersonalInfoCV": "PERSONLIG INFORMATION",
   "DG.Sheet.BlockHeaders.BondsRelationshipsContacts": "KAMRATER OCH RELATIONER",
-
   "DG.UnnaturalSheet.HideUntrainedSkillsLabel": "Dölj otränade färdigheter",
   "DG.UnnaturalSheet.NotesLabel": "Anteckningar",
   "DG.UnnaturalSheet.ShortDescriptionFallbackText": "Beskrivning av varelse",
@@ -256,33 +226,26 @@
   "DG.UnnaturalSheet.Tabs.NotesTabLabel": "Färdigheter & Anteckningar",
   "DG.UnnaturalSheet.Tabs.ItemsTabLabel": "Attacker & Förmågor",
   "DG.NPCSheet.BreakPointAbbreviation": "BP",
-
   "DG.ImpossibleLanscapes.IHaveSeenThe": "JAG HAR SETT",
   "DG.ImpossibleLanscapes.YellowSign": "DET GULA MÄRKET",
   "DG.ImpossibleLanscapes.CorruptionFirstHalf": "Korrup",
   "DG.ImpossibleLanscapes.CorruptionSecondHalf": "tion",
   "DG.ImpossibleLanscapes.Gift": "Gåva",
   "DG.ImpossibleLanscapes.Insight": "Insikt",
-
   "DG.VehicleSheet.NotesTabName": "Anteckningar",
   "DG.VehicleSheet.GearTabName": "Utrustning",
   "DG.VehicleSheet.NotesLabel": "ANTECKNINGAR",
   "DG.VehicleSheet.DescriptionPlaceHolder": "Beskrivning av fordon",
-
   "DG.Generic.CheckDamagedBondsBoxUntilNextHomeScene": "Bocka i rutan om ett förhållande är skadat för att komma ihåg det under Hem-scenerna.",
   "DG.Generic.ClearAll": "Rensa alla",
-
   "DG.Generic.SanDamage": "PSY-Skada",
-
   "DG.ItemWindow.Weapons.CustomSkillTarget": "Mål",
   "DG.ItemWindow.Weapons.SkillModifier": "Färdighetsmod",
   "DG.ItemWindow.Custom": "Anpassad",
-
   "TYPES.Actor.agent": "Agent",
   "TYPES.Actor.npc": "NPC",
   "TYPES.Actor.unnatural": "Onaturligt",
   "TYPES.Actor.vehicle": "Fordon",
-
   "TYPES.Item.armor": "Kroppskydd",
   "TYPES.Item.bond": "Kamrat",
   "TYPES.Item.gear": "Utrustning",
@@ -290,13 +253,10 @@
   "TYPES.Item.weapon": "Vapen",
   "TYPES.Item.tome": "Trollbok",
   "TYPES.Item.ritual": "Ritual",
-
   "DG.Gear.Tomes": "Trollböcker",
   "DG.Gear.Rituals": "Ritualer",
-
   "DG.Tomes.Name": "Namn",
   "DG.Ritual.Name": "Namn",
-
   "DG.Tome.Name": "Namn",
   "DG.ItemWindow.Tome.Description": "Beskrivning",
   "DG.ItemWindow.Tome.LanguagePlaceholder": "Språk",
@@ -306,13 +266,11 @@
   "DG.ItemWindow.Tome.StudySanityDamage": "Skada på Stabilitet att läsa",
   "DG.ItemWindow.Tome.HandlerOnlyTabHeader": "Endast Handledaren",
   "DG.ItemWindow.Tome.HandlerNotes": "Handledarens anteckningar",
-
   "DG.ItemWindow.Ritual.ActivationSanityDamage": "PSY-Skada för aktivering",
   "DG.ItemWindow.Ritual.ActivationTime": "Aktiveringstid",
   "DG.ItemWindow.Ritual.ActivationCosts": "Aktiveringskostnader",
   "DG.ItemWindow.Ritual.StudyTime": "Studietid",
   "DG.ItemWindow.Ritual.LearnedSanityDamage": "Learn SAN Damage",
-
   "DG.Messages.Skillsmark.Marked": "Denna färdighet är markerad",
   "DG.Messages.Skillsmark.Tooltip": "Se s. 29 Agenthandbok"
 }

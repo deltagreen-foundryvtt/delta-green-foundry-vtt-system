@@ -92,3 +92,21 @@
     border-color: var(--dg-surface-dark-hover);
   }
 }
+
+/// Nudge SpecialElite text down in compact centered cells without shrinking the box.
+@mixin cowboy-compact-input($height: null, $top-padding: 2px) {
+  @if $height {
+    box-sizing: border-box;
+    height: $height;
+    min-height: $height;
+    padding: $top-padding 1px 1px;
+    line-height: calc(#{$height} - #{$top-padding} - 2px);
+  } @else {
+    padding-top: $top-padding;
+    padding-bottom: 0;
+  }
+}
+
+@mixin cowboy-compact-label {
+  transform: translateY(1px);
+}

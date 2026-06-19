@@ -3,10 +3,8 @@
   "DG.AgentNameFieldTooltip": "姓, 名 (必要に応じ通称)",
   "DG.RollLuck": "幸運ロール",
   "DG.Luck": "幸運",
-
   "DG.FallbackText.ProfessionAndOrRank": "職業 (必要に応じ役職)",
   "DG.FallbackText.newItem": "新規{type}",
-
   "DG.Skills.accounting": "経理",
   "DG.Skills.alertness": "警戒",
   "DG.Skills.anthropology": "人類学",
@@ -45,7 +43,6 @@
   "DG.Skills.unarmed_combat": "徒手格闘",
   "DG.Skills.unnatural": "非自然",
   "DG.Skills.flight": "飛行",
-
   "DG.Skills.AddTypedOrCustomSkill": "類型/カスタム技能を追加",
   "DG.Skills.AddSkill": "技能を追加",
   "DG.Skills.Apply": "適用",
@@ -58,7 +55,6 @@
   "DG.Skills.EditSkill": "技能を編集",
   "DG.Skills.SkillGroup": "技能グループ",
   "DG.Skills.SkillName": "技能の名前",
-
   "DG.TypeSkills.Art": "芸術",
   "DG.TypeSkills.Craft": "製作",
   "DG.TypeSkills.ForeignLanguage": "ほかの言語",
@@ -66,7 +62,6 @@
   "DG.TypeSkills.Pilot": "操縦",
   "DG.TypeSkills.Science": "科学",
   "DG.TypeSkills.Other": "その他",
-
   "DG.SpecialTraining.Dialog.CreateSpecialTraining": "特殊訓練を追加",
   "DG.SpecialTraining.Dialog.DropDown.CustomSkills": "カスタム/類型技能",
   "DG.SpecialTraining.Dialog.DropDown.Skills": "技能",
@@ -75,7 +70,6 @@
   "DG.SpecialTraining.Dialog.NameLabel": "名前",
   "DG.SpecialTraining.Dialog.SkillLabel": "技能/能力値",
   "DG.SpecialTraining.Dialog.Title": "特殊訓練の作成/編集",
-
   "DG.Attributes.HP": "HP",
   "DG.Attributes.WP": "WP",
   "DG.Attributes.SAN": "SAN",
@@ -85,21 +79,17 @@
   "DG.Attributes.int": "INT",
   "DG.Attributes.pow": "POW",
   "DG.Attributes.cha": "CHA",
-
   "DG.Navigation.Skills": "技能",
   "DG.Navigation.Physical": "能力値",
   "DG.Navigation.Mental": "精神",
   "DG.Navigation.Gear": "装備",
   "DG.Navigation.CV": "経歴",
   "DG.Navigation.Contacts": "絆",
-
   "DG.About.OnlineHelp": "システムドキュメンテーション(オンライン)",
   "DG.About.OnlineHelpTooltip": "オンラインGitHubヘルプをブラウザで開く。",
   "DG.About.OnlineBugTracker": "質問、バグ報告、機能リクエスト(オンライン)",
   "DG.About.OnlineBugTrackerTooltip": "オンラインGitHubのissueトラッカーをブラウザで開く。",
-
   "DG.Roll.Rolling": "ローリング",
-  "DG.Roll.Target": "目標値: ",
   "DG.Roll.Success": "成功",
   "DG.Roll.Failure": "失敗",
   "DG.Roll.Critical": "クリティカル",
@@ -110,14 +100,11 @@
   "DG.Roll.RollingDamageFor": "ダメージロール: ",
   "DG.Roll.Or": " / ",
   "DG.Roll.Roll": "ロール",
-
   "DG.Physical.Wounds": "傷跡",
   "DG.Physical.FirstAidLabel": "応急手当済: ",
   "DG.Physical.Exhausted": "疲労:",
   "DG.Physical.ExhaustionPenalty": "ペナルティ:",
-
   "DG.Generic.AddButtonLabel": "追加",
-
   "DG.Mental.BreakingPoint": "限界点: ",
   "DG.Mental.Reset": "ﾘｾｯﾄ",
   "DG.Mental.SanityLossIncidentsLabel": "SANを失ったが正気を保った出来事",
@@ -127,7 +114,6 @@
   "DG.Mental.AdaptedToHelplessness": "無力への慣れ",
   "DG.Mental.Motivations": "モチベーション",
   "DG.Mental.Disorders": "精神障害",
-
   "DG.Gear.Weapons": "武器",
   "DG.Gear.Armor": "防具",
   "DG.Gear.OtherGear": "他の装備",
@@ -136,7 +122,6 @@
   "DG.Gear.ArmorPiercing": "装甲貫通",
   "DG.Gear.ArmorRating": "装甲値",
   "DG.Gear.Equipped": "装備",
-
   "DG.CV.Sex": "性別",
   "DG.CV.SexPlaceholder": "性別",
   "DG.CV.AgeAndDoB": "年齢・誕生日",
@@ -147,12 +132,10 @@
   "DG.CV.NationalityPlaceholder": "国籍",
   "DG.CV.Education": "教育",
   "DG.CV.EducationPlaceholder": "教育と訓練",
-
   "DG.Bonds.Bond": "絆",
   "DG.Bonds.Name": "名前",
   "DG.Bonds.Score": "スコア",
   "DG.Bonds.NewBond": "新規絆",
-
   "DG.Attributes.Tooltip.HP": "ヒットポイント、HPが2になるとエージェントは意識を失い、HPが0で死亡する。",
   "DG.Tooltip.MaximumHP": "最大HPはSTRとCONの平均(切り上げ)。",
   "DG.Attributes.Tooltip.WP": "意志力ポイント(WP)は精神的な燃料。エージェントは、疲労や精神的に負担のかかる状況下でも活動を続けるために、WPを必要とする。詳細はAgent's Handbook 47ページ参照。",
@@ -171,17 +154,14 @@
   "DG.Tooltip.AdaptedToHelplessness": "無力に慣れるということは、彼らが周囲の世界から身を引くことによって、エージェントの個人的な意欲が損なわれることを意味する。無力に慣れるとすぐに、エージェントは1D6のPOWを永久的に失う。",
   "DG.Tooltip.ToggleEquippedState": "クリックでこのアイテムの装備の有無を切り替え。",
   "DG.Tooltip.Exhaustion": "長時間働きすぎたり、休息を取らずに極度の危険や負傷に直面したりすると、エージェントは疲労する。 これが起こるのはハンドラー次第だが、目安として、一晩眠らずに過ごしたり、SANやHPを失った後に休息を拒否したりすると、疲労につながる。",
-
   "DG.Gear.Expense.NA": "N/A",
   "DG.Gear.Expense.Incidental": "付帯費用",
   "DG.Gear.Expense.Standard": "標準",
   "DG.Gear.Expense.Unusual": "特別",
   "DG.Gear.Expense.Major": "高額",
   "DG.Gear.Expense.Extreme": "極高額",
-
   "DG.ItemWindow.Bonds.Description": "説明/進展",
   "DG.ItemWindow.Bonds.ScoreTooltip": "スコアが高いほど、エージェントと絆の関係性が強いことを示す。",
-
   "DG.ItemWindow.Motivations.Attributes": "能力値",
   "DG.ItemWindow.Motivations.Motivation": "モチベーション",
   "DG.ItemWindow.Motivations.Description": "説明とノート",
@@ -192,19 +172,16 @@
   "DG.ItemWindow.Motivations.IsDisorderTooltip": "精神障害である場合このボックスをチェックする",
   "DG.ItemWindow.Motivations.DisorderHasBeenCured": "精神障害は\"治癒\"した",
   "DG.ItemWindow.Motivations.DisorderHasBeenCuredTooltip": "セラピーでの幸運ロールでクリティカル成功をすると、精神障害を「治療」することができる。しかし、限界点に達した場合それが次回に再発する可能性がある。Agent's Handbook 78～79ページの「Go To Therapy」を参照。",
-
   "DG.ItemWindow.Gear.Attributes": "能力値",
   "DG.ItemWindow.Gear.Description": "説明",
   "DG.ItemWindow.Gear.NamePlaceholder": "名前",
   "DG.ItemWindow.Gear.Expense": "費用",
   "DG.ItemWindow.Gear.Equipped": "装備",
-
   "DG.ItemWindow.Armor.Description": "説明",
   "DG.ItemWindow.Armor.NamePlaceholder": "名前",
   "DG.ItemWindow.Armor.ArmorRating": "装甲値",
   "DG.ItemWindow.Armor.Expense": "費用",
   "DG.ItemWindow.Armor.Equipped": "装備",
-
   "DG.ItemWindow.Weapons.Description": "説明",
   "DG.ItemWindow.Weapons.NamePlaceholder": "名前",
   "DG.ItemWindow.Weapons.Skill": "技能",
@@ -218,27 +195,21 @@
   "DG.ItemWindow.Weapons.Ammo": "弾 (数量/種類)",
   "DG.ItemWindow.Weapons.Range": "射程",
   "DG.ItemWindow.Weapons.KillRadius": "致命半径",
-
   "DG.ModifySkillRollDialogue.Title": "ロールの修正",
   "DG.ModifySkillRollDialogue.Test": "テスト:",
   "DG.ModifySkillRollDialogue.OriginalTarget": "元の目標値:",
   "DG.ModifySkillRollDialogue.TargetModifier": "目標値修正:",
   "DG.ModifySkillRollDialogue.ModifierTooltip": "技能チェックの目標値にプラスまたはマイナスの修正を加える。",
-
   "DG.ModifyDamageRollDialogue.Weapon": "武器:",
   "DG.ModifyDamageRollDialogue.OuterModifierTooltip": "ここでダイスの式の外を変えられる、結果を2倍にするために使われる。",
   "DG.ModifyDamageRollDialogue.InnerModifierTooltip": "ここでダイスの式の内側を変えられる、結果を「+1」とか、「+1d4」とかにするために使われる。",
-
   "DG.Roll.Inhuman": "人ならざるもの",
   "DG.Tooltip.BreakPoint": "現在の限界点、現在SANがこの値以下に低下した場合にリセットする。初期値はSAN - POW。",
   "DG.Tooltip.BreakPointReset": "限界点を現在SAN - WPにリセットする。",
   "DG.Skills.ritual": "儀式",
-
   "DG.RollMode": "ロールモード",
   "DG.Bonds.Relationship": "関係",
-
   "DG.TypeSkills.Subskills.Painting": "絵画",
-
   "DG.Sheet.BlockHeaders.Attributes": "能力値",
   "DG.Sheet.BlockHeaders.Statistics": "能力値",
   "DG.Sheet.BlockHeaders.PhysicalDescriptionNotes": "身体的特徴とメモ",
@@ -248,7 +219,6 @@
   "DG.Sheet.BlockHeaders.MotivationsAndDisorders": "モチベーションと精神障害",
   "DG.Sheet.BlockHeaders.PersonalInfoCV": "個人情報 / 経歴",
   "DG.Sheet.BlockHeaders.BondsRelationshipsContacts": "絆 / 関係 / 協力者",
-
   "DG.UnnaturalSheet.HideUntrainedSkillsLabel": "初期値の技能を非表示",
   "DG.UnnaturalSheet.NotesLabel": "ノート",
   "DG.UnnaturalSheet.ShortDescriptionFallbackText": "怪物や種類の説明",
@@ -256,33 +226,26 @@
   "DG.UnnaturalSheet.Tabs.NotesTabLabel": "技能・ノート",
   "DG.UnnaturalSheet.Tabs.ItemsTabLabel": "攻撃・能力",
   "DG.NPCSheet.BreakPointAbbreviation": "限界点",
-
   "DG.ImpossibleLanscapes.IHaveSeenThe": "目撃: ",
   "DG.ImpossibleLanscapes.YellowSign": "黄色の印",
   "DG.ImpossibleLanscapes.CorruptionFirstHalf": "腐",
   "DG.ImpossibleLanscapes.CorruptionSecondHalf": "敗",
   "DG.ImpossibleLanscapes.Gift": "ギフト",
   "DG.ImpossibleLanscapes.Insight": "ひらめき",
-
   "DG.VehicleSheet.NotesTabName": "ノート",
   "DG.VehicleSheet.GearTabName": "装備",
   "DG.VehicleSheet.NotesLabel": "ノート",
   "DG.VehicleSheet.DescriptionPlaceHolder": "車両の説明",
-
   "DG.Generic.CheckDamagedBondsBoxUntilNextHomeScene": "次のホームシーンが終了するまで、ダメージを負った絆のボックスにチェックを入れる。",
   "DG.Generic.ClearAll": "全てのチェックを消す",
-
   "DG.Generic.SanDamage": "SANダメージ",
-
   "DG.ItemWindow.Weapons.CustomSkillTarget": "目標値",
   "DG.ItemWindow.Weapons.SkillModifier": "技能修正",
   "DG.ItemWindow.Custom": "カスタム",
-
   "TYPES.Actor.agent": "エージェント",
   "TYPES.Actor.npc": "NPC",
   "TYPES.Actor.unnatural": "非自然",
   "TYPES.Actor.vehicle": "車両",
-
   "TYPES.Item.armor": "防具",
   "TYPES.Item.bond": "絆",
   "TYPES.Item.gear": "装備",
@@ -290,13 +253,10 @@
   "TYPES.Item.weapon": "武器",
   "TYPES.Item.tome": "魔道書",
   "TYPES.Item.ritual": "儀式",
-
   "DG.Gear.Tomes": "魔道書",
   "DG.Gear.Rituals": "儀式",
-
   "DG.Tomes.Name": "名前",
   "DG.Ritual.Name": "名前",
-
   "DG.Tome.Name": "名前",
   "DG.Tome.Language": "言語",
   "DG.Tome.StudyTime": "研究期間",
@@ -308,13 +268,11 @@
   "DG.ItemWindow.Tome.StudySanityDamage": "研究時SANダメージ",
   "DG.ItemWindow.Tome.HandlerOnlyTabHeader": "ハンドラー限定",
   "DG.ItemWindow.Tome.HandlerNotes": "ハンドラーノート",
-
   "DG.ItemWindow.Ritual.ActivationSanityDamage": "実行時SANダメージ",
   "DG.ItemWindow.Ritual.ActivationTime": "実行時間",
   "DG.ItemWindow.Ritual.ActivationCosts": "実行コスト",
   "DG.ItemWindow.Ritual.StudyTime": "研究期間",
   "DG.ItemWindow.Ritual.LearnedSanityDamage": "習得時SANダメージ",
-
   "DG.Skills.ruby.accounting": "けいり",
   "DG.Skills.ruby.alertness": "けいかい",
   "DG.Skills.ruby.anthropology": "じんるいがく",
@@ -353,7 +311,6 @@
   "DG.Skills.ruby.unarmed_combat": "としゅかくとう",
   "DG.Skills.ruby.unnatural": "ひしぜん",
   "DG.Skills.ruby.flight": "ひこう",
-
   "DG.Messages.Skillsmark.Marked": "このスキルはマークされています",
   "DG.Messages.Skillsmark.Tooltip": "エージェントハンドブック29ページ参照"
 }

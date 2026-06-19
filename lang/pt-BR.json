@@ -3,9 +3,7 @@
   "DG.AgentNameFieldTooltip": "SOBRENOME, NOME (OU PSEUDÔNIMO)",
   "DG.RollLuck": "Rolar Sorte",
   "DG.Luck": "Sorte",
-
   "DG.FallbackText.newItem": "Novo {type}",
-
   "DG.Skills.accounting": "Contabilidade",
   "DG.Skills.alertness": "Prontidão",
   "DG.Skills.anthropology": "Antropologia",
@@ -44,7 +42,6 @@
   "DG.Skills.unarmed_combat": "Combate Desarmado",
   "DG.Skills.unnatural": "Antinatural",
   "DG.Skills.flight": "Pilotagem",
-
   "DG.Skills.Tooltip.accounting": "Identificar irregularidades financeiras como ativos ocultos, empresas de fachada ou desvio de recursos.",
   "DG.Skills.Tooltip.alertness": "Perceber perigos ocultos, movimentos sutis ou sons discretos antes que se tornem ameaças.",
   "DG.Skills.Tooltip.anthropology": "Compreender crenças, comportamentos e tabus de culturas e sociedades vivas.",
@@ -82,7 +79,6 @@
   "DG.Skills.Tooltip.swim": "Sobreviver na água sob condições adversas — resgatar outros, escapar ou suportar riscos.",
   "DG.Skills.Tooltip.unarmed_combat": "Imobilizar ou ferir oponentes usando socos, agarrões, chutes e outras técnicas de combate corporal.",
   "DG.Skills.Tooltip.unnatural": "Reconhecer, pesquisar ou recordar verdades sobre entidades e forças além da compreensão humana.",
-
   "DG.Skills.AddTypedOrCustomSkill": "Adicionar Habilidade Personalizada",
   "DG.Skills.AddSkill": "Adicionar Habilidade",
   "DG.Skills.Apply": "Aplicar",
@@ -95,7 +91,6 @@
   "DG.Skills.EditSkill": "Editar Habilidade",
   "DG.Skills.SkillGroup": "Grupo de Habilidade",
   "DG.Skills.SkillName": "Nome da Habilidade",
-
   "DG.TypeSkills.Art": "Arte",
   "DG.TypeSkills.Craft": "Ofício",
   "DG.TypeSkills.ForeignLanguage": "Idioma Estrangeiro",
@@ -103,7 +98,6 @@
   "DG.TypeSkills.Pilot": "Pilotar",
   "DG.TypeSkills.Science": "Ciência",
   "DG.TypeSkills.Other": "Outros",
-
   "DG.TypeSkills.Tooltip.Art": "Criar ou avaliar obras artísticas e identificar falsificações em uma área específica.",
   "DG.TypeSkills.Tooltip.Craft": "Construir, consertar ou sabotar ferramentas ou sistemas especializados, como motores, fechaduras ou fiação.",
   "DG.TypeSkills.Tooltip.ForeignLanguage": "Falar, ler e compreender um idioma específico.",
@@ -111,7 +105,6 @@
   "DG.TypeSkills.Tooltip.Pilot": "Controlar e navegar veículos aéreos, marítimos ou espaciais em situações ou condições críticas.",
   "DG.TypeSkills.Tooltip.Science": "Aplicar conhecimento científico especializado para interpretar ou investigar o mundo físico.",
   "DG.TypeSkills.Tooltip.Other": "Outros.",
-
   "DG.SpecialTraining.Dialog.CreateSpecialTraining": "Adicionar Treinamento Especial",
   "DG.SpecialTraining.Dialog.DropDown.CustomSkills": "Habilidades Personalizadas",
   "DG.SpecialTraining.Dialog.DropDown.Skills": "Habilidades",
@@ -120,7 +113,6 @@
   "DG.SpecialTraining.Dialog.NameLabel": "Nome",
   "DG.SpecialTraining.Dialog.SkillLabel": "Habilidade ou Estatística",
   "DG.SpecialTraining.Dialog.Title": "Criar/Editar Treinamento Especial",
-
   "DG.Attributes.HP": "PV",
   "DG.Attributes.WP": "FV",
   "DG.Attributes.SAN": "SAN",
@@ -130,7 +122,6 @@
   "DG.Attributes.int": "INT",
   "DG.Attributes.pow": "POD",
   "DG.Attributes.cha": "CAR",
-
   "DG.Attributes.Tooltip.HP": "Pontos de Vida (PV) indicam a saúde física. Um personagem fica inconsciente com 2 PV e morre ao chegar a 0 PV.",
   "DG.Attributes.Tooltip.WP": "Pontos de Força de Vontade (FV) indicam a resistência mental e a determinação. Agentes precisam de FV para continuar apesar do cansaço ou de situações mentalmente extenuantes. Veja a página 47 do Manual do Agente para mais detalhes.",
   "DG.Attributes.Tooltip.SAN": "Pontos de Sanidade (SAN) indicam a conexão com a humanidade e com a realidade como a maioria das pessoas a percebe. Clique para rolar um teste de SAN.",
@@ -140,7 +131,6 @@
   "DG.Attributes.Tooltip.int": "Veja a página 19 do Manual do Agente — Inteligência.",
   "DG.Attributes.Tooltip.pow": "Veja a página 19 do Manual do Agente — Poder.",
   "DG.Attributes.Tooltip.cha": "Veja a página 19 do Manual do Agente — Carisma.",
-
   "DG.Navigation.Agent.skills": "Habilidades",
   "DG.Navigation.Agent.physical": "Estatísticas",
   "DG.Navigation.Agent.motivations": "Mental",
@@ -151,7 +141,6 @@
   "DG.Navigation.NPC.gear": "Ataques & Habilidades",
   "DG.Navigation.Vehicle.gear": "Equipamento",
   "DG.Navigation.Vehicle.notes": "Notas",
-
   "DG.About.Changelog": "CHANGELOG (ONLINE)",
   "DG.About.Copyright": "Publicado pela Arc Dream Publishing por meio de acordo com a Delta Green Partnership. A propriedade intelectual conhecida como Delta Green é uma marca registrada e protegida por direitos autorais pertencente à Delta Green Partnership, que licenciou seu uso neste material.",
   "DG.About.License": "O conteúdo deste sistema é licenciado de acordo com os termos do arquivo de <a href=\"systems/deltagreen/LICENSE.txt\">licença</a> incluído, com exceção dos elementos que fazem parte da propriedade intelectual de Delta Green.",
@@ -159,9 +148,7 @@
   "DG.About.OnlineHelpTooltip": "Abrir navegador com ajuda online GitHub",
   "DG.About.OnlineBugTracker": "Dúvidas, Relatos de Erros ou Solicitações de Funcionalides (ONLINE)",
   "DG.About.OnlineBugTrackerTooltip": "Abrir navegador com rastreador de erros GitHub",
-
   "DG.Roll.Rolling": "Rolando",
-  "DG.Roll.Target": "Alvo: ",
   "DG.Roll.Success": "Sucesso",
   "DG.Roll.Failure": "Falha",
   "DG.Roll.CriticalSuccess": "Sucesso Crítico!",
@@ -173,14 +160,11 @@
   "DG.Roll.RollingDamageFor": "Rolando DANO para",
   "DG.Roll.Or": "Ou",
   "DG.Roll.Roll": "Rolar",
-
   "DG.Physical.Wounds": "Ferimentos",
   "DG.Physical.FirstAidLabel": "Já houve tentativa de Primeiro Socorros: ",
   "DG.Physical.Exhausted": "Exausto(a):",
   "DG.Physical.ExhaustionPenalty": "Penalidade:",
-
   "DG.Generic.AddButtonLabel": "Adicionar",
-
   "DG.Mental.BreakingPoint": "Ponto de Ruptura: ",
   "DG.Mental.Tooltip.BreakingPoint": "O Ponto de Ruptura é o valor exato de SAN no qual seu Agente foi suficientemente desgastado pelo trauma a ponto de desenvolver um novo distúrbio mental de longo prazo. Se a SAN atingir esse valor ou menos, subtraia o POD do Agente da nova SAN. Esse resultado passa a ser o novo Ponto de Ruptura do Agente.",
   "DG.Mental.Reset": "Resetar",
@@ -193,7 +177,6 @@
   "DG.Mental.AdaptedToHelplessness": "Adaptado ao Desamparo",
   "DG.Mental.Motivations": "Motivações",
   "DG.Mental.Disorders": "Distúrbios",
-
   "DG.Gear.Weapons": "Armas",
   "DG.Gear.WeaponTypes.Firearms": "Armas de Fogo",
   "DG.Gear.WeaponTypes.Melee": "Armas Corpo a Corpo",
@@ -204,7 +187,6 @@
   "DG.Gear.ArmorPiercing": "Perfuração de Armadura",
   "DG.Gear.ArmorRating": "Categoria de Armadura",
   "DG.Gear.Equipped": "Equipado",
-
   "DG.CV.Sex": "Sexo",
   "DG.CV.SexPlaceholder": "Sexo",
   "DG.CV.AgeAndDoB": "Idade e Data de Nascimento",
@@ -215,12 +197,10 @@
   "DG.CV.NationalityPlaceholder": "Nacionalidade",
   "DG.CV.Education": "Educação",
   "DG.CV.EducationPlaceholder": "Educação ou Treinamento",
-
   "DG.Bonds.Bond": "Laço",
   "DG.Bonds.Name": "Nome",
   "DG.Bonds.Score": "Valor",
   "DG.Bonds.NewBond": "Novo Laço",
-
   "DG.Tooltip.MaximumHP": "A Vida máxima é a média de FOR + CON, arredondado para CIMA.",
   "DG.Tooltip.MaximumWP": "FV máximo é igual a POD.",
   "DG.Tooltip.CurrentSanityPartOne": "Sanidade atual, atual ponto de ruptura é ",
@@ -236,17 +216,14 @@
   "DG.Tooltip.AdaptedToHelplessness": "Estar adaptado ao desamparo significa que a motivação pessoal do seu agente sofre à medida que ele se afasta do mundo ao seu redor. Assim que seu Agente se adaptar ao desamparo, o agente perde permanentemente 1D6 de POD.",
   "DG.Tooltip.ToggleEquippedState": "Clique para alternar se este item está equipado ou não.",
   "DG.Tooltip.Exhaustion": "Um agente que trabalha por muito tempo ou enfrenta perigo extremo e ferimentos sem descansar fica exausto. Quando isso entra em jogo depende do Handler, mas uma boa regra é que passar uma noite sem dormir ou se recusar a descansar após perder SAN ou PV leva à exaustão.",
-
   "DG.Gear.Expense.NA": "N/A",
   "DG.Gear.Expense.Incidental": "Incidental",
   "DG.Gear.Expense.Standard": "Padrão",
   "DG.Gear.Expense.Unusual": "Incomum",
   "DG.Gear.Expense.Major": "Maior",
   "DG.Gear.Expense.Extreme": "Extremo",
-
   "DG.ItemWindow.Bonds.Description": "Descrição/Desenvolvimentos",
   "DG.ItemWindow.Bonds.ScoreTooltip": "Uma pontuação mais alta representa uma relação mais forte entre o agente e o vínculo.",
-
   "DG.ItemWindow.Motivations.Attributes": "Atributos",
   "DG.ItemWindow.Motivations.Motivation": "Motivação",
   "DG.ItemWindow.Motivations.Description": "Descrição/Notas",
@@ -257,19 +234,16 @@
   "DG.ItemWindow.Motivations.IsDisorderTooltip": "Marque isso se adicionar um distúrbio ou se uma motivação existente foi perdida devido ao ganho de um distúrbio.",
   "DG.ItemWindow.Motivations.DisorderHasBeenCured": "Distúrbio foi \"Curado\"",
   "DG.ItemWindow.Motivations.DisorderHasBeenCuredTooltip": "Um sucesso crítico em um teste de sorte na terapia pode 'curar' um distúrbio. No entanto, pode retornar na próxima vez que um ponto de ruptura for atingido. Consulte a seção Terapia nas páginas 78-79 do Manual do Agente.",
-
   "DG.ItemWindow.Gear.Attributes": "Atributos",
   "DG.ItemWindow.Gear.Description": "Descrição",
   "DG.ItemWindow.Gear.NamePlaceholder": "Nome",
   "DG.ItemWindow.Gear.Expense": "Custo",
   "DG.ItemWindow.Gear.Equipped": "Equipado",
-
   "DG.ItemWindow.Armor.Description": "Descrição",
   "DG.ItemWindow.Armor.NamePlaceholder": "Nome",
   "DG.ItemWindow.Armor.ArmorRating": "Categoria de Armadura",
   "DG.ItemWindow.Armor.Expense": "Custo",
   "DG.ItemWindow.Armor.Equipped": "Equipado",
-
   "DG.ItemWindow.Weapons.Description": "Descrição",
   "DG.ItemWindow.Weapons.NamePlaceholder": "Nome",
   "DG.ItemWindow.Weapons.Skill": "Habilidade",
@@ -283,27 +257,21 @@
   "DG.ItemWindow.Weapons.Ammo": "Munição (quantidade/tipo)",
   "DG.ItemWindow.Weapons.Range": "Alcance",
   "DG.ItemWindow.Weapons.KillRadius": "Raio de Morte",
-
   "DG.ModifySkillRollDialogue.Title": "Modificar Rolagem",
   "DG.ModifySkillRollDialogue.Test": "Teste:",
   "DG.ModifySkillRollDialogue.OriginalTarget": "Alvo Original:",
   "DG.ModifySkillRollDialogue.TargetModifier": "Modificar Alvo (+/-):",
   "DG.ModifySkillRollDialogue.ModifierTooltip": "Dê um modificador positivo ou negativo aqui para adicionar/subtrair do alvo para o teste de perícia.",
-
   "DG.ModifyDamageRollDialogue.Weapon": "Arma:",
   "DG.ModifyDamageRollDialogue.OuterModifierTooltip": "Use este campo para modificar a parte externa da fórmula, como dobrar o resultado.",
   "DG.ModifyDamageRollDialogue.InnerModifierTooltip": "Use este campo para adicionar um modificador simples como '+1' ou outro termo de dados como '+1d4'.",
-
   "DG.Roll.Inhuman": "Desumano",
   "DG.Tooltip.BreakPoint": "O ponto de ruptura atual, redefinido quando a sanidade atual cair para ou abaixo desse valor. O ponto de ruptura inicial é SAN - POW.",
   "DG.Tooltip.BreakPointReset": "Redefina o ponto de ruptura para ser SAN - FV.",
   "DG.Skills.ritual": "Ritual",
-
   "DG.RollMode": "Modo de Rolagem",
   "DG.Bonds.Relationship": "Relacionamento",
-
   "DG.TypeSkills.Subskills.Painting": "Pintura",
-
   "DG.Sheet.BlockHeaders.Attributes": "ATRIBUTOS",
   "DG.Sheet.BlockHeaders.Statistics": "ESTATÍSTICAS",
   "DG.Sheet.BlockHeaders.PhysicalDescriptionNotes": "Descrição Física/Notas",
@@ -313,50 +281,39 @@
   "DG.Sheet.BlockHeaders.MotivationsAndDisorders": "MOTIVAÇÕES E DISTÚRBIOS",
   "DG.Sheet.BlockHeaders.PersonalInfoCV": "INFORMAÇÕES PESSOAIS / C.V.",
   "DG.Sheet.BlockHeaders.BondsRelationshipsContacts": "LAÇOS / RELACIONAMENTOS / CONTATOS",
-
   "DG.AgentSheet.ProfessionPlaceholder": "PROFISSÂO",
-
   "DG.UnnaturalSheet.HideUntrainedSkillsLabel": "Esconder Habilidades não Treinadas",
   "DG.UnnaturalSheet.NotesLabel": "Notas",
   "DG.UnnaturalSheet.ShortDescriptionPlaceholder": "Descrição de Criatura ou Tipo de Criatura",
   "DG.UnnaturalSheet.ShowUntrainedSkillsLabel": "Mostrar Habilidades não Treinadas",
   "DG.UnnaturalSheet.Tabs.NotesTabLabel": "Habilidades & Notas",
   "DG.UnnaturalSheet.Tabs.ItemsTabLabel": "Ataques & Habilidades",
-
   "DG.NPCSheet.BreakPointAbbreviation": "PR",
-
   "DG.ImpossibleLanscapes.IHaveSeenThe": "EU JÁ VI O",
   "DG.ImpossibleLanscapes.YellowSign": "SÍMBOLO AMARELO",
   "DG.ImpossibleLanscapes.CorruptionFirstHalf": "Corrup",
   "DG.ImpossibleLanscapes.CorruptionSecondHalf": "ção",
   "DG.ImpossibleLanscapes.Gift": "Dom",
   "DG.ImpossibleLanscapes.Insight": "Intuição",
-
   "DG.VehicleSheet.NotesTabName": "Notas",
   "DG.VehicleSheet.GearTabName": "Equipamentos",
   "DG.VehicleSheet.NotesLabel": "NOTAS",
   "DG.VehicleSheet.DescriptionPlaceHolder": "Descrição do Veículo",
-
   "DG.Generic.CheckDamagedBondsBoxUntilNextHomeScene": "Marcar Vínculos Danificados até a Próxima Cena em Casa",
   "DG.Generic.ClearAll": "Limpar Tudo",
-
   "DG.Generic.SanDamage": "Dano de SAN",
-
   "DG.ItemWindow.Weapons.CustomSkillTarget": "Alvo",
   "DG.ItemWindow.Weapons.SkillModifier": "Modificador de Habilidade",
   "DG.ItemWindow.Custom": "Personalizado",
-
   "DG.Sheet.class.item": "Ficha de item",
   "DG.Sheet.class.agent": "Ficha de Agente",
   "DG.Sheet.class.npc": "Ficha de PNJ",
   "DG.Sheet.class.unnatural": "Ficha de Antinatural",
   "DG.Sheet.class.vehicle": "Ficha de Veículo",
-
   "TYPES.Actor.agent": "Agente",
   "TYPES.Actor.npc": "PNJ",
   "TYPES.Actor.unnatural": "Antinatural",
   "TYPES.Actor.vehicle": "Veículo",
-
   "TYPES.Item.armor": "Armadura",
   "TYPES.Item.bond": "Vinculo",
   "TYPES.Item.gear": "Equipamento",
@@ -364,13 +321,10 @@
   "TYPES.Item.weapon": "Arma",
   "TYPES.Item.tome": "Tomo",
   "TYPES.Item.ritual": "Ritual",
-
   "DG.Gear.Tomes": "TOMOS",
   "DG.Gear.Rituals": "RITUAIS",
-
   "DG.Tomes.Name": "Nome",
   "DG.Ritual.Name": "Nome",
-
   "DG.Tome.Name": "Nome",
   "DG.Tome.Language": "Idioma",
   "DG.Tome.StudyTime": "Tempo de Estudo",
@@ -382,59 +336,45 @@
   "DG.ItemWindow.Tome.StudySanityDamage": "Dano de SAN ao Estudar",
   "DG.ItemWindow.Tome.HandlerOnlyTabHeader": "Chefe Somente",
   "DG.ItemWindow.Tome.HandlerNotes": "Notas do Chefe",
-
   "DG.ItemWindow.Ritual.ActivationSanityDamage": "Dano de SAN na Ativação",
   "DG.ItemWindow.Ritual.ActivationTime": "Tempo de Ativação",
   "DG.ItemWindow.Ritual.ActivationCosts": "Custos de Ativação",
   "DG.ItemWindow.Ritual.StudyTime": "Tempo de Estudo",
   "DG.ItemWindow.Ritual.LearnedSanityDamage": "Dano de SAN ao Aprender",
-
   "DG.MissionPaused": "Operação Pausada",
-
   "DG.Settings.charactersheet.name": "Estilo da Ficha de Personagem",
   "DG.Settings.charactersheet.hint": "Escolha como as fichas devem ser estilizadas. Programa tem um visual governamental moderno, enquanto Caubois/Fora-da-lei remete a um estilo mais antigo e áspero, como datilografado.",
   "DG.Settings.charactersheet.cowboys": "Os Caubois",
   "DG.Settings.charactersheet.outlaws": "Os Fora-da-lei",
   "DG.Settings.charactersheet.program": "O Programa",
-
   "DG.Settings.sortskills.name": "Ordenar Perícias por Coluna?",
   "DG.Settings.sortskills.hint": "Marcado: ordena por coluna. Desmarcado: ordena por linha.",
-
   "DG.Settings.skillTooltipDisplay.name": "Exibir dicas (tooltips)",
   "DG.Settings.skillTooltipDisplay.hint": "Escolha quando exibir as dicas das perícias nas fichas dos Agentes.",
   "DG.Settings.skillTooltipDisplay.hover": "Ao passar o mouse (padrão)",
   "DG.Settings.skillTooltipDisplay.never": "Nunca",
   "DG.Settings.skillTooltipDisplay.hoverShift": "Ao passar o mouse + Shift",
-
   "DG.Settings.keepSanityPrivate.name": "Manter Sanidade Privada",
   "DG.Settings.keepSanityPrivate.hint": "Oculta a Sanidade dos jogadores tanto nas fichas quanto nas rolagens.",
-
   "DG.Settings.skillImprovementFormula.name": "Rolagem Padrão de Aprimoramento de Perícia",
   "DG.Settings.skillImprovementFormula.hint": "Padrão: 1d4. Houve múltiplas erratas sobre isso; escolha a opção que melhor se adequa ao ritmo do seu jogo.",
   "DG.Settings.skillImprovementFormula.1": "+1% Fixo",
   "DG.Settings.skillImprovementFormula.2": "+1D3%",
   "DG.Settings.skillImprovementFormula.3": "+1D4%",
   "DG.Settings.skillImprovementFormula.4": "+1D4-1%",
-
   "DG.Settings.alwaysShowHypergeometrySectionForPlayers.name": "Exibir Seção de Hipergeometria",
   "DG.Settings.alwaysShowHypergeometrySectionForPlayers.hint": "Sempre exibe a seção de itens de Hipergeometria (ex.: Rituais e Tomos) nas fichas dos Agentes, mesmo que o Agente não possua itens desse tipo.",
-
   "DG.Settings.showImpossibleLandscapesContent.name": "Exibir Conteúdo de Impossible Landscapes",
   "DG.Settings.showImpossibleLandscapesContent.hint": "Exibe campos específicos de Impossible Landscapes nas fichas dos Agentes. Esses campos são sempre visíveis apenas para o Chefe, mesmo com esta opção ativada.",
-
   "DG.Settings.skillFailure.name": "Marcar Falha de Perícia Automaticamente",
   "DG.Settings.skillFailure.hint": "Ative esta opção para marcar automaticamente a caixa de falha ao falhar em uma perícia. O Chefe pode desfazer a ação a partir da mensagem de chat da rolagem.",
-
   "DG.Settings.Saved": "As configurações atuais foram salvas.",
-
   "DG.SettingsMenu.automation.name": "Menu de Automação",
   "DG.SettingsMenu.automation.label": "Menu de Automação",
   "DG.SettingsMenu.automation.title": "Configurações de Automação",
-
   "DG.SettingsMenu.handler.name": "Configurações do Chefe",
   "DG.SettingsMenu.handler.label": "Configurações do Chefe",
   "DG.SettingsMenu.handler.title": "Configurações Exclusivas do Chefe",
-
   "DG.Messages.Skillsmark.Marked": "Esta perícia é marcada",
   "DG.Messages.Skillsmark.Tooltip": "Veja pág. 29 do Manual do Agente"
 }

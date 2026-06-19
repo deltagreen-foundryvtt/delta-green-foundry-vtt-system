@@ -1,4 +1,9 @@
 /* Delta Green stylized chat cards */
+
+.chat-message.dg-chat-card-message > .message-header {
+  display: none;
+}
+
 .deltagreen.chat-card.dg-chat-card {
   border: 2px solid var(--dg-ink);
   border-radius: 3px;
@@ -6,16 +11,26 @@
   margin: 0;
 }
 
+.deltagreen.chat-card.dg-chat-card.cowboy-style {
+  font-family: "SpecialElite", sans-serif;
+}
+
+.deltagreen.chat-card.dg-chat-card.outlaw-style,
+.deltagreen.chat-card.dg-chat-card.program-style {
+  font-family: "PublicSans", sans-serif;
+}
+
 .dg-chat-card__header {
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 0;
+  gap: 8px;
   background: var(--dg-surface-dark);
   color: var(--dg-on-dark);
-  padding: 6px 0;
+  padding: 6px 8px;
 }
 
+.dg-chat-card__portrait-slot,
 .dg-chat-card__icon-slot {
   flex: 0 0 auto;
   display: flex;
@@ -27,40 +42,89 @@
   min-width: 40px;
   aspect-ratio: 1 / 1;
   box-sizing: border-box;
-  margin-left: 8px;
   overflow: hidden;
 }
 
-.dg-chat-card__icon {
+.dg-chat-card__portrait,
+.dg-chat-card__icon.dg-chat-card__portrait {
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center center;
 }
 
-.dg-chat-card__titles {
+.dg-chat-card__identity {
   flex: 1 1 auto;
   min-width: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 0 8px 0 8px;
-}
-
-.dg-chat-card__speaker {
-  margin: 0;
-  font-size: 0.95rem;
-  font-weight: bold;
-  color: var(--dg-on-dark);
   line-height: 1.2;
 }
 
-.dg-chat-card__label {
-  font-size: 0.8rem;
+.dg-chat-card__speaker {
+  font-size: 0.95rem;
+  font-weight: bold;
   color: var(--dg-on-dark);
-  line-height: 1.25;
-  margin-top: 2px;
+}
+
+.dg-chat-card__author {
+  font-size: 0.75rem;
+  color: var(--dg-on-dark);
+  opacity: 0.85;
+  margin-top: 1px;
+}
+
+.dg-chat-card__metadata {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  font-size: 0.75rem;
+  color: var(--dg-on-dark);
+  opacity: 0.85;
+  text-align: right;
+
+  time {
+    color: inherit;
+  }
+}
+
+.dg-chat-card__roll-label {
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  line-height: 1.3;
+  border-bottom: 1px solid var(--dg-ink);
+}
+
+.dg-chat-card__roll-label .dg-chat-card__target-info,
+.dg-chat-card__roll-label .dg-chat-card__wp-change {
+  cursor: help;
+}
+
+.dg-chat-card__roll-label .dg-chat-card__ae-indicator {
+  margin-left: 0.2em;
+  font-size: 0.85em;
+  vertical-align: baseline;
+
+  + .dg-chat-card__ae-indicator {
+    margin-left: 0.05em;
+  }
+}
+
+.dg-chat-card__roll-label .dg-chat-card__armor-piercing {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  white-space: nowrap;
+  vertical-align: baseline;
+
+  img {
+    display: inline-block;
+    flex: 0 0 auto;
+  }
 }
 
 .dg-chat-card__body {
@@ -74,25 +138,6 @@
 
 .dg-chat-card__body .dice-roll {
   margin-top: 0.5em;
-}
-
-/* Hide redundant Foundry header fields; card supplies speaker/label. Keep message-metadata
-   (delete/dismiss) — core ChatLog handles data-action="deleteMessage" on .message-delete. */
-.chat-message:has(.dg-chat-card) .message-header .message-sender,
-.chat-message:has(.dg-chat-card) .message-header .flavor-text,
-.chat-message:has(.dg-chat-card) .message-header .whisper-to,
-.chat-message.dg-chat-card-message .message-header .message-sender,
-.chat-message.dg-chat-card-message .message-header .flavor-text,
-.chat-message.dg-chat-card-message .message-header .whisper-to {
-  display: none;
-}
-
-.chat-message:has(.dg-chat-card) .message-header,
-.chat-message.dg-chat-card-message .message-header {
-  justify-content: flex-end;
-  min-height: 0;
-  margin: 0;
-  padding: 0 4px 2px;
 }
 
 .rollback-section {
