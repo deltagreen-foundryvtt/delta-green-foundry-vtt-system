@@ -3,9 +3,7 @@
   "DG.AgentNameFieldTooltip": "COGNOM, NOM (ALIES O NOM EN CLAU EN CAS DE SER NECESSARI)",
   "DG.RollLuck": "Tira sort",
   "DG.Luck": "Sort",
-
   "DG.FallbackText.ProfessionAndOrRank": "Professió (Rang si aplica)",
-
   "DG.Skills.accounting": "Comptabilitat",
   "DG.Skills.alertness": "Alerta",
   "DG.Skills.anthropology": "Antropologia",
@@ -44,14 +42,12 @@
   "DG.Skills.unarmed_combat": "Combat sense armes",
   "DG.Skills.unnatural": "Sobrenatural",
   "DG.Skills.flight": "Flight",
-
   "DG.Skills.AddTypedOrCustomSkill": "Afegir tipus o habilitat personalitzada",
   "DG.Skills.AddSkill": "Afegir habilitat",
   "DG.Skills.EditTypedOrCustomSkill": "Edit Typed or Custom Skill",
   "DG.Skills.EditSkill": "Edit Skill",
   "DG.Skills.SkillGroup": "Habilitat grupal",
   "DG.Skills.SkillName": "Nom de l'habilitat",
-
   "DG.TypeSkills.Art": "Art",
   "DG.TypeSkills.Craft": "Ofici",
   "DG.TypeSkills.ForeignLanguage": "Idioma",
@@ -59,7 +55,6 @@
   "DG.TypeSkills.Pilot": "Pilotar",
   "DG.TypeSkills.Science": "Ciència",
   "DG.TypeSkills.Other": "Altre",
-
   "DG.Attributes.HP": "PV",
   "DG.Attributes.WP": "PVOL",
   "DG.Attributes.SAN": "SENY",
@@ -69,21 +64,17 @@
   "DG.Attributes.int": "INT",
   "DG.Attributes.pow": "POD",
   "DG.Attributes.cha": "CAR",
-
   "DG.Navigation.Skills": "Habilitats",
   "DG.Navigation.Physical": "Físic",
   "DG.Navigation.Mental": "Mental",
   "DG.Navigation.Gear": "Equip",
   "DG.Navigation.CV": "C.V.",
   "DG.Navigation.Contacts": "Contactes",
-
   "DG.About.OnlineHelp": "Documentació del sistema oberta en (EN LÍNEA)",
   "DG.About.OnlineHelpTooltip": "Inicia el navegador amb ajuda en línea de Github",
   "DG.About.OnlineBugTracker": "Preguntes, informes d'errors o sol·licituts de funcions (EN LÍNEA)",
   "DG.About.OnlineBugTrackerTooltip": "Inicia el navegador el rastrejador d'errors de Github. ",
-
   "DG.Roll.Rolling": "Tirant",
-  "DG.Roll.Target": "Objectiu: ",
   "DG.Roll.Success": "Èxit",
   "DG.Roll.Failure": "Fallada",
   "DG.Roll.Critical": "Crític",
@@ -94,14 +85,11 @@
   "DG.Roll.RollingDamageFor": "Tirant dany per",
   "DG.Roll.Or": "O",
   "DG.Roll.Roll": "Tirar",
-
   "DG.Physical.Wounds": "Ferides",
   "DG.Physical.FirstAidLabel": "Primers auxilis ja aplicats: ",
   "DG.Physical.Exhausted": "Exhausted:",
   "DG.Physical.ExhaustionPenalty": "Penalty:",
-
   "DG.Generic.AddButtonLabel": "Afegir",
-
   "DG.Mental.BreakingPoint": "Punt de trencament: ",
   "DG.Mental.Reset": "Esborrar",
   "DG.Mental.SanityLossIncidentsLabel": "Incidents o pèrdua de SENY sense embogir",
@@ -111,7 +99,6 @@
   "DG.Mental.AdaptedToHelplessness": "Adaptat a la impotència",
   "DG.Mental.Motivations": "Motivacions",
   "DG.Mental.Disorders": "Desordres",
-
   "DG.Gear.Weapons": "ARMES",
   "DG.Gear.Armor": "ARMADURA",
   "DG.Gear.OtherGear": "ALTRE EQUIP",
@@ -120,7 +107,6 @@
   "DG.Gear.ArmorPiercing": "Perforació d'armadura",
   "DG.Gear.ArmorRating": "Classificació d'armadura",
   "DG.Gear.Equipped": "Equipat",
-
   "DG.CV.Sex": "Sexe",
   "DG.CV.SexPlaceholder": "Sexe",
   "DG.CV.AgeAndDoB": "Edat y D.D.N.",
@@ -131,12 +117,10 @@
   "DG.CV.NationalityPlaceholder": "Nacionalitat",
   "DG.CV.Education": "Educació",
   "DG.CV.EducationPlaceholder": "Educació o entrenament",
-
   "DG.Bonds.Bond": "Vincle",
   "DG.Bonds.Name": "Nom",
   "DG.Bonds.Score": "Puntuació",
   "DG.Bonds.NewBond": "Nou vincle",
-
   "DG.Attributes.Tooltip.HP": "Punts de vida, un personatge cau inconscient ales 2 PV i mor amb 0 PV.",
   "DG.Tooltip.MaximumHP": "La salut màxima és el promig de FOR + CON, arrodonint avall.",
   "DG.Attributes.Tooltip.WP": "Els punts de voluntat són el combustible mental. Els necessiten per tirar endavant tot i l'esgotament o le situacions mentals greus. Consulta la pàgina 47 del manual de l'agent per més detalls.",
@@ -155,17 +139,14 @@
   "DG.Tooltip.AdaptedToHelplessness": "Estar adaptat a la impotència significa que l'impuls personal de l'agent s'allunya del món que el rodeja. Perd permanentement 1D6 POD. ",
   "DG.Tooltip.ToggleEquippedState": "Fes click per alternar si aquest item està equipat o no. ",
   "DG.Tooltip.Exhaustion": "An Agent who works too long or faces extreme danger and injury without resting becomes exhausted. When this comes into play is up to the Handler, but a good rule of thumb is that going a night without sleep or refusing to rest after losing SAN or Hit Points leads to exhaustion.",
-
   "DG.Gear.Expense.NA": "N/A",
   "DG.Gear.Expense.Incidental": "Accidental",
   "DG.Gear.Expense.Standard": "Estàndar",
   "DG.Gear.Expense.Unusual": "Inusual",
   "DG.Gear.Expense.Major": "Destacat",
   "DG.Gear.Expense.Extreme": "Extrem",
-
   "DG.ItemWindow.Bonds.Description": "Descripció / Desenvolupament ",
   "DG.ItemWindow.Bonds.ScoreTooltip": "Una puntuació més alta representa una relació més forta entre l'agente i el vincle. ",
-
   "DG.ItemWindow.Motivations.Attributes": "Atributs",
   "DG.ItemWindow.Motivations.Motivation": "Motivació",
   "DG.ItemWindow.Motivations.Description": "Descripció / Notes",
@@ -176,19 +157,16 @@
   "DG.ItemWindow.Motivations.IsDisorderTooltip": "Marca aquesta opció si afageix un trastorn o si ha perdut una motivació.",
   "DG.ItemWindow.Motivations.DisorderHasBeenCured": "El trastorn s'ha curat.",
   "DG.ItemWindow.Motivations.DisorderHasBeenCuredTooltip": "Un èxito crític en una tirada de sort terapèutica pot curar un trastorn. Tot i així, pot tornar la pròxima vegada que s'arribi a un punt de ruptura. ",
-
   "DG.ItemWindow.Gear.Attributes": "Atributs",
   "DG.ItemWindow.Gear.Description": "Descripció",
   "DG.ItemWindow.Gear.NamePlaceholder": "Nom",
   "DG.ItemWindow.Gear.Expense": "Despesa",
   "DG.ItemWindow.Gear.Equipped": "Equipat",
-
   "DG.ItemWindow.Armor.Description": "Descripció",
   "DG.ItemWindow.Armor.NamePlaceholder": "Nom",
   "DG.ItemWindow.Armor.ArmorRating": "Nivell armadura",
   "DG.ItemWindow.Armor.Expense": "Despesa",
   "DG.ItemWindow.Armor.Equipped": "Equipat",
-
   "DG.ItemWindow.Weapons.Description": "Descripció",
   "DG.ItemWindow.Weapons.NamePlaceholder": "Nom",
   "DG.ItemWindow.Weapons.Skill": "Habilitat",
@@ -202,27 +180,21 @@
   "DG.ItemWindow.Weapons.Ammo": "Munició (Quantitat/Tipus)",
   "DG.ItemWindow.Weapons.Range": "Abast",
   "DG.ItemWindow.Weapons.KillRadius": "Radi de mort",
-
   "DG.ModifySkillRollDialogue.Title": "Modificar tirada",
   "DG.ModifySkillRollDialogue.Test": "Test:",
   "DG.ModifySkillRollDialogue.OriginalTarget": "Objectiu original:",
   "DG.ModifySkillRollDialogue.TargetModifier": "Modificar objectiu:",
   "DG.ModifySkillRollDialogue.ModifierTooltip": "Donar un modificador positiu o negatiu aquí per sumar o restar al objectiu en la tirada d'habilitats.",
-
   "DG.ModifyDamageRollDialogue.Weapon": "Arma:",
   "DG.ModifyDamageRollDialogue.OuterModifierTooltip": "Utilitza aquest camp per modificar la fòrmula, com duplicar el resultat.",
   "DG.ModifyDamageRollDialogue.InnerModifierTooltip": "Utilitza aquest camp per afegir un modificar com +1 o un altre terma com +1d4.",
-
   "DG.Roll.Inhuman": "Inhumà",
   "DG.Tooltip.BreakPoint": "El punt de trencament actual, actualitzar quan el seny actual sigui igual a aquest valor. El punt de trencament inciial és SENY - POD.",
   "DG.Tooltip.BreakPointReset": "Actualitzar el punt de trencament al valor actual de SENY - PVOL.",
   "DG.Skills.ritual": "Ritual",
-
   "DG.RollMode": "Modo rollo",
   "DG.Bonds.Relationship": "Relació",
-
   "DG.TypeSkills.Subskills.Painting": "Pintar",
-
   "DG.Sheet.BlockHeaders.Attributes": "ATTRIBUTES",
   "DG.Sheet.BlockHeaders.Statistics": "STATISTICS",
   "DG.Sheet.BlockHeaders.PhysicalDescriptionNotes": "Descripció física/notes",
@@ -232,47 +204,38 @@
   "DG.Sheet.BlockHeaders.MotivationsAndDisorders": "MOTIVATIONS AND DISORDERS",
   "DG.Sheet.BlockHeaders.PersonalInfoCV": "PERSONAL INFORMATION / CV",
   "DG.Sheet.BlockHeaders.BondsRelationshipsContacts": "BONDS / RELATIONSHIPS / CONTACTS",
-
   "DG.UnnaturalSheet.HideUntrainedSkillsLabel": "Amagar habilitats no entrenades",
   "DG.UnnaturalSheet.NotesLabel": "Notes",
   "DG.UnnaturalSheet.ShortDescriptionFallbackText": "Descripció de la criatura o tipus de criatura",
   "DG.UnnaturalSheet.Tabs.NotesTabLabel": "Habilitats i notes",
   "DG.UnnaturalSheet.Tabs.ItemsTabLabel": "Atacs i equipament",
   "DG.NPCSheet.BreakPointAbbreviation": "PT",
-
   "DG.ImpossibleLanscapes.IHaveSeenThe": "I HAVE SEEN THE",
   "DG.ImpossibleLanscapes.YellowSign": "YELLOW SIGN",
   "DG.ImpossibleLanscapes.CorruptionFirstHalf": "Corrup",
   "DG.ImpossibleLanscapes.CorruptionSecondHalf": "tion",
   "DG.ImpossibleLanscapes.Gift": "Gift",
   "DG.ImpossibleLanscapes.Insight": "Insight",
-
   "DG.VehicleSheet.NotesTabName": "Notes",
   "DG.VehicleSheet.GearTabName": "Gear",
   "DG.VehicleSheet.NotesLabel": "NOTES",
   "DG.VehicleSheet.DescriptionPlaceHolder": "Vehicle Description",
-
   "DG.Generic.CheckDamagedBondsBoxUntilNextHomeScene": "Check a damaged Bond's box until the next Home Scene ends.",
   "DG.Generic.ClearAll": "Clear All",
-
   "DG.Generic.SanDamage": "SAN Damage",
-
   "DG.ItemWindow.Weapons.CustomSkillTarget": "Target",
   "DG.ItemWindow.Weapons.SkillModifier": "Skill Modifier",
   "DG.ItemWindow.Custom": "Custom",
-
   "TYPES.Item.weapon": "Arma",
   "TYPES.Item.armor": "Armadura",
   "TYPES.Item.motivation": "Motivació",
   "TYPES.Item.bond": "Vincle",
   "TYPES.Item.gear": "Equip",
-
   "DG.ItemWindow.Ritual.ActivationSanityDamage": "Activation SAN Damage",
   "DG.ItemWindow.Ritual.ActivationTime": "Activation Time",
   "DG.ItemWindow.Ritual.ActivationCosts": "Activation Costs",
   "DG.ItemWindow.Ritual.StudyTime": "Study Time",
   "DG.ItemWindow.Ritual.LearnedSanityDamage": "Learn SAN Damage",
-
   "DG.Messages.Skillsmark.Marked": "Aquesta habilitat està marcada",
   "DG.Messages.Skillsmark.Tooltip": "Vegeu la p. 29 del Manual de l'agent"
 }

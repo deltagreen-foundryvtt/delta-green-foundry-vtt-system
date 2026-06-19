@@ -1,6 +1,6 @@
 /** @internal Import roll subclasses only from ../roll.js. */
 /* eslint-disable import/prefer-default-export */
-import DGUtils from "../../utils/utility-functions.js";
+import { buildRollTargetDisplayHtml } from "../../utils/roll-target-tooltip.js";
 import { DGPercentileRoll } from "./dg-percentile-roll.js";
 
 const { renderTemplate } = foundry.applications.handlebars;
@@ -43,16 +43,7 @@ export class DGLethalityRoll extends DGPercentileRoll {
     }
 
     const { nonLethalDamage } = this;
-    let label = `<b>${game.i18n
-      .localize("DG.Roll.Lethality")
-      .toUpperCase()}</b> ${game.i18n.localize(
-      "DG.Roll.For",
-    )} <b>${this.item.name.toUpperCase()}</b> ${game.i18n.localize(
-      "DG.Roll.Target",
-    )} ${this.target + this.modifier}`;
-    if (this.modifier) {
-      label += ` (${DGUtils.formatStringWithLeadingPlus(this.modifier)}%)`;
-    }
+    const { rollLabel } = this.createChatHeader();
 
     const html = await renderTemplate(
       "systems/deltagreen/templates/roll/lethality-roll.hbs",
@@ -67,7 +58,32 @@ export class DGLethalityRoll extends DGPercentileRoll {
       },
     );
 
-    return this.toMessage({ content: html, label });
+    return this.toMessage({ content: html, rollLabel });
+  }
+
+  /**
+   * @returns {{ rollLabel: string }}
+   */
+  createChatHeader() {
+    const base = Number(this.target) || 0;
+    const manualModifier = Number(this.modifier) || 0;
+    const effectiveTarget = base + manualModifier;
+    const targetLine = buildRollTargetDisplayHtml({
+      targetValue: `${effectiveTarget}%`,
+      base,
+      manualModifier,
+      finalTarget: effectiveTarget,
+    });
+
+    const title = `${game.i18n.localize("DG.Roll.Rolling")} <b>${game.i18n
+      .localize("DG.Roll.Lethality")
+      .toUpperCase()}</b> ${game.i18n.localize(
+      "DG.Roll.For",
+    )} <b>${this.item.name.toUpperCase()}</b>`;
+
+    return {
+      rollLabel: `${title}: ${targetLine}`,
+    };
   }
 
   /**

@@ -198,7 +198,7 @@ export default async function showRollStatsDialog(
   await createDGChatMessage({
     actor,
     token,
-    label: game.i18n.localize("DG.ProfessionSetup.RollStats.ChatLabel"),
+    title: game.i18n.localize("DG.ProfessionSetup.RollStats.ChatLabel"),
     content: buildRollStatsChatContent(rolls),
   });
 

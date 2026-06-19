@@ -23,6 +23,7 @@ import {
   rollSkillTestAndDamageForOwnedItem,
 } from "./macros/macro-functions.js";
 import { handleInlineActions } from "./chat/inline.js";
+import { enrichDGChatCardMessage } from "./chat/dg-chat-card.js";
 import runWorldMigration from "./utils/world-migration.js";
 import DGNPCSheet from "./sheets/npc-sheet.js";
 import DGUnnaturalSheet from "./sheets/unnatural-sheet.js";
@@ -339,12 +340,13 @@ Hooks.on("renderChatLog", async (app, element) => {
 });
 
 Hooks.on("renderChatMessageHTML", async (message, element, context) => {
-  // ignore non chat card notifications
-  if (!context.canClose) return;
-
   if (message.getFlag(DG.ID, "chatCard")) {
     element.classList.add("dg-chat-card-message");
+    enrichDGChatCardMessage(message, element);
   }
+
+  // ignore non chat card notifications
+  if (!context.canClose) return;
 
   addEventListenerToChatMessage(element);
 });

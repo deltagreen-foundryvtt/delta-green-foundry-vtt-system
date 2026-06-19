@@ -69,6 +69,56 @@ export function collectRollTargetContributions(actor, rollTargetFieldKey) {
 }
 
 /**
+ * @param {Actor|null} actor
+ * @param {RollTargetFieldKey|null} rollTargetFieldKey
+ * @param {number} [manualModifier]
+ * @returns {Array<{ name: string, modifier: number }>}
+ */
+function collectChatRollTargetContributions(
+  actor,
+  rollTargetFieldKey,
+  manualModifier = 0,
+) {
+  const contributions =
+    actor && rollTargetFieldKey
+      ? collectRollTargetContributions(actor, rollTargetFieldKey)
+      : [];
+
+  const numericManual = Number(manualModifier) || 0;
+  if (numericManual) {
+    contributions.push({
+      name: game.i18n.localize("DG.Tooltip.RollTarget.RollModifier"),
+      modifier: numericManual,
+    });
+  }
+
+  return contributions;
+}
+
+/**
+ * @param {Array<{ name: string, modifier: number }>} contributions
+ * @returns {string}
+ */
+function buildRollTargetModifierIndicators(contributions) {
+  const hasPositive = contributions.some((entry) => entry.modifier > 0);
+  const hasNegative = contributions.some((entry) => entry.modifier < 0);
+  const indicators = [];
+
+  if (hasPositive) {
+    indicators.push(
+      `<i class="fa-solid fa-arrow-up dg-chat-card__ae-indicator ae-mod-increase" inert></i>`,
+    );
+  }
+  if (hasNegative) {
+    indicators.push(
+      `<i class="fa-solid fa-arrow-down dg-chat-card__ae-indicator ae-mod-decrease" inert></i>`,
+    );
+  }
+
+  return indicators.join("");
+}
+
+/**
  * @param {number} value
  * @returns {string}
  */
@@ -93,7 +143,7 @@ function formatModifierPercent(modifier) {
 function buildRollTargetBreakdownTable(
   base,
   contributions,
-  { allowOver99 = false } = {},
+  { allowOver99 = false, finalTarget = null } = {},
 ) {
   const rows = [
     [
@@ -110,13 +160,16 @@ function buildRollTargetBreakdownTable(
     (sum, entry) => sum + entry.modifier,
     0,
   );
-  const finalTarget = clampPercentileRollTarget(base, totalModifier, {
-    allowOver99,
-  });
+  const resolvedFinal =
+    finalTarget != null
+      ? finalTarget
+      : clampPercentileRollTarget(base, totalModifier, {
+          allowOver99,
+        });
 
   rows.push([
     game.i18n.localize("DG.Tooltip.RollTarget.FinalTarget"),
-    formatTargetPercent(finalTarget),
+    formatTargetPercent(resolvedFinal),
   ]);
 
   const body = rows
@@ -129,6 +182,100 @@ function buildRollTargetBreakdownTable(
     .join("");
 
   return `<table class="dg-roll-target-tooltip"><tbody>${body}</tbody></table>`;
+}
+
+/**
+ * Roll-target breakdown for chat cards, including Active Effects and manual roll modifiers.
+ *
+ * @param {Actor|null} actor
+ * @param {RollTargetFieldKey|null} rollTargetFieldKey
+ * @param {number} base
+ * @param {{ manualModifier?: number, finalTarget?: number|null, allowOver99?: boolean }} [options]
+ * @returns {string}
+ */
+export function buildChatRollTargetBreakdownTooltipHtml(
+  actor,
+  rollTargetFieldKey,
+  base,
+  { manualModifier = 0, finalTarget = null, allowOver99 = false } = {},
+) {
+  const contributions = collectChatRollTargetContributions(
+    actor,
+    rollTargetFieldKey,
+    manualModifier,
+  );
+
+  if (!contributions.length) return "";
+
+  return buildRollTargetBreakdownTable(base, contributions, {
+    allowOver99,
+    finalTarget,
+  });
+}
+
+/**
+ * Roll-target breakdown table for tooltips when active effects modify the target.
+ *
+ * @param {Actor} actor
+ * @param {RollTargetFieldKey} rollTargetFieldKey
+ * @param {number} base
+ * @param {{ allowOver99?: boolean }} [options]
+ * @returns {string}
+ */
+export function buildRollTargetBreakdownTooltipHtml(
+  actor,
+  rollTargetFieldKey,
+  base,
+  options = {},
+) {
+  return buildChatRollTargetBreakdownTooltipHtml(
+    actor,
+    rollTargetFieldKey,
+    base,
+    options,
+  );
+}
+
+/**
+ * AE-style target display for chat roll labels: effective value, optional arrow, breakdown tooltip.
+ *
+ * @param {object} params
+ * @param {string} params.targetValue Pre-formatted target string (e.g. "65%" or "12")
+ * @param {Actor|null} [params.actor]
+ * @param {RollTargetFieldKey|null} [params.rollTargetFieldKey]
+ * @param {number} [params.base]
+ * @param {number} [params.manualModifier]
+ * @param {number|null} [params.finalTarget]
+ * @param {boolean} [params.allowOver99]
+ * @returns {string}
+ */
+export function buildRollTargetDisplayHtml({
+  targetValue,
+  actor = null,
+  rollTargetFieldKey = null,
+  base = 0,
+  manualModifier = 0,
+  finalTarget = null,
+  allowOver99 = false,
+} = {}) {
+  const contributions = collectChatRollTargetContributions(
+    actor,
+    rollTargetFieldKey,
+    manualModifier,
+  );
+
+  if (!contributions.length) return targetValue;
+
+  const breakdownTooltip = buildRollTargetBreakdownTable(base, contributions, {
+    allowOver99,
+    finalTarget,
+  });
+
+  const aeIndicator = buildRollTargetModifierIndicators(contributions);
+
+  return `<span class="dg-chat-card__target-info" data-tooltip-html="${foundry.utils.escapeHTML(
+    breakdownTooltip,
+  )}">${targetValue}${aeIndicator}</span>`;
 }
 
 /**

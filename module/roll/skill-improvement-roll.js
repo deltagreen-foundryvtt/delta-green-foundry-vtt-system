@@ -92,7 +92,7 @@ export async function createSkillImprovementChatMessage({
   );
 
   const content = [...failedSkillNames, ...failedTypedSkillNames].join(", ");
-  const label = game.i18n.format(
+  const title = game.i18n.format(
     "DG.Skills.ApplySkillImprovements.ChatFlavor",
     {
       formula: getSkillImprovementFormulaAsPercent(baseFormula),
@@ -102,7 +102,7 @@ export async function createSkillImprovementChatMessage({
   return createDGChatMessage({
     actor,
     token,
-    label,
+    title,
     content,
     messageMode: game.settings.get("core", "messageMode"),
   });

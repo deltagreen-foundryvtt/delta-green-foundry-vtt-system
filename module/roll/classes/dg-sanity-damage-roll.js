@@ -20,10 +20,14 @@ export class DGSanityDamageRoll extends DGRoll {
 
     const [lowResult, highResult] = this.damageResults;
 
-    const label = `<b>${DGUtils.localizeWithFallback(
+    const rollLabel = `${game.i18n.localize(
+      "DG.Roll.Rolling",
+    )} <b>${DGUtils.localizeWithFallback(
       "DG.Generic.SanDamage",
       "SAN DAMAGE",
-    )}</b> For <b>${lowDie.formula} / ${highDie.formula}</b>`;
+    )}</b>: ${game.i18n.localize("DG.Roll.For")} <b>${lowDie.formula} / ${
+      highDie.formula
+    }</b>`;
 
     const html = await renderTemplate(
       "systems/deltagreen/templates/roll/sanity-damage-roll.hbs",
@@ -37,7 +41,7 @@ export class DGSanityDamageRoll extends DGRoll {
       },
     );
 
-    return this.toMessage({ content: html, label });
+    return this.toMessage({ content: html, rollLabel });
   }
 
   /**

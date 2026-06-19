@@ -7,6 +7,36 @@ const { renderTemplate } = foundry.applications.handlebars;
 
 export class DGDamageRoll extends DGRoll {
   /**
+   * @returns {{ rollLabel: string }}
+   */
+  createChatHeader() {
+    try {
+      const armorPiercingTooltip = game.i18n.localize("DG.Gear.ArmorPiercing");
+      const subtitle = `<span class="dg-chat-card__armor-piercing" data-tooltip-text="${foundry.utils.escapeHTML(
+        armorPiercingTooltip,
+      )}">(<b>${
+        this.item.system.armorPiercing
+      }</b><img class="armor-piercing-chat-card-img" src="systems/deltagreen/assets/icons/supersonic-bullet.svg" alt=""/>)</span>`;
+
+      const title = `${game.i18n.localize("DG.Roll.Rolling")} <b>${game.i18n
+        .localize("DG.Roll.Damage")
+        .toUpperCase()}</b> ${game.i18n.localize("DG.Roll.For")} <b>${
+        this.item.name
+      }</b>`;
+
+      return {
+        rollLabel: `${title}: ${subtitle}`,
+      };
+    } catch (ex) {
+      return {
+        rollLabel: `${game.i18n.localize(
+          "DG.Roll.RollingDamageFor",
+        )} <b>${this.formula.toUpperCase()}</b>`,
+      };
+    }
+  }
+
+  /**
    * Prepares data for a chat message and then passes that data
    * to a method that actually creates a ChatMessage.
    *
@@ -14,19 +44,7 @@ export class DGDamageRoll extends DGRoll {
    * @override
    */
   async toChat() {
-    let label = this.formula;
-    try {
-      label = `<b>${game.i18n
-        .localize("DG.Roll.Damage")
-        .toUpperCase()}</b> ${game.i18n.localize("DG.Roll.For")} ${
-        this.item.name
-      } (<b>${
-        this.item.system.armorPiercing
-      } </b><img class="armor-piercing-chat-card-img" src="systems/deltagreen/assets/icons/supersonic-bullet.svg" alt="armor penetration"/>)`;
-    } catch (ex) {
-      // console.log(ex);
-      label = `<b>DAMAGE</b> for <b>${label.toUpperCase()}</b>`;
-    }
+    const { rollLabel } = this.createChatHeader();
     const html = await renderTemplate(
       "systems/deltagreen/templates/roll/damage-roll.hbs",
       {
@@ -35,7 +53,7 @@ export class DGDamageRoll extends DGRoll {
       },
     );
 
-    return this.toMessage({ content: html, label });
+    return this.toMessage({ content: html, rollLabel });
   }
 
   async showDialog() {

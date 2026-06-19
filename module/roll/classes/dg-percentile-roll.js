@@ -1,6 +1,5 @@
 /** @internal Import roll subclasses only from ../roll.js. */
 /* eslint-disable import/prefer-default-export */
-import DGUtils from "../../utils/utility-functions.js";
 import DG from "../../config/index.js";
 import { showPercentileRollModifyDialog } from "../roll-dialogs.js";
 import {
@@ -11,6 +10,8 @@ import {
   clampPercentileRollTarget,
   getRollTargetDisplayClassFromModifier,
 } from "../../active-effect/runtime/derived.js";
+import { formatProfessionSkillLabel } from "../../profession/index.js";
+import { buildRollTargetDisplayHtml } from "../../utils/roll-target-tooltip.js";
 import { DGRoll } from "./dg-roll.js";
 
 const { renderTemplate } = foundry.applications.handlebars;
@@ -142,7 +143,7 @@ export class DGPercentileRoll extends DGRoll {
       this.options.messageMode = "blind";
     }
 
-    const label = this.createLabel();
+    const { rollLabel } = this.createChatHeader();
 
     let resultString = "";
     let styleOverride = "";
@@ -196,7 +197,7 @@ export class DGPercentileRoll extends DGRoll {
           },
         },
         content: html,
-        label,
+        rollLabel,
       });
 
       if (diceSoNice) {
@@ -211,7 +212,7 @@ export class DGPercentileRoll extends DGRoll {
       return message;
     }
 
-    return this.toMessage({ content: html, label });
+    return this.toMessage({ content: html, rollLabel });
   }
 
   /**
@@ -245,7 +246,11 @@ export class DGPercentileRoll extends DGRoll {
     if (typedSkillKeys.includes(this.key)) {
       const skill = actorData.typedSkills[this.key];
       target = skill.targetProficiency ?? skill.proficiency;
-      localizedKey = `${skill.group} (${skill.label})`;
+      localizedKey = formatProfessionSkillLabel({
+        kind: "typed",
+        group: skill.group,
+        label: skill.label,
+      });
       skillPath = `system.typedSkills.${this.key}`;
     }
     if (this.key === "ritual") {
@@ -270,41 +275,53 @@ export class DGPercentileRoll extends DGRoll {
   }
 
   /**
-   * Create label based on result of roll
-   *
-   * todo: do we want make isInhuman more similar to base label?
-   *
-   * @returns {string}
+   * Active-effect roll target field for this roll type (excludes luck).
+   * @returns {"system.rollTarget.allSkills"|"system.rollTarget.sanity"|"system.rollTarget.statistics"|null}
    */
-  createLabel() {
-    const startOfLabel = `<b>${this.localizedKey}`;
-    const { rollTargetModifier } = this;
-    const endOfLabel = `${game.i18n.localize("DG.Roll.Target")} ${
-      this.effectiveTarget
-    }`;
+  get rollTargetFieldKey() {
+    if (this.type === "luck") return null;
+    if (this.type === "sanity") return "system.rollTarget.sanity";
+    if (this.type === "stat") return "system.rollTarget.statistics";
+    return "system.rollTarget.allSkills";
+  }
 
-    let label = this.isInhuman
-      ? // "Inhuman" stat being rolled. See function for details.
-        `${startOfLabel} [${game.i18n
-          .localize("DG.Roll.Inhuman")
-          .toUpperCase()}]</b> ${endOfLabel}`
-      : `${startOfLabel}</b><br> ${endOfLabel}%`;
-
-    if (this.modifier || rollTargetModifier) {
-      label += ` (${this.target}%`;
-
-      if (this.modifier) {
-        label += `${DGUtils.formatStringWithLeadingPlus(this.modifier)}%`;
-      }
-
-      if (rollTargetModifier) {
-        label += `${DGUtils.formatStringWithLeadingPlus(rollTargetModifier)}%`;
-      }
-
-      label += `)`;
+  /**
+   * Create the roll label shown below the card header.
+   *
+   * @returns {{ rollLabel: string }}
+   */
+  createChatHeader() {
+    let displayKey = this.localizedKey;
+    if (
+      this.type === "weapon" &&
+      this.item?.name &&
+      this.key !== "unarmed_combat"
+    ) {
+      displayKey = `${this.localizedKey} (${this.item.name})`;
     }
 
-    return label;
+    const title = this.isInhuman
+      ? `<b>${displayKey} [${game.i18n
+          .localize("DG.Roll.Inhuman")
+          .toUpperCase()}]</b>`
+      : `<b>${displayKey}</b>`;
+
+    const targetValue = this.isInhuman
+      ? `${this.effectiveTarget}`
+      : `${this.effectiveTarget}%`;
+
+    const base = Number(this.target) || 0;
+    const targetLine = buildRollTargetDisplayHtml({
+      targetValue,
+      actor: this.actor,
+      rollTargetFieldKey: this.rollTargetFieldKey,
+      base,
+      manualModifier: this.modifier,
+      finalTarget: this.effectiveTarget,
+      allowOver99: this.target > 99 && this.type === "stat",
+    });
+
+    return { rollLabel: `${title}: ${targetLine}` };
   }
 
   /**
@@ -393,45 +410,28 @@ export class DGPercentileRoll extends DGRoll {
   }
 
   /**
-   * Actual target for the roll accounting for modifier if present.
-   * Floored to 1 if a negative modifier would bring it below 1.
-   * Capped at 99 unless it is an inhuman stat test.
-   * Also worth noting, per page 47 of the Agent's Handbook, Exhaustion penalties
-   * affect not only skill and stat tests, but SAN tests as well...
+   * Actual target for the roll accounting for Active Effects and manual modifiers.
+   * All modifiers are summed on the base target, then clamped to 1–99 (or above 99 for inhuman stats).
    *
    * @returns {null|integer}
    */
   get effectiveTarget() {
-    let target = 1;
-
-    const { rollTargetModifier } = this;
-
     if (this.target == null || Number.isNaN(this.target)) {
       return null;
     }
 
-    target = parseInt(this.target);
+    const base = parseInt(this.target);
+    const rollTargetModifier = Number(this.rollTargetModifier) || 0;
+    const manualModifier =
+      this.modifier && !Number.isNaN(this.modifier)
+        ? parseInt(this.modifier)
+        : 0;
+    const totalModifier = rollTargetModifier + manualModifier;
 
-    if (rollTargetModifier) {
-      target = clampPercentileRollTarget(target, rollTargetModifier, {
-        allowOver99: this.target > 99 && this.type === "stat",
-      });
-    }
+    if (!totalModifier) return base;
 
-    if (this.modifier && !Number.isNaN(this.modifier)) {
-      const modifier = parseInt(this.modifier);
-
-      target += modifier;
-
-      // per agent's handbook (pg.43), a negative modifier can't lower a target below 1%
-      target = Math.max(target, 1);
-    }
-
-    // an 'inhuman' stat test can exceed 99% as a target, but skill tests otherwise cannot (agents handbook pg.43)
-    if (!this.isInhuman) {
-      target = Math.min(target, 99);
-    }
-
-    return target;
+    return clampPercentileRollTarget(base, totalModifier, {
+      allowOver99: this.target > 99 && this.type === "stat",
+    });
   }
 }

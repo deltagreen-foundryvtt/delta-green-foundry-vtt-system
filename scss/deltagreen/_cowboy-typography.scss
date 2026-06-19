@@ -1,0 +1,49 @@
+@use "../mixins" as *;
+
+/* DG form inputs use line-height 1.5rem with height unset — match that box size on cowboy. */
+$cowboy-form-input-height: 1.5rem;
+
+/* SpecialElite sits visually high in compact centered cells vs Public Sans */
+.deltagreen .window-content.cowboy-style {
+  .resource-inner-grid-3col input {
+    @include cowboy-compact-input(1.75rem, 3px);
+    width: 1.75rem;
+  }
+
+  .max-resource-value > div {
+    @include cowboy-compact-label;
+  }
+
+  input.percentile-skill-input {
+    @include cowboy-compact-input($cowboy-form-input-height, 2px);
+    flex: 0 0 40px;
+    width: 40px;
+    max-width: 40px;
+  }
+
+  .physical-stats-outer-grid-3col input.centered,
+  .physical-stats-outer-grid-2col input.centered,
+  .stats .ae-input-host--stat input,
+  .edit-stats-value-row input.centered {
+    @include cowboy-compact-input($cowboy-form-input-height, 2px);
+  }
+
+  .breaking-point-inline .breaking-point-input,
+  input.breaking-point-input.centered {
+    @include cowboy-compact-input($cowboy-form-input-height, 2px);
+    width: 2.5rem;
+    min-width: 2.5rem;
+    max-width: 2.5rem;
+  }
+
+  .exhausted-section input[type="number"] {
+    @include cowboy-compact-input($cowboy-form-input-height, 2px);
+    width: 75px;
+  }
+
+  .scenario-information-corruption-row input[type="number"] {
+    @include cowboy-compact-input($cowboy-form-input-height, 2px);
+    width: 2.5rem;
+    min-width: 2.5rem;
+  }
+}
