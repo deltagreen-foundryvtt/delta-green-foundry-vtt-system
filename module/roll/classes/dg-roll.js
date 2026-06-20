@@ -44,34 +44,35 @@ export class DGRoll extends Roll {
    *                                        true, or the Object of prepared chatData otherwise.
    */
   async toMessage(messageData = {}, { messageMode, create = true } = {}) {
-    const label = messageData.label ?? messageData.flavor;
+    const { title, subtitle, rollLabel, label, flavor } = messageData;
+    const resolvedLabel = label ?? flavor;
+    delete messageData.title;
+    delete messageData.subtitle;
+    delete messageData.rollLabel;
     delete messageData.label;
 
     const mode =
       messageMode ?? this.options.messageMode ?? this.options.rollMode;
 
+    const chatParams = {
+      roll: this,
+      actor: this.actor,
+      token: this.options.token,
+      title,
+      subtitle,
+      rollLabel,
+      label: resolvedLabel,
+      content: messageData.content,
+      messageMode: mode,
+      flags: messageData.flags ?? {},
+    };
+
     if (create) {
-      return createDGRollChatMessage({
-        roll: this,
-        actor: this.actor,
-        token: this.options.token,
-        label,
-        content: messageData.content,
-        messageMode: mode,
-        flags: messageData.flags ?? {},
-      });
+      return createDGRollChatMessage(chatParams);
     }
 
     const { messageData: prepared, mappedMode } =
-      await prepareDGRollChatMessageData({
-        roll: this,
-        actor: this.actor,
-        token: this.options.token,
-        label,
-        content: messageData.content,
-        messageMode: mode,
-        flags: messageData.flags ?? {},
-      });
+      await prepareDGRollChatMessageData(chatParams);
 
     const cls = foundry.utils.getDocumentClass("ChatMessage");
     // eslint-disable-next-line new-cap -- Foundry document class resolved at runtime

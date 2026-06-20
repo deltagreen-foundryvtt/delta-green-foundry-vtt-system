@@ -1,6 +1,7 @@
 /* global TokenDocument */
 
 import DG from "../config/index.js";
+import { getCharacterSheetThemeClass } from "../applications/dg-dialog.js";
 
 const CHAT_CARD_TEMPLATE = "systems/deltagreen/templates/chat/dg-chat-card.hbs";
 const { renderTemplate } = foundry.applications.handlebars;
@@ -100,16 +101,170 @@ export function getDGChatSpeakerName(speaker) {
 }
 
 /**
+ * Portrait image for a Delta Green chat card.
  * @param {object} params
- * @param {string} params.speakerName
+ * @param {Actor|null} [params.actor]
+ * @param {TokenDocument|object|string|null} [params.token]
+ * @param {ChatMessage.SpeakerData|null} [params.speaker]
+ * @returns {string}
+ */
+export function getDGChatPortraitSrc({
+  actor = null,
+  token = null,
+  speaker = null,
+} = {}) {
+  const tokenDoc =
+    resolveDGTokenDocument(token) ?? getTokenFromChatSpeaker(speaker);
+  const actorDoc =
+    actor ?? (speaker ? ChatMessage.getSpeakerActor(speaker) : null);
+  return tokenDoc?.texture?.src ?? actorDoc?.img ?? "icons/svg/mystery-man.svg";
+}
+
+/**
+ * @param {object} params
+ * @param {string} [params.title]
+ * @param {string} [params.subtitle]
+ * @param {string} [params.label] Backward-compat fallback treated as title
+ * @param {string} [params.flavor] Foundry flavor fallback treated as title
+ * @param {string} [params.rollLabel] Explicit skill/target line below the card header
+ * @returns {{ rollLabel: string }}
+ */
+function normalizeChatCardHeader({
+  title = "",
+  subtitle = "",
+  label = "",
+  flavor = "",
+  rollLabel = "",
+} = {}) {
+  if (rollLabel) return { rollLabel };
+  const resolvedTitle = title || label || flavor;
+  if (resolvedTitle && subtitle) {
+    return { rollLabel: `${resolvedTitle}: ${subtitle}` };
+  }
+  return { rollLabel: resolvedTitle };
+}
+
+/**
+ * @param {object} params
+ * @param {string} [params.title]
+ * @param {string} [params.subtitle]
  * @param {string} [params.label]
+ * @param {string} [params.flavor]
+ * @param {string} [params.rollLabel]
+ * @returns {boolean}
+ */
+function shouldUseChatCard({
+  title = "",
+  subtitle = "",
+  label = "",
+  flavor = "",
+  rollLabel = "",
+} = {}) {
+  return Boolean(
+    normalizeChatCardHeader({ title, subtitle, label, flavor, rollLabel })
+      .rollLabel,
+  );
+}
+
+/**
+ * @param {ChatMessage} message
+ * @param {HTMLElement} element
+ */
+export function enrichDGChatCardMessage(message, element) {
+  const card = element.querySelector(".dg-chat-card");
+  if (!card) return;
+
+  card.classList.remove("program-style", "cowboy-style", "outlaw-style");
+  card.classList.add(getCharacterSheetThemeClass());
+
+  const foundryHeader = element.querySelector(".message-header");
+  const header = card.querySelector(".dg-chat-card__header");
+
+  let portrait = card.querySelector(".dg-chat-card__portrait");
+  if (!portrait) {
+    portrait = card.querySelector(".dg-chat-card__icon");
+    if (portrait) portrait.classList.add("dg-chat-card__portrait");
+  }
+  if (portrait) {
+    portrait.src = getDGChatPortraitSrc({ speaker: message.speaker });
+  }
+
+  const speakerEl = card.querySelector(".dg-chat-card__speaker");
+  const authorEl = card.querySelector(".dg-chat-card__author");
+  const speakerName = message.alias ?? "";
+  const authorName = message.author?.name ?? "";
+
+  if (speakerEl) speakerEl.textContent = speakerName;
+
+  if (authorEl) {
+    const whisperEl = foundryHeader?.querySelector(".whisper-to");
+    if (whisperEl) {
+      authorEl.textContent = whisperEl.textContent.trim();
+      authorEl.hidden = false;
+      whisperEl.remove();
+    } else if (speakerName !== authorName && authorName) {
+      authorEl.textContent = authorName;
+      authorEl.hidden = false;
+    } else {
+      authorEl.hidden = true;
+    }
+  }
+
+  let metadataSlot = card.querySelector(".dg-chat-card__metadata");
+  if (!metadataSlot && header) {
+    metadataSlot = document.createElement("span");
+    metadataSlot.className = "dg-chat-card__metadata";
+    header.appendChild(metadataSlot);
+  }
+
+  const foundryMetadata = foundryHeader?.querySelector(".message-metadata");
+  if (metadataSlot && foundryMetadata) {
+    metadataSlot.replaceWith(foundryMetadata);
+    foundryMetadata.classList.add("dg-chat-card__metadata");
+  }
+
+  foundryHeader?.querySelector(".flavor-text")?.remove();
+}
+
+/**
+ * @param {ChatMessage.SpeakerData} speaker
+ * @param {string} [authorId]
+ * @returns {{ speakerName: string, authorName: string, showAuthor: boolean }}
+ */
+function getDGChatCardIdentity(speaker, authorId = game.user.id) {
+  const speakerName = getDGChatSpeakerName(speaker);
+  const authorName = game.users.get(authorId)?.name ?? "";
+  return {
+    speakerName,
+    authorName,
+    showAuthor: Boolean(authorName) && speakerName !== authorName,
+  };
+}
+
+/**
+ * @param {object} params
+ * @param {string} params.portraitSrc
+ * @param {string} [params.rollLabel]
+ * @param {string} [params.speakerName]
+ * @param {string} [params.authorName]
+ * @param {boolean} [params.showAuthor]
  * @param {string} params.content
  * @returns {Promise<string>}
  */
-export async function renderDGChatCard({ speakerName, label = "", content }) {
+export async function renderDGChatCard({
+  portraitSrc,
+  rollLabel = "",
+  speakerName = "",
+  authorName = "",
+  showAuthor = false,
+  content,
+}) {
   return renderTemplate(CHAT_CARD_TEMPLATE, {
+    portraitSrc,
+    rollLabel,
     speakerName,
-    label,
+    authorName,
+    showAuthor,
     content,
   });
 }
@@ -141,17 +296,38 @@ async function renderRollsHTML(rolls) {
  * Wrap message content in the Delta Green chat card shell.
  * @param {object} messageData
  * @param {object} [options]
- * @param {string} [options.label] Card subtitle (falls back to flavor)
+ * @param {string} [options.title]
+ * @param {string} [options.subtitle]
+ * @param {string} [options.label] Backward-compat fallback treated as title
+ * @param {Actor|null} [options.actor]
+ * @param {TokenDocument|null} [options.token]
  * @returns {Promise<object>}
  */
-export async function wrapDGChatMessageData(messageData, { label } = {}) {
-  const labelText = label ?? messageData.flavor;
-  if (!labelText) return messageData;
+export async function wrapDGChatMessageData(
+  messageData,
+  { title, subtitle, label, rollLabel, actor = null, token = null } = {},
+) {
+  const header = normalizeChatCardHeader({
+    title,
+    subtitle,
+    label: label ?? messageData.flavor,
+    rollLabel,
+  });
+  if (!header.rollLabel) return messageData;
 
-  const speakerName = getDGChatSpeakerName(messageData.speaker);
+  const portraitSrc = getDGChatPortraitSrc({
+    actor,
+    token,
+    speaker: messageData.speaker,
+  });
+  const identity = getDGChatCardIdentity(
+    messageData.speaker,
+    messageData.author,
+  );
   const wrappedContent = await renderDGChatCard({
-    speakerName,
-    label: labelText,
+    portraitSrc,
+    ...header,
+    ...identity,
     content: messageData.content ?? "",
   });
 
@@ -170,6 +346,8 @@ export async function wrapDGChatMessageData(messageData, { label } = {}) {
  * @param {Actor|null} [params.actor]
  * @param {TokenDocument|null} [params.token]
  * @param {Scene|SceneDocument|null} [params.scene]
+ * @param {string} [params.title]
+ * @param {string} [params.subtitle]
  * @param {string} [params.label]
  * @param {string} [params.content]
  * @param {string} [params.messageMode]
@@ -181,21 +359,27 @@ export async function prepareDGRollChatMessageData({
   actor = null,
   token = null,
   scene = null,
+  title = "",
+  subtitle = "",
   label = "",
+  rollLabel = "",
   content,
   messageMode,
   flags = {},
 }) {
   const mode = messageMode ?? game.settings.get("core", "messageMode");
   const mappedMode = foundry.dice.Roll._mapLegacyRollMode(mode);
+  const resolvedActor = actor ?? roll.actor ?? null;
+  const resolvedToken = token ?? roll.options?.token ?? null;
+  const useCard = shouldUseChatCard({ title, subtitle, label, rollLabel });
 
   if (!roll._evaluated) {
     await roll.evaluate({ allowInteractive: mappedMode !== "blind" });
   }
 
   const speaker = getDGSpeaker({
-    actor: actor ?? roll.actor ?? null,
-    token: token ?? roll.options?.token ?? null,
+    actor: resolvedActor,
+    token: resolvedToken,
     scene,
   });
 
@@ -203,7 +387,7 @@ export async function prepareDGRollChatMessageData({
 
   // Foundry only auto-injects roll HTML when content has no child elements.
   // DG chat cards always wrap content in a <section>, so embed rolls in the body.
-  if (label && !contentIncludesRollDisplay(bodyContent)) {
+  if (useCard && !contentIncludesRollDisplay(bodyContent)) {
     bodyContent = `${bodyContent}${await renderRollsHTML([roll])}`;
   }
 
@@ -213,14 +397,18 @@ export async function prepareDGRollChatMessageData({
     content: bodyContent,
     sound: CONFIG.sounds.dice,
     rolls: [roll],
-    flags: foundry.utils.mergeObject(
-      { [DG.ID]: { chatCard: Boolean(label) } },
-      flags,
-    ),
+    flags: foundry.utils.mergeObject({ [DG.ID]: { chatCard: useCard } }, flags),
   };
 
-  if (label) {
-    messageData = await wrapDGChatMessageData(messageData, { label });
+  if (useCard) {
+    messageData = await wrapDGChatMessageData(messageData, {
+      title,
+      subtitle,
+      label,
+      rollLabel,
+      actor: resolvedActor,
+      token: resolvedToken,
+    });
   }
 
   return { messageData, mappedMode };
@@ -236,7 +424,9 @@ export async function prepareDGRollChatMessageData({
  * @param {Actor|null} [params.actor]
  * @param {TokenDocument|null} [params.token]
  * @param {Scene|SceneDocument|null} [params.scene]
- * @param {string} [params.label] Card subtitle
+ * @param {string} [params.title]
+ * @param {string} [params.subtitle]
+ * @param {string} [params.label]
  * @param {string} [params.content] Card body HTML
  * @param {string} [params.messageMode]
  * @param {object} [params.flags]
@@ -257,7 +447,9 @@ export async function createDGRollChatMessage(params) {
  * @param {Actor} params.actor
  * @param {TokenDocument|null} [params.token]
  * @param {Scene|SceneDocument|null} [params.scene]
- * @param {string} [params.label] Card subtitle
+ * @param {string} [params.title]
+ * @param {string} [params.subtitle]
+ * @param {string} [params.label] Backward-compat fallback treated as title
  * @param {string} params.content Card body HTML
  * @param {string} [params.messageMode]
  * @param {object} [params.flags]
@@ -267,23 +459,37 @@ export async function createDGChatMessage({
   actor,
   token = null,
   scene = null,
+  title = "",
+  subtitle = "",
   label = "",
+  rollLabel = "",
   content,
   messageMode,
   flags = {},
 }) {
+  const header = normalizeChatCardHeader({ title, subtitle, label, rollLabel });
+  if (!header.rollLabel) {
+    return ChatMessage.create({
+      speaker: getDGSpeaker({ actor, token, scene }),
+      content,
+      messageMode: messageMode ?? game.settings.get("core", "messageMode"),
+      flags,
+    });
+  }
+
   const speaker = getDGSpeaker({ actor, token, scene });
-  const speakerName = getDGChatSpeakerName(speaker);
+  const portraitSrc = getDGChatPortraitSrc({ actor, token, speaker });
+  const identity = getDGChatCardIdentity(speaker);
   const wrappedContent = await renderDGChatCard({
-    speakerName,
-    label,
+    portraitSrc,
+    ...header,
+    ...identity,
     content,
   });
 
   return ChatMessage.create({
     speaker,
     content: wrappedContent,
-    flavor: "",
     messageMode: messageMode ?? game.settings.get("core", "messageMode"),
     flags: foundry.utils.mergeObject({ [DG.ID]: { chatCard: true } }, flags),
   });
