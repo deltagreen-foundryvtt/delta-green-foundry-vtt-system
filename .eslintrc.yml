@@ -68,6 +68,7 @@ globals:
   mergeObject: readonly
   setProperty: readonly
   ui: readonly
+  _loc: readonly
 settings:
   import/extensions:
     - ".js"
