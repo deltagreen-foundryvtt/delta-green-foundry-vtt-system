@@ -34,9 +34,7 @@ export default class DGNPCSheet extends DGActorSheet {
     const context = await super._prepareContext(options);
 
     // Override physical attribute title.
-    context.physicalAttributesTitle = game.i18n.localize(
-      "DG.Sheet.BlockHeaders.Statistics",
-    );
+    context.physicalAttributesTitle = _loc("DG.Sheet.BlockHeaders.Statistics");
 
     return context;
   }

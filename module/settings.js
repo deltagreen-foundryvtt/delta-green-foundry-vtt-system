@@ -47,8 +47,8 @@ const SettingForm = class extends HandlebarsApplicationMixin(ApplicationV2) {
       game.settings.register(DG.ID, settingID, {
         scope: "world",
         config: false,
-        name: game.i18n.localize(`DG.Settings.${settingID}.name`),
-        hint: game.i18n.localize(`DG.Settings.${settingID}.hint`),
+        name: _loc(`DG.Settings.${settingID}.name`),
+        hint: _loc(`DG.Settings.${settingID}.hint`),
         ...setting,
       });
     }
@@ -88,7 +88,7 @@ const SettingForm = class extends HandlebarsApplicationMixin(ApplicationV2) {
 
     // Once all promises resolve, show a notification.
     Promise.allSettled(settingsPromises).then((values) => {
-      ui.notifications.info(game.i18n.localize("DG.Settings.Saved"));
+      ui.notifications.info(_loc("DG.Settings.Saved"));
     });
   }
 
@@ -264,8 +264,8 @@ class HandlerSettings extends SettingForm {
 
 export default function registerSystemSettings() {
   game.settings.registerMenu(DG.ID, "automation", {
-    name: game.i18n.localize(`DG.SettingsMenu.automation.name`),
-    label: game.i18n.localize(`DG.SettingsMenu.automation.label`),
+    name: _loc(`DG.SettingsMenu.automation.name`),
+    label: _loc(`DG.SettingsMenu.automation.label`),
     hint: "",
     icon: "fa-solid fa-dice",
     type: AutomationSettings,
@@ -274,8 +274,8 @@ export default function registerSystemSettings() {
   AutomationSettings.register();
 
   game.settings.registerMenu(DG.ID, "handler", {
-    name: game.i18n.localize(`DG.SettingsMenu.handler.name`),
-    label: game.i18n.localize(`DG.SettingsMenu.handler.label`),
+    name: _loc(`DG.SettingsMenu.handler.name`),
+    label: _loc(`DG.SettingsMenu.handler.label`),
     hint: "",
     icon: "fa-solid fa-dice",
     type: HandlerSettings,
@@ -284,17 +284,17 @@ export default function registerSystemSettings() {
   HandlerSettings.register();
 
   game.settings.register("deltagreen", "characterSheetStyle", {
-    name: game.i18n.localize("DG.Settings.charactersheet.name"),
-    hint: game.i18n.localize("DG.Settings.charactersheet.hint"),
+    name: _loc("DG.Settings.charactersheet.name"),
+    hint: _loc("DG.Settings.charactersheet.hint"),
     scope: "world", // This specifies a world-stored setting
     config: true, // This specifies that the setting appears in the configuration view
     requiresReload: true,
     type: String,
     choices: {
       // If choices are defined, the resulting setting will be a select menu
-      cowboy: game.i18n.localize("DG.Settings.charactersheet.cowboys"),
-      outlaw: game.i18n.localize("DG.Settings.charactersheet.outlaws"),
-      program: game.i18n.localize("DG.Settings.charactersheet.program"),
+      cowboy: _loc("DG.Settings.charactersheet.cowboys"),
+      outlaw: _loc("DG.Settings.charactersheet.outlaws"),
+      program: _loc("DG.Settings.charactersheet.program"),
     },
     default: "program", // The default value for the setting
     onChange: (value) => {
@@ -304,8 +304,8 @@ export default function registerSystemSettings() {
   });
 
   game.settings.register("deltagreen", "sortSkills", {
-    name: game.i18n.localize("DG.Settings.sortskills.name"),
-    hint: game.i18n.localize("DG.Settings.sortskills.hint"),
+    name: _loc("DG.Settings.sortskills.name"),
+    hint: _loc("DG.Settings.sortskills.hint"),
     scope: "client",
     config: true,
     requiresReload: true,
@@ -314,17 +314,15 @@ export default function registerSystemSettings() {
   });
 
   game.settings.register("deltagreen", "skillTooltipDisplay", {
-    name: game.i18n.localize("DG.Settings.skillTooltipDisplay.name"),
-    hint: game.i18n.localize("DG.Settings.skillTooltipDisplay.hint"),
+    name: _loc("DG.Settings.skillTooltipDisplay.name"),
+    hint: _loc("DG.Settings.skillTooltipDisplay.hint"),
     scope: "client",
     config: true,
     type: String,
     choices: {
-      hover: game.i18n.localize("DG.Settings.skillTooltipDisplay.hover"),
-      never: game.i18n.localize("DG.Settings.skillTooltipDisplay.never"),
-      hoverShift: game.i18n.localize(
-        "DG.Settings.skillTooltipDisplay.hoverShift",
-      ),
+      hover: _loc("DG.Settings.skillTooltipDisplay.hover"),
+      never: _loc("DG.Settings.skillTooltipDisplay.never"),
+      hoverShift: _loc("DG.Settings.skillTooltipDisplay.hoverShift"),
     },
     default: "hover",
     onChange: () => {

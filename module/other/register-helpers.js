@@ -127,12 +127,12 @@ export default function registerHandlebarsHelpers() {
 
     try {
       if (skill === "dex") {
-        label = game.i18n.localize("DG.Attributes.dex");
+        label = _loc("DG.Attributes.dex");
       }
       if (skill === "DG.Skills.custom") {
-        label = game.i18n.localize("DG.ItemWindow.Custom");
+        label = _loc("DG.ItemWindow.Custom");
       } else {
-        label = game.i18n.localize(`DG.Skills.${skill}`);
+        label = _loc(`DG.Skills.${skill}`);
       }
     } catch (error) {
       console.log(error);

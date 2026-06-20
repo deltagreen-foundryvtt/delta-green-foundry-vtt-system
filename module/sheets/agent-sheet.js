@@ -180,12 +180,12 @@ export default class DGAgentSheet extends DGActorSheet {
     failedTypedSkills,
   ) {
     const localizedFailedSkills = failedSkills.map((skill) =>
-      game.i18n.localize(`DG.Skills.${skill.key}`),
+      _loc(`DG.Skills.${skill.key}`),
     );
 
     const localizedFailedTypedSkills = failedTypedSkills.map((skill) => {
       const groupKey = `DG.TypeSkills.${skill.group.replace(/\s+/g, "")}`;
-      const groupLabel = game.i18n.localize(groupKey);
+      const groupLabel = _loc(groupKey);
       return `${groupLabel} (${skill.label})`;
     });
 
@@ -206,13 +206,13 @@ export default class DGAgentSheet extends DGActorSheet {
     return foundry.applications.api.DialogV2.wait({
       content,
       window: {
-        title: game.i18n.localize("DG.Skills.ApplySkillImprovements.Title"),
+        title: _loc("DG.Skills.ApplySkillImprovements.Title"),
       },
       buttons: [
         {
           default: true,
           action: "apply",
-          label: game.i18n.localize("DG.Skills.Apply"),
+          label: _loc("DG.Skills.Apply"),
           icon: "<i class='fas fa-check'></i>",
         },
       ],
@@ -276,10 +276,9 @@ export default class DGAgentSheet extends DGActorSheet {
     const localizeFailedSkills = (skillsArray) => {
       return skillsArray.map((skill) => {
         const increment = resultObj[skill.key] ?? 1;
-        const label =
-          skill.label ?? game.i18n.localize(`DG.Skills.${skill.key}`); // fallback for regular skills
+        const label = skill.label ?? _loc(`DG.Skills.${skill.key}`); // fallback for regular skills
         const groupLabel = skill.group
-          ? `${game.i18n.localize(
+          ? `${_loc(
               `DG.TypeSkills.${skill.group.replace(/\s+/g, "")}`,
             )} (${label})`
           : label;
@@ -293,12 +292,9 @@ export default class DGAgentSheet extends DGActorSheet {
 
     // Prepare chat data
     const content = [...failedSkillNames, ...failedTypedSkillNames].join(", ");
-    const flavor = game.i18n.format(
-      "DG.Skills.ApplySkillImprovements.ChatFlavor",
-      {
-        formula: DGAgentSheet._getSkillImprovementFormulaAsPercent(baseFormula),
-      },
-    );
+    const flavor = _loc("DG.Skills.ApplySkillImprovements.ChatFlavor", {
+      formula: DGAgentSheet._getSkillImprovementFormulaAsPercent(baseFormula),
+    });
 
     const chatData = {
       speaker: ChatMessage.getSpeaker({

@@ -9,7 +9,7 @@ export default class DGUtils {
    */
   static localizeWithFallback(key, fallback) {
     try {
-      const translatedValue = game.i18n.localize(key);
+      const translatedValue = _loc(key);
       if (translatedValue !== key) {
         return translatedValue;
       }

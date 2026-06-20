@@ -98,18 +98,18 @@ export class DGPercentileRoll extends DGRoll {
         // If this weapon uses a custom target for rolls, we set that explicitly.
         if (this.key === "custom") {
           this.target = this.item.system.customSkillTarget;
-          this.localizedKey = game.i18n.localize("DG.ItemWindow.Custom");
+          this.localizedKey = _loc("DG.ItemWindow.Custom");
         }
         // Add a the weapon's internal modifier.
         this.modifier += this.item.system.skillModifier;
         break;
       case "sanity":
         this.target = this.actor.system.sanity.value;
-        this.localizedKey = game.i18n.localize("DG.Attributes.SAN");
+        this.localizedKey = _loc("DG.Attributes.SAN");
         break;
       case "luck":
         this.target = 50;
-        this.localizedKey = game.i18n.localize("DG.Luck");
+        this.localizedKey = _loc("DG.Luck");
         break;
       default:
         break;
@@ -267,18 +267,18 @@ export class DGPercentileRoll extends DGRoll {
 
     if (this.isSuccess) {
       if (this.isCritical) {
-        resultString = `${game.i18n.localize("DG.Roll.CriticalSuccess")}`;
+        resultString = `${_loc("DG.Roll.CriticalSuccess")}`;
         resultString = `${resultString.toUpperCase()}`;
         styleOverride = "color: green";
       } else {
-        resultString = `${game.i18n.localize("DG.Roll.Success")}`;
+        resultString = `${_loc("DG.Roll.Success")}`;
       }
     } else if (this.isCritical) {
-      resultString = `${game.i18n.localize("DG.Roll.CriticalFailure")}`;
+      resultString = `${_loc("DG.Roll.CriticalFailure")}`;
       resultString = `${resultString.toUpperCase()}`;
       styleOverride = "color: red";
     } else {
-      resultString = `${game.i18n.localize("DG.Roll.Failure")}`;
+      resultString = `${_loc("DG.Roll.Failure")}`;
     }
 
     const failureMark =
@@ -351,14 +351,14 @@ export class DGPercentileRoll extends DGRoll {
     let skillPath = null; // For optimization of failure checks
     if (statKeys.includes(this.key)) {
       target = actorData.statistics[this.key].x5;
-      localizedKey = game.i18n.localize(`DG.Attributes.${this.key}`);
+      localizedKey = _loc(`DG.Attributes.${this.key}`);
     }
     if (skillKeys.includes(this.key)) {
       // use calculated target proficiency (effects and etc like aim + 20%)
       target =
         actorData.skills[this.key].targetProficiency ||
         actorData.skills[this.key].proficiency;
-      localizedKey = game.i18n.localize(`DG.Skills.${this.key}`);
+      localizedKey = _loc(`DG.Skills.${this.key}`);
       skillPath = `system.skills.${this.key}`;
     }
     if (typedSkillKeys.includes(this.key)) {
@@ -369,7 +369,7 @@ export class DGPercentileRoll extends DGRoll {
     }
     if (this.key === "ritual") {
       target = actorData.sanity.ritual;
-      localizedKey = game.i18n.localize(`DG.Skills.ritual`);
+      localizedKey = _loc(`DG.Skills.ritual`);
     }
     return { target, localizedKey, skillPath };
   }
@@ -382,12 +382,8 @@ export class DGPercentileRoll extends DGRoll {
    * @returns {string}
    */
   createLabel() {
-    const startOfLabel = `${game.i18n.localize("DG.Roll.Rolling")} <b>${
-      this.localizedKey
-    }`;
-    const endOfLabel = `${game.i18n.localize("DG.Roll.Target")} ${
-      this.effectiveTarget
-    }`;
+    const startOfLabel = `${_loc("DG.Roll.Rolling")} <b>${this.localizedKey}`;
+    const endOfLabel = `${_loc("DG.Roll.Target")} ${this.effectiveTarget}`;
 
     let label = this.isInhuman
       ? // "Inhuman" stat being rolled. See function for details.
@@ -557,7 +553,7 @@ export class DGLethalityRoll extends DGPercentileRoll {
   constructor(formula, data, options) {
     super(formula, data, options);
     this.target = options.item.system.lethality;
-    this.localizedKey = game.i18n.localize("DG.ItemWindow.Weapons.Lethality");
+    this.localizedKey = _loc("DG.ItemWindow.Weapons.Lethality");
   }
 
   /**
@@ -575,20 +571,20 @@ export class DGLethalityRoll extends DGPercentileRoll {
     let resultString = "";
     let styleOverride = "";
     if (this.total <= this.target) {
-      resultString = `${game.i18n.localize("DG.Roll.Lethal").toUpperCase()}`;
+      resultString = `${_loc("DG.Roll.Lethal").toUpperCase()}`;
       styleOverride = "color: red";
     } else {
-      resultString = `${game.i18n.localize("DG.Roll.Failure")}`;
+      resultString = `${_loc("DG.Roll.Failure")}`;
     }
 
     const { nonLethalDamage } = this;
-    let label = `${game.i18n.localize("DG.Roll.Rolling")} <b>${game.i18n
+    let label = `${_loc("DG.Roll.Rolling")} <b>${game.i18n
       .localize("DG.Roll.Lethality")
-      .toUpperCase()}</b> ${game.i18n.localize(
+      .toUpperCase()}</b> ${_loc(
       "DG.Roll.For",
-    )} <b>${this.item.name.toUpperCase()}</b> ${game.i18n.localize(
-      "DG.Roll.Target",
-    )} ${this.target + this.modifier}`;
+    )} <b>${this.item.name.toUpperCase()}</b> ${_loc("DG.Roll.Target")} ${
+      this.target + this.modifier
+    }`;
     if (this.modifier) {
       label += ` (${DGUtils.formatStringWithLeadingPlus(this.modifier)}%)`;
     }
@@ -631,7 +627,7 @@ export class DGLethalityRoll extends DGPercentileRoll {
     html += `     </div>`;
     html += `     <h4 class="dice-total">${this.total} (${
       nonLethalDamage.total
-    } ${game.i18n.localize("DG.Roll.Damage")})</h4>`;
+    } ${_loc("DG.Roll.Damage")})</h4>`;
     html += `     </div>`;
     html += `</div>`;
 
@@ -694,11 +690,9 @@ export class DGDamageRoll extends DGRoll {
   async toChat() {
     let label = this.formula;
     try {
-      label = `${game.i18n.localize("DG.Roll.Rolling")} <b>${game.i18n
+      label = `${_loc("DG.Roll.Rolling")} <b>${game.i18n
         .localize("DG.Roll.Damage")
-        .toUpperCase()}</b> ${game.i18n.localize("DG.Roll.For")} ${
-        this.item.name
-      } (<b>${
+        .toUpperCase()}</b> ${_loc("DG.Roll.For")} ${this.item.name} (<b>${
         this.item.system.armorPiercing
       } </b><img class="armor-piercing-chat-card-img" src="systems/deltagreen/assets/icons/supersonic-bullet.svg" alt="armor penetration"/>)`;
     } catch (ex) {
@@ -725,7 +719,7 @@ export class DGDamageRoll extends DGRoll {
       new DialogV2({
         content,
         window: {
-          title: game.i18n.localize("DG.ModifySkillRollDialogue.Title"),
+          title: _loc("DG.ModifySkillRollDialogue.Title"),
         },
         buttons: [
           {

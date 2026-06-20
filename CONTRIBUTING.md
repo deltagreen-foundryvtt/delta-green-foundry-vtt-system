@@ -627,9 +627,9 @@ Do **not** hardcode text directly into HTML or JavaScript. Instead, use localiza
 - **JavaScript**:
 
   ```js
-  game.i18n.localize("DG.Skills.accounting");
+  _loc("DG.Skills.accounting");
   // Or for string interpolation:
-  game.i18n.format("DG.FallbackText.newItem", {
+  _loc("DG.FallbackText.newItem", {
     type: "TYPES.Item.weapon",
   });
   ```

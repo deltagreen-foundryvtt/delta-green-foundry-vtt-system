@@ -138,9 +138,7 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
     );
 
     // Set title for Physical Attributes.
-    context.physicalAttributesTitle = game.i18n.localize(
-      "DG.Sheet.BlockHeaders.Statistics",
-    );
+    context.physicalAttributesTitle = _loc("DG.Sheet.BlockHeaders.Statistics");
 
     // Whether to append the notes section to the skills.
     context.showNotesInSkills = this.actor.type !== "agent";
@@ -289,7 +287,7 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
         subnameInfoPlaceholder = "DG.AgentSheet.ProfessionPlaceholder";
         break;
     }
-    return game.i18n.localize(subnameInfoPlaceholder);
+    return _loc(subnameInfoPlaceholder);
   }
 
   /**
@@ -350,9 +348,9 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
       skill.key = key;
 
       if (game.i18n.lang === "ja") {
-        skill.sortLabel = game.i18n.localize(`DG.Skills.ruby.${key}`);
+        skill.sortLabel = _loc(`DG.Skills.ruby.${key}`);
       } else {
-        skill.sortLabel = game.i18n.localize(`DG.Skills.${key}`);
+        skill.sortLabel = _loc(`DG.Skills.${key}`);
       }
 
       if (skill.sortLabel === "" || skill.sortLabel === `DG.Skills.${key}`) {
@@ -447,11 +445,11 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
    */
   _prepareSkillTooltips() {
     for (const skill of Object.values(this.actor.system.sortedSkills)) {
-      skill.tooltip = game.i18n.localize(`DG.Skills.Tooltip.${skill.key}`);
+      skill.tooltip = _loc(`DG.Skills.Tooltip.${skill.key}`);
       if (!skill.proficiency) {
         skill.tooltip = skill.tooltip.concat(
           "<br><br>",
-          game.i18n.localize("DG.Tooltip.CannotRollSkillLabel"),
+          _loc("DG.Tooltip.CannotRollSkillLabel"),
         );
       }
     }
@@ -752,8 +750,8 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
    */
   _onItemCreate(type) {
     // Initialize a default name.
-    const name = game.i18n.format("DG.FallbackText.newItem", {
-      type: game.i18n.localize(`TYPES.Item.${type}`),
+    const name = _loc("DG.FallbackText.newItem", {
+      type: _loc(`TYPES.Item.${type}`),
     });
 
     // Prepare the item object.
@@ -1082,13 +1080,9 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
 
     // Define the option groups for our drop-down menu.
     const optionGroups = {
-      stats: game.i18n.localize(
-        "DG.SpecialTraining.Dialog.DropDown.Statistics",
-      ),
-      skills: game.i18n.localize("DG.SpecialTraining.Dialog.DropDown.Skills"),
-      typedSkills: game.i18n.localize(
-        "DG.SpecialTraining.Dialog.DropDown.CustomSkills",
-      ),
+      stats: _loc("DG.SpecialTraining.Dialog.DropDown.Statistics"),
+      skills: _loc("DG.SpecialTraining.Dialog.DropDown.Skills"),
+      typedSkills: _loc("DG.SpecialTraining.Dialog.DropDown.CustomSkills"),
     };
 
     // Prepare simplified stat list
@@ -1096,7 +1090,7 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
       ([key, stat]) => ({
         value: key,
         group: optionGroups.stats,
-        label: game.i18n.localize(`DG.Attributes.${key}`),
+        label: _loc(`DG.Attributes.${key}`),
         targetNumber: stat.value * 5,
       }),
     );
@@ -1106,7 +1100,7 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
       ([key, skill]) => ({
         value: key,
         group: optionGroups.skills,
-        label: game.i18n.localize(`DG.Skills.${key}`),
+        label: _loc(`DG.Skills.${key}`),
         targetNumber: skill.proficiency,
       }),
     );
@@ -1116,9 +1110,7 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
       ([key, skill]) => ({
         value: key,
         group: optionGroups.typedSkills,
-        label: `${game.i18n.localize(`DG.TypeSkills.${skill.group}`)} (${
-          skill.label
-        })`,
+        label: `${_loc(`DG.TypeSkills.${skill.group}`)} (${skill.label})`,
         targetNumber: skill.proficiency,
       }),
     );
@@ -1144,7 +1136,7 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
       },
     );
 
-    const buttonLabel = game.i18n.localize(
+    const buttonLabel = _loc(
       `DG.SpecialTraining.Dialog.${action.capitalize()}SpecialTraining`,
     );
 
@@ -1152,7 +1144,7 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
     new DialogV2({
       content,
       window: {
-        title: game.i18n.localize("DG.SpecialTraining.Dialog.Title"),
+        title: _loc("DG.SpecialTraining.Dialog.Title"),
       },
       default: "confirm",
       buttons: [
@@ -1348,7 +1340,7 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
           buttons: [
             {
               action: "firearms",
-              label: game.i18n.localize("DG.Gear.WeaponTypes.Firearms"),
+              label: _loc("DG.Gear.WeaponTypes.Firearms"),
               icon: '<i class="fas fa-crosshairs"></i>',
               callback: () =>
                 game.packs
@@ -1357,7 +1349,7 @@ export default class DGActorSheet extends DGSheetMixin(ActorSheetV2) {
             },
             {
               action: "melee",
-              label: game.i18n.localize("DG.Gear.WeaponTypes.Melee"),
+              label: _loc("DG.Gear.WeaponTypes.Melee"),
               icon: '<i class="far fa-hand-rock"></i>',
               callback: () =>
                 game.packs
