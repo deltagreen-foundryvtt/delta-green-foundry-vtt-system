@@ -72,8 +72,8 @@ export default class DGAgentSheet extends AgentSheetBase {
       tabs: [
         { id: "skills" },
         { id: "combat" },
-        { id: "motivations" },
         { id: "gear" },
+        { id: "motivations" },
         { id: "personal" },
         { id: "effects" },
         { id: "about", icon: "fas fa-question-circle", label: "" },
@@ -104,8 +104,8 @@ export default class DGAgentSheet extends AgentSheetBase {
       templates: [
         `${this.TEMPLATE_PATH}/parts/skills-tab-agent.html`,
         `${this.TEMPLATE_PATH}/parts/combat-tab-agent.html`,
-        `${this.TEMPLATE_PATH}/parts/motivations-tab-agent.html`,
         `${this.TEMPLATE_PATH}/parts/gear-tab-agent.html`,
+        `${this.TEMPLATE_PATH}/parts/motivations-tab-agent.html`,
         `${this.TEMPLATE_PATH}/parts/personal-tab-agent.html`,
         `${this.TEMPLATE_PATH}/parts/effects-tab.html`,
         `${this.TEMPLATE_PATH}/parts/about-tab.html`,
@@ -712,12 +712,9 @@ export default class DGAgentSheet extends AgentSheetBase {
       return super._onItemCreate(type);
     }
 
-    const name = game.i18n.format(
-      game.i18n.translations.DOCUMENT?.New || "DG.FallbackText.newItem",
-      {
-        type: game.i18n.localize("TYPES.Item.profession"),
-      },
-    );
+    const name = game.i18n.format("DG.FallbackText.newItem", {
+      type: game.i18n.localize(`TYPES.Item.${type}`),
+    });
 
     const itemData = {
       name,

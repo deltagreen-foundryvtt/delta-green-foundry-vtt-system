@@ -150,12 +150,9 @@ export default function ItemListMixin(Base) {
 
     /** @param {String} type */
     _onItemCreate(type) {
-      const name = game.i18n.format(
-        game.i18n.translations.DOCUMENT?.New || "DG.FallbackText.newItem",
-        {
-          type: game.i18n.localize(`TYPES.Item.${type}`),
-        },
-      );
+      const name = game.i18n.format("DG.FallbackText.newItem", {
+        type: game.i18n.localize(`TYPES.Item.${type}`),
+      });
 
       const itemData = {
         name,
