@@ -155,6 +155,12 @@ Your pull request will automatically be checked for linting and formatting via G
    mklink /D "%localappdata%/FoundryVTT/Data/systems/deltagreen" "%cd%/delta-green-foundry-vtt-system"
    ```
 
+### 6. Install Foundry VTT CLI and Import Compendia
+
+- Follow the [Foundry VTT CLI installation instructions](https://github.com/foundryvtt/foundryvtt-cli)
+- With your foundry instance offline, import the compendia via the **build-packs.sh** script: `bash build/build-packs.sh`
+  - Launch your foundry instance and confirm that your Delta Green compendia have been populated with records
+
 ### 7. Start Developing
 
 - Use the developer console (`F12` in most browsers) to inspect logs and debug issues.
