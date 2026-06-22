@@ -1,0 +1,25 @@
+<div class="tab handler {{tabs.handler.cssClass}}"
+     data-group="primary"
+     data-tab="handler">
+    <div class="tome-sheet-handler-info-horizontal-grid-2col">
+        <span class="resource-label">{{localize 'DG.ItemWindow.Tome.UnnaturalIncrease'}}:</span>
+        <input class="item-sheet-short-input" name="system.unnaturalSkillIncrease" type="text" value="{{item.system.unnaturalSkillIncrease}}" data-dtype="Number"/>
+
+        <span class="resource-label">{{localize 'DG.ItemWindow.Tome.OccultIncrease'}}:</span>
+        <input class="item-sheet-short-input" name="system.occultSkillIncrease" type="text" value="{{item.system.occultSkillIncrease}}" data-dtype="Number"/>
+
+        <span class="resource-label">{{localize 'DG.ItemWindow.Tome.StudySanityDamage'}}:</span>
+        <span>
+            <input class="item-sheet-short-input" name="system.sanity.successLoss" type="text" value="{{item.system.sanity.successLoss}}" />
+            /
+            <input class="item-sheet-short-input" name="system.sanity.failedLoss" type="text" value="{{item.system.sanity.failedLoss}}" />
+            <i class="fas fa-dice rollable" data-action="roll" data-rolltype="sanity-damage"></i>
+        </span>
+    </div>
+
+    <span class="resource-label">{{localize 'DG.ItemWindow.Tome.HandlerNotes'}}:</span>
+
+    <div class="tab top-div-border">
+        {{> "systems/deltagreen/templates/partials/prose-mirror-host.html" html=richText.handlerNotes}}
+    </div>
+</div>

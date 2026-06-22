@@ -1,0 +1,154 @@
+.deltagreen .editor-host {
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* ProseMirror: compact when toggled off; expand to fill tab space while editing. */
+.deltagreen .editor-host prose-mirror {
+  --min-height: 5rem;
+  flex: 0 0 auto;
+}
+
+.deltagreen:not(.item) .editor-host prose-mirror:not(.active) {
+  height: auto !important;
+}
+
+.deltagreen .editor-host prose-mirror.active {
+  --min-height: 12rem;
+  flex: 1 1 auto;
+  min-height: 12rem;
+}
+
+.deltagreen .editor-host prose-mirror.active .editor-container {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+/* Actor sheets: compact description when not editing. */
+.deltagreen:not(.item) .editor-host prose-mirror:not(.active) .editor-content {
+  position: relative;
+  inset: unset;
+  overflow: visible;
+  min-height: 2.5rem;
+}
+
+/* Let the description block consume remaining tab height while editing. */
+.deltagreen:not(.item) .tab:has(.notes-wrapper prose-mirror.active) {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.deltagreen:not(.item)
+  .tab:has(.notes-wrapper prose-mirror.active)
+  .notes-wrapper,
+.deltagreen:not(.item)
+  .tab:has(.notes-wrapper prose-mirror.active)
+  .notes-wrapper
+  .editor-host {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+/* Item sheets: description fills space below header (view and edit). */
+.deltagreen.item form {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.deltagreen.item .window-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.deltagreen.item [data-application-part="header"],
+.deltagreen.item [data-application-part="tabs"] {
+  flex: 0 0 auto;
+}
+
+/* Item tab bodies — flex only when .active; do not override core display:none on inactive tabs. */
+.deltagreen.item .tab[data-tab][data-application-part].active {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Profession skills tab: outer panel flexes; inner region scrolls (see description tab). */
+.deltagreen.item .tab.profession-skills.active,
+.deltagreen.item .tab[data-application-part="skills"].active {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: auto;
+  max-height: 100%;
+  overflow: hidden;
+}
+
+.deltagreen.item .tab.profession-skills .profession-skills-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.deltagreen.item
+  .tab[data-application-part="description"].active.top-div-border,
+.deltagreen.item
+  .tab[data-application-part="handler"].active
+  > .tab.top-div-border {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.deltagreen.item .tab.top-div-border > .editor-host,
+.deltagreen.item
+  .tab[data-application-part="description"].active
+  > .editor-host {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.deltagreen.item .tab.top-div-border .editor-host prose-mirror {
+  flex: 1 1 auto;
+  min-height: 5rem;
+}
+
+.deltagreen.item
+  .tab.top-div-border
+  .editor-host
+  prose-mirror:not(.active)
+  .editor-content {
+  position: absolute;
+  inset: 0;
+  overflow: auto;
+  min-height: unset;
+}
+
+.deltagreen.item .tab.top-div-border .editor-host prose-mirror.active {
+  min-height: 5rem;
+}
+
+/* Core uses display:block on hover for prose-mirror toggles, which breaks flex icon centering. */
+.deltagreen prose-mirror:hover button.toggle:enabled {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+
+.deltagreen prose-mirror button.toggle > i {
+  margin: 0;
+  line-height: 1;
+}

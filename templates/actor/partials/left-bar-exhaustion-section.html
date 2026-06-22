@@ -1,0 +1,40 @@
+<a class="item-control action-pill left-bar-action-pill"
+   data-action="exhaustAgent">
+    {{localize 'DG.Physical.Exhaust'}}
+</a>
+
+<div class="exhausted-section resource">
+    <label class="bolded-label exhaustion-label"
+           title="{{localize 'DG.Tooltip.Exhaustion'}}">
+        {{localize 'DG.Physical.ExhaustionPenalty'}}
+    </label>
+    {{#if physicalUi.isExhausted }}
+    <input type="number"
+           name="system.physical.exhaustedPenalty"
+           value="{{physicalUi.displayPenalty}}"
+           data-dtype="Number"
+           min="-99"
+           max="0"
+           title="{{localize 'DG.Tooltip.Exhaustion'}}" />
+    {{else}}
+    <input type="number"
+           class="is-inactive"
+           value="0"
+           disabled
+           title="{{localize 'DG.Tooltip.Exhaustion'}}" />
+    {{/if}}
+</div>
+
+<div class="suppress-exhaustion resource {{#if physicalUi.suppressExhaustionInactive}}is-disabled{{/if}}">
+    <label class="bolded-label {{#if physicalUi.suppressExhaustionInactive}}is-crossed-out{{/if}}"
+           title="{{localize 'DG.Physical.Tooltip.SuppressExhaustion'}}">
+        {{localize 'DG.Physical.SuppressExhaustion'}}
+    </label>
+    <input class="labeled-resource-checkbox"
+           type="checkbox"
+           name="system.physical.suppressExhaustion"
+           {{checked physicalUi.suppressExhaustionChecked}}
+           {{#if physicalUi.suppressExhaustionInputDisabled}}disabled{{/if}}
+           data-dtype="Boolean"
+           title="{{localize 'DG.Physical.Tooltip.SuppressExhaustion'}}" />
+</div>

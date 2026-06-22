@@ -1,0 +1,16 @@
+<section class="deltagreen chat-card dg-chat-card">
+  <header class="dg-chat-card__header">
+    <div class="dg-chat-card__portrait-slot">
+      <img class="dg-chat-card__portrait" src="{{portraitSrc}}" alt="" />
+    </div>
+    <div class="dg-chat-card__identity">
+      <span class="dg-chat-card__speaker">{{speakerName}}</span>
+      <span class="dg-chat-card__author" {{#unless showAuthor}}hidden{{/unless}}>{{authorName}}</span>
+    </div>
+    <span class="dg-chat-card__metadata"></span>
+  </header>
+  {{#if rollLabel}}
+  <div class="dg-chat-card__roll-label">{{{rollLabel}}}</div>
+  {{/if}}
+  <div class="dg-chat-card__body">{{{content}}}</div>
+</section>

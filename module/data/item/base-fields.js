@@ -1,4 +1,4 @@
-const { HTMLField } = foundry.data.fields;
+import DGHTMLField from "../fields/html-content-field.js";
 
 /**
  * Shared system fields for all Delta Green item types (from legacy template base).
@@ -6,6 +6,6 @@ const { HTMLField } = foundry.data.fields;
  */
 export default function defineBaseItemSystemFields() {
   return {
-    description: new HTMLField({ initial: "", blank: true, textSearch: true }),
+    description: DGHTMLField(),
   };
 }

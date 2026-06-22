@@ -28,7 +28,11 @@
     }
   },
   "esmodules": ["module/deltagreen.js"],
-  "styles": ["css/deltagreen.css", "css/dialogue.css"],
+  "styles": [
+    "css/deltagreen.css",
+    "css/dg-dialog.css",
+    "css/damage-modify.css"
+  ],
   "languages": [
     {
       "lang": "en",
@@ -233,10 +237,15 @@
         "htmlFields": ["description"]
       },
       "tome": {
-        "htmlFields": ["description", "handlerNotes"]
+        "htmlFields": ["description", "handlerNotes"],
+        "gmOnlyFields": ["handlerNotes"]
       },
       "ritual": {
-        "htmlFields": ["description", "handlerNotes"]
+        "htmlFields": ["description", "handlerNotes"],
+        "gmOnlyFields": ["handlerNotes"]
+      },
+      "profession": {
+        "htmlFields": ["description"]
       }
     }
   }

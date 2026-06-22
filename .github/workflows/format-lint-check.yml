@@ -29,6 +29,17 @@ jobs:
       - name: Check Prettier formatting
         run: npm run format:check
 
+  sass:
+    name: Compile Sass
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Node Setup
+        uses: ./.github/actions/setup-node
+
+      - name: Compile Sass
+        run: npm run build:css
+
 defaults:
   run:
     shell: bash

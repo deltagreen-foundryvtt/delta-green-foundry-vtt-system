@@ -1,0 +1,32 @@
+<header class="">
+    <div class="armor-sheet-grid-2col">
+
+        <img class="item-img" src="{{item.img}}" data-action="editImage" data-edit="img" title="{{item.name}}" />
+
+        <div class="armor-sheet-horizontal-grid-2col">
+
+      <span class="resource-label">{{localize 'DG.Bonds.Name'}}:</span>
+      <input name="name" type="text" value="{{item.name}}" placeholder="{{localize 'DG.ItemWindow.Armor.NamePlaceholder'}}"/>
+
+      <span class="resource-label">{{localize 'DG.ItemWindow.Armor.Expense'}}:</span>
+      <select name="system.expense" >
+        <option {{#if_eq item.system.expense 'NA'}}selected{{/if_eq}} value="NA">{{localize 'DG.Gear.Expense.NA'}}</option>
+        <option {{#if_eq item.system.expense 'Incidental'}}selected{{/if_eq}} value="Incidental">{{localize 'DG.Gear.Expense.Incidental'}}</option>
+        <option {{#if_eq item.system.expense 'Standard'}}selected{{/if_eq}} value="Standard">{{localize 'DG.Gear.Expense.Standard'}}</option>
+        <option {{#if_eq item.system.expense 'Unusual'}}selected{{/if_eq}} value="Unusual">{{localize 'DG.Gear.Expense.Unusual'}}</option>
+        <option {{#if_eq item.system.expense 'Major'}}selected{{/if_eq}} value="Major">{{localize 'DG.Gear.Expense.Major'}}</option>
+        <option {{#if_eq item.system.expense 'Extreme'}}selected{{/if_eq}} value="Extreme">{{localize 'DG.Gear.Expense.Extreme'}}</option>
+      </select>
+
+      <span class="resource-label">{{localize 'DG.ItemWindow.Armor.Equipped'}}:</span>
+      <input class="labeled-resource-checkbox" type="checkbox" name="system.equipped" {{checked item.system.equipped}} data-dtype="Boolean" />
+
+    </div>
+  </div>
+
+  <div class="armor-sheet-secondary-grid-2col">
+    <span class="resource-label">{{localize 'DG.ItemWindow.Armor.ArmorRating'}}:</span>
+    <input class="item-sheet-short-input" type="text" name="system.protection" value="{{item.system.protection}}" data-dtype="Number"/>
+  </div>
+
+</header>

@@ -1,26 +1,26 @@
-<div class="grid grid-3col stats">
-    {{#each actor.system.statistics as |statistic key| }}
-    <div class="flex-group-center flex-mid-border">
-        <div>
-            <div class="physical-stats-outer-grid-2col">
-                <label data-tooltip="{{localize (concat 'DG.Attributes.Tooltip.' key)}}"
-                       for="system.statistics.{{key}}.value">
-                    {{localize (concat 'DG.Attributes.' key)}}
-                </label>
+<div class="dg-dialog dg-dialog--edit-stats">
+    <div class="edit-stats-grid">
+        {{#each statKeys as |key| }}
+        {{#with (lookup @root.actor.system.statistics key) as |statistic| }}
+        <div class="edit-stats-stat-block">
+            <label class="edit-stats-value-row dg-dialog__field">
+                <span class="edit-stats-label dg-dialog__field-label">{{localize (concat 'DG.Attributes.' key)}}</span>
                 <input class="centered"
-                       type="text"
+                       type="number"
                        name="system.statistics.{{key}}.value"
-                       value="{{statistic.value}}"
-                       data-dtype="Number" />
-            </div>
-            <div>
-                <input type="text"
-                       name="system.statistics.{{key}}.distinguishing_feature"
-                       value="{{statistic.distinguishing_feature}}"
-                       data-dtype="String"
-                       title="{{localize 'DG.Tooltip.DistinguishingFeature'}}" />
-            </div>
+                       value="{{lookup (lookup @root.sourceStatistics key) 'value'}}"
+                       data-dtype="Number"
+                       min="0" />
+            </label>
+            <label class="edit-stats-feature-row dg-dialog__field">
+                <span class="dg-dialog__field-label">{{localize 'DG.EditStats.DistinguishingFeature'}}</span>
+                <textarea name="system.statistics.{{key}}.distinguishing_feature"
+                          rows="2"
+                          data-dtype="String"
+                          title="{{localize 'DG.Tooltip.DistinguishingFeature'}}">{{statistic.distinguishing_feature}}</textarea>
+            </label>
         </div>
+        {{/with}}
+        {{/each}}
     </div>
-    {{/each}}
 </div>

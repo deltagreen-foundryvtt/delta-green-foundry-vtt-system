@@ -1,0 +1,17 @@
+<div class="dg-dialog dg-dialog--typed-skill">
+    <div class="dg-dialog__field form-group">
+        <label class="dg-dialog__field-label" for="typed-skill-group">{{localize "DG.Skills.SkillGroup"}}</label>
+        <select id="typed-skill-group" name="new-type-skill-group">
+            {{#each groups}}
+                <option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
+            {{/each}}
+        </select>
+    </div>
+    <div class="dg-dialog__field form-group">
+        <label class="dg-dialog__field-label" for="typed-skill-label">{{localize "DG.Skills.SkillName"}}</label>
+        <input id="typed-skill-label"
+               type="text"
+               name="new-type-skill-label"
+               value="{{label}}" />
+    </div>
+</div>

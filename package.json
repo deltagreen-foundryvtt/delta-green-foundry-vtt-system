@@ -2,10 +2,13 @@
   "name": "deltagreen",
   "version": "1.3.1",
   "description": "This is a fan made but now officially supported rules implementation (system) for [Foundry Virtual Tabletop](https://foundryvtt.com/) system for Delta Green: The RPG, based on the _Agent's Handbook_ rule set from Arc Dream Publishing (_**not** the Call of Cthulu rules_).",
-  "main": "deltagreen.js",
+  "main": "module/deltagreen.js",
   "scripts": {
     "lint": "eslint .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "format:fix": "prettier --write .",
+    "build:css": "sass scss:css --style=expanded --no-source-map",
+    "watch:css": "sass scss:css --watch --style=expanded --source-map"
   },
   "repository": {
     "type": "git",
@@ -25,5 +28,7 @@
     "eslint-config-prettier": "^9.0.0",
     "@foundryvtt/foundryvtt-cli": "^1.1.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "sass": "^1.89.0"
+  }
 }

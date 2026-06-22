@@ -3,9 +3,7 @@
   "DG.AgentNameFieldTooltip": "NACHNAME, VORNAME (UND GGF. ALIAS)",
   "DG.RollLuck": "Glücksprobe ausführen",
   "DG.Luck": "Glück",
-
   "DG.FallbackText.ProfessionAndOrRank": "BERUF (RANG, FALLS ZUTREFFEND)",
-
   "DG.Skills.accounting": "Buchführung",
   "DG.Skills.alertness": "Wachsamkeit",
   "DG.Skills.anthropology": "Anthropologie",
@@ -44,7 +42,6 @@
   "DG.Skills.unarmed_combat": "Waffenloser Kampf",
   "DG.Skills.unnatural": "Mythos",
   "DG.Skills.flight": "Flight",
-
   "DG.Skills.AddTypedOrCustomSkill": "Eigene Fertigkeit hinzufügen",
   "DG.Skills.AddSkill": "Fertigkeit hinzufügen",
   "DG.Skills.Apply": "Anwenden",
@@ -57,7 +54,6 @@
   "DG.Skills.EditSkill": "Fertigkeit bearbeiten",
   "DG.Skills.SkillGroup": "Fertigkeiten-Gruppe",
   "DG.Skills.SkillName": "Fertigkeit Name",
-
   "DG.TypeSkills.Art": "Kunst",
   "DG.TypeSkills.Craft": "Handwerk",
   "DG.TypeSkills.ForeignLanguage": "Fremdsprache",
@@ -65,7 +61,6 @@
   "DG.TypeSkills.Pilot": "Pilot",
   "DG.TypeSkills.Science": "Wissenschaft",
   "DG.TypeSkills.Other": "Andere",
-
   "DG.SpecialTraining.Dialog.CreateSpecialTraining": "Besondere Ausbildung hinzufügen",
   "DG.SpecialTraining.Dialog.DropDown.CustomSkills": "Eigene Fertigkeiten",
   "DG.SpecialTraining.Dialog.DropDown.Skills": "Fertigkeiten",
@@ -74,7 +69,6 @@
   "DG.SpecialTraining.Dialog.NameLabel": "Name",
   "DG.SpecialTraining.Dialog.SkillLabel": "Fertigkeit oder Attribut",
   "DG.SpecialTraining.Dialog.Title": "Spezialausbildung erstellen/ bearbeiten",
-
   "DG.Attributes.HP": "Gesundheit",
   "DG.Attributes.WP": "Wille",
   "DG.Attributes.SAN": "Stabilität",
@@ -84,21 +78,17 @@
   "DG.Attributes.int": "INT",
   "DG.Attributes.pow": "MAC",
   "DG.Attributes.cha": "CHA",
-
   "DG.Navigation.Skills": "Fertigkeiten",
   "DG.Navigation.Physical": "Körperlich",
   "DG.Navigation.Mental": "Geistig",
   "DG.Navigation.Gear": "Ausrüstung",
   "DG.Navigation.CV": "Persönlich",
   "DG.Navigation.Contacts": "Bindungen",
-
   "DG.About.OnlineHelp": "Systemdokumentation auf (ONLINE)",
   "DG.About.OnlineHelpTooltip": "Starten des Browsers mit der Online-Hilfe von GitHub.",
   "DG.About.OnlineBugTracker": "Fragen, Fehlerberichte oder Funktionsanfragen (ONLINE)",
   "DG.About.OnlineBugTrackerTooltip": "Browser mit GitHub-Problem-Tracker starten.",
-
   "DG.Roll.Rolling": "Probe",
-  "DG.Roll.Target": "Ziel: ",
   "DG.Roll.Success": "Erfolg",
   "DG.Roll.Failure": "Fehlschlag",
   "DG.Roll.Critical": "Kritisch",
@@ -109,14 +99,11 @@
   "DG.Roll.RollingDamageFor": "SCHADEN würfeln für",
   "DG.Roll.Or": "Oder",
   "DG.Roll.Roll": "Probe",
-
   "DG.Physical.Wounds": "Verletzungen",
   "DG.Physical.FirstAidLabel": "Erste Hilfe bereits geleistet: ",
   "DG.Physical.Exhausted": "Exhausted:",
   "DG.Physical.ExhaustionPenalty": "Penalty:",
-
   "DG.Generic.AddButtonLabel": "Hinzufügen",
-
   "DG.Mental.BreakingPoint": "Schwelle: ",
   "DG.Mental.Reset": "Reset",
   "DG.Mental.SanityLossIncidentsLabel": "Vorfälle von Stabilitäts-Verlust, ohne verrückt zu werden",
@@ -126,7 +113,6 @@
   "DG.Mental.AdaptedToHelplessness": "An Hilflosigkeit gewöhnt",
   "DG.Mental.Motivations": "Motivation",
   "DG.Mental.Disorders": "Störung",
-
   "DG.Gear.Weapons": "WAFFEN",
   "DG.Gear.Armor": "RÜSTUNG",
   "DG.Gear.OtherGear": "ANDERE AUSRÜSTUNG",
@@ -135,7 +121,6 @@
   "DG.Gear.ArmorPiercing": "Rüstungsdurchdringung",
   "DG.Gear.ArmorRating": "Rüstungsschutz",
   "DG.Gear.Equipped": "Ausgerüstet",
-
   "DG.CV.Sex": "Geschlecht",
   "DG.CV.SexPlaceholder": "Geschlecht",
   "DG.CV.AgeAndDoB": "Alter und Geb.",
@@ -146,19 +131,15 @@
   "DG.CV.NationalityPlaceholder": "Nationalität",
   "DG.CV.Education": "Bildung",
   "DG.CV.EducationPlaceholder": "Bildung oder Training",
-
   "DG.Bonds.Bond": "Bindung",
   "DG.Bonds.Name": "Name",
   "DG.Bonds.Score": "Wert",
   "DG.Bonds.NewBond": "Neue Bindung",
-
   "DG.Attributes.Tooltip.HP": "Gesundheit. Ein Charakter wird bei 2 Gesundheit bewusstlos und stirbt bei 0 Gesundheit.",
   "DG.Tooltip.MaximumHP": "Die maximale Gesundheit ist der Durchschnitt von STR + KON, aufgerundet.",
-
   "DG.Attributes.Tooltip.WP": "Die Punkte in WILLE sind mentaler Treibstoff. Agenten brauchen WILLE, um trotz Erschöpfung oder geistig anstrengender Situationen weiterzumachen.  Auf Seite 47 des Agentenhandbuchs findest du weitere Informationen ('Willpower').",
   "DG.Tooltip.MaximumWP": "Der maximale WILLE ist gleich MAC.",
   "DG.Attributes.Tooltip.SAN": "Klicken, um eine Stabilitäts-Probe durchzuführen...",
-
   "DG.Tooltip.CurrentSanityPartOne": "Die aktuelle Grenze der Stabilität. Die aktuelle Belastungsschwelle ist ",
   "DG.Tooltip.CurrentSanityPartTwo": ", Klicke oben auf STABILITÄT, um eine Stabilitäts-Probe durchzuführen.",
   "DG.Tooltip.MaximumSanity": "Die maximale Stabilität ist gleich 99 abzüglich der Fähigkeit 'Mythos'.",
@@ -172,17 +153,14 @@
   "DG.Tooltip.AdaptedToHelplessness": "Die 'Gewöhnung an Hilflosigkeit' ('Adapted to Helplessness') bedeutet, dass der persönliche Antrieb deines Agenten leidet, da er sich von der Welt um ihn herum zurückzieht. Sobald dein Agent an die Hilflosigkeit gewöhnt ist, verliert er dauerhaft 1D6 MAC.",
   "DG.Tooltip.ToggleEquippedState": "Klicke hier, um umzuschalten, ob dieser Gegenstand ausgerüstet ist oder nicht.",
   "DG.Tooltip.Exhaustion": "An Agent who works too long or faces extreme danger and injury without resting becomes exhausted. When this comes into play is up to the Handler, but a good rule of thumb is that going a night without sleep or refusing to rest after losing SAN or Hit Points leads to exhaustion.",
-
   "DG.Gear.Expense.NA": "N/A bzw Keine",
   "DG.Gear.Expense.Incidental": "Zufällig",
   "DG.Gear.Expense.Standard": "Standard",
   "DG.Gear.Expense.Unusual": "Ungewöhnlich",
   "DG.Gear.Expense.Major": "Schwierig",
   "DG.Gear.Expense.Extreme": "Extrem",
-
   "DG.ItemWindow.Bonds.Description": "Beschreibung/ Entwicklungen",
   "DG.ItemWindow.Bonds.ScoreTooltip": "Eine höhere Punktzahl steht für eine stärkere Beziehung zwischen dem Agenten und seiner Bindung.",
-
   "DG.ItemWindow.Motivations.Attributes": "Attribute",
   "DG.ItemWindow.Motivations.Motivation": "Motivation",
   "DG.ItemWindow.Motivations.Description": "Beschreibung/ Notizen",
@@ -193,19 +171,16 @@
   "DG.ItemWindow.Motivations.IsDisorderTooltip": "Prüfe dies, wenn du eine Störung hinzufügst oder wenn eine bestehende Motivation durch den Erwerb einer Störung verloren gegangen ist.",
   "DG.ItemWindow.Motivations.DisorderHasBeenCured": "Störung wurde \"Geheilt\"",
   "DG.ItemWindow.Motivations.DisorderHasBeenCuredTooltip": "Ein kritischer Erfolg bei einer Therapie-Glücksprobe kann eine Störung 'heilen'.  Die Störung kann jedoch beim nächsten Mal zurückkehren, wenn eine Belastungsschwelle erreicht wird. Siehe den Abschnitt Therapie auf den Seiten 78-79 des Agentenhandbuchs. (siehe 'Therapy')",
-
   "DG.ItemWindow.Gear.Attributes": "Attribute",
   "DG.ItemWindow.Gear.Description": "Beschreibung",
   "DG.ItemWindow.Gear.NamePlaceholder": "Name",
   "DG.ItemWindow.Gear.Expense": "Ausgaben",
   "DG.ItemWindow.Gear.Equipped": "Ausgerüstet",
-
   "DG.ItemWindow.Armor.Description": "Beschreibung",
   "DG.ItemWindow.Armor.NamePlaceholder": "Name",
   "DG.ItemWindow.Armor.ArmorRating": "Rüstungsschutz",
   "DG.ItemWindow.Armor.Expense": "Ausgaben",
   "DG.ItemWindow.Armor.Equipped": "Ausgerüstet",
-
   "DG.ItemWindow.Weapons.Description": "Beschreibung",
   "DG.ItemWindow.Weapons.NamePlaceholder": "Name",
   "DG.ItemWindow.Weapons.Skill": "Fertigkeit",
@@ -219,27 +194,21 @@
   "DG.ItemWindow.Weapons.Ammo": "Munition (Menge/Typ)",
   "DG.ItemWindow.Weapons.Range": "Reichweite",
   "DG.ItemWindow.Weapons.KillRadius": "Tötungsradius",
-
   "DG.ModifySkillRollDialogue.Title": "Probe modifizieren",
   "DG.ModifySkillRollDialogue.Test": "Probe:",
   "DG.ModifySkillRollDialogue.OriginalTarget": "Ursprüngliches Ziel:",
   "DG.ModifySkillRollDialogue.TargetModifier": "Ziel modifizieren (+/-):",
   "DG.ModifySkillRollDialogue.ModifierTooltip": "Gib hier einen positiven oder negativen Modifikator an, der zum Ziel für die Fertigkeitsprobe addiert/ abgezogen wird.",
-
   "DG.ModifyDamageRollDialogue.Weapon": "Waffe:",
   "DG.ModifyDamageRollDialogue.OuterModifierTooltip": "Verwende dieses Feld, um den äußeren Teil der Formel zu ändern, z. B. um das Ergebnis zu verdoppeln.",
   "DG.ModifyDamageRollDialogue.InnerModifierTooltip": "Verwende dieses Feld, um einen Modifikator wie '+1' oder einen anderen Würfelbegriff wie '+1d4' hinzuzufügen.",
-
   "DG.Roll.Inhuman": "Nicht-Menschlich",
   "DG.Tooltip.BreakPoint": "Die aktuelle Belastungsschwelle, die zurückgesetzt wird, wenn die aktuelle Stabilität auf oder unter diesen Wert fällt.  Die Belastungsschwelle zu Beginn ist STABILITÄT abzüglich MAC.",
   "DG.Tooltip.BreakPointReset": "Belastungsschwelle zurücksetzen auf aktuelle MAC abzüglich WILLE.",
   "DG.Skills.ritual": "Ritual",
-
   "DG.RollMode": "Probe-Modus",
   "DG.Bonds.Relationship": "Beziehung",
-
   "DG.TypeSkills.Subskills.Painting": "Malerei",
-
   "DG.Sheet.BlockHeaders.Attributes": "ATTRIBUTE",
   "DG.Sheet.BlockHeaders.Statistics": "STATISTIK",
   "DG.Sheet.BlockHeaders.PhysicalDescriptionNotes": "PHYSISCHE BESCHREIBUNG / ANMERKUNGEN",
@@ -249,7 +218,6 @@
   "DG.Sheet.BlockHeaders.MotivationsAndDisorders": "MOTIVATIONEN UND STÖRUNGEN",
   "DG.Sheet.BlockHeaders.PersonalInfoCV": "PERSÖNLICHE INFORMATIONEN / LEBENSLAUF",
   "DG.Sheet.BlockHeaders.BondsRelationshipsContacts": "BINDUNGEN / BEZIEHUNGEN / KONTAKTE",
-
   "DG.UnnaturalSheet.HideUntrainedSkillsLabel": "Untrainierte ausblenden",
   "DG.UnnaturalSheet.NotesLabel": "Notizen",
   "DG.UnnaturalSheet.ShortDescriptionFallbackText": "Beschreibung der Kreatur oder Kreaturenart",
@@ -257,40 +225,32 @@
   "DG.UnnaturalSheet.Tabs.NotesTabLabel": "Fertigkeiten & Notizen",
   "DG.UnnaturalSheet.Tabs.ItemsTabLabel": "Angriffe & Fähigkeiten",
   "DG.NPCSheet.BreakPointAbbreviation": "BS",
-
   "DG.ImpossibleLanscapes.IHaveSeenThe": "ICH HABE GESEHEN:",
   "DG.ImpossibleLanscapes.YellowSign": "DAS GELBE ZEICHEN",
   "DG.ImpossibleLanscapes.CorruptionFirstHalf": "Korrum",
   "DG.ImpossibleLanscapes.CorruptionSecondHalf": "piert",
   "DG.ImpossibleLanscapes.Gift": "Gabe",
   "DG.ImpossibleLanscapes.Insight": "Erkenntnis",
-
   "DG.VehicleSheet.NotesTabName": "Notizen",
   "DG.VehicleSheet.GearTabName": "Ausrüstung",
   "DG.VehicleSheet.NotesLabel": "NOTIZEN",
   "DG.VehicleSheet.DescriptionPlaceHolder": "Fahrzeugbeschreibung",
-
   "DG.Generic.CheckDamagedBondsBoxUntilNextHomeScene": "Prüfe das Kästchen einer beschädigten Bindung, bis die nächste Heimszene endet.",
   "DG.Generic.ClearAll": "Proben löschen",
-
   "DG.Generic.SanDamage": "Stabilitäts-Verlust",
-
   "DG.ItemWindow.Weapons.CustomSkillTarget": "Ziel",
   "DG.ItemWindow.Weapons.SkillModifier": "Fertigkeitsmodifikator",
   "DG.ItemWindow.Custom": "Benutzerdefiniert",
-
   "TYPES.Item.weapon": "Waffe",
   "TYPES.Item.armor": "Rüstung",
   "TYPES.Item.motivation": "Motivation",
   "TYPES.Item.bond": "Bindung",
   "TYPES.Item.gear": "Ausrüstung",
-
   "DG.ItemWindow.Ritual.ActivationSanityDamage": "Activation SAN Damage",
   "DG.ItemWindow.Ritual.ActivationTime": "Activation Time",
   "DG.ItemWindow.Ritual.ActivationCosts": "Activation Costs",
   "DG.ItemWindow.Ritual.StudyTime": "Study Time",
   "DG.ItemWindow.Ritual.LearnedSanityDamage": "Learn SAN Damage",
-
   "DG.Messages.Skillsmark.Marked": "Diese Fähigkeit ist gekennzeichnet.",
   "DG.Messages.Skillsmark.Tooltip": "Siehe S. 29 des Agentenhandbuchs"
 }

@@ -1,0 +1,15 @@
+{{#if professionItem}}
+<input class="fill-remaining-space profession-subname-display"
+       type="text"
+       readonly
+       value="{{professionItem.name}}"
+       data-action="openProfessionItem"
+       data-item-id="{{professionItem.id}}"
+       title="{{localize 'DG.AgentSheet.RenameProfession.Tooltip'}}" />
+{{else}}
+<input class="fill-remaining-space"
+       name="system.biography.profession"
+       type="text"
+       value="{{actor.system.biography.profession}}"
+       placeholder="{{subnameInfoPlaceholder}}" />
+{{/if}}

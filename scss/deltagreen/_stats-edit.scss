@@ -1,0 +1,51 @@
+.stats-wrapper {
+  position: relative;
+}
+
+/* Edit icon */
+.stats-edit-btn {
+  position: absolute;
+  top: 50%;
+  right: -12px;
+
+  width: 24px;
+  height: 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+  background: var(--color-border-dark, #444);
+  color: var(--dg-on-dark);
+
+  font-size: 12px;
+
+  cursor: pointer;
+  opacity: 0;
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
+  transform: translateY(-50%) scale(1);
+}
+
+/* Show on hover of whole stats block */
+.stats-wrapper:hover .stats-edit-btn {
+  opacity: 1;
+  transform: translateY(-50%) scale(1.05);
+}
+
+/* Hover feedback */
+.stats-edit-btn:hover {
+  background: var(--color-border-highlight, #c9a227);
+}
+
+.physical-stats-outer-grid-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 5px;
+  grid-gap: 5px;
+}

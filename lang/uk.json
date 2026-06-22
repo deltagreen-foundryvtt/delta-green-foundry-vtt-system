@@ -3,9 +3,7 @@
   "DG.AgentNameFieldTooltip": "ПРІЗВИЩЕ, ІМ’Я (ТА ПСЕВДОНІМ, ЯКЩО Є)",
   "DG.RollLuck": "Кинути Удачу",
   "DG.Luck": "Удача",
-
   "DG.FallbackText.newItem": "Новий(а) {type}",
-
   "DG.Skills.accounting": "Бухгалтерія",
   "DG.Skills.alertness": "Пильність",
   "DG.Skills.anthropology": "Антропологія",
@@ -44,7 +42,6 @@
   "DG.Skills.unarmed_combat": "Рукопашний бій",
   "DG.Skills.unnatural": "Протиприродне",
   "DG.Skills.flight": "Пілотування",
-
   "DG.Skills.Tooltip.accounting": "Помічати фінансові «червоні прапорці»: приховані активи, фірми-«прокладки» або розкрадання.",
   "DG.Skills.Tooltip.alertness": "Помічати приховані загрози, ледь помітні рухи або тихі звуки, доки вони не стали небезпекою.",
   "DG.Skills.Tooltip.anthropology": "Розуміти вірування, поведінку та табу живих культур і суспільств.",
@@ -82,7 +79,6 @@
   "DG.Skills.Tooltip.swim": "Виживати у воді під тиском: рятувати, тікати або витримувати загрози.",
   "DG.Skills.Tooltip.unarmed_combat": "Знешкоджувати або травмувати супротивника ударами, захватами та прийомами рукопашного бою.",
   "DG.Skills.Tooltip.unnatural": "Розпізнавати, досліджувати або пригадувати істини про сили, що виходять за межі людського розуміння.",
-
   "DG.Skills.AddTypedOrCustomSkill": "Додати типізовану/власну навичку",
   "DG.Skills.AddSkill": "Додати навичку",
   "DG.Skills.Apply": "Застосувати",
@@ -95,7 +91,6 @@
   "DG.Skills.EditSkill": "Редагувати навичку",
   "DG.Skills.SkillGroup": "Група навичок",
   "DG.Skills.SkillName": "Назва навички",
-
   "DG.TypeSkills.Art": "Мистецтво",
   "DG.TypeSkills.Craft": "Ремесло",
   "DG.TypeSkills.ForeignLanguage": "Іноземна мова",
@@ -103,7 +98,6 @@
   "DG.TypeSkills.Pilot": "Пілотування",
   "DG.TypeSkills.Science": "Наука",
   "DG.TypeSkills.Other": "Інше",
-
   "DG.TypeSkills.Tooltip.Art": "Створювати або оцінювати мистецькі роботи та помічати підробки у вибраній сфері.",
   "DG.TypeSkills.Tooltip.Craft": "Будувати, лагодити або саботувати спеціалізовані інструменти чи системи (двигуни, замки, проводка).",
   "DG.TypeSkills.Tooltip.ForeignLanguage": "Говорити, читати й розуміти конкретну мову.",
@@ -111,7 +105,6 @@
   "DG.TypeSkills.Tooltip.Pilot": "Керувати та навігувати повітряні/морські/космічні апарати в критичних умовах.",
   "DG.TypeSkills.Tooltip.Science": "Застосовувати спеціалізовані наукові знання для тлумачення або дослідження фізичного світу.",
   "DG.TypeSkills.Tooltip.Other": "Інше",
-
   "DG.SpecialTraining.Dialog.CreateSpecialTraining": "Додати спеціальну підготовку",
   "DG.SpecialTraining.Dialog.DropDown.CustomSkills": "Власні/типізовані навички",
   "DG.SpecialTraining.Dialog.DropDown.Skills": "Навички",
@@ -120,7 +113,6 @@
   "DG.SpecialTraining.Dialog.NameLabel": "Назва",
   "DG.SpecialTraining.Dialog.SkillLabel": "Навичка або атрибут",
   "DG.SpecialTraining.Dialog.Title": "Створити/Редагувати спеціальну підготовку",
-
   "DG.Attributes.HP": "ПЗ",
   "DG.Attributes.WP": "ПВ",
   "DG.Attributes.SAN": "ГЗД",
@@ -130,7 +122,6 @@
   "DG.Attributes.int": "ІНТ",
   "DG.Attributes.pow": "НЕП",
   "DG.Attributes.cha": "ХАР",
-
   "DG.Attributes.Tooltip.HP": "Пункти Здоров’я (ПЗ) показують фізичний стан. Персонаж непритомніє при 2 ПЗ і помирає при 0 ПЗ.",
   "DG.Attributes.Tooltip.WP": "Пункти Волі (ПВ) показують психічну витримку та внутрішній ресурс. Агентам потрібні ПВ, щоб діяти попри виснаження або ментально важкі ситуації. Див. стор. 47 в Agent's Handbook.",
   "DG.Attributes.Tooltip.SAN": "Пункти Глузду (ГЗД) показують зв’язок із людяністю та реальністю, як її сприймає більшість людей. Натисни, щоб кинути тест ГЗД.",
@@ -140,7 +131,6 @@
   "DG.Attributes.Tooltip.int": "Див. стор. 19 в Agent's Handbook — Intelligence (Інтелект)",
   "DG.Attributes.Tooltip.pow": "Див. стор. 19 в Agent's Handbook — Power (Непохитність)",
   "DG.Attributes.Tooltip.cha": "Див. стор. 19 в Agent's Handbook — Charisma (Харизма)",
-
   "DG.Navigation.Agent.skills": "Навички",
   "DG.Navigation.Agent.physical": "Статистика",
   "DG.Navigation.Agent.motivations": "Психологія",
@@ -151,7 +141,6 @@
   "DG.Navigation.NPC.gear": "Атаки та здібності",
   "DG.Navigation.Vehicle.gear": "Спорядження",
   "DG.Navigation.Vehicle.notes": "Нотатки",
-
   "DG.About.Changelog": "СПИСОК ЗМІН (ОНЛАЙН)",
   "DG.About.Copyright": "Опубліковано Arc Dream Publishing за домовленістю з Delta Green Partnership. Інтелектуальна власність під назвою Delta Green є торговельною маркою та об’єктом авторського права Delta Green Partnership, яка ліцензувала її використання тут.",
   "DG.About.License": "Вміст цієї системи ліцензовано згідно з умовами файлу <a href=\"systems/deltagreen/LICENSE.txt\">license</a>, за винятком елементів, які належать до інтелектуальної власності Delta Green.",
@@ -159,9 +148,7 @@
   "DG.About.OnlineHelpTooltip": "Відкрити браузер з онлайн-довідкою GitHub.",
   "DG.About.OnlineBugTracker": "Запитання, баг-репорти або пропозиції (ОНЛАЙН)",
   "DG.About.OnlineBugTrackerTooltip": "Відкрити браузер з трекером задач GitHub.",
-
   "DG.Roll.Rolling": "Кидаємо...",
-  "DG.Roll.Target": "Ціль: ",
   "DG.Roll.Success": "Успіх",
   "DG.Roll.Failure": "Провал",
   "DG.Roll.CriticalSuccess": "Критичний успіх!",
@@ -173,14 +160,11 @@
   "DG.Roll.RollingDamageFor": "Кидок ШКОДИ для",
   "DG.Roll.Or": "Або",
   "DG.Roll.Roll": "Кинути",
-
   "DG.Physical.Wounds": "Поранення",
   "DG.Physical.FirstAidLabel": "Перша допомога вже була застосована: ",
   "DG.Physical.Exhausted": "Виснаження:",
   "DG.Physical.ExhaustionPenalty": "Штраф:",
-
   "DG.Generic.AddButtonLabel": "Додати",
-
   "DG.Mental.BreakingPoint": "Точка зламу (ТЗ): ",
   "DG.Mental.Tooltip.BreakingPoint": "Точка зламу — це конкретне значення ГЗД, на якому Агент настільки виснажений травмою, що отримує новий довготривалий психічний розлад. Якщо ГЗД падає до цього значення або нижче, відніми НЕП (POW) від нового ГЗД. Це і є нова Точка зламу.",
   "DG.Mental.Reset": "Скинути",
@@ -193,7 +177,6 @@
   "DG.Mental.AdaptedToHelplessness": "Адаптований до безпорадності",
   "DG.Mental.Motivations": "Мотивації",
   "DG.Mental.Disorders": "Розлади",
-
   "DG.Gear.WeaponTypes.Firearms": "Вогнепальна",
   "DG.Gear.WeaponTypes.Melee": "Холодна",
   "DG.Gear.Weapons": "ЗБРОЯ",
@@ -204,7 +187,6 @@
   "DG.Gear.ArmorPiercing": "Бронепробиття",
   "DG.Gear.ArmorRating": "Рейтинг броні",
   "DG.Gear.Equipped": "Екіпіровано",
-
   "DG.CV.Sex": "Стать",
   "DG.CV.SexPlaceholder": "Стать",
   "DG.CV.AgeAndDoB": "Вік і дата народження",
@@ -215,12 +197,10 @@
   "DG.CV.NationalityPlaceholder": "Національність",
   "DG.CV.Education": "Освіта",
   "DG.CV.EducationPlaceholder": "Освіта або підготовка",
-
   "DG.Bonds.Bond": "Зв’язок",
   "DG.Bonds.Name": "Ім’я",
   "DG.Bonds.Score": "Рівень",
   "DG.Bonds.NewBond": "Новий зв’язок",
-
   "DG.Tooltip.MaximumHP": "Максимальні ПЗ — це середнє значення (СИЛ + СТА), округлене ВГОРУ.",
   "DG.Tooltip.MaximumWP": "Максимальні ПВ дорівнюють НЕП.",
   "DG.Tooltip.CurrentSanityPartOne": "Поточний ГЗД, поточна Точка зламу: ",
@@ -236,17 +216,14 @@
   "DG.Tooltip.AdaptedToHelplessness": "Адаптація до безпорадності означає, що внутрішній драйв Агента згасає. Щойно Агент адаптується, він назавжди втрачає 1D6 НЕП.",
   "DG.Tooltip.ToggleEquippedState": "Натисни, щоб перемкнути стан «Екіпіровано».",
   "DG.Tooltip.Exhaustion": "Агент, який працює надто довго або стикається з крайнім ризиком і травмами без відпочинку, виснажується. Коли це настає — вирішує Handler, але хороше правило: ніч без сну або відмова від відпочинку після втрати ГЗД чи ПЗ веде до виснаження.",
-
   "DG.Gear.Expense.NA": "Н/Д або немає",
   "DG.Gear.Expense.Incidental": "Дрібне",
   "DG.Gear.Expense.Standard": "Стандартне",
   "DG.Gear.Expense.Unusual": "Незвичне",
   "DG.Gear.Expense.Major": "Значне",
   "DG.Gear.Expense.Extreme": "Екстремальне",
-
   "DG.ItemWindow.Bonds.Description": "Опис/розвиток",
   "DG.ItemWindow.Bonds.ScoreTooltip": "Вищий рівень означає сильніший зв’язок між Агентом і цією людиною.",
-
   "DG.ItemWindow.Motivations.Attributes": "Атрибути",
   "DG.ItemWindow.Motivations.Motivation": "Мотивація",
   "DG.ItemWindow.Motivations.Description": "Опис/нотатки",
@@ -257,19 +234,16 @@
   "DG.ItemWindow.Motivations.IsDisorderTooltip": "Познач, якщо додаєш розлад або якщо мотивацію втрачено через отримання розладу.",
   "DG.ItemWindow.Motivations.DisorderHasBeenCured": "Розлад було «вилікувано»",
   "DG.ItemWindow.Motivations.DisorderHasBeenCuredTooltip": "Критичний успіх на терапевтичному кидку Удачі може «вилікувати» розлад. Втім, він може повернутися наступного разу, коли буде досягнуто точки зламу. Див. стор. 78–79 в Agent's Handbook — Therapy.",
-
   "DG.ItemWindow.Gear.Attributes": "Атрибути",
   "DG.ItemWindow.Gear.Description": "Опис",
   "DG.ItemWindow.Gear.NamePlaceholder": "Назва",
   "DG.ItemWindow.Gear.Expense": "Вартість",
   "DG.ItemWindow.Gear.Equipped": "Екіпіровано",
-
   "DG.ItemWindow.Armor.Description": "Опис",
   "DG.ItemWindow.Armor.NamePlaceholder": "Назва",
   "DG.ItemWindow.Armor.ArmorRating": "Рейтинг броні",
   "DG.ItemWindow.Armor.Expense": "Вартість",
   "DG.ItemWindow.Armor.Equipped": "Екіпіровано",
-
   "DG.ItemWindow.Weapons.Description": "Опис",
   "DG.ItemWindow.Weapons.NamePlaceholder": "Назва",
   "DG.ItemWindow.Weapons.Skill": "Навичка",
@@ -283,27 +257,21 @@
   "DG.ItemWindow.Weapons.Ammo": "Набої (кількість/тип)",
   "DG.ItemWindow.Weapons.Range": "Дальність",
   "DG.ItemWindow.Weapons.KillRadius": "Радіус ураження",
-
   "DG.ModifySkillRollDialogue.Title": "Змінити кидок",
   "DG.ModifySkillRollDialogue.Test": "Тест:",
   "DG.ModifySkillRollDialogue.OriginalTarget": "Початкова ціль:",
   "DG.ModifySkillRollDialogue.TargetModifier": "Змінити ціль:",
   "DG.ModifySkillRollDialogue.ModifierTooltip": "Вкажи позитивний або негативний модифікатор, щоб додати/відняти від цілі для перевірки навички.",
-
   "DG.ModifyDamageRollDialogue.Weapon": "Зброя:",
   "DG.ModifyDamageRollDialogue.OuterModifierTooltip": "Це поле змінює зовнішню частину формули, наприклад, щоб подвоїти результат.",
   "DG.ModifyDamageRollDialogue.InnerModifierTooltip": "Це поле додає фіксований модифікатор (наприклад, «+1») або інший кістковий термін (наприклад, «+1d4»).",
-
   "DG.Roll.Inhuman": "Нелюдське",
   "DG.Tooltip.BreakPoint": "Поточна точка зламу. Скидається, коли поточний ГЗД падає до цього значення або нижче. Початкова точка зламу: ГЗД − НЕП.",
   "DG.Tooltip.BreakPointReset": "Скинути точку зламу до «поточний ГЗД − ПВ».",
   "DG.Skills.ritual": "Ритуал",
-
   "DG.RollMode": "Режим кидка",
   "DG.Bonds.Relationship": "Стосунки",
-
   "DG.TypeSkills.Subskills.Painting": "Живопис",
-
   "DG.Sheet.BlockHeaders.Attributes": "АТРИБУТИ",
   "DG.Sheet.BlockHeaders.Statistics": "СТАТИСТИКА",
   "DG.Sheet.BlockHeaders.PhysicalDescriptionNotes": "ФІЗИЧНИЙ ОПИС / НОТАТКИ",
@@ -313,9 +281,7 @@
   "DG.Sheet.BlockHeaders.MotivationsAndDisorders": "МОТИВАЦІЇ ТА РОЗЛАДИ",
   "DG.Sheet.BlockHeaders.PersonalInfoCV": "ОСОБИСТІ ДАНІ / РЕЗЮМЕ",
   "DG.Sheet.BlockHeaders.BondsRelationshipsContacts": "ЗВ’ЯЗКИ / СТОСУНКИ / КОНТАКТИ",
-
   "DG.AgentSheet.ProfessionPlaceholder": "ПРОФЕСІЯ (ЗВАННЯ, ЯКЩО Є)",
-
   "DG.UnnaturalSheet.HideUntrainedSkillsLabel": "Приховати нетреновані",
   "DG.UnnaturalSheet.NotesLabel": "Нотатки",
   "DG.UnnaturalSheet.ShortDescriptionPlaceholder": "Опис істоти або типу істоти",
@@ -323,39 +289,31 @@
   "DG.UnnaturalSheet.Tabs.NotesTabLabel": "Навички та нотатки",
   "DG.UnnaturalSheet.Tabs.ItemsTabLabel": "Атаки та здібності",
   "DG.NPCSheet.BreakPointAbbreviation": "ТЗ",
-
   "DG.ImpossibleLanscapes.IHaveSeenThe": "Я БАЧИВ",
   "DG.ImpossibleLanscapes.YellowSign": "ЖОВТИЙ ЗНАК",
   "DG.ImpossibleLanscapes.CorruptionFirstHalf": "Розк",
   "DG.ImpossibleLanscapes.CorruptionSecondHalf": "лад",
   "DG.ImpossibleLanscapes.Gift": "Дар",
   "DG.ImpossibleLanscapes.Insight": "Осяяння",
-
   "DG.VehicleSheet.NotesTabName": "Нотатки",
   "DG.VehicleSheet.GearTabName": "Спорядження",
   "DG.VehicleSheet.NotesLabel": "НОТАТКИ",
   "DG.VehicleSheet.DescriptionPlaceHolder": "Опис транспорту",
-
   "DG.Generic.CheckDamagedBondsBoxUntilNextHomeScene": "Познач пошкоджений Зв’язок до завершення наступної Домашньої сцени.",
   "DG.Generic.ClearAll": "Очистити позначки",
-
   "DG.Generic.SanDamage": "Втрата ГЗД",
-
   "DG.ItemWindow.Weapons.CustomSkillTarget": "Ціль",
   "DG.ItemWindow.Weapons.SkillModifier": "Модифікатор навички",
   "DG.ItemWindow.Custom": "Власне",
-
   "DG.Sheet.class.item": "Аркуш предмета",
   "DG.Sheet.class.agent": "Аркуш агента",
   "DG.Sheet.class.npc": "Аркуш NPC",
   "DG.Sheet.class.unnatural": "Аркуш протиприродного",
   "DG.Sheet.class.vehicle": "Аркуш транспорту",
-
   "TYPES.Actor.agent": "Агент",
   "TYPES.Actor.npc": "NPC",
   "TYPES.Actor.unnatural": "Протиприродне",
   "TYPES.Actor.vehicle": "Транспорт",
-
   "TYPES.Item.armor": "Броня",
   "TYPES.Item.bond": "Зв’язок",
   "TYPES.Item.gear": "Спорядження",
@@ -363,13 +321,10 @@
   "TYPES.Item.weapon": "Зброя",
   "TYPES.Item.tome": "Том",
   "TYPES.Item.ritual": "Ритуал",
-
   "DG.Gear.Tomes": "ТОМИ",
   "DG.Gear.Rituals": "РИТУАЛИ",
-
   "DG.Tomes.Name": "Назва",
   "DG.Ritual.Name": "Назва",
-
   "DG.Tome.Name": "Назва",
   "DG.Tome.Language": "Мова",
   "DG.Tome.StudyTime": "Час вивчення",
@@ -381,15 +336,12 @@
   "DG.ItemWindow.Tome.StudySanityDamage": "Втрата ГЗД від вивчення",
   "DG.ItemWindow.Tome.HandlerOnlyTabHeader": "Лише для Handler",
   "DG.ItemWindow.Tome.HandlerNotes": "Нотатки для Handler",
-
   "DG.ItemWindow.Ritual.ActivationSanityDamage": "Втрата ГЗД при активації",
   "DG.ItemWindow.Ritual.ActivationTime": "Час активації",
   "DG.ItemWindow.Ritual.ActivationCosts": "Вартість активації",
   "DG.ItemWindow.Ritual.StudyTime": "Час вивчення",
   "DG.ItemWindow.Ritual.LearnedSanityDamage": "Втрата ГЗД при вивченні",
-
   "DG.MissionPaused": "Місію призупинено",
-
   "DG.Settings.charactersheet.name": "Стиль аркуша персонажа",
   "DG.Settings.charactersheet.hint": "Обери стиль відображення аркушів. «Програма» — більш сучасний «урядовий» стиль. «Ковбої/Поза законом» — старіший, грубіший «друкарська машинка».",
   "DG.Settings.charactersheet.cowboys": "Ковбої",
@@ -417,15 +369,12 @@
   "DG.Settings.skillFailure.name": "Авто-позначка «Провал» для навички",
   "DG.Settings.skillFailure.hint": "Автоматично ставить позначку провалу при невдалій перевірці навички. Handler може скасувати дію з повідомлення кидка в чаті.",
   "DG.Settings.Saved": "Налаштування збережено.",
-
   "DG.SettingsMenu.automation.name": "Меню автоматизації",
   "DG.SettingsMenu.automation.label": "Меню автоматизації",
   "DG.SettingsMenu.automation.title": "Налаштування автоматизації",
-
   "DG.SettingsMenu.handler.name": "Налаштування Handler",
   "DG.SettingsMenu.handler.label": "Налаштування Handler",
   "DG.SettingsMenu.handler.title": "Налаштування лише для Handler",
-
   "DG.Messages.Skillsmark.Marked": "Цю навичку позначено",
   "DG.Messages.Skillsmark.Tooltip": "Див. стор. 29 Agent's Handbook"
 }

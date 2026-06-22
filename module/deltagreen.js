@@ -1,26 +1,33 @@
 // Import Modules
-import DG from "./config.js";
+import DG from "./config/index.js";
 import DeltaGreenActor from "./actor/actor.js";
 import DGAgentSheet from "./sheets/agent-sheet.js";
 import DeltaGreenItem from "./item/item.js";
-import DeltaGreenItemSheet from "./item/item-sheet.js";
-import * as DGRolls from "./roll/roll.js";
+import DGItemSheet from "./sheets/base-item-sheet.js";
+import {
+  DGRoll,
+  DGPercentileRoll,
+  DGLethalityRoll,
+  DGDamageRoll,
+  DGSanityDamageRoll,
+} from "./roll/roll.js";
 import registerSystemSettings from "./settings.js";
 import preloadHandlebarsTemplates from "./templates.js";
-import registerHandlebarsHelpers from "./other/register-helpers.js";
-import ParseDeltaGreenStatBlock from "./other/stat-parser-macro.js";
+import registerHandlebarsHelpers from "./utils/register-helpers.js";
+import ParseDeltaGreenStatBlock from "./macros/stat-parser-macro.js";
 import {
   createDeltaGreenMacro,
   rollItemMacro,
   rollItemSkillCheckMacro,
   rollSkillMacro,
   rollSkillTestAndDamageForOwnedItem,
-} from "./other/macro-functions.js";
-import { handleInlineActions } from "./other/inline.js";
+} from "./macros/macro-functions.js";
+import { handleInlineActions } from "./chat/inline.js";
+import { enrichDGChatCardMessage } from "./chat/dg-chat-card.js";
+import runWorldMigration from "./utils/world-migration.js";
 import DGNPCSheet from "./sheets/npc-sheet.js";
 import DGUnnaturalSheet from "./sheets/unnatural-sheet.js";
 import DGVehicleSheet from "./sheets/vehicle-sheet.js";
-import DGAgentSheetV2 from "./sheets/agent-sheet-v2.js";
 import AgentData from "./data/actor/agent.js";
 import UnnaturalData from "./data/actor/unnatural.js";
 import NPCData from "./data/actor/npc.js";
@@ -32,8 +39,18 @@ import BondItemData from "./data/item/bond.js";
 import GearItemData from "./data/item/gear.js";
 import TomeItemData from "./data/item/tome.js";
 import RitualItemData from "./data/item/ritual.js";
+import ProfessionItemData from "./data/item/profession.js";
+import DGActiveEffect from "./active-effect/documents/dg-active-effect.js";
+import DGActiveEffectConfig from "./applications/dg-active-effect-config.js";
+import DGActiveEffectTypeDataModel from "./active-effect/data/dg-active-effect-data.js";
+import { syncExhaustionEffect } from "./active-effect/runtime/exhaustion-effect.js";
+import {
+  pruneAllAgentsExpiredStimulants,
+  pruneExpiredStimulantEffects,
+} from "./active-effect/runtime/stimulant-effect.js";
 
 const { Actors, Items } = foundry.documents.collections;
+const { DocumentSheetConfig } = foundry.applications.apps;
 
 Hooks.once("init", async () => {
   Object.assign(CONFIG.Actor.dataModels, {
@@ -52,11 +69,26 @@ Hooks.once("init", async () => {
     gear: GearItemData,
     tome: TomeItemData,
     ritual: RitualItemData,
+    profession: ProfessionItemData,
   });
+
+  CONFIG.ActiveEffect.documentClass = DGActiveEffect;
+  CONFIG.ActiveEffect.dataModels.base = DGActiveEffectTypeDataModel;
+
+  DocumentSheetConfig.registerSheet(
+    DGActiveEffect,
+    DG.ID,
+    DGActiveEffectConfig,
+    {
+      makeDefault: true,
+      label: "DG.ActiveEffects.SheetLabel",
+    },
+  );
 
   game.deltagreen = {
     DeltaGreenActor,
     DeltaGreenItem,
+    DGActiveEffect,
     rollItemMacro,
     rollItemSkillCheckMacro,
     rollSkillMacro,
@@ -74,7 +106,13 @@ Hooks.once("init", async () => {
   };
 
   // Register custom dice rolls
-  Object.values(DGRolls).forEach((cls) => CONFIG.Dice.rolls.push(cls));
+  [
+    DGRoll,
+    DGPercentileRoll,
+    DGLethalityRoll,
+    DGDamageRoll,
+    DGSanityDamageRoll,
+  ].forEach((cls) => CONFIG.Dice.rolls.push(cls));
 
   // Register System Settings
   registerSystemSettings();
@@ -103,16 +141,8 @@ Hooks.once("init", async () => {
     });
   });
 
-  // Don't register new sheet yet.
-  // Actors.registerSheet(DG.ID, DGAgentSheetV2, {
-  //   makeDefault: false,
-  //   themes: null,
-  //   label: `Agent Sheet V2`,
-  //   types: ["agent"],
-  // });
-
   // Register item sheet.
-  Items.registerSheet(DG.ID, DeltaGreenItemSheet, {
+  Items.registerSheet(DG.ID, DGItemSheet, {
     makeDefault: true,
     label: "DG.Sheet.class.item",
     themes: null,
@@ -125,7 +155,79 @@ Hooks.once("init", async () => {
   registerHandlebarsHelpers();
 });
 
+/**
+ * @param {ActiveEffect} effect
+ * @returns {Actor|undefined}
+ */
+function getAgentFromEffect(effect) {
+  const { parent } = effect;
+  if (parent?.documentName === "Actor" && parent.type === "agent") {
+    return parent;
+  }
+  if (parent?.documentName === "Item") {
+    const { actor } = parent;
+    if (actor?.type === "agent") return actor;
+  }
+  return undefined;
+}
+
+/**
+ * @param {ActiveEffect} effect
+ * @returns {Promise<void>}
+ */
+async function onAgentActiveEffectChange(effect) {
+  const actor = getAgentFromEffect(effect);
+  if (!actor) return;
+  actor.reset();
+  if (game.user.isActiveGM) await pruneExpiredStimulantEffects(actor);
+  await syncExhaustionEffect(actor);
+}
+
+Hooks.on("createActiveEffect", (effect) => {
+  onAgentActiveEffectChange(effect);
+});
+
+Hooks.on("updateActiveEffect", (effect) => {
+  onAgentActiveEffectChange(effect);
+});
+
+Hooks.on("deleteActiveEffect", (effect) => {
+  onAgentActiveEffectChange(effect);
+});
+
+Hooks.on("updateWorldTime", () => {
+  if (!game.user.isActiveGM) return;
+  pruneAllAgentsExpiredStimulants();
+});
+
+Hooks.on("updateItem", (item, changes) => {
+  const flat = foundry.utils.flattenObject(changes);
+  const transferStateKeys = [
+    "system.equipped",
+    "system.acuteEpisode",
+    "system.crossedOut",
+    "system.disorderCured",
+  ];
+  if (transferStateKeys.some((key) => key in flat)) {
+    const { actor } = item;
+    if (actor) {
+      actor.reset();
+      if (actor.sheet?.rendered) actor.sheet.render();
+    }
+  }
+
+  if (
+    item.type === "profession" &&
+    "name" in flat &&
+    item.actor?.type === "agent"
+  ) {
+    item.actor.update({ "system.biography.profession": item.name });
+  }
+});
+
 Hooks.once("ready", async () => {
+  await runWorldMigration();
+
   // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
   // TODO: Fix eslint issue on next line
   // eslint-disable-next-line consistent-return
@@ -164,32 +266,25 @@ Hooks.on("preCreateItem", (item) => {
 });
 
 // Hook into the render call for the Actors Directory to add an extra button
-Hooks.on("renderActorDirectory", (app, html, data) => {
-  if (!game.user.isGM) {
-    return;
-  }
+Hooks.on("renderActorDirectory", (app, element) => {
+  if (!game.user.isGM) return;
 
-  if (html.querySelector("#statParserButton")) {
-    return;
-  }
+  const footer = element?.querySelector?.(".directory-footer");
+  if (!footer || footer.querySelector("#statParserButton")) return;
 
   const button = document.createElement("button");
   button.id = "statParserButton";
+  button.type = "button";
 
   const icon = document.createElement("i");
-
   icon.classList.add("fas", "fa-file-import");
-
   button.appendChild(icon);
   button.append("Delta Green Stat Block Parser");
 
-  html.querySelector(".directory-footer").appendChild(button);
-
-  if (button) {
-    button.addEventListener("click", function (event) {
-      ParseDeltaGreenStatBlock();
-    });
-  }
+  footer.appendChild(button);
+  button.addEventListener("click", () => {
+    ParseDeltaGreenStatBlock();
+  });
 });
 
 // Note - this event is fired on ALL connected clients...
@@ -244,8 +339,14 @@ Hooks.on("renderChatLog", async (app, element) => {
   addEventListenerToChatMessage(element);
 });
 
-Hooks.on("renderChatMessageHTML", async (app, element, context) => {
+Hooks.on("renderChatMessageHTML", async (message, element, context) => {
+  if (message.getFlag(DG.ID, "chatCard")) {
+    element.classList.add("dg-chat-card-message");
+    enrichDGChatCardMessage(message, element);
+  }
+
   // ignore non chat card notifications
   if (!context.canClose) return;
+
   addEventListenerToChatMessage(element);
 });

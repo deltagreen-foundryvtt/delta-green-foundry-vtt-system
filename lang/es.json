@@ -3,9 +3,7 @@
   "DG.AgentNameFieldTooltip": "Apellido, nombre, alias o nombre en código",
   "DG.RollLuck": "Tira Suerte",
   "DG.Luck": "Suerte",
-
   "DG.FallbackText.newItem": "Nuevo {type}",
-
   "DG.Skills.accounting": "Contabilidad",
   "DG.Skills.alertness": "Alerta",
   "DG.Skills.anthropology": "Antropología",
@@ -44,7 +42,6 @@
   "DG.Skills.unarmed_combat": "Combate sin armas",
   "DG.Skills.unnatural": "Antinatural",
   "DG.Skills.flight": "Volar",
-
   "DG.Skills.Tooltip.accounting": "El estudio de las finanzas y los negocios. Úsala para localizar anomalías en informes financieros como, por ejemplo, una cuenta bancaria oculta o blanqueo de dinero.",
   "DG.Skills.Tooltip.alertness": "La Alerta detecta el peligro. Úsala para escuchar cómo se quita el seguro de un arma, para entender los balbuceos al otro lado de una pared, para detectar el bulto de una pistola debajo de una chaqueta o para atrapar a alguien que está intentando escabullirse mediante Sigilo.",
   "DG.Skills.Tooltip.anthropology": "El estudio de las culturas humanas vivas. Úsala para entender valores morales, creencias religiosas y costumbres, y para identificar (pero no traducir) idiomas desconocidos. Mientras que la Historia trata sobre el pasado y la Arqueología estudia los restos físicos, la Antropología trata sobre el comportamiento de las culturas vivas, cómo se relacionan con el resto y su punto de vista acerca de las otras y del pasado.",
@@ -82,7 +79,6 @@
   "DG.Skills.Tooltip.swim": "La mayoría de los Agentes saben nadar como pasatiempo. Usa la habilidad Natación durante una crisis peligrosa: recorrer una larga distancia en aguas movidas, evitar que alguien se ahogue o subirte a un barco antes de que la cosa con tentáculos de ahí debajo te agarre.",
   "DG.Skills.Tooltip.unarmed_combat": "Autodefensa. Una pelea entre combatientes no entrenados a menudo implica más empujones y gritos que violencia real. Usa el Combate sin armas para lastimar o matar a un oponente con las manos de tu Agente (o los pies, codos, dientes o cabeza).",
   "DG.Skills.Tooltip.unnatural": "Conocimiento acerca de los secretos más fundamentales y desgarradores del universo. Úsala para recordar, reconocer o investigar hechos sobre todo aquello que los humanos consideran antinatural. Esto va mucho más allá del ocultismo, porque la habilidad Antinatural representa cosas que existen de verdad. Utilízala para poder filtrar información de los confines más oscuros de los mitos y el folclore y reconocer qué partes son ciertas. El valor de COR de tu Agente nunca puede ser superior a 99 menos su valor de habilidad Antinatural.",
-
   "DG.Skills.AddTypedOrCustomSkill": "Añadir tipo o habilidad personalizada",
   "DG.Skills.AddSkill": "Añadir habilidad",
   "DG.Skills.Apply": "Aplicar",
@@ -95,7 +91,6 @@
   "DG.Skills.EditSkill": "Editar habilidad",
   "DG.Skills.SkillGroup": "Habilidad de grupo",
   "DG.Skills.SkillName": "Nombre de la habilidad",
-
   "DG.TypeSkills.Art": "Arte",
   "DG.TypeSkills.Craft": "Oficio",
   "DG.TypeSkills.ForeignLanguage": "Idioma extranjero",
@@ -103,7 +98,6 @@
   "DG.TypeSkills.Pilot": "Pilotar",
   "DG.TypeSkills.Science": "Ciencia",
   "DG.TypeSkills.Other": "Otra",
-
   "DG.TypeSkills.Tooltip.Art": "Pericia en la creación o representación de una obra que genera emoción y opinión. También incluye el conocimiento de técnicas y tendencias en tu campo, y la capacidad de distinguir las piezas reales de las falsas de un creador concreto. Cualquiera puede dibujar un boceto, pero la habilidad Arte refleja conocimiento, práctica y talento. Cada tipo de Arte es una habilidad independiente: Actuación, Canto, Danza, Escritura creativa, Escritura de guiones, Escultura, Falsificación, Flauta, Guitarra, Pintura, Poesía, Violín, etc.",
   "DG.TypeSkills.Tooltip.Craft": "Creación y reparación de herramientas y estructuras sofisticadas. Un trabajo que la mayoría de gente podría averiguar cómo se hace no requiere la habilidad Oficio, solo una prueba de INT o DES. Usa Oficio para el trabajo especializado que requiere formación: Oficio (Electricista) para cambiar el cableado a una casa, hacer el puente a un vehículo con rapidez, intervenir un teléfono o una línea de datos o identificar señales de sabotaje eléctrico; Oficio (Mecánica) para ensamblar apresuradamente una máquina o hacer que un motor averiado vuelva a funcionar… o para sabotear uno de manera que no se pueda volver a reparar; Oficio (Cerrajería) para abrir una cerradura sin la llave; Oficio (Armería) para reparar un arma de fuego estropeada. El Supervisor decide si una tarea concreta requiere un Oficio o no. Cada tipo de Oficio es una habilidad independiente: Armería, Arquitectura, Carpintería, Cerrajería, Electricista, Fontanería, Mecánica, Microelectrónica, etc.",
   "DG.TypeSkills.Tooltip.ForeignLanguage": "Soltura con otro idioma. Cada idioma extranjero es una habilidad independiente. Tener un 20% permite comunicar ideas sencillas; al llegar a 50%, tu Agente habla y lee como un nativo. Cuanto mayor es el valor de tu habilidad, mayor es la complejidad de información que tu Agente comprende y menor el tiempo que necesita para ello. No necesitas tirar los dados a no ser que el Supervisor diga que la situación es excepcionalmente difícil. A discreción del Supervisor, tener formación especial podría permitir el uso de la misma habilidad con un idioma de la misma familia.",
@@ -111,7 +105,6 @@
   "DG.TypeSkills.Tooltip.Pilot": "Pilotar, manejar y capitanear vehículos marítimos, aéreos o espaciales. Úsala para mantener una nave a salvo en una crisis como, por ejemplo, una tormenta o una persecución peligrosa. Cada tipo de nave es una habilidad independiente: Avión, Dron, Helicóptero, Barca, Barco, Lanzadera espacial, etc. A discreción del Supervisor, la habilidad con un tipo de nave podría permitir pilotar otro tipo de nave relacionado.",
   "DG.TypeSkills.Tooltip.Science": "El estudio profundo de los procesos que rigen nuestro mundo. Esta habilidad implica más que la educación común del colegio: cualquier persona puede hacer una prueba de INT para recordar algo de una clase del instituto. La Ciencia se usa para dar con un conocimiento clave sobre el modo en que funciona el universo… o, al menos, el modo en que debería funcionar. Cada Ciencia es una habilidad independiente: Astronomía, Biología, Botánica, Ciencias Planetarias, Física, Genética, Geología, Ingeniería, Matemáticas, Meteorología, Química, Zoología, etc.",
   "DG.TypeSkills.Tooltip.Other": "Otra",
-
   "DG.SpecialTraining.Dialog.CreateSpecialTraining": "Añadir entrenamiento especial",
   "DG.SpecialTraining.Dialog.DropDown.CustomSkills": "Habilidades personalizadas/de tipo",
   "DG.SpecialTraining.Dialog.DropDown.Skills": "Habilidades",
@@ -120,7 +113,6 @@
   "DG.SpecialTraining.Dialog.NameLabel": "Nombre",
   "DG.SpecialTraining.Dialog.SkillLabel": "Habilidad o característica",
   "DG.SpecialTraining.Dialog.Title": "Crear/editar entrenamiento especial",
-
   "DG.Attributes.HP": "Puntos de salud (PS)",
   "DG.Attributes.WP": "Puntos de voluntad (PV)",
   "DG.Attributes.SAN": "Puntos de Cordura (COR)",
@@ -130,7 +122,6 @@
   "DG.Attributes.int": "INT",
   "DG.Attributes.pow": "POD",
   "DG.Attributes.cha": "CAR",
-
   "DG.Attributes.Tooltip.HP": "Los puntos de Salud representan la cantidad de daño que tu Agente puede soportar. Cuando resulte herido, resta el daño de sus PS. Cuando tu Agente llegue a 2 PS, queda inconsciente. Cuando tu Agente llegue a 0 PS, muere. Los puntos de Salud se pueden recuperar mediante reposo y atención médica.",
   "DG.Attributes.Tooltip.WP": "Los puntos de Voluntad representan la fortaleza mental, y disminuyen cuando tu Agente trata de suprimir los síntomas de las enfermedades mentales (consulta RESISTIRSE A LA DEMENCIA en la página 73), cuando acaba agotado (consulta AGOTAMIENTO en la página 47), cuando intenta resistir contra la persuasión (consulta INTERROGATORIO en la página 168), cuando acaba quemado a nivel emocional (consulta PIFIA en la página 44) o cuando trata de avivar fenómenos antinaturales. Cuando tu Agente llegue a 2 PV, sufre un colapso emocional transitorio. Cuando tu Agente llegue a 0 PV, queda inconsciente. Los puntos de Voluntad se pueden recuperar mediante el reposo (consulta PUNTOS DE VOLUNTAD en la página 47).",
   "DG.Attributes.Tooltip.SAN": "Los puntos de Cordura representan la salud mental o, dicho de otra manera, la cantidad de traumas psicológicos o exposición a lo Antinatural que tu Agente puede soportar antes de caer en la demencia. En los momentos de trauma psicológico, tu Agente debe hacer una prueba de Cordura buscando un resultado igual o inferior a su COR con 1D100. Si la tirada falla, tu Agente pierde COR (consulta CORDURA en la página 64). Los puntos de Cordura se pueden recuperar mediante terapia psiquiátrica o la neutralización de amenazas antinaturales. Cuando tu Agente baje hasta los 0 puntos de Cordura, entra en un estado de demencia irreversible y se convierte en un PNJ de manera permanente bajo el control del Supervisor.",
@@ -140,7 +131,6 @@
   "DG.Attributes.Tooltip.int": "La capacidad de un Agente para recordar, conectar o darse cuenta de las cosas. Junto a su profesión, indica su educación y brillantez en general.",
   "DG.Attributes.Tooltip.pow": "Fuerza de personalidad, motivación y resiliencia física.",
   "DG.Attributes.Tooltip.cha": "Encanto, liderazgo y atractivo personal. Podría indicar atractivo físico.",
-
   "DG.Navigation.Agent.skills": "Habilidades",
   "DG.Navigation.Agent.physical": "Características",
   "DG.Navigation.Agent.motivations": "Salud mental",
@@ -151,7 +141,6 @@
   "DG.Navigation.NPC.gear": "Ataques y atributos",
   "DG.Navigation.Vehicle.gear": "Equipo",
   "DG.Navigation.Vehicle.notes": "Notas",
-
   "DG.About.Changelog": "Registro de cambios (en línea)",
   "DG.About.Copyright": "Publicado por Arc Dream Publishing de acuerdo a la Delta Green Partnership. La propiedad intelectual conocida como Delta Green es una marca comercial y derechos de autor de la Delta Green Partnership, que ha licenciado su uso en este sistema.",
   "DG.About.License": "Los contenidos de este sistema están licenciados según los términos incluidos en este <a href=\"systems/deltagreen/LICENSE.txt\">documento</a>, excepto aquellos elementos que son parte de la propiedad intelectual de Delta Green.",
@@ -159,9 +148,7 @@
   "DG.About.OnlineHelpTooltip": "Abre la página de GitHub en el navegador con la página de ayuda.",
   "DG.About.OnlineBugTracker": "Preguntas, errores y petición de nuevas funcionalidades.",
   "DG.About.OnlineBugTrackerTooltip": "Abre la página de GitHub en el navegador con la página de notificación de errores.",
-
   "DG.Roll.Rolling": "Tirando",
-  "DG.Roll.Target": "Objetivo: ",
   "DG.Roll.Success": "Éxito",
   "DG.Roll.Failure": "Fallo",
   "DG.Roll.CriticalSuccess": "¡Crítico!",
@@ -173,14 +160,11 @@
   "DG.Roll.RollingDamageFor": "Tirando daño para",
   "DG.Roll.Or": "O",
   "DG.Roll.Roll": "Tirar",
-
   "DG.Physical.Wounds": "Heridas",
   "DG.Physical.FirstAidLabel": "Ya se han aplicado primeros auxilios: ",
   "DG.Physical.Exhausted": "Exhausto:",
   "DG.Physical.ExhaustionPenalty": "Penalizador:",
-
   "DG.Generic.AddButtonLabel": "Añadir",
-
   "DG.Mental.BreakingPoint": "Punto de ruptura: ",
   "DG.Mental.Tooltip.BreakingPoint": "Cuando se falla una tirada de COR y la tirada es igual o está por debajo de este valor, el Agente gana un nuevo trastorno mental; ajusta el nuevo punto de ruptura a la COR actual - POD. Los trastornos se mantienen incluso si la COR vuelve a subir por encima del punto de ruptura anterior.",
   "DG.Mental.Reset": "Borrar",
@@ -193,7 +177,6 @@
   "DG.Mental.AdaptedToHelplessness": "Adaptado a la indefensión",
   "DG.Mental.Motivations": "Motivaciones",
   "DG.Mental.Disorders": "Desórdenes",
-
   "DG.Gear.WeaponTypes.Firearms": "Armas de fuego",
   "DG.Gear.WeaponTypes.Melee": "Cuerpo a cuerpo",
   "DG.Gear.Weapons": "ARMAS",
@@ -204,7 +187,6 @@
   "DG.Gear.ArmorPiercing": "Perforación de armadura",
   "DG.Gear.ArmorRating": "Clasificación de armadura",
   "DG.Gear.Equipped": "Equipado",
-
   "DG.CV.Sex": "Género",
   "DG.CV.SexPlaceholder": "Género",
   "DG.CV.AgeAndDoB": "Edad y f. de nac.",
@@ -215,12 +197,10 @@
   "DG.CV.NationalityPlaceholder": "Nacionalidad",
   "DG.CV.Education": "Educación",
   "DG.CV.EducationPlaceholder": "Educación y entrenamiento",
-
   "DG.Bonds.Bond": "Lazo",
   "DG.Bonds.Name": "Nombre",
   "DG.Bonds.Score": "Valor",
   "DG.Bonds.NewBond": "Nuevo lazo",
-
   "DG.Tooltip.MaximumHP": "La salud máxima es el promedio de FUE + CON, redondeado hacia arriba.",
   "DG.Tooltip.MaximumWP": "Los puntos de voluntad máximos son iguales al POD.",
   "DG.Tooltip.CurrentSanityPartOne": "Cordura actual, el punto de ruptura actual es ",
@@ -236,17 +216,14 @@
   "DG.Tooltip.AdaptedToHelplessness": "Estar adaptado a la indefensión significa que el impulso personal de su Agente sufre cuando se aleja del mundo que lo rodea. Tan pronto como su Agente se adapte a la indefensión, perderá permanentemente 1D6 POD.",
   "DG.Tooltip.ToggleEquippedState": "Haga clic para alternar si este artículo está equipado o no.",
   "DG.Tooltip.Exhaustion": "Un Agente que trabaja demasiado o se enfrenta a peligros extremos sin descansar queda exhausto. El que ocurra o no queda a criterio del Controlador, pero como guía, cualquiera que permanezca despierto toda la noche sin dormir o no descanse tras haber perdido COR o puntos de vida quedará exhausto.",
-
   "DG.Gear.Expense.NA": "N/A o ninguno",
   "DG.Gear.Expense.Incidental": "Imprevisto",
   "DG.Gear.Expense.Standard": "Corriente",
   "DG.Gear.Expense.Unusual": "Extraordinario",
   "DG.Gear.Expense.Major": "Considerable",
   "DG.Gear.Expense.Extreme": "Extremo",
-
   "DG.ItemWindow.Bonds.Description": "Descripción/desarrollo",
   "DG.ItemWindow.Bonds.ScoreTooltip": "Una puntuación más alta representa una relación más fuerte entre el agente y el lazo.",
-
   "DG.ItemWindow.Motivations.Attributes": "Atributos",
   "DG.ItemWindow.Motivations.Motivation": "Motivación",
   "DG.ItemWindow.Motivations.Description": "Descripción/notas",
@@ -257,19 +234,16 @@
   "DG.ItemWindow.Motivations.IsDisorderTooltip": "Marque esta opción si agrega un trastorno o si se ha perdido una motivación existente debido a la adquisición de un trastorno.",
   "DG.ItemWindow.Motivations.DisorderHasBeenCured": "El trastorno ha sido curado.",
   "DG.ItemWindow.Motivations.DisorderHasBeenCuredTooltip": "Un éxito crítico en una tirada de suerte terapéutica puede 'curar' un trastorno. Sin embargo, puede regresar la próxima vez que se alcance un punto de ruptura. Consulte la sección Ir a terapia en las páginas 78-79 del Manual del Agente.",
-
   "DG.ItemWindow.Gear.Attributes": "Atributos",
   "DG.ItemWindow.Gear.Description": "Descripción",
   "DG.ItemWindow.Gear.NamePlaceholder": "Nombre",
   "DG.ItemWindow.Gear.Expense": "Gasto",
   "DG.ItemWindow.Gear.Equipped": "Equipado",
-
   "DG.ItemWindow.Armor.Description": "Descripción",
   "DG.ItemWindow.Armor.NamePlaceholder": "Nombre",
   "DG.ItemWindow.Armor.ArmorRating": "Armadura",
   "DG.ItemWindow.Armor.Expense": "Gasto",
   "DG.ItemWindow.Armor.Equipped": "Equipado",
-
   "DG.ItemWindow.Weapons.Description": "Descripción",
   "DG.ItemWindow.Weapons.NamePlaceholder": "Nombre",
   "DG.ItemWindow.Weapons.Skill": "Habilidad",
@@ -283,27 +257,21 @@
   "DG.ItemWindow.Weapons.Ammo": "Munición (cantidad/tipo)",
   "DG.ItemWindow.Weapons.Range": "Alcance",
   "DG.ItemWindow.Weapons.KillRadius": "Radio muerte",
-
   "DG.ModifySkillRollDialogue.Title": "Modificar tirada",
   "DG.ModifySkillRollDialogue.Test": "Tirada",
   "DG.ModifySkillRollDialogue.OriginalTarget": "Valor original",
   "DG.ModifySkillRollDialogue.TargetModifier": "Modificador",
   "DG.ModifySkillRollDialogue.ModifierTooltip": "Dar un modificador positivo o negativo aquí para sumar o restar al objetivo en la chequeo de habilidades.",
-
   "DG.ModifyDamageRollDialogue.Weapon": "Arma:",
   "DG.ModifyDamageRollDialogue.OuterModifierTooltip": "Utilice este campo para modificar la fórmula, como duplicar el resultado.",
   "DG.ModifyDamageRollDialogue.InnerModifierTooltip": "Utilice este campo para añadir un modificador como '+1' u otro término como '+1d4'.",
-
   "DG.Roll.Inhuman": "Inhumano",
   "DG.Tooltip.BreakPoint": "El punto de ruptura actual, actualizar cuando la Cordura actual sea igual o inferior a este valor. El punto de ruptura inicial es COR - POD.",
   "DG.Tooltip.BreakPointReset": "Actualizar el Punto de Ruptura al valor actual de COR - PVol.",
   "DG.Skills.ritual": "Ritual",
-
   "DG.RollMode": "Modo de tirada",
   "DG.Bonds.Relationship": "Relación",
-
   "DG.TypeSkills.Subskills.Painting": "Pintar",
-
   "DG.Sheet.BlockHeaders.Attributes": "ATRIBUTOS",
   "DG.Sheet.BlockHeaders.Statistics": "CARACTERÍSTICAS",
   "DG.Sheet.BlockHeaders.PhysicalDescriptionNotes": "DESCRIPCIÓN FÍSICA Y NOTAS",
@@ -313,9 +281,7 @@
   "DG.Sheet.BlockHeaders.MotivationsAndDisorders": "MOTIVACIONES Y TRANSTORNOS MENTALES",
   "DG.Sheet.BlockHeaders.PersonalInfoCV": "INFORMACIÓN PERSONAL Y CURRÍCULO",
   "DG.Sheet.BlockHeaders.BondsRelationshipsContacts": "LAZOS, RELACIONES Y CONTACTOS",
-
   "DG.AgentSheet.ProfessionPlaceholder": "Profesión (rango, si es necesario)",
-
   "DG.UnnaturalSheet.HideUntrainedSkillsLabel": "Ocultar habilidades no entrenadas",
   "DG.UnnaturalSheet.NotesLabel": "Notas",
   "DG.UnnaturalSheet.ShortDescriptionPlaceholder": "Descripción de la criatura o tipo",
@@ -323,39 +289,31 @@
   "DG.UnnaturalSheet.Tabs.NotesTabLabel": "Habilidades & notas",
   "DG.UnnaturalSheet.Tabs.ItemsTabLabel": "Ataques & habilidades",
   "DG.NPCSheet.BreakPointAbbreviation": "PR",
-
   "DG.ImpossibleLanscapes.IHaveSeenThe": "He visto el ",
   "DG.ImpossibleLanscapes.YellowSign": "Signo Amarillo",
   "DG.ImpossibleLanscapes.CorruptionFirstHalf": "Corrup",
   "DG.ImpossibleLanscapes.CorruptionSecondHalf": "ción",
   "DG.ImpossibleLanscapes.Gift": "Don",
   "DG.ImpossibleLanscapes.Insight": "Visión",
-
   "DG.VehicleSheet.NotesTabName": "Notas",
   "DG.VehicleSheet.GearTabName": "Equipo",
   "DG.VehicleSheet.NotesLabel": "Notas",
   "DG.VehicleSheet.DescriptionPlaceHolder": "Descripción del vehículo",
-
   "DG.Generic.CheckDamagedBondsBoxUntilNextHomeScene": "Marca el cuadro de comprobación de lazo dañado hasta que termine la próxima escena de hogar.",
   "DG.Generic.ClearAll": "Borrar todo",
-
   "DG.Generic.SanDamage": "Daño COR",
-
   "DG.ItemWindow.Weapons.CustomSkillTarget": "Objetivo",
   "DG.ItemWindow.Weapons.SkillModifier": "Mod. habilidad",
   "DG.ItemWindow.Custom": "Personalizado",
-
   "DG.Sheet.class.item": "Hoja de objeto",
   "DG.Sheet.class.agent": "Hoja de agente",
   "DG.Sheet.class.npc": "Hoja de PNJ",
   "DG.Sheet.class.unnatural": "Hoja de antinatural",
   "DG.Sheet.class.vehicle": "Hoja de vehículo",
-
   "TYPES.Actor.agent": "Agente",
   "TYPES.Actor.npc": "PNJ",
   "TYPES.Actor.unnatural": "Antinatural",
   "TYPES.Actor.vehicle": "Vehículo",
-
   "TYPES.Item.armor": "Armadura",
   "TYPES.Item.bond": "Lazo",
   "TYPES.Item.gear": "Equipo",
@@ -363,13 +321,10 @@
   "TYPES.Item.weapon": "Arma",
   "TYPES.Item.tome": "Tomo",
   "TYPES.Item.ritual": "Ritual",
-
   "DG.Gear.Tomes": "TOMOS",
   "DG.Gear.Rituals": "RITUALES",
-
   "DG.Tomes.Name": "Nombre",
   "DG.Ritual.Name": "Nombre",
-
   "DG.Tome.Name": "Nombre",
   "DG.Tome.Language": "Idioma",
   "DG.Tome.StudyTime": "Tiempo de estudio",
@@ -381,15 +336,12 @@
   "DG.ItemWindow.Tome.StudySanityDamage": "Pérdida  de Cordura al estudiarlo",
   "DG.ItemWindow.Tome.HandlerOnlyTabHeader": "Datos | Controlador",
   "DG.ItemWindow.Tome.HandlerNotes": "Notas | Controlador",
-
   "DG.ItemWindow.Ritual.ActivationSanityDamage": "COR activación",
   "DG.ItemWindow.Ritual.ActivationTime": "Tiempo de activación",
   "DG.ItemWindow.Ritual.ActivationCosts": "Coste de activación",
   "DG.ItemWindow.Ritual.StudyTime": "Tiempo de estudio",
   "DG.ItemWindow.Ritual.LearnedSanityDamage": "COR aprendizaje",
-
   "DG.MissionPaused": "Misión en pausa",
-
   "DG.Settings.charactersheet.name": "Estilo de hoja de personaje",
   "DG.Settings.charactersheet.hint": "Elegir el estilo de las hojas de personaje. 'Programa' se ajusta a una agencia gubernamental moderna, mientras que 'Vaquero/Forajido' es antiguo, crudo, estilo vieja máquina de escribir.",
   "DG.Settings.charactersheet.cowboys": "Los vaqueros",
@@ -417,15 +369,12 @@
   "DG.Settings.skillFailure.name": "Marcar automáticamente fallo en habilidad",
   "DG.Settings.skillFailure.hint": "Active este ajuste para activar la casilla al fallar una habilidad. El Supervisor puede deshacer esta acción desde la tarjeta del chat de la tirada.",
   "DG.Settings.Saved": "Los ajustes han sido guardados.",
-
   "DG.SettingsMenu.automation.name": "Menú de automatización",
   "DG.SettingsMenu.automation.label": "Menú de automatización",
   "DG.SettingsMenu.automation.title": "Menú de ajustes",
-
   "DG.SettingsMenu.handler.name": "Ajustes del Supervisor",
   "DG.SettingsMenu.handler.label": "Ajustes del Supervisor",
   "DG.SettingsMenu.handler.title": "Ajustes solo para el Supervisor",
-
   "DG.Messages.Skillsmark.Marked": "Habilidad marcada",
   "DG.Messages.Skillsmark.Tooltip": "Consulte la página 29 del Manual del Agente"
 }

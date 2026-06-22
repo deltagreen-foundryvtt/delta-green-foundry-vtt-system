@@ -1,0 +1,87 @@
+<div class="tab {{leftBarRestSanityTabs.sanity.cssClass}}"
+        data-group="leftBarRestSanity"
+        data-tab="sanity">
+    <div class="breaking-point-inline">
+        <label class="bolded-label breaking-point-label"
+               title="{{localize 'DG.Mental.Tooltip.BreakingPoint'}}">
+            {{localize 'DG.Mental.BreakingPoint'}}
+        </label>
+        <input class="breaking-point-input centered"
+               type="text"
+               name="system.sanity.currentBreakingPoint"
+               value="{{actor.system.sanity.currentBreakingPoint}}"
+               data-dtype="Number"
+               title="{{localize 'DG.Mental.Tooltip.BreakingPoint'}}" />
+        <a class="fa fa-refresh"
+           data-action="resetBreakingPoint"
+           title="{{localize 'DG.Mental.Reset'}}"></a>
+    </div>
+
+    <div class="left-bar-section-divider" role="separator"></div>
+
+    <div class="left-bar-section-heading">{{localize 'DG.Sheet.BlockHeaders.Adaptations'}}</div>
+
+    <div class="adaptation-grid-4col">
+        <label data-tooltip="{{localize 'DG.Mental.Tooltip.Violence'}}">
+            {{localize 'DG.Mental.Violence'}}
+        </label>
+        <input class="labeled-resource-checkbox"
+               type="checkbox"
+               name="system.sanity.adaptations.violence.incident1"
+               data-tooltip="{{localize 'DG.Mental.Tooltip.Checkbox.Violence'}}"
+               {{checked actor.system.sanity.adaptations.violence.incident1}}
+               data-dtype="Boolean" />
+        <input class="labeled-resource-checkbox"
+               type="checkbox"
+               name="system.sanity.adaptations.violence.incident2"
+               data-tooltip="{{localize 'DG.Mental.Tooltip.Checkbox.Violence'}}"
+               {{checked actor.system.sanity.adaptations.violence.incident2}}
+               data-dtype="Boolean" />
+        <input class="labeled-resource-checkbox"
+               type="checkbox"
+               name="system.sanity.adaptations.violence.incident3"
+               data-tooltip="{{localize 'DG.Mental.Tooltip.Checkbox.Violence'}}"
+               {{checked actor.system.sanity.adaptations.violence.incident3}}
+               data-dtype="Boolean" />
+
+        <div class="adapted-label-slot">
+            <label class="adapted-label"
+                   data-tooltip="{{localize 'DG.Tooltip.AdaptedToViolence'}}">
+                {{#if actor.system.sanity.adaptations.violence.isAdapted }}
+                {{localize 'DG.Mental.AdaptedToViolence'}}
+                {{/if}}
+            </label>
+        </div>
+
+        <label data-tooltip="{{localize 'DG.Mental.Tooltip.Helplessness'}}">
+            {{localize 'DG.Mental.Helplessness'}}
+        </label>
+        <input class="labeled-resource-checkbox"
+               type="checkbox"
+               name="system.sanity.adaptations.helplessness.incident1"
+               data-tooltip="{{localize 'DG.Mental.Tooltip.Checkbox.Helplessness'}}"
+               {{checked actor.system.sanity.adaptations.helplessness.incident1}}
+               data-dtype="Boolean" />
+        <input class="labeled-resource-checkbox"
+               type="checkbox"
+               name="system.sanity.adaptations.helplessness.incident2"
+               data-tooltip="{{localize 'DG.Mental.Tooltip.Checkbox.Helplessness'}}"
+               {{checked actor.system.sanity.adaptations.helplessness.incident2}}
+               data-dtype="Boolean" />
+        <input class="labeled-resource-checkbox"
+               type="checkbox"
+               name="system.sanity.adaptations.helplessness.incident3"
+               data-tooltip="{{localize 'DG.Mental.Tooltip.Checkbox.Helplessness'}}"
+               {{checked actor.system.sanity.adaptations.helplessness.incident3}}
+               data-dtype="Boolean" />
+
+        <div class="adapted-label-slot">
+            <label class="adapted-label"
+                   data-tooltip="{{localize 'DG.Tooltip.AdaptedToHelplessness'}}">
+                {{#if actor.system.sanity.adaptations.helplessness.isAdapted }}
+                {{localize 'DG.Mental.AdaptedToHelplessness'}}
+                {{/if}}
+            </label>
+        </div>
+    </div>
+</div>

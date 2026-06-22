@@ -1,0 +1,15 @@
+{{#if showSpecialTrainingSection }}
+    <div class="horizontal-bar-section-divider custom-skill-group-label">
+        <span>{{localize "DG.Sheet.BlockHeaders.SpecialTraining"}}</span>
+    </div>
+
+    <div class="agent-skills-columns grid grid-3col special-training-columns">
+        {{#each specialTrainingColumns as |column| }}
+            <div class="agent-skills-column">
+                {{#each column as |block| }}
+                    {{> "systems/deltagreen/templates/actor/partials/agent-special-training-row-partial.html" block=block }}
+                {{/each}}
+            </div>
+        {{/each}}
+    </div>
+{{/if}}

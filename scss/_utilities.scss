@@ -1,0 +1,218 @@
+/* Character Sheet Style Options */
+
+.window-content.outlaw-style,
+.window-content.cowboy-style {
+  background: url("../assets/img/StainedPlainPaper10b.webp") !important;
+  background-size: 100% !important;
+}
+
+.window-content.program-style {
+  background: url("../assets/img/StainedPlainPaper10a.webp") !important;
+  background-size: 100% !important;
+}
+
+.cowboy-style {
+  font-family: "SpecialElite", sans-serif !important;
+}
+
+.outlaw-style,
+.program-style {
+  font-family: "PublicSans", sans-serif !important;
+}
+
+.outlaw-style .tabs [data-action="tab"],
+.cowboy-style .tabs [data-action="tab"] {
+  background: rgba(173, 151, 101, 0.3);
+}
+
+.program-style .tabs [data-action="tab"] {
+  background: rgba(138, 136, 133, 0.3);
+}
+
+.old-paper-background {
+  background: url("../assets/img/StainedPlainPaper10.webp") !important;
+}
+
+.default-parchment-background {
+  background: url("/ui/parchment.jpg") repeat !important;
+}
+
+.typewriter-condensed-font {
+  font-family: "TypeWriterCondensed", sans-serif !important;
+}
+
+.martel-font {
+  font-family: "Martel", sans-serif !important;
+}
+
+.signika-font {
+  font-family: "Signika", sans-serif !important;
+}
+
+.atwriter-font {
+  font-family: "atwriter", sans-serif !important;
+}
+
+.special-elite-font {
+  font-family: "SpecialElite", sans-serif !important;
+}
+
+.public-sans-font {
+  font-family: "PublicSans", sans-serif !important;
+}
+
+.rollable:hover,
+.rollable:focus {
+  color: var(--dg-ink);
+  text-shadow: 0 0 5px #374e13;
+  cursor: pointer;
+}
+
+button.rollable.inline-roll {
+  display: inline-block;
+  width: max-content;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  font: inherit;
+  color: var(--dg-ink);
+  line-height: inherit;
+  vertical-align: baseline;
+  text-align: inherit;
+  box-sizing: border-box;
+
+  > i {
+    color: inherit;
+  }
+}
+
+.not-rollable {
+  color: #999999;
+}
+
+input.breaking-point-hit {
+  color: rgb(255, 255, 255);
+  background-color: rgb(117, 0, 0);
+  font-weight: bold;
+}
+
+.dg-red {
+  color: rgb(117, 0, 0);
+}
+
+.bottom-margin-5px {
+  margin-bottom: 5px !important;
+}
+
+.grid-1col {
+  display: grid;
+  grid-column: span 1 / span 1;
+  gap: 3px;
+}
+
+.grid,
+.grid-2col {
+  display: grid;
+  grid-column: span 2 / span 2;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 3px;
+  margin: 0px 0;
+  padding: 0;
+}
+
+@for $i from 3 through 12 {
+  .grid-#{$i}col {
+    grid-column: span #{$i} / span #{$i};
+    grid-template-columns: repeat(#{$i}, minmax(0, 1fr));
+  }
+}
+
+/* grid-6col historically used 5 columns — preserve behavior */
+.grid-6col {
+  grid-column: span 5 / span 5;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+/* If the user wishes to sort skills by column, we need to
+explicitly define a number of rows, rather than columns. */
+.grid-13row {
+  grid-template-rows: repeat(13, minmax(0, auto)) !important;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr)) !important;
+  grid-auto-flow: column !important;
+}
+
+.flex-group-center,
+.flex-group-left,
+.flex-group-right {
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  text-align: center;
+  padding: 2px;
+}
+
+.flex-thin-border {
+  border: 1px solid #999;
+  border-radius: 2px;
+  border-left-color: darkslategray;
+  border-left-width: 4px;
+}
+
+/* Make sure Special Training boxes are the same height
+   as all other skill boxes */
+.flex-thin-border.special-training-box {
+  min-height: 27px;
+}
+
+.flex-mid-border {
+  border: 1.5px solid rgb(0, 0, 0);
+  border-radius: 2px;
+}
+
+.flex-group-left {
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  text-align: left;
+  padding: 0;
+}
+
+.flex-group-right {
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.flex-center {
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.flex-between {
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+
+.horizontal-flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-left {
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  text-align: left;
+}

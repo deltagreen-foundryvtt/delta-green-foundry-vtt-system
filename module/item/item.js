@@ -1,3 +1,5 @@
+import { getDGRollToken } from "../chat/dg-chat-card.js";
+import appendMeleeDamageBonus from "../roll/melee-damage.js";
 import { DGDamageRoll, DGLethalityRoll } from "../roll/roll.js";
 
 /**
@@ -5,18 +7,6 @@ import { DGDamageRoll, DGLethalityRoll } from "../roll/roll.js";
  * @extends {Item}
  */
 export default class DeltaGreenItem extends Item {
-  /**
-   * Augment the basic Item data model with additional dynamic data.
-   */
-  prepareData() {
-    super.prepareData();
-
-    // Get the Item's data
-    const itemData = this;
-    const actorData = this.actor || {};
-    const { system } = itemData;
-  }
-
   /**
    * Handle clickable rolls.
    * @param {Event} event   The originating click event
@@ -26,23 +16,25 @@ export default class DeltaGreenItem extends Item {
     // Basic template rendering data
     const item = this;
     const { actor } = this;
-    const actorSystemData = this.actor.system || {};
-
     let roll;
     if (item.system.isLethal) {
       roll = new DGLethalityRoll(
         "1D100",
         {},
-        { rollType: "lethality", actor, item },
+        {
+          rollType: "lethality",
+          actor,
+          item,
+          token: getDGRollToken(actor, actor.sheet?.token),
+        },
       );
     } else {
       // regular damage roll
-      let diceFormula = item.system.damage;
-      const skillType = item.system.skill;
-
-      if (skillType === "unarmed_combat" || skillType === "melee_weapons") {
-        diceFormula += actorSystemData.statistics.str.meleeDamageBonusFormula;
-      }
+      let diceFormula = appendMeleeDamageBonus(
+        item.system.damage,
+        actor,
+        item.system.skill,
+      );
 
       if (isCrit) {
         diceFormula = `2*(${diceFormula})`;
@@ -51,7 +43,12 @@ export default class DeltaGreenItem extends Item {
       roll = new DGDamageRoll(
         diceFormula,
         {},
-        { rollType: "damage", actor, item },
+        {
+          rollType: "damage",
+          actor,
+          item,
+          token: getDGRollToken(actor, actor.sheet?.token),
+        },
       );
     }
     return actor.sheet.processRoll({}, roll);

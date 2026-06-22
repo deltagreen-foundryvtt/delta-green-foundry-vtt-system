@@ -1,6 +1,7 @@
 /* eslint-disable max-classes-per-file */
-import DG, { BASE_TEMPLATE_PATH } from "./config.js";
+import DG, { BASE_TEMPLATE_PATH } from "./config/index.js";
 import DGActorSheet from "./sheets/base-actor-sheet.js";
+import DGItemSheet from "./sheets/base-item-sheet.js";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
@@ -87,7 +88,7 @@ const SettingForm = class extends HandlebarsApplicationMixin(ApplicationV2) {
     }
 
     // Once all promises resolve, show a notification.
-    Promise.allSettled(settingsPromises).then((values) => {
+    Promise.allSettled(settingsPromises).then(() => {
       ui.notifications.info(game.i18n.localize("DG.Settings.Saved"));
     });
   }
@@ -297,7 +298,7 @@ export default function registerSystemSettings() {
       program: game.i18n.localize("DG.Settings.charactersheet.program"),
     },
     default: "program", // The default value for the setting
-    onChange: (value) => {
+    onChange: () => {
       // A callback function which triggers when the setting is changed
       // console.log(value)
     },
@@ -329,54 +330,18 @@ export default function registerSystemSettings() {
     default: "hover",
     onChange: () => {
       foundry.applications.instances.forEach((app) => {
-        if (app instanceof DGActorSheet) {
+        if (app instanceof DGActorSheet || app instanceof DGItemSheet) {
           app.render();
         }
       });
     },
   });
 
-  // obsolete - will be removed at some point
-  game.settings.register("deltagreen", "characterSheetFont", {
-    name: "World Font Choice",
-    hint: "Choose font style for use throughout this world.",
-    scope: "world", // This specifies a world-stored setting
-    config: false, // This specifies that the setting appears in the configuration view
-    type: String,
-    choices: {
-      // If choices are defined, the resulting setting will be a select menu
-      SpecialElite: "Special Elite (Classic Typewriters Font)",
-      Martel: "Martel (Clean Modern Font)",
-      Signika: "Signika (Foundry Default Font)",
-      TypeWriterCondensed:
-        "Condensed Typewriter (Modern, Small Typewriter Font)",
-      PublicSans: "Public Sans (US Government-style sans serif font)",
-      // "atwriter": "Another Typewriter (Alternate Old-style Typewriter Font)"
-    },
-    default: "SpecialElite", // The default value for the setting
-    onChange: (value) => {
-      // A callback function which triggers when the setting is changed
-      // console.log(value)
-    },
-  });
-
-  // obsolete - will be removed at some point
-  game.settings.register("deltagreen", "characterSheetBackgroundImageSetting", {
-    name: "World Sheet Background Image",
-    hint: "Choose background image for use throughout this world. (Refresh page to see change.)",
-    scope: "world", // This specifies a world-stored setting
-    config: false, // This specifies that the setting appears in the configuration view
-    type: String,
-    choices: {
-      // If choices are defined, the resulting setting will be a select menu
-      OldPaper1: "Old Dirty Paper (Good with Special Elite Font)",
-      IvoryPaper: "Ivory White Paper (Good with Martel Font)",
-      DefaultParchment: "Default Parchment (Good with Signika Font)",
-    },
-    default: "OldPaper1", // The default value for the setting
-    onChange: (value) => {
-      // A callback function which triggers when the setting is changed
-      // console.log(value)
-    },
+  game.settings.register(DG.ID, "schemaMigrationVersion", {
+    name: "Schema Migration Version",
+    scope: "world",
+    config: false,
+    type: Number,
+    default: 0,
   });
 }

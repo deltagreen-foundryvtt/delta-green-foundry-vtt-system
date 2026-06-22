@@ -7,7 +7,7 @@
             <div class="flex-group-center flex-mid-border">
                 <div>
                     <div class="physical-stats-outer-grid-3col">
-                        <label class="rollable resource-label"
+                        <label class="{{if_gt statistic.x5 0 'rollable' 'not-rollable'}} resource-label"
                                data-action="roll"
                                data-rolltype="stat"
                                data-key="{{key}}"
@@ -20,7 +20,7 @@
                                name="system.statistics.{{key}}.value"
                                value="{{statistic.value}}"
                                data-dtype="Number" />
-                        <span class="rollable"
+                        <span class="{{if_gt statistic.x5 0 'rollable' 'not-rollable'}}"
                               data-action="roll"
                               data-rolltype="stat"
                               data-key="{{key}}"

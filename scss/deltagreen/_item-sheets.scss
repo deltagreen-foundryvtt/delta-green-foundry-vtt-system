@@ -1,0 +1,319 @@
+@use "../mixins" as *;
+
+/*
+  Item sheets (ApplicationV2): Foundry .application uses light --color-text-primary,
+  but DG window-content uses light parchment backgrounds. Reset ink, headings, labels,
+  and form fields here so new item tabs stay readable without per-type patches.
+*/
+.deltagreen.item .window-content {
+  color: var(--dg-ink);
+  scrollbar-color: #215112 #111 !important;
+
+  @include dg-window-form-inputs-with-select;
+  @include dg-parchment-content-theme;
+  @include dg-parchment-form-fields;
+}
+
+/*
+  Item Sheet Common CSS
+*/
+
+.item-img {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 100px;
+  flex: 0 0 100px;
+  height: 100px;
+  border: 0px solid var(--dg-ink);
+}
+
+input.item-sheet-short-input {
+  width: 75px;
+  margin-right: 5px;
+  margin-left: 5px;
+  text-align: center !important;
+}
+
+.item-grid-button-row {
+  vertical-align: middle !important;
+  line-height: inherit;
+  padding: 5px 0px 0px 10px;
+}
+
+/*
+  Bonds Item Sheet
+*/
+
+.bond-sheet-grid-2col {
+  @include item-sheet-grid-2col;
+  padding-left: 5px;
+}
+
+.bond-sheet-horizontal-grid-2col {
+  @include item-sheet-horizontal-grid(150px);
+}
+
+/*
+  Motivation Item Sheet
+*/
+
+.motivation-sheet-horizontal-grid-2col {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  align-items: center;
+  justify-content: center;
+  text-align: left;
+  padding-left: 5px;
+  padding-bottom: 10px;
+  grid-gap: 5px;
+}
+
+/*
+  Armor Item Sheet
+*/
+
+.armor-sheet-grid-2col {
+  @include item-sheet-grid-2col;
+  padding-bottom: 10px;
+  padding-left: 5px;
+}
+
+.armor-sheet-horizontal-grid-2col {
+  @include item-sheet-horizontal-grid;
+}
+
+.armor-sheet-secondary-grid-2col {
+  @include item-sheet-grid-2col;
+  justify-content: left;
+  text-align: left;
+  padding-bottom: 10px;
+}
+
+/*
+  Gear Item Sheet
+*/
+
+.gear-sheet-grid-2col {
+  @include item-sheet-grid-2col;
+  padding-left: 5px;
+}
+
+.gear-sheet-horizontal-grid-2col {
+  @include item-sheet-horizontal-grid;
+}
+
+/*
+  Weapon Item Sheet
+*/
+
+.weapon-sheet-grid-2col {
+  @include item-sheet-grid-2col;
+  padding-left: 5px;
+}
+
+.weapon-sheet-horizontal-grid-2col {
+  @include item-sheet-horizontal-grid;
+}
+
+.weapon-sheet-horizontal-grid-2col .resource-label {
+  display: flex;
+  align-items: center;
+  min-height: 1.5rem;
+  margin: 0;
+}
+
+.weapon-sheet-horizontal-grid-2col input[type="text"],
+.weapon-sheet-horizontal-grid-2col select {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  line-height: 1.5rem;
+}
+
+.weapon-sheet-header {
+  margin-bottom: 12px;
+}
+
+/* One grid row per stat pair so left/right labels share the same baseline. */
+.weapon-sheet-stats-grid {
+  display: grid;
+  grid-template-columns:
+    minmax(5.5rem, auto) minmax(9rem, 1.35fr) minmax(5.5rem, auto)
+    minmax(9rem, 1.35fr);
+  align-items: center;
+  column-gap: 12px;
+  row-gap: 10px;
+  padding: 0 2px 10px;
+  text-align: left;
+}
+
+.weapon-sheet-stats-grid .resource-label {
+  display: flex;
+  align-items: center;
+  min-height: var(--weapon-sheet-control-height, 1.75rem);
+  margin: 0;
+}
+
+.weapon-sheet-stats-grid input[type="text"],
+.weapon-sheet-stats-grid select {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  height: var(--weapon-sheet-control-height, 1.75rem);
+  min-height: var(--weapon-sheet-control-height, 1.75rem);
+  line-height: 1.5rem;
+  padding: 0 6px;
+}
+
+.weapon-sheet-stats-grid select.weapon-sheet-skill-select {
+  min-width: 9rem;
+}
+
+.weapon-sheet-stats-grid .labeled-resource-checkbox {
+  justify-self: start;
+  align-self: center;
+  margin: 0;
+}
+
+.weapon-sheet-stats-pad {
+  display: block;
+  min-height: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/*
+  Tome Item Sheet
+*/
+
+.tome-sheet-horizontal-grid-2col {
+  @include item-sheet-horizontal-grid;
+}
+
+.tome-sheet-handler-info-horizontal-grid-2col {
+  display: grid;
+  grid-template-columns: max-content auto;
+  align-items: center;
+  text-align: left;
+  column-gap: 10px;
+  row-gap: 10px;
+  padding-bottom: 10px;
+  padding-right: 5px;
+}
+
+/*
+  Unnatural Character Sheet Specific Classes
+*/
+
+.unnatural-notes-section {
+  display: grid;
+  grid-template-columns: 100%;
+  align-items: left;
+  justify-content: left;
+  border: 1px solid #999;
+  padding: 5px;
+  grid-gap: 3px;
+  text-align: left;
+}
+
+.skill-util-buttons {
+  margin: 5px;
+
+  .typed-skill-add {
+    margin-right: 5px;
+  }
+}
+
+a[data-action="applySkillImprovements"] {
+  float: right;
+}
+
+.yellow-king {
+  color: #a0912f;
+}
+
+.yellow-sign {
+  font-weight: bold;
+  text-shadow: 1px 1px #313a00;
+}
+
+.yellow-king-rotate1 {
+  transform: rotate(3deg);
+}
+
+.yellow-king-rotate4 {
+  transform: rotate(4deg);
+}
+
+.yellow-king-rotate2 {
+  transform: rotate(-1deg);
+}
+
+.yellow-king-rotate3 {
+  transform: rotate(5deg);
+}
+
+.yellow-king-grid-9col {
+  display: grid;
+  grid-template-columns: max-content 5px max-content max-content 20px max-content max-content 10px 35px;
+  align-items: center;
+  padding-bottom: 10px;
+}
+
+.yellow-king-grid-5col {
+  display: grid;
+  grid-template-columns: min-content 275px 20px min-content auto;
+  align-items: center;
+  padding-bottom: 10px;
+}
+
+.yellow-king-label {
+  margin-right: 10px;
+}
+
+.yellow-king input,
+.yellow-king select,
+.yellow-king textarea {
+  color: #a0912f;
+  font-weight: bold;
+}
+
+.yellow-king textarea:focus,
+.yellow-king input:focus {
+  color: #a0912f;
+}
+
+.top-div-border {
+  border-top: 1px solid #aaa;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+
+.stat-block-input {
+  min-height: 300px;
+  resize: none;
+}
+
+.weapon-name-flexcontainer {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row;
+  column-gap: 10px;
+}
+
+.weapon-name-flexitem {
+  flex: content;
+  align-self: flex-start;
+  text-align: left;
+}
+
+.armor-piercing-chat-card-img {
+  border-radius: 10%;
+  height: 20px !important;
+  width: 20px !important;
+  margin: 0px;
+  vertical-align: text-bottom;
+}

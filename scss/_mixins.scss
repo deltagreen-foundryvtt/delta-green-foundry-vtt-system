@@ -1,0 +1,112 @@
+@mixin dg-window-content {
+  scrollbar-color: #215112 #111 !important;
+  padding: 0.5rem;
+  color: var(--dg-ink);
+}
+
+@mixin dg-window-form-inputs {
+  input[type="checkbox"]:checked::before,
+  input[type="radio"]:checked::before {
+    color: var(--dg-ink);
+  }
+
+  label.checkbox > input[type="radio"] {
+    --checkbox-background-color: var(--dg-ink);
+  }
+
+  input[type="text"],
+  input[type="number"],
+  input[type="password"] {
+    height: unset;
+    line-height: 1.5rem;
+  }
+}
+
+@mixin dg-window-form-inputs-with-select {
+  @include dg-window-form-inputs;
+
+  select {
+    height: unset;
+    line-height: 1.5rem;
+  }
+}
+
+/* Parchment/light sheet bodies: override Foundry v14 .application light text and heading typography. */
+@mixin dg-parchment-content-theme {
+  :is(h1, h2, h3, h4, h5, h6) {
+    color: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+  }
+
+  .resource-label,
+  .standard-form .form-group > label,
+  .form-group > label {
+    color: inherit;
+  }
+}
+
+@mixin dg-parchment-form-fields {
+  input[type="text"],
+  input[type="number"],
+  input[type="password"],
+  select {
+    background-color: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgb(122, 121, 113);
+    border-radius: 3px;
+    color: inherit;
+  }
+}
+
+@mixin item-sheet-grid-2col {
+  display: grid;
+  grid-template-columns: 25% 75%;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  grid-gap: 5px;
+}
+
+@mixin item-sheet-horizontal-grid($label-width: 100px) {
+  display: grid;
+  grid-template-columns: $label-width auto;
+  align-items: center;
+  text-align: left;
+  column-gap: 10px;
+  row-gap: 10px;
+  padding-bottom: 10px;
+  padding-right: 5px;
+}
+
+@mixin dg-dark-button {
+  background-color: var(--dg-surface-dark);
+  color: var(--dg-on-dark);
+  border: 1px solid var(--dg-surface-dark);
+  font-weight: bold;
+
+  &:hover:not(:disabled) {
+    background-color: var(--dg-surface-dark-hover);
+    color: var(--dg-on-dark);
+    border-color: var(--dg-surface-dark-hover);
+  }
+}
+
+/// Nudge SpecialElite text down in compact centered cells without shrinking the box.
+@mixin cowboy-compact-input($height: null, $top-padding: 2px) {
+  @if $height {
+    box-sizing: border-box;
+    height: $height;
+    min-height: $height;
+    padding: $top-padding 1px 1px;
+    line-height: calc(#{$height} - #{$top-padding} - 2px);
+  } @else {
+    padding-top: $top-padding;
+    padding-bottom: 0;
+  }
+}
+
+@mixin cowboy-compact-label {
+  transform: translateY(1px);
+}

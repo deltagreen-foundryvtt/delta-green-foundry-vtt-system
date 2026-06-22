@@ -1,20 +1,68 @@
-import DG, { BASE_TEMPLATE_PATH } from "../config.js";
+import DG, { BASE_TEMPLATE_PATH } from "../config/index.js";
+import { prepareAgentSkillColumns } from "../utils/skill-layout.js";
+import { formatProfessionSkillLabel } from "../profession/index.js";
+import { buildSkillTooltip } from "../utils/skill-tooltip.js";
+import createAgentResourceChatMessage, {
+  buildWillpowerChangeSpan,
+} from "../chat/resource-chat.js";
+import {
+  createSkillImprovementChatMessage,
+  evaluateSkillImprovementRolls,
+  getSkillImprovementFormulaAsPercent,
+} from "../roll/skill-improvement-roll.js";
 import DGActorSheet from "./base-actor-sheet.js";
+import ActorEditStatForm from "../applications/edit-stats.js";
+import EffectsTabMixin from "./mixins/effects-tab-mixin.js";
+import {
+  applyStimulantEffect,
+  clearStimulantEffects,
+  getEffectiveSuppressExhaustion,
+  hasActiveStimulantEffect,
+} from "../active-effect/runtime/stimulant-effect.js";
+import assignProfessionToAgent from "../applications/profession-setup-flow.js";
+import { showDgDialog } from "../applications/dg-dialog.js";
+import showRenameProfessionDialog from "../applications/rename-profession-dialog.js";
+import { PROFESSION_OPTION_PICKS_KEY } from "../data/item/profession.js";
 
 const { renderTemplate } = foundry.applications.handlebars;
 
-/** @extends {DGActorSheet} */
-export default class DGAgentSheet extends DGActorSheet {
+const AgentSheetBase = EffectsTabMixin(DGActorSheet);
+
+/** @extends {AgentSheetBase} */
+export default class DGAgentSheet extends AgentSheetBase {
   /** @override */
   static DEFAULT_OPTIONS = /** @type {const} */ ({
+    classes: ["agent-sheet"],
+    position: { width: 978, height: 720 },
     actions: {
       // Resets.
       clearBondDamage: DGAgentSheet._clearBondDamage,
       resetBreakingPoint: DGAgentSheet._resetBreakingPoint,
       // Other actions.
       applySkillImprovements: DGAgentSheet._processSkillImprovements,
+      openStatsEdit: DGAgentSheet._openStatsEdit,
+      toggleCustomSkillsEdit: function toggleCustomSkillsEdit(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        this._customSkillsEditMode = !this._customSkillsEditMode;
+        this._syncCustomSkillsEditModeUi();
+        return this.render();
+      },
+      createEffect: AgentSheetBase.createEffect,
+      openEffect: AgentSheetBase.openEffect,
+      deleteEffect: AgentSheetBase.deleteEffect,
+      toggleEffect: AgentSheetBase.toggleEffect,
+      openEffectOrigin: AgentSheetBase.openEffectOrigin,
+      toggleAcuteEpisode: DGAgentSheet._toggleAcuteEpisode,
+      exhaustAgent: DGAgentSheet._exhaustAgent,
+      restAgent: DGAgentSheet._restAgent,
+      takeStimulants: DGAgentSheet._takeStimulants,
+      openProfessionItem: DGAgentSheet._openProfessionItem,
     },
   });
+
+  /** @type {boolean} */
+  _customSkillsEditMode = false;
 
   /** @override */
   static TABS = /** @type {const} */ ({
@@ -23,45 +71,244 @@ export default class DGAgentSheet extends DGActorSheet {
       labelPrefix: "DG.Navigation.Agent",
       tabs: [
         { id: "skills" },
-        { id: "physical" },
-        { id: "motivations" },
+        { id: "combat" },
         { id: "gear" },
-        { id: "bio" },
-        { id: "bonds" },
+        { id: "motivations" },
+        { id: "personal" },
+        { id: "effects" },
         { id: "about", icon: "fas fa-question-circle", label: "" },
       ],
+    },
+    leftBarRestSanity: {
+      initial: "sanity",
+      labelPrefix: "DG.Navigation.Agent.LeftBar",
+      tabs: [{ id: "sanity" }, { id: "rest" }],
     },
   });
 
   /** @override */
   static PARTS = /** @type {const} */ ({
-    header: this.BASE_PARTS.header,
-    tabs: this.BASE_PARTS.tabs,
-    skills: this.BASE_PARTS.skills,
-    physical: {
-      template: `${this.TEMPLATE_PATH}/parts/physical-tab.html`,
+    leftBar: {
+      template: `${this.TEMPLATE_PATH}/parts/left-bar.html`,
       templates: [
-        `${this.TEMPLATE_PATH}/partials/attributes-grid-partial.html`,
+        `${this.TEMPLATE_PATH}/partials/sanity-partial.html`,
+        `${this.TEMPLATE_PATH}/partials/left-bar-exhaustion-section.html`,
+        `${this.TEMPLATE_PATH}/partials/left-bar-rest-tab.html`,
+        `${this.TEMPLATE_PATH}/partials/left-bar-sanity-tab.html`,
+        `${this.TEMPLATE_PATH}/partials/profession-subname.html`,
       ],
-      scrollable: [""],
     },
-    motivations: {
-      template: `${this.TEMPLATE_PATH}/parts/motivations-tab.html`,
+    tabs: this.BASE_PARTS.tabs,
+    rightBar: {
+      template: `${this.TEMPLATE_PATH}/parts/right-bar.html`,
+      templates: [
+        `${this.TEMPLATE_PATH}/parts/skills-tab-agent.html`,
+        `${this.TEMPLATE_PATH}/parts/combat-tab-agent.html`,
+        `${this.TEMPLATE_PATH}/parts/gear-tab-agent.html`,
+        `${this.TEMPLATE_PATH}/parts/motivations-tab-agent.html`,
+        `${this.TEMPLATE_PATH}/parts/personal-tab-agent.html`,
+        `${this.TEMPLATE_PATH}/parts/effects-tab.html`,
+        `${this.TEMPLATE_PATH}/parts/about-tab.html`,
+        `${this.TEMPLATE_PATH}/partials/agent-skill-row-partial.html`,
+        `${this.TEMPLATE_PATH}/partials/agent-special-training-row-partial.html`,
+        `${this.TEMPLATE_PATH}/partials/custom-skills-partial-agent.html`,
+        `${this.TEMPLATE_PATH}/partials/bonds-section-partial.html`,
+        ...this.GEAR_SECTION_PARTIALS,
+        `${this.TEMPLATE_PATH}/partials/injuries-section-partial.html`,
+        `${this.TEMPLATE_PATH}/partials/notes-partial.html`,
+      ],
     },
-    gear: this.BASE_PARTS.gear,
-    bio: {
-      template: `${this.TEMPLATE_PATH}/parts/bio-tab.html`,
-      templates: [`${this.TEMPLATE_PATH}/partials/notes-partial.html`],
-      scrollable: [""],
-    },
-    bonds: {
-      template: `${this.TEMPLATE_PATH}/parts/bonds-tab.html`,
-      scrollable: [""],
-    },
-    about: this.BASE_PARTS.about,
   });
 
-  /* -------------------------------------------- */
+  /** @override */
+  _configureRenderOptions(options) {
+    super._configureRenderOptions(options);
+
+    if (!this.actor.limited) return;
+
+    options.parts = ["leftBar", "tabs", "rightBar"];
+  }
+
+  /** @override */
+  _prepareTabs(group) {
+    const tabs = super._prepareTabs(group);
+
+    if (
+      !this.actor.limited ||
+      this.actor.type !== "agent" ||
+      group !== "primary"
+    ) {
+      return tabs;
+    }
+
+    return {
+      personal: { ...tabs.personal, active: true, cssClass: "active" },
+    };
+  }
+
+  /** @override */
+  async _prepareContext(options) {
+    const context = await super._prepareContext(options);
+
+    context.tabs = this._prepareTabs("primary");
+    context.leftBarRestSanityTabs = this._prepareTabs("leftBarRestSanity");
+
+    if (this.actor.type !== "agent") return context;
+
+    const sortSkillsByColumn = game.settings.get("deltagreen", "sortSkills");
+    context.sortSkillsByColumn = sortSkillsByColumn;
+    context.skillColumns = prepareAgentSkillColumns(
+      this.actor.system.sortedSkills,
+      sortSkillsByColumn,
+    );
+    context.specialTrainingRows = this._prepareSpecialTrainingBlocks();
+    context.showSpecialTrainingSection = context.specialTrainingRows.length > 0;
+    context.specialTrainingColumns = prepareAgentSkillColumns(
+      context.specialTrainingRows,
+      sortSkillsByColumn,
+    );
+    context.customSkillsEditMode = this._customSkillsEditMode;
+    context.physicalUi = this._preparePhysicalUi();
+    context.professionItem = this.actor.items.find(
+      (i) => i.type === "profession",
+    );
+
+    return context;
+  }
+
+  /** @returns {object} */
+  _preparePhysicalUi() {
+    const { physical } = this.actor.system;
+    const isExhausted = DGAgentSheet._isActorExhausted(this.actor);
+    const stimulantActive = hasActiveStimulantEffect(this.actor);
+    const suppressExhaustion = getEffectiveSuppressExhaustion(this.actor);
+    return {
+      isExhausted,
+      displayPenalty: isExhausted ? physical.exhaustedPenalty : 0,
+      suppressExhaustionInactive: !isExhausted,
+      suppressExhaustionInputDisabled: !isExhausted || stimulantActive,
+      suppressExhaustionChecked: isExhausted && suppressExhaustion,
+    };
+  }
+
+  /** @override */
+  _sortSkills() {
+    const sortedSkills = [];
+
+    for (const [key, skill] of Object.entries(this.actor.system.skills)) {
+      let sortLabel;
+      if (game.i18n.lang === "ja") {
+        sortLabel = game.i18n.localize(`DG.Skills.ruby.${key}`);
+      } else {
+        sortLabel = game.i18n.localize(`DG.Skills.${key}`);
+      }
+
+      if (sortLabel === "" || sortLabel === `DG.Skills.${key}`) {
+        sortLabel = key;
+      }
+
+      sortedSkills.push({
+        ...skill,
+        skillKind: "fixed",
+        key,
+        sortLabel,
+      });
+    }
+
+    for (const [key, skill] of Object.entries(this.actor.system.typedSkills)) {
+      const displayLabel = formatProfessionSkillLabel({
+        kind: "typed",
+        group: skill.group,
+        label: skill.label,
+      });
+      sortedSkills.push({
+        ...skill,
+        skillKind: "typed",
+        key,
+        displayLabel,
+        sortLabel: displayLabel,
+        actorType: this.actor.type,
+      });
+    }
+
+    sortedSkills.sort((a, b) =>
+      a.sortLabel.localeCompare(b.sortLabel, game.i18n.lang),
+    );
+
+    this.actor.system.sortedSkills = sortedSkills;
+  }
+
+  /** @override */
+  _prepareSkillTooltips() {
+    for (const skill of this.actor.system.sortedSkills) {
+      if (skill.skillKind === "typed") {
+        skill.tooltip = buildSkillTooltip(
+          "sheet",
+          this.actor,
+          { kind: "typed", group: skill.group, label: skill.label },
+          { proficiency: Number(skill.proficiency) || 0 },
+        );
+      } else {
+        skill.tooltip = buildSkillTooltip(
+          "sheet",
+          this.actor,
+          { kind: "fixed", key: skill.key },
+          { proficiency: Number(skill.proficiency) || 0 },
+        );
+      }
+    }
+  }
+
+  /** @override */
+  async _onRender(context, options) {
+    await super._onRender(context, options);
+    this._syncCustomSkillsEditModeUi();
+  }
+
+  /** @returns {void} */
+  _syncCustomSkillsEditModeUi() {
+    this.element?.classList.toggle(
+      "custom-skills-edit-mode",
+      Boolean(this._customSkillsEditMode),
+    );
+  }
+
+  /**
+   * @param {PointerEvent} event
+   * @param {HTMLElement} target
+   */
+  static async _toggleAcuteEpisode(event, target) {
+    event.preventDefault();
+    const itemId =
+      target.dataset.itemId ??
+      target.closest("[data-item-id]")?.dataset?.itemId;
+    const item = this.actor.items.get(itemId);
+    if (!item || item.type !== "motivation") return;
+    await item.update({
+      "system.acuteEpisode": !item.system.acuteEpisode,
+    });
+  }
+
+  /**
+   * @param {PointerEvent} _event
+   * @param {HTMLElement} target
+   */
+  static async _openProfessionItem(_event, target) {
+    const itemId =
+      target.dataset.itemId ??
+      target.closest("[data-item-id]")?.dataset?.itemId;
+    const item = this.actor.items.get(itemId);
+    if (item?.type !== "profession") return;
+    await showRenameProfessionDialog(item);
+  }
+
+  static _clearBondDamage() {
+    for (const bond of this.actor.itemTypes.bond) {
+      if (bond.system.hasBeenDamagedSinceLastHomeScene) {
+        bond.update({ "system.hasBeenDamagedSinceLastHomeScene": false });
+      }
+    }
+  }
 
   /**
    * Resets the actor's current breaking point by recalculating it as the difference
@@ -71,8 +318,11 @@ export default class DGAgentSheet extends DGActorSheet {
    * @returns {void}
    */
   static _resetBreakingPoint() {
+    const pow =
+      this.actor.system.statistics.pow.effectiveValue ??
+      this.actor.system.statistics.pow.value;
     const currentBreakingPoint = Math.max(
-      this.actor.system.sanity.value - this.actor.system.statistics.pow.value,
+      this.actor.system.sanity.value - pow,
       0,
     );
 
@@ -94,6 +344,218 @@ export default class DGAgentSheet extends DGActorSheet {
   }
 
   /**
+   * Sorted special-training blocks for the skills tab.
+   *
+   * @returns {object[]}
+   */
+  _prepareSpecialTrainingBlocks() {
+    const trainings = this._prepareSpecialTrainings().map((training) => ({
+      ...training,
+      sortLabel: training.name.toUpperCase(),
+      actorType: this.actor.type,
+    }));
+
+    trainings.sort((a, b) =>
+      a.sortLabel.localeCompare(b.sortLabel, game.i18n.lang),
+    );
+
+    return trainings;
+  }
+
+  static _openStatsEdit() {
+    const form = new ActorEditStatForm({
+      actor: this.actor,
+    });
+    form.render(true);
+  }
+
+  /**
+   * @param {number} raw
+   * @returns {number}
+   */
+  static _normalizeExhaustionPenalty(raw) {
+    const value = Number(raw);
+    if (Number.isNaN(value) || value === 0) return -20;
+    return value > 0 ? -1 * Math.abs(value) : value;
+  }
+
+  static async _exhaustAgent() {
+    const { actor } = this;
+    const content = await renderTemplate(
+      `${BASE_TEMPLATE_PATH}/dialog/exhaust-agent.html`,
+      {
+        penalty: actor.system.physical.exhaustedPenalty ?? -20,
+      },
+    );
+
+    let penalty = null;
+    const confirmed = await showDgDialog({
+      modifier: "exhaust-agent",
+      content,
+      window: {
+        title: game.i18n.localize("DG.Physical.ExhaustDialogTitle"),
+      },
+      buttons: [
+        {
+          action: "rollWpLoss",
+          label: game.i18n.localize("DG.Physical.RollWillpowerLoss"),
+          default: true,
+          icon: "fas fa-dice",
+          callback: (_event, _button, dialog) => {
+            const input = dialog.element.querySelector(
+              '[name="exhaustionPenalty"]',
+            );
+            penalty = DGAgentSheet._normalizeExhaustionPenalty(input?.value);
+            return true;
+          },
+        },
+      ],
+    });
+
+    if (!confirmed || penalty === null) return;
+
+    const wpRoll = await new Roll("1d6").evaluate();
+    const loss = wpRoll.total;
+    const currentWp = Number(actor.system.wp.value) || 0;
+    const maxWp = Number(actor.system.wp.max) || 0;
+    const newWp = Math.max(0, currentWp - loss);
+
+    await actor.update({
+      "system.physical.exhausted": true,
+      "system.physical.exhaustedPenalty": penalty,
+      "system.wp.value": newWp,
+    });
+
+    await createAgentResourceChatMessage({
+      actor,
+      token: this.token,
+      roll: wpRoll,
+      rollLabelKey: "DG.Physical.Chat.ExhaustedRollLabel",
+      i18nData: {
+        willpowerChange: buildWillpowerChangeSpan({
+          amount: loss,
+          current: newWp,
+          max: maxWp,
+        }),
+      },
+    });
+  }
+
+  static async _restAgent() {
+    const { actor } = this;
+
+    const wasExhausted = DGAgentSheet._isActorExhausted(actor);
+    const wpRoll = await new Roll("1d6").evaluate();
+    const gain = wpRoll.total;
+    const currentWp = Number(actor.system.wp.value) || 0;
+    const maxWp = Number(actor.system.wp.max) || 0;
+    const newWp = Math.min(maxWp, currentWp + gain);
+
+    await clearStimulantEffects(actor);
+
+    await actor.update({
+      "system.physical.exhausted": false,
+      "system.physical.suppressExhaustion": false,
+      "system.wp.value": newWp,
+    });
+
+    await createAgentResourceChatMessage({
+      actor,
+      token: this.token,
+      roll: wpRoll,
+      rollLabelKey: wasExhausted
+        ? "DG.Physical.Chat.RestedRollLabelExhausted"
+        : "DG.Physical.Chat.RestedRollLabel",
+      i18nData: {
+        willpowerChange: buildWillpowerChangeSpan({
+          amount: gain,
+          current: newWp,
+          max: maxWp,
+        }),
+      },
+    });
+  }
+
+  /**
+   * @param {Actor} actor
+   * @returns {boolean}
+   */
+  static _isActorExhausted(actor) {
+    return Boolean(actor._source?.system?.physical?.exhausted);
+  }
+
+  static async _takeStimulants() {
+    const { actor } = this;
+
+    if (!DGAgentSheet._isActorExhausted(actor)) {
+      ui.notifications.info(
+        game.i18n.format("DG.Physical.StimulantsNotExhaustedWarning", {
+          name: actor.name,
+        }),
+      );
+      return;
+    }
+
+    const content = await renderTemplate(
+      `${BASE_TEMPLATE_PATH}/dialog/take-stimulants.html`,
+      {},
+    );
+
+    const choice = await showDgDialog({
+      modifier: "stimulants",
+      content,
+      window: {
+        title: game.i18n.localize("DG.Physical.StimulantsDialogTitle"),
+      },
+      buttons: [
+        {
+          action: "regular",
+          label: game.i18n.localize("DG.Physical.StimulantsRegular"),
+          default: true,
+          callback: () => "regular",
+        },
+        {
+          action: "hard",
+          label: game.i18n.localize("DG.Physical.StimulantsHard"),
+          callback: () => "hard",
+        },
+      ],
+    });
+
+    if (!choice) return;
+
+    const formula = choice === "hard" ? "2d6" : "1d6";
+    const hoursRoll = await new Roll(formula).evaluate();
+    const hours = hoursRoll.total;
+    const rollLabelKey =
+      choice === "hard"
+        ? "DG.Physical.Chat.StimulantsHardRollLabel"
+        : "DG.Physical.Chat.StimulantsRegularRollLabel";
+
+    const appliedHours = await applyStimulantEffect(actor, hours);
+
+    await createAgentResourceChatMessage({
+      actor,
+      token: this.token,
+      roll: hoursRoll,
+      rollLabelKey,
+      i18nData: {
+        hours: appliedHours,
+      },
+    });
+  }
+
+  /**
+   * @param {Record<string, object>} skillMap
+   * @returns {object[]}
+   */
+  static _collectFailedSkills(skillMap) {
+    return Object.entries(skillMap)
+      .filter(([, skill]) => skill.failure && !skill.cannotBeImprovedByFailure)
+      .map(([key, skill]) => ({ ...skill, key }));
+  }
+
+  /**
    * Runs through the whole process of improving skills,
    * i.e., prompting the user, rolling, and creating the chat card.
    *
@@ -102,12 +564,8 @@ export default class DGAgentSheet extends DGActorSheet {
   static async _processSkillImprovements() {
     const { skills, typedSkills } = this.actor.system;
 
-    const failedSkills = Object.values(skills).filter(
-      (skill) => skill.failure && !skill.cannotBeImprovedByFailure,
-    );
-    const failedTypedSkills = Object.values(typedSkills).filter(
-      (skill) => skill.failure && !skill.cannotBeImprovedByFailure,
-    );
+    const failedSkills = DGAgentSheet._collectFailedSkills(skills);
+    const failedTypedSkills = DGAgentSheet._collectFailedSkills(typedSkills);
 
     if (failedSkills.length + failedTypedSkills.length === 0) {
       ui.notifications.warn("DG.Skills.ApplySkillImprovements.Warning", {
@@ -126,18 +584,21 @@ export default class DGAgentSheet extends DGActorSheet {
 
     if (!prompt) return null;
 
-    const resultObj = await this._createSkillImprovementRolls(
+    const resultObj = await evaluateSkillImprovementRolls(
+      this.actor,
       baseRollFormula,
       failedSkills,
       failedTypedSkills,
     );
 
-    await this._createSkillImprovementChatCard(
-      baseRollFormula,
+    await createSkillImprovementChatMessage({
+      actor: this.actor,
+      token: this.token,
+      baseFormula: baseRollFormula,
       failedSkills,
       failedTypedSkills,
       resultObj,
-    );
+    });
 
     return this._applySkillImprovements(
       failedSkills,
@@ -180,14 +641,16 @@ export default class DGAgentSheet extends DGActorSheet {
     failedTypedSkills,
   ) {
     const localizedFailedSkills = failedSkills.map((skill) =>
-      game.i18n.localize(`DG.Skills.${skill.key}`),
+      formatProfessionSkillLabel({ kind: "fixed", key: skill.key }),
     );
 
-    const localizedFailedTypedSkills = failedTypedSkills.map((skill) => {
-      const groupKey = `DG.TypeSkills.${skill.group.replace(/\s+/g, "")}`;
-      const groupLabel = game.i18n.localize(groupKey);
-      return `${groupLabel} (${skill.label})`;
-    });
+    const localizedFailedTypedSkills = failedTypedSkills.map((skill) =>
+      formatProfessionSkillLabel({
+        kind: "typed",
+        group: skill.group,
+        label: skill.label,
+      }),
+    );
 
     const failedSkillNames = [
       ...localizedFailedSkills,
@@ -198,12 +661,12 @@ export default class DGAgentSheet extends DGActorSheet {
       `${BASE_TEMPLATE_PATH}/dialog/apply-skill-improvements.html`,
       {
         failedSkillNames,
-        baseFormula:
-          DGAgentSheet._getSkillImprovementFormulaAsPercent(baseFormula),
+        baseFormula: getSkillImprovementFormulaAsPercent(baseFormula),
       },
     );
 
-    return foundry.applications.api.DialogV2.wait({
+    return showDgDialog({
+      modifier: "apply-skill-improvements",
       content,
       window: {
         title: game.i18n.localize("DG.Skills.ApplySkillImprovements.Title"),
@@ -220,109 +683,56 @@ export default class DGAgentSheet extends DGActorSheet {
   }
 
   /**
-   * Generates and evaluates the rolls for skill improvements based on failed skills.
-   *
-   * @param {SkillImprovementFormula} baseFormula - The formula used to calculate skill improvements.
-   * @param {FailedSkill[]} failedSkills - An array of failed skills.
-   * @param {FailedTypedSkill[]} failedTypedSkills - An array of failed typed skills.
-   *
-   * @returns {Promise<{roll: Roll|undefined, resultObj: ResultObj}>} - An object containing the roll result and a map of skill keys to improvement values.
-   *
-   * @throws {Error} - Throws an error if the baseFormula is unknown.
+   * @param {DragEvent} event
+   * @param {Item} item
+   * @returns {Promise<Item|null>}
    */
-  async _createSkillImprovementRolls(
-    baseFormula,
-    failedSkills,
-    failedTypedSkills,
-  ) {
-    const totalFailures = failedSkills.length + failedTypedSkills.length;
-
-    if (!Object.keys(DG.skillImprovementFormulas).includes(baseFormula)) {
-      throw new Error(`Unknown roll formula: ${baseFormula}`);
+  async _onDropItem(event, item) {
+    const dropType = item.type ?? item.system?.type;
+    if (dropType !== "profession") {
+      return super._onDropItem(event, item);
     }
 
-    const rollPromises = [];
-    const resultObj = {};
-    if (baseFormula !== "1") {
-      for (let i = 0; i < totalFailures; i++) {
-        rollPromises.push(new Roll(baseFormula, this.actor.system).evaluate());
-      }
-      const rolls = await Promise.all(rollPromises);
+    const itemData =
+      typeof item.toObject === "function"
+        ? item.toObject()
+        : foundry.utils.duplicate(item);
 
-      [...failedSkills, ...failedTypedSkills].forEach((skill, index) => {
-        resultObj[skill.key] = rolls[index].total;
-      });
-    }
-
-    return resultObj;
+    return assignProfessionToAgent(this.actor, itemData, {
+      token: this.token,
+    });
   }
 
   /**
-   * Create a chat card to record skill improvements.
-   *
-   * @param {FailedSkill[]} failedSkills - array of failed skills
-   * @param {FailedTypedSkill[]} failedTypedSkills - array of failed typed skills
-   * @param {Roll|undefined} roll - the improvement roll
-   * @param {ResultObj} resultObj
-   *
-   * @returns {Promise<ChatMessage>}
+   * @param {string} type
+   * @returns {Promise<Item|Item[]>}
    */
-  _createSkillImprovementChatCard(
-    baseFormula,
-    failedSkills,
-    failedTypedSkills,
-    resultObj,
-  ) {
-    const localizeFailedSkills = (skillsArray) => {
-      return skillsArray.map((skill) => {
-        const increment = resultObj[skill.key] ?? 1;
-        const label =
-          skill.label ?? game.i18n.localize(`DG.Skills.${skill.key}`); // fallback for regular skills
-        const groupLabel = skill.group
-          ? `${game.i18n.localize(
-              `DG.TypeSkills.${skill.group.replace(/\s+/g, "")}`,
-            )} (${label})`
-          : label;
+  _onItemCreate(type) {
+    if (type !== "profession") {
+      return super._onItemCreate(type);
+    }
 
-        return `${groupLabel}: <b>+${increment}%</b>`;
-      });
-    };
+    const name = game.i18n.format("DG.FallbackText.newItem", {
+      type: game.i18n.localize(`TYPES.Item.${type}`),
+    });
 
-    const failedSkillNames = localizeFailedSkills(failedSkills);
-    const failedTypedSkillNames = localizeFailedSkills(failedTypedSkills);
-
-    // Prepare chat data
-    const content = [...failedSkillNames, ...failedTypedSkillNames].join(", ");
-    const flavor = game.i18n.format(
-      "DG.Skills.ApplySkillImprovements.ChatFlavor",
-      {
-        formula: DGAgentSheet._getSkillImprovementFormulaAsPercent(baseFormula),
+    const itemData = {
+      name,
+      type: "profession",
+      system: {
+        bonds: 0,
+        automaticSkills: {},
+        automaticSkillMeta: {},
+        optionSkills: { [PROFESSION_OPTION_PICKS_KEY]: 0 },
+        optionSkillMeta: {},
       },
-    );
-
-    const chatData = {
-      speaker: ChatMessage.getSpeaker({
-        actor: this.actor,
-        token: this.token,
-        alias: this.actor.name,
-      }),
-      content,
-      flavor,
-      rollMode: game.settings.get("core", "rollMode"),
     };
 
-    return ChatMessage.create(chatData);
+    return assignProfessionToAgent(this.actor, itemData, {
+      token: this.token,
+    }).then((created) => (created ? [created] : []));
   }
 
-  /**
-   * Updates the actor's skills / typed skills with the improvements,
-   * persisting the changes to the database.
-   *
-   * @param {FailedSkill[]} failedSkills - array of failed skills that need to be updated
-   * @param {FailedTypedSkill[]} failedTypedSkills - array of failed skills that need to be updated
-   * @param {ResultObj} resultObj
-   * @returns {Promise<DeltaGreenActor>} - the update promise
-   */
   _applySkillImprovements(failedSkills, failedTypedSkills, resultObj) {
     const updateSkills = (skillsArray, updatedTarget) => {
       skillsArray.forEach((skill) => {
@@ -343,18 +753,5 @@ export default class DGAgentSheet extends DGActorSheet {
     return this.actor.update({
       system: { skills: updatedSkills, typedSkills: updatedTypedSkills },
     });
-  }
-
-  /**
-   * Takes a base formula and returns a string representing the skill improvement formula as a percentage.
-   * TODO: Move to the roll class itself, probably even a "SkillImprovementRoll".
-   *
-   * @param {SkillImprovementFormula} baseFormula - the base formula to convert
-   * @returns {string} the skill improvement formula as a percentage (e.g. "1D3%" or "1%")
-   */
-  static _getSkillImprovementFormulaAsPercent(baseFormula) {
-    const flat = baseFormula === "1";
-    const formula = flat ? "1" : `1${baseFormula}`;
-    return `${formula}%`.toUpperCase();
   }
 }
