@@ -1,0 +1,11 @@
+Some Dude
+STR 10 CON 10 DEX 13 INT 10 POW 14 CHA 10
+HP 10 WP 14
+ SAN 0
+SKILLS: Firearms 45%, Heavy Weapons 35%, Melee
+Weapons 50%, Unarmed Combat 60%.
+ATTACKS: Assault Rifle 45%, damage 1D12+1 (or
+Lethality 10%), Armor Piercing 3.
+Heavy Rifle 45%, damage 1D12+2, Armor
+Piercing 3.
+Big Knife 50%, damage 1D8.
