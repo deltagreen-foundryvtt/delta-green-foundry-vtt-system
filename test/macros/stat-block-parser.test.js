@@ -5,6 +5,7 @@ import {
   StatblockParser,
   ExtractAttributes,
   ExtractSkills,
+  ExtractAttacks,
   tokenize,
 } from "../../module/macros/stat-block-parser.js";
 
@@ -102,59 +103,165 @@ describe("ExtractAttributes", () => {
       incomplete: true,
     });
   });
+});
 
-  describe("ExtractSkills", () => {
-    test.each([
+describe("ExtractSkills", () => {
+  test.each([
+    {
+      testName: "valid skills extract cleanly",
+      input:
+        "Firearms 45%, Heavy Weapons 35%, Melee Weapons 50%, Unarmed Combat 60%.",
+      expected: {
+        firearms: 45,
+        "heavy weapons": 35,
+        "melee weapons": 50,
+        "unarmed combat": 60,
+      },
+    },
+    {
+      testName: "homebrewed skills extract cleanly",
+      input:
+        "Firearms 45%, Heavy Weapons 35%, Basket Weaving 30%, Science (Blinding) 80%.",
+      expected: {
+        firearms: 45,
+        "heavy weapons": 35,
+        "basket weaving": 30,
+        "science (blinding)": 80,
+      },
+    },
+    {
+      testName: "incomplete skills are dropped",
+      input: "Firearms, Heavy Weapons, Unarmed Combat.",
+      expected: {},
+    },
+    {
+      testName:
+        "incomplete skills mixed with complete skills results in garbled skils",
+      input:
+        "Firearms 45%, Heavy Weapons 35%, Melee Weapons, Unarmed Combat 60%.",
+      justification: [
+        "It really difficult to fully know if a skill name is that long or if its because",
+        "the skill was incomplete. In this scenario the skill names will be merged, which should",
+        "hopefully provide enough information to the user that something went wrong.",
+        "Something more preferable would be tagging the skillset with an error flag but nothing",
+        "is coming to mind at the moment.",
+      ],
+      expected: {
+        firearms: 45,
+        "heavy weapons": 35,
+        "melee weapons unarmed combat": 60,
+      },
+    },
+  ])(".ExtractSkills() on $testName", ({ input, expected }) => {
+    const tokens = tokenize(input);
+    const [result, rest] = ExtractSkills(tokens);
+    expect(rest).toEqual([]);
+    expect(result).toEqual(expected);
+  });
+});
+
+describe("ExtractAttacks", () => {
+  const assaultRifleEntry = {
+    input:
+      "Assault Rifle 45%, damage 1d12+1 (or Lethality 10%), Armor Piercing 3",
+    expected: [
       {
-        testName: "valid skills extract cleanly",
-        input:
-          "Firearms 45%, Heavy Weapons 35%, Melee Weapons 50%, Unarmed Combat 60%.",
-        expected: {
-          firearms: 45,
-          "heavy weapons": 35,
-          "melee weapons": 50,
-          "unarmed combat": 60,
-        },
+        name: "assault rifle",
+        skillModifier: 45,
+        damage: "1d12+1",
+        lethality: 10,
+        armorPiercing: 3,
+      },
+    ],
+  };
+  const heavyRifleEntry = {
+    input: "Heavy Rifle 45%, damage 1D12+2, Armor Piercing 3.",
+    expected: [
+      {
+        name: "heavy rifle",
+        skillModifier: 45,
+        damage: "1d12+2",
+        armorPiercing: 3,
+      },
+    ],
+  };
+  const meleeWeaponEntry = {
+    input: "Big Knife 50%, damage 1D8.",
+    expected: [
+      {
+        name: "Big Knife",
+        skillModifier: 50,
+        damage: "1d8",
+      },
+    ],
+  };
+  const handGrenadeEntry = {
+    input: "Hand Grenade 50%, Lethality 15%.",
+    expected: [
+      {
+        name: "Hand Grenade",
+        skillModifier: 50,
+        lethality: 15,
+      },
+    ],
+  };
+  const complexLethality = {
+    input: "Danger Stick 55%, Lethality 2% or 15% or 25% (see Dangerous).",
+    expected: [
+      {
+        name: "Danger Stick",
+        skillModifier: 55,
+        lethality: 2,
       },
       {
-        testName: "homebrewed skills extract cleanly",
-        input:
-          "Firearms 45%, Heavy Weapons 35%, Basket Weaving 30%, Science (Blinding) 80%.",
-        expected: {
-          firearms: 45,
-          "heavy weapons": 35,
-          "basket weaving": 30,
-          "science (blinding)": 80,
-        },
+        name: "Danger Stick",
+        skillModifier: 55,
+        lethality: 15,
       },
       {
-        testName: "incomplete skills are dropped",
-        input: "Firearms, Heavy Weapons, Unarmed Combat.",
-        expected: {},
+        name: "Danger Stick",
+        skillModifier: 55,
+        lethality: 25,
       },
-      {
-        testName:
-          "incomplete skills mixed with complete skills results in garbled skils",
-        input:
-          "Firearms 45%, Heavy Weapons 35%, Melee Weapons, Unarmed Combat 60%.",
-        justification: [
-          "It really difficult to fully know if a skill name is that long or if its because",
-          "the skill was incomplete. In this scenario the skill names will be merged, which should",
-          "hopefully provide enough information to the user that something went wrong.",
-          "Something more preferable would be tagging the skillset with an error flag but nothing",
-          "is coming to mind at the moment.",
-        ],
-        expected: {
-          firearms: 45,
-          "heavy weapons": 35,
-          "melee weapons unarmed combat": 60,
-        },
-      },
-    ])(".ExtractSkills on $testName", ({ input, expected }) => {
-      const tokens = tokenize(input);
-      const [result, rest] = ExtractSkills(tokens);
-      expect(rest).toEqual([]);
-      expect(result).toEqual(expected);
-    });
+    ],
+  };
+
+  test.each([
+    {
+      testName:
+        "extracting an attack with damage, lethality and armor piercing",
+      input: assaultRifleEntry.input,
+      expected: assaultRifleEntry.expected,
+    },
+    {
+      testName: "extracting a simple attack",
+      input: meleeWeaponEntry.input,
+      expected: meleeWeaponEntry.expected,
+    },
+    {
+      testName: "extracting a lethality only attack",
+      input: handGrenadeEntry.input,
+      expected: handGrenadeEntry.expected,
+    },
+    // {
+    //   testName: "extracting a complex lethality attack",
+    //   input: complexLethality.input,
+    //   expected: complexLethality.expected,
+    // },
+  ])(".ExtractAttacks() on $testName", ({ input, expected }) => {
+    const tokens = tokenize(input);
+    const [result, rest] = ExtractAttacks(tokens);
+    expect(rest).toEqual([]);
+    expect(result).toEqual(expected);
+  });
+
+  test("extracting a complete attack set", () => {
+    const attackSet = [assaultRifleEntry, heavyRifleEntry, handGrenadeEntry];
+    const input = attackSet.map((entry) => entry.input).join(" ");
+    const tokens = tokenize(input);
+    const expected = attackSet.flatMap((entry) => entry.expected);
+    const [result, rest] = ExtractAttacks(tokens);
+    expect(rest).toEqual([]);
+    expect(result).toEqual(expected);
   });
 });
