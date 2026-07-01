@@ -46,18 +46,18 @@ export function ExtractAttributes(tokens, previousState) {
   }
   const attr = rawAttr.toLowerCase();
   const value = parseInt(rawValue);
-  const currentKeys = Object.keys(accumulator);
-  if (
-    currentKeys !== ["incomplete"] &&
-    currentKeys - Object.keys(Attributes) === ["incomplete"]
-  ) {
-    delete accumulator.incomplete;
-  }
 
   if (Attributes[attr] == null || Number.isNaN(value)) {
     return [accumulator, tokens];
   }
 
   accumulator[attr] = value;
+  const currentKeys = new Set(Object.keys(accumulator));
+  const expectedKeys = new Set(Object.keys(Attributes));
+  if (currentKeys.intersection(expectedKeys).size === expectedKeys.size) {
+    delete accumulator.incomplete;
+    return [accumulator, rest];
+  }
+
   return ExtractAttributes(rest, accumulator);
 }

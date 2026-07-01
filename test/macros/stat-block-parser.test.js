@@ -15,7 +15,6 @@ describe("StatblockParser", () => {
     test("tokenizing a basic stat block", () => {
       const parser = new StatblockParser(readStatblock("basic-stats"));
       expect(parser.tokens.length).toBeGreaterThan(0);
-      console.log(parser.tokens);
     });
   });
 });
@@ -27,9 +26,9 @@ describe("ExtractAttributes", () => {
   const incompleteAttributes = "Str 10 con 10 Dex 10 10 Int";
 
   test("extracting valid attributes", () => {
-    const { result, rest } = ExtractAttributes(tokenize(validAttributes));
-    expect(rest).toBe(["SKILLS:"]);
-    expect(result).toBe({
+    const [result, rest] = ExtractAttributes(tokenize(validAttributes));
+    expect(rest).toEqual(["SKILLS:"]);
+    expect(result).toEqual({
       str: 10,
       dex: 13,
       con: 10,
@@ -44,15 +43,15 @@ describe("ExtractAttributes", () => {
 
   test("extracting invalid attributes", () => {
     const tokens = tokenize(invalidAttributes);
-    const { result, rest } = ExtractAttributes(tokens);
-    expect(rest).toBe(tokens);
-    expect(result).toBe({ incomplete: true });
+    const [result, rest] = ExtractAttributes(tokens);
+    expect(rest).toEqual(tokens);
+    expect(result).toEqual({ incomplete: true });
   });
 
   test("extracting incomplete attributes", () => {
-    const { result, rest } = ExtractAttributes(tokenize(incompleteAttributes));
-    expect(rest).toBe(["10", "Int"]);
-    expect(result).toBe({
+    const [result, rest] = ExtractAttributes(tokenize(incompleteAttributes));
+    expect(rest).toEqual(["10", "Int"]);
+    expect(result).toEqual({
       str: 10,
       con: 10,
       dex: 10,
