@@ -76,13 +76,7 @@ const complexLethality = {
   expectedTokensRemaining: ["(see", "dangerous)"],
 };
 
-describe("AttackParser", () => {
-  test("parsing a simple stat block", () => {
-    const [attacks, remainingTokens] = ExtractAttacks(meleeWeaponEntry.input);
-    expect(remainingTokens).toEqual(meleeWeaponEntry.expectedTokensRemaining);
-    expect(attacks).toEqual(meleeWeaponEntry.expectedAttacks);
-  });
-
+describe("ExtractAttacks", () => {
   test.each([
     { ...meleeWeaponEntry, testName: "Simple stat block" },
     {
@@ -96,6 +90,26 @@ describe("AttackParser", () => {
     const [actual, remainingTokens] = ExtractAttacks(input);
     expect(remainingTokens).toEqual(expectedTokensRemaining);
     expect(actual).toEqual(expectedAttacks);
+  });
+
+  test("extracting multiple attacks followed by a new section", () => {
+    const input = [
+      ...handGrenadeEntry.input,
+      ".",
+      ...complexLethality.input,
+      ".",
+      ...assaultRifleEntry.input,
+      ".",
+      "skills:",
+    ];
+    const expected = [
+      ...handGrenadeEntry.expectedAttacks,
+      ...complexLethality.expectedAttacks,
+      ...assaultRifleEntry.expectedAttacks,
+    ];
+    const [results, remainingTokens] = ExtractAttacks(input);
+    expect(remainingTokens).toEqual(["skills:"]);
+    expect(results).toEqual(expected);
   });
 });
 

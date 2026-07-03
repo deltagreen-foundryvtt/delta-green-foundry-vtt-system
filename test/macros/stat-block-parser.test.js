@@ -5,8 +5,9 @@ import {
   StatblockParser,
   ExtractAttributes,
   ExtractSkills,
-  ExtractAttacks,
   tokenize,
+  determineNextState,
+  States,
 } from "../../module/macros/stat-block-parser.js";
 
 describe("StatblockParser", () => {
@@ -19,6 +20,26 @@ describe("StatblockParser", () => {
       expect(parser.tokens.length).toBeGreaterThan(0);
     });
   });
+});
+
+describe("determineNextState", () => {
+  test.each([
+    { nextToken: "skills:", expected: States.SkillPairs },
+    { nextToken: "fox", expected: States.Unknown },
+    { nextToken: "attacks:", expected: States.Attacks },
+    { nextToken: ".", expected: States.EndEntry },
+  ])(
+    ".determineNextState() for $nextToken is $expected",
+    ({ nextToken, expected }) => {
+      expect(determineNextState(nextToken)).toEqual(expected);
+    },
+  );
+  test.each("str dex con int pow cha hp wp san".split(" "))(
+    `determineNextState(%s) should return ${States.AttributePairs}`,
+    (stat) => {
+      expect(determineNextState(stat)).toEqual(States.AttributePairs);
+    },
+  );
 });
 
 describe("tokenize", () => {
@@ -155,112 +176,6 @@ describe("ExtractSkills", () => {
   ])(".ExtractSkills() on $testName", ({ input, expected }) => {
     const tokens = tokenize(input);
     const [result, rest] = ExtractSkills(tokens);
-    expect(rest).toEqual([]);
-    expect(result).toEqual(expected);
-  });
-});
-
-describe("ExtractAttacks", () => {
-  const assaultRifleEntry = {
-    input:
-      "Assault Rifle 45%, damage 1d12+1 (or Lethality 10%), Armor Piercing 3",
-    expected: [
-      {
-        name: "assault rifle",
-        skillModifier: 45,
-        damage: "1d12+1",
-        lethality: 10,
-        armorPiercing: 3,
-      },
-    ],
-  };
-  const heavyRifleEntry = {
-    input: "Heavy Rifle 45%, damage 1D12+2, Armor Piercing 3.",
-    expected: [
-      {
-        name: "heavy rifle",
-        skillModifier: 45,
-        damage: "1d12+2",
-        armorPiercing: 3,
-      },
-    ],
-  };
-  const meleeWeaponEntry = {
-    input: "Big Knife 50%, damage 1D8.",
-    expected: [
-      {
-        name: "Big Knife",
-        skillModifier: 50,
-        damage: "1d8",
-      },
-    ],
-  };
-  const handGrenadeEntry = {
-    input: "Hand Grenade 50%, Lethality 15%.",
-    expected: [
-      {
-        name: "Hand Grenade",
-        skillModifier: 50,
-        lethality: 15,
-      },
-    ],
-  };
-  const complexLethality = {
-    input: "Danger Stick 55%, Lethality 2% or 15% or 25% (see Dangerous).",
-    expected: [
-      {
-        name: "Danger Stick",
-        skillModifier: 55,
-        lethality: 2,
-      },
-      {
-        name: "Danger Stick",
-        skillModifier: 55,
-        lethality: 15,
-      },
-      {
-        name: "Danger Stick",
-        skillModifier: 55,
-        lethality: 25,
-      },
-    ],
-  };
-
-  test.each([
-    {
-      testName:
-        "extracting an attack with damage, lethality and armor piercing",
-      input: assaultRifleEntry.input,
-      expected: assaultRifleEntry.expected,
-    },
-    {
-      testName: "extracting a simple attack",
-      input: meleeWeaponEntry.input,
-      expected: meleeWeaponEntry.expected,
-    },
-    {
-      testName: "extracting a lethality only attack",
-      input: handGrenadeEntry.input,
-      expected: handGrenadeEntry.expected,
-    },
-    // {
-    //   testName: "extracting a complex lethality attack",
-    //   input: complexLethality.input,
-    //   expected: complexLethality.expected,
-    // },
-  ])(".ExtractAttacks() on $testName", ({ input, expected }) => {
-    const tokens = tokenize(input);
-    const [result, rest] = ExtractAttacks(tokens);
-    expect(rest).toEqual([]);
-    expect(result).toEqual(expected);
-  });
-
-  test("extracting a complete attack set", () => {
-    const attackSet = [assaultRifleEntry, heavyRifleEntry, handGrenadeEntry];
-    const input = attackSet.map((entry) => entry.input).join(" ");
-    const tokens = tokenize(input);
-    const expected = attackSet.flatMap((entry) => entry.expected);
-    const [result, rest] = ExtractAttacks(tokens);
     expect(rest).toEqual([]);
     expect(result).toEqual(expected);
   });

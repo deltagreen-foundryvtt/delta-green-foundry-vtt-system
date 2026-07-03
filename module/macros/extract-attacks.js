@@ -1,3 +1,5 @@
+const ENTRY_END = ".";
+
 const Attacks = {
   damage: "damage",
   armorPiercing: "armor piercing",

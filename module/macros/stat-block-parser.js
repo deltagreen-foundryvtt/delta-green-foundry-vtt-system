@@ -1,16 +1,16 @@
 import { ExtractAttacks } from "./extract-attacks.js";
 
-const SKILL_SECTION = "skills";
-const ATTACKS_SECTION = "attacks";
-const SECTION_BEGINNING = ":";
+const SKILL_SECTION = "skills:";
+const ATTACKS_SECTION = "attacks:";
 const ENTRY_END = ".";
 
 export const States = {
   BeginStatblock: "begin-statblock",
-  EndStatblock: "end-statblock",
-  AttributePair: "attribute-pair",
-  SkillPair: "skill-pair",
-  Attack: "attack",
+  EndEntry: "end-statblock",
+  AttributePairs: "attribute-pair",
+  SkillPairs: "skill-pair",
+  Attacks: "attack",
+  Unknown: "unknown",
 };
 
 const Attributes = {
@@ -23,12 +23,6 @@ const Attributes = {
   hp: "HP",
   wp: "WP",
   san: "SAN",
-};
-
-const Attacks = {
-  damage: "damage",
-  armorPiercing: "armor piercing",
-  lethality: "lethality",
 };
 
 const EXTRANEOUS_CHARACTERS = /%|,/g;
@@ -48,15 +42,28 @@ export function tokenize(stream) {
     });
 }
 
-function capitalize(string) {
-  const [firstChar, ...rest] = string;
-  return [firstChar.toUpperCase(), ...rest].join("");
-}
-
 export class StatblockParser {
   constructor(stream) {
     this.state = States.BeginStatblock;
     this.tokens = tokenize(stream);
+  }
+}
+
+const attributeKeys = Object.keys(Attributes);
+export function determineNextState(token) {
+  if (attributeKeys.indexOf(token) >= 0) {
+    return States.AttributePairs;
+  }
+
+  switch (token) {
+    case ENTRY_END:
+      return States.EndEntry;
+    case SKILL_SECTION:
+      return States.SkillPairs;
+    case ATTACKS_SECTION:
+      return States.Attacks;
+    default:
+      return States.Unknown;
   }
 }
 
@@ -108,107 +115,6 @@ function extractSkillsImpl(tokens, skillsAccum, skillNameAccum) {
   return extractSkillsImpl(rest, skills, []);
 }
 
-function extractLethalities(tokens, accumulator, attackTemplate) {
-  const [first, ...rest] = tokens;
-  const maybeLethalityValue = first.replaceAll(/\(|\)/g, "");
-  if (maybeLethalityValue === "or") {
-    const attack = JSON.parse(JSON.stringify(attackTemplate));
-    return extractLethalities(rest, [...accumulator, attack], attackTemplate);
-  }
-
-  if (maybeLethalityValue === ENTRY_END) {
-    const attack = JSON.parse(JSON.stringify(attackTemplate));
-    return [[...accumulator, attack], rest];
-  }
-
-  const lethalityValue = parseInt(maybeLethalityValue.replaceAll(/\D+/g, ""));
-  if (Number.isNaN(lethalityValue)) {
-    return [accumulator, tokens];
-  }
-
-  return extractLethalities(rest, accumulator, {
-    ...attackTemplate,
-    lethality: lethalityValue,
-  });
-}
-
-function extractAttacksImpl(tokens, accumulator, incompleteAttack) {
-  if (tokens.length === 0) {
-    return [accumulator, tokens];
-  }
-
-  const attackAccumulator = incompleteAttack;
-  const [attackName, maybeAttackDetail, ...rest] = tokens;
-
-  if (attackName === ENTRY_END) {
-    return [
-      [incompleteAttack, ...accumulator],
-      [maybeAttackDetail, ...rest],
-    ];
-  }
-  if (attackName.length <= 3 && attackName.includes("or")) {
-    return extractAttacksImpl(
-      [maybeAttackDetail, ...rest],
-      accumulator,
-      incompleteAttack,
-    );
-  }
-
-  if (attackName === Attacks.lethality) {
-    const [updatedAccumulator, remainingTokens] = extractLethalities(
-      [maybeAttackDetail, ...rest],
-      accumulator,
-      incompleteAttack,
-    );
-    return extractAttacksImpl(
-      remainingTokens,
-      updatedAccumulator,
-      incompleteAttack,
-    );
-  }
-
-  if (attackName === Attacks.damage) {
-    attackAccumulator.damage = maybeAttackDetail;
-    return extractAttacksImpl(rest, accumulator, incompleteAttack);
-  }
-
-  const maybeArmorPiercing = [attackName, maybeAttackDetail].join(" ");
-  if (maybeArmorPiercing === Attacks.armorPiercing) {
-    return extractAttributesImpl(
-      [maybeArmorPiercing, ...rest],
-      accumulator,
-      incompleteAttack,
-    );
-  }
-
-  const skillModifier = parseInt(maybeAttackDetail);
-  if (attackName === Attacks.armorPiercing) {
-    attackAccumulator.armorPiercing = skillModifier;
-  }
-
-  if (
-    Number.isNaN(skillModifier) &&
-    typeof attackAccumulator.name !== "string"
-  ) {
-    attackAccumulator.name = [...incompleteAttack.name, attackName];
-    return extractAttacksImpl(
-      [maybeAttackDetail, ...rest],
-      accumulator,
-      attackAccumulator,
-    );
-  }
-
-  if (typeof attackAccumulator.name !== "string") {
-    attackAccumulator.name = [...attackAccumulator.name, attackName]
-      .map(capitalize)
-      .join(" ");
-    attackAccumulator.skillModifier = skillModifier;
-    return extractAttacksImpl(rest, accumulator, attackAccumulator);
-  }
-
-  return [accumulator, tokens];
-}
-
 export function ExtractAttributes(tokens) {
   return extractAttributesImpl(tokens, { incomplete: true });
 }
@@ -217,6 +123,56 @@ export function ExtractSkills(tokens) {
   return extractSkillsImpl(tokens, {}, []);
 }
 
-export function ExtractAttacks(tokens) {
-  return extractAttacksImpl(tokens, [], { name: [] });
+function parseStatBlockImpl(tokens, state, statBlock) {
+  if (tokens.length === 0) {
+    return statBlock;
+  }
+
+  const [nextToken, ...rest] = tokens;
+  const nextState = determineNextState(nextToken);
+
+  if (state === States.Unknown) {
+    return parseStatBlockImpl(rest, nextState, statBlock);
+  }
+
+  if (state === States.BeginStatblock && nextState === States.Unknown) {
+    const characterNameParts = [...(statBlock.name || []), nextToken];
+    return parseStatBlockImpl(rest, state, {
+      ...statBlock,
+      name: characterNameParts,
+    });
+  }
+
+  if (state === States.BeginStatblock) {
+    const name = (statBlock.name || []).join(" ");
+    return parseStatBlockImpl(rest, nextState, {
+      ...statBlock,
+      name,
+    });
+  }
+
+  if (state === States.AttributePairs) {
+    const [attributes, remainingTokens] = ExtractAttributes(rest);
+    return parseStatBlockImpl(remainingTokens, States.Unknown, {
+      ...statBlock,
+      attributes,
+    });
+  }
+
+  if (state === States.SkillPairs) {
+    const [skills, remainingTokens] = ExtractSkills(rest);
+    return parseStatBlockImpl(remainingTokens, States.Unknown, {
+      ...statBlock,
+      skills,
+    });
+  }
+
+  if (state === States.Attacks) {
+    const [attacks, remainingTokens] = ExtractAttacks(rest);
+    return parseStatBlockImpl(remainingTokens, States.Unknown);
+  }
+}
+
+export function ParseStatBlock(stream) {
+  parseStatBlockImpl(tokenize(stream), States.BeginStatblock, {});
 }
