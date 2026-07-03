@@ -42,11 +42,29 @@ export function tokenize(stream) {
     });
 }
 
-export class StatblockParser {
-  constructor(stream) {
-    this.state = States.BeginStatblock;
-    this.tokens = tokenize(stream);
-  }
+export function groupEntriesUntilNextSection(tokens) {
+  const groups = [];
+  const rest = [];
+
+  tokens.reduce((accum, token) => {
+    if (token.includes(":") || accum === "DONE") {
+      rest.push(token);
+      return "DONE";
+    }
+    if (token === ENTRY_END) {
+      groups.push(accum);
+      return [];
+    }
+    const cleanedToken = token.replaceAll(/\(|\)/g, "");
+    if (cleanedToken === "or") {
+      return accum;
+    }
+
+    accum.push(token);
+    return accum;
+  }, []);
+
+  return [groups, rest];
 }
 
 const attributeKeys = Object.keys(Attributes);
@@ -72,6 +90,13 @@ function extractAttributesImpl(tokens, accumulator) {
     return [accumulator, tokens];
   }
 
+  const currentKeys = new Set(Object.keys(accumulator));
+  const expectedKeys = new Set(Object.keys(Attributes));
+  if (currentKeys.intersection(expectedKeys).size === expectedKeys.size) {
+    delete accumulator.incomplete;
+    return [accumulator, tokens];
+  }
+
   const [attr, rawValue, ...rest] = tokens;
   const value = parseInt(rawValue);
 
@@ -80,13 +105,6 @@ function extractAttributesImpl(tokens, accumulator) {
   }
 
   accumulator[attr] = value;
-  const currentKeys = new Set(Object.keys(accumulator));
-  const expectedKeys = new Set(Object.keys(Attributes));
-  if (currentKeys.intersection(expectedKeys).size === expectedKeys.size) {
-    delete accumulator.incomplete;
-    return [accumulator, rest];
-  }
-
   return extractAttributesImpl(rest, accumulator);
 }
 
@@ -131,10 +149,6 @@ function parseStatBlockImpl(tokens, state, statBlock) {
   const [nextToken, ...rest] = tokens;
   const nextState = determineNextState(nextToken);
 
-  if (state === States.Unknown) {
-    return parseStatBlockImpl(rest, nextState, statBlock);
-  }
-
   if (state === States.BeginStatblock && nextState === States.Unknown) {
     const characterNameParts = [...(statBlock.name || []), nextToken];
     return parseStatBlockImpl(rest, state, {
@@ -145,21 +159,21 @@ function parseStatBlockImpl(tokens, state, statBlock) {
 
   if (state === States.BeginStatblock) {
     const name = (statBlock.name || []).join(" ");
-    return parseStatBlockImpl(rest, nextState, {
+    return parseStatBlockImpl(tokens, nextState, {
       ...statBlock,
       name,
     });
   }
 
   if (state === States.AttributePairs) {
-    const [attributes, remainingTokens] = ExtractAttributes(rest);
+    const [attributes, remainingTokens] = ExtractAttributes(tokens);
     return parseStatBlockImpl(remainingTokens, States.Unknown, {
       ...statBlock,
       attributes,
     });
   }
 
-  if (state === States.SkillPairs) {
+  if (nextState === States.SkillPairs) {
     const [skills, remainingTokens] = ExtractSkills(rest);
     return parseStatBlockImpl(remainingTokens, States.Unknown, {
       ...statBlock,
@@ -167,12 +181,24 @@ function parseStatBlockImpl(tokens, state, statBlock) {
     });
   }
 
-  if (state === States.Attacks) {
-    const [attacks, remainingTokens] = ExtractAttacks(rest);
-    return parseStatBlockImpl(remainingTokens, States.Unknown);
+  if (nextState === States.Attacks) {
+    const [groupedAttacks, remainingTokens] =
+      groupEntriesUntilNextSection(rest);
+    const attacks = groupedAttacks.flatMap((group) => {
+      const [results, trailingTokens] = ExtractAttacks(group);
+      return results.map((a) => {
+        return { ...a, notes: trailingTokens.join(" ") };
+      });
+    });
+    return parseStatBlockImpl(remainingTokens, States.Unknown, {
+      ...statBlock,
+      attacks,
+    });
   }
+
+  return parseStatBlockImpl(rest, nextState, statBlock);
 }
 
 export function ParseStatBlock(stream) {
-  parseStatBlockImpl(tokenize(stream), States.BeginStatblock, {});
+  return parseStatBlockImpl(tokenize(stream), States.BeginStatblock, {});
 }

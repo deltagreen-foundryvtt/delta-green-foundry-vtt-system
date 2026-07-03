@@ -2,25 +2,14 @@ import { describe, expect, test } from "@jest/globals";
 import fs from "node:fs";
 
 import {
-  StatblockParser,
   ExtractAttributes,
   ExtractSkills,
   tokenize,
   determineNextState,
+  groupEntriesUntilNextSection,
   States,
+  ParseStatBlock,
 } from "../../module/macros/stat-block-parser.js";
-
-describe("StatblockParser", () => {
-  const readStatblock = (name) =>
-    fs.readFileSync(`${__dirname}/statblocks/${name}.txt`, "utf8");
-
-  describe("new", () => {
-    test("tokenizing a basic stat block", () => {
-      const parser = new StatblockParser(readStatblock("basic-stats"));
-      expect(parser.tokens.length).toBeGreaterThan(0);
-    });
-  });
-});
 
 describe("determineNextState", () => {
   test.each([
@@ -40,6 +29,27 @@ describe("determineNextState", () => {
       expect(determineNextState(stat)).toEqual(States.AttributePairs);
     },
   );
+});
+
+describe("groupEntriesUntilNextSection", () => {
+  test("extracting multiple attacks followed by a new section", () => {
+    const entryOne = "abra cadabra alakazam".split(" ");
+    const entryTwo = "hocus pocus".split(" ");
+    const entryThree = "wibbly wobbly timey wimey".split(" ");
+    const input = [
+      ...entryOne,
+      ".",
+      ...entryTwo,
+      ".",
+      ...entryThree,
+      ".",
+      "skills:",
+    ];
+    const expected = [entryOne, entryTwo, entryThree];
+    const [results, remainingTokens] = groupEntriesUntilNextSection(input);
+    expect(remainingTokens).toEqual(["skills:"]);
+    expect(results).toEqual(expected);
+  });
 });
 
 describe("tokenize", () => {
@@ -178,5 +188,63 @@ describe("ExtractSkills", () => {
     const [result, rest] = ExtractSkills(tokens);
     expect(rest).toEqual([]);
     expect(result).toEqual(expected);
+  });
+});
+
+describe("ParseStatBlock", () => {
+  const readStatblock = (name) =>
+    fs.readFileSync(`${__dirname}/statblocks/${name}.txt`, "utf8");
+
+  test.each([
+    {
+      testName: "Parsing a basic NPC statblock",
+      input: readStatblock("basic-stats"),
+      expected: {
+        name: "some dude",
+        attributes: {
+          str: 10,
+          con: 10,
+          dex: 13,
+          int: 10,
+          pow: 14,
+          cha: 10,
+          hp: 10,
+          wp: 14,
+          san: 0,
+        },
+        skills: {
+          firearms: 45,
+          "heavy weapons": 35,
+          "melee weapons": 50,
+          "unarmed combat": 60,
+        },
+        attacks: [
+          {
+            name: "Assault Rifle",
+            skillModifier: 45,
+            damage: "1d12+1",
+            lethality: 10,
+            armorPiercing: 3,
+            notes: "",
+          },
+          {
+            name: "Heavy Rifle",
+            skillModifier: 45,
+            damage: "1d12+2",
+            armorPiercing: 3,
+            notes: "",
+          },
+          {
+            name: "Big Knife",
+            skillModifier: 50,
+            damage: "1d8",
+            notes: "",
+          },
+        ],
+      },
+    },
+  ])("$testName", ({ input, expected }) => {
+    const actualStatBlock = ParseStatBlock(input);
+    expect(actualStatBlock).toEqual(expected);
   });
 });

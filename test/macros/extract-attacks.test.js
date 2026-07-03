@@ -91,26 +91,6 @@ describe("ExtractAttacks", () => {
     expect(remainingTokens).toEqual(expectedTokensRemaining);
     expect(actual).toEqual(expectedAttacks);
   });
-
-  test("extracting multiple attacks followed by a new section", () => {
-    const input = [
-      ...handGrenadeEntry.input,
-      ".",
-      ...complexLethality.input,
-      ".",
-      ...assaultRifleEntry.input,
-      ".",
-      "skills:",
-    ];
-    const expected = [
-      ...handGrenadeEntry.expectedAttacks,
-      ...complexLethality.expectedAttacks,
-      ...assaultRifleEntry.expectedAttacks,
-    ];
-    const [results, remainingTokens] = ExtractAttacks(input);
-    expect(remainingTokens).toEqual(["skills:"]);
-    expect(results).toEqual(expected);
-  });
 });
 
 describe("extractLethalities", () => {
