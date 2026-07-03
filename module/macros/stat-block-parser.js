@@ -1,3 +1,5 @@
+import { ExtractAttacks } from "./extract-attacks.js";
+
 const SKILL_SECTION = "skills";
 const ATTACKS_SECTION = "attacks";
 const SECTION_BEGINNING = ":";
