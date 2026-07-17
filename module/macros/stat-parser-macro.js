@@ -1,140 +1,195 @@
 import { showDgDialog } from "../applications/dg-dialog.js";
 import { ParseStatBlock } from "./stat-block-parser.js";
 
-function GetAttacksFromInput(inputText) {
-  const attacks = [];
-  try {
-    // some attacks split onto multiple lines, usually separated by semicolons,
-    // try to get these back on the same line before splitting...
-    const lines = inputText
-      .replace("; \r\n", ";")
-      .replace(";\r\n", ";")
-      .replace(";\n", ";")
-      .replace("; \n", ";")
-      .split(/\r?\n/);
+const NPC_ATTRIBUTES = ["hp", "san", "wp"];
+const NPC = "npc";
+const UNNATURAL = "unnatural";
+const NPCLIKE = [NPC, UNNATURAL];
 
-    let isInAttackSection = false;
-
-    if (lines !== null && lines.length > 0) {
-      for (let i = 0; i < lines.length; i++) {
-        if (lines[i].toString().toUpperCase().indexOf("ATTACKS:") >= 0) {
-          isInAttackSection = true;
-        } else if (
-          isInAttackSection &&
-          lines[i].toString().toUpperCase().indexOf(":") > 0
-        ) {
-          isInAttackSection = false;
-        }
-
-        if (isInAttackSection) {
-          const attackLine = lines[i]
-            .toString()
-            .toUpperCase()
-            .replace("ATTACKS:", "");
-
-          console.log(attackLine);
-
-          const weaponData = {
-            type: "weapon",
-            name: "New Attack",
-            description: attackLine,
-            system: {
-              skill: "custom",
-              skillModifier: 0,
-              customSkillTarget: 0,
-              range: "0M",
-              damage: "1D10",
-              armorPiercing: 0,
-              lethality: 0,
-              isLethal: false,
-              killRadius: "N/A",
-              ammo: "N/A",
-              expense: "NA",
-              equipped: true,
-            },
-          };
-
-          // try to determine if it's a lethality attack, as those will have two % values in them
-          if (attackLine.indexOf("LETHALITY") >= 0) {
-            weaponData.isLethal = true;
-
-            const lethalityMatchStr = "(\\w.*?)(\\d\\d?%)"; // test with 'Black box 50%, Lethality 40% (see BLACK BOX).'
-            const re = new RegExp(lethalityMatchStr, "i");
-            const lethalityResults = attackLine.match(re);
-
-            if (
-              lethalityResults !== null &&
-              lethalityResults.length > 0 &&
-              lethalityResults[1] !== null &&
-              lethalityResults[1] !== undefined
-            ) {
-              weaponData.name = lethalityResults[1].toString().trim();
-
-              weaponData.lethality = parseInt(
-                lethalityResults[2]
-                  .toString()
-                  .replace("%", "")
-                  .replace(";", ""),
-              );
-            }
-          } else {
-            // assume only percent value will be the skill test associated with it
-            const skillMatchStr = `(\\w.*?)(\\d?\\d%)([\\S\\s]*?damage\\s.*?)?(\\d?d\\d?\\d?\\d([\\+\\-]\\d+)?)?`; // test with 'SIG Sauer P228 pistol 94%, damage 1D10.'
-            const re1 = new RegExp(skillMatchStr, "i");
-            const skillResults = attackLine.match(re1);
-
-            if (
-              skillResults !== null &&
-              skillResults.length > 0 &&
-              skillResults[1] !== null &&
-              skillResults[1] !== undefined
-            ) {
-              weaponData.name = skillResults[1].toString().trim();
-
-              if (
-                skillResults.length > 2 &&
-                skillResults[2] !== null &&
-                skillResults[2] !== undefined
-              ) {
-                weaponData.customSkillTarget = parseInt(
-                  skillResults[2].toString().replace("%", "").replace(";", ""),
-                );
-              }
-
-              // have to be careful, some unnatural attacks don't actually deal damage, they just grab or something.
-              // don't have a great way to indicate that in the system, so just set it to zero if we can't find it.
-              if (
-                skillResults.length > 4 &&
-                skillResults[4] !== null &&
-                skillResults[4] !== undefined
-              ) {
-                weaponData.damage = skillResults[4].toString().replace(";", "");
-              } else {
-                weaponData.damage = 0;
-              }
-            }
-
-            if (attackLine.indexOf("ARMOR PIERCING") >= 0) {
-              const apMatch = attackLine.match(/ARMOR\s+PIERCING\s*(\d+)/i);
-              const armorPiercing = apMatch?.[1] ? parseInt(apMatch[1]) : 5;
-              weaponData.armorPiercing = armorPiercing;
-              weaponData.system.armorPiercing = armorPiercing;
-            }
-          }
-
-          if (weaponData.customSkillTarget > 0 || weaponData.isLethal) {
-            attacks.push(weaponData);
-          }
-        }
-      }
-    }
-  } catch (ex) {
-    console.log("GetAttacksFromInput Error");
-    console.log(ex);
-  }
-
-  return attacks;
-}
+/**
+ * Defines the list of skills within Delta Green.
+ *
+ * Definitions:
+ * - Label:
+ *    The label that is displayed (and localized) to the end user
+ * - key:
+ *    The key that is used to assign the skill on the character sheet
+ * - typed:
+ *    Included on skills broader skills that have additional context, such
+ *    as Art, Craft or Science.
+ * - npcOnly:
+ *    Included on skils that are not available to Agents (i.e. Flying)
+ * - alternativeSpellings:
+ *    A list of one or more alternative ways the label could be spelled, such as
+ *    regional spellings (Archeology vs Archaeology). __NOTE__: For compound words
+ *    (i.e. Unarmed Combat, Melee Weapons) this list should include a lowercase spelling
+ *    of that ability (i.e. "unarmed combat")
+ *
+ * The skill map is structured as follows:
+ *
+ * ```{
+ *  Label or "Compound Label": {
+ *    key: string (required)
+ *    alternativeSpellings: List<String> (optional)
+ *    typed: boolean (optional)
+ *    npcOnly: boolean (optional)
+ *  }
+ * }
+ *
+ * */
+const SKILL_MAP = {
+  Accounting: {
+    key: "accounting",
+  },
+  Alertness: {
+    key: "alertness",
+  },
+  Anthropology: {
+    key: "anthropology",
+  },
+  Archeology: {
+    key: "archeology",
+    alternativeSpellings: ["archaeology"],
+  },
+  Art: {
+    key: "art",
+    typed: true,
+  },
+  Artillery: {
+    key: "artillery",
+  },
+  Athletics: {
+    key: "athletics",
+  },
+  Bureaucracy: {
+    key: "bureaucracy",
+  },
+  Craft: {
+    key: "craft",
+    typed: true,
+  },
+  "Computer Science": {
+    key: "computer_science",
+    alternativeSpellings: ["computer science"],
+  },
+  Criminology: {
+    key: "criminology",
+  },
+  Demolitions: {
+    key: "demolitions",
+  },
+  Disguise: {
+    key: "disguise",
+  },
+  Dodge: {
+    key: "dodge",
+  },
+  Drive: {
+    key: "drive",
+    alternativeSpellings: ["driving"],
+  },
+  Firearms: {
+    key: "firearms",
+  },
+  "First Aid": {
+    key: "first_aid",
+    alternativeSpellings: ["first aid"],
+  },
+  Flight: {
+    key: "flight",
+    npcOnly: true,
+  },
+  "Foreign Language": {
+    key: "foreign_langauge",
+    alternativeSpellings: ["foreign language"],
+    typed: true,
+  },
+  Forensics: {
+    key: "forensics",
+  },
+  "Heavy Machinery": {
+    key: "heavy_machinery",
+    alternativeSpellings: ["heavy machinery"],
+  },
+  "Heavy Weapons": {
+    key: "heavy_weapons",
+    alternativeSpellings: ["heavy weapons"],
+  },
+  History: {
+    key: "history",
+  },
+  HUMINT: {
+    key: "humint",
+  },
+  Law: {
+    key: "law",
+  },
+  Medicine: {
+    key: "medicine",
+  },
+  "Melee Weapons": {
+    key: "melee_weapons",
+    alternativeSpellings: ["melee weapons"],
+  },
+  "Military Science": {
+    key: "military_science",
+    alternativeSpellings: ["military science"],
+    typed: true,
+  },
+  "Native Language": {
+    key: "native_language",
+    alternativeSpellings: ["native language"],
+    typed: true,
+  },
+  Navigate: {
+    key: "navigate",
+  },
+  Occult: {
+    key: "occult",
+  },
+  Persuade: {
+    key: "persuade",
+  },
+  Pilot: {
+    key: "pilot",
+    typed: true,
+  },
+  Pharmacy: {
+    key: "pharmacy",
+  },
+  Psychotheraphy: {
+    key: "psychotherapy",
+  },
+  Ride: {
+    key: "ride",
+  },
+  Science: {
+    key: "science",
+    typed: true,
+  },
+  SIGINT: {
+    key: "sigint",
+  },
+  Stealth: {
+    key: "stealth",
+  },
+  Surgery: {
+    key: "surgery",
+  },
+  Survival: {
+    key: "survival",
+  },
+  Swim: {
+    key: "swim",
+  },
+  "Unarmed Combat": {
+    key: "unarmed_combat",
+    alternativeSpellings: ["unarmed combat"],
+  },
+  Unnatural: {
+    key: "unnatural",
+  },
+};
 
 function GetNotesFromInput(inputText) {
   const matchStr = "(?:ATTACKS:[\\S\\s]*?\\.\\n)([\\S\\s]*)";
@@ -160,54 +215,6 @@ function GetNotesFromInput(inputText) {
   }
 
   return [notes];
-}
-
-function GetArmorFromInput(inputText) {
-  try {
-    const armor = { name: "Armor", description: "", armor: 0 };
-
-    const lines = inputText.split(/\r?\n/);
-
-    if (lines !== null && lines.length > 0) {
-      for (let i = 0; i < lines.length; i++) {
-        if (lines[i].toString().toUpperCase().indexOf("ARMOR:") >= 0) {
-          armor.description = lines[i]
-            .replace("Armor:", "")
-            .replace("ARMOR:", "")
-            .trim();
-
-          const matchStr = `(\\d\\d?)`;
-          const re = new RegExp(matchStr, "i");
-          const results = lines[i].match(re);
-
-          try {
-            if (results != null && results.length > 0) {
-              armor.armor = parseInt(results[0]);
-
-              armor.name = armor.description
-                .replace(`(Armor ${armor.armor})`, "")
-                .trim();
-
-              armor.name = armor.name
-                .replace(`${armor.armor} points of`, "")
-                .replace(`${armor.armor} point of`, "")
-                .replace(".", "")
-                .trim();
-            }
-          } catch (ex) {
-            console.log("GetArmorFromInput Error");
-            console.log(ex);
-          }
-
-          return armor;
-        }
-      }
-    }
-  } catch (ex) {
-    console.log("GetArmorFromInput Error");
-    console.log(ex);
-  }
-  return null;
 }
 
 // this is the main stat call, it's exposed as part of the system itself for users to access
@@ -243,26 +250,6 @@ function GetTypeSkillRatingsFromInput(inputText) {
   return matches;
 }
 
-function GetAttributeFromInput(inputText, attribute) {
-  const matchStr = `(?:${attribute}\\s)(\\d\\d?)`;
-  const re = new RegExp(matchStr, "i");
-  const results = inputText.match(re);
-  let attributeScore = 10;
-
-  try {
-    if (results != null && results.length > 1) {
-      attributeScore = parseInt(results[1]);
-    } else {
-      attributeScore = 0;
-    }
-  } catch (ex) {
-    console.log("GetAttributeFromInput Error");
-    console.log(ex);
-  }
-
-  return attributeScore;
-}
-
 function GetSkillRatingsFromInput(inputText, skill) {
   const matchStr = `(?:${skill}\\n?\\s?\\n?)(\\d\\d?)`;
   const re = new RegExp(matchStr, "i");
@@ -283,8 +270,8 @@ function GetSkillRatingsFromInput(inputText, skill) {
 
 async function RegexParseNpcStatBlock(inputStr, actorType) {
   const actorData = {};
-
-  let shortDescription = "";
+  const isNpcLike = NPCLIKE.includes(actorType);
+  const statBlock = ParseStatBlock(inputStr);
 
   actorData.type = actorType;
   actorData.system = {};
@@ -296,95 +283,66 @@ async function RegexParseNpcStatBlock(inputStr, actorType) {
   actorData.system.health = { value: 10, min: 0, max: 10 };
   actorData.system.wp = { value: 10, min: 0, max: 10 };
 
-  const statBlock = ParseStatBlock(inputStr);
+  actorData.name = statBlock.name;
+  actorData.system.physical = {
+    description: "",
+  };
 
-  let tempStr = "";
-  let arr = [];
-
-  tempStr = inputStr.split(/\r?\n/);
-
-  if (tempStr.length > 0) {
-    [actorData.name] = tempStr;
-
-    // set the alternate description/profession/etc.
-    // if this doesn't exist, the next line should be the attributes starting with strength
-    // so if the second line starts with "STR" then just leave it be.
-    if (
-      tempStr.length > 1 &&
-      tempStr[1].substring(0, 3) !== "STR" &&
-      tempStr[1].substring(0, 3) !== "CON" &&
-      tempStr[1].substring(0, 3) !== "DEX" &&
-      tempStr[1].substring(0, 3) !== "INT" &&
-      tempStr[1].substring(0, 3) !== "POW" &&
-      tempStr[1].substring(0, 3) !== "CHA"
-    ) {
-      [, shortDescription] = tempStr;
-    }
-  } else {
-    actorData.name = "Unknown";
-  }
-
-  const armor = GetArmorFromInput(inputStr);
-
-  const attacks = GetAttacksFromInput(inputStr);
-
-  if (armor !== null) {
-    console.log(armor);
-  }
-
-  if (actorType === "agent") {
+  if (!isNpcLike) {
     actorData.system.physical = {
-      description: shortDescription,
+      ...actorData.system.physical,
       wounds: "",
       firstAidAttempted: false,
     };
-  } else if (actorType === "npc" || actorType === "unnatural") {
-    actorData.system.shortDescription = shortDescription;
   }
 
-  actorData.system.statistics.str = {
-    value: GetAttributeFromInput(inputStr, "STR"),
-    distinguishing_feature: "",
-  };
-  actorData.system.statistics.con = {
-    value: GetAttributeFromInput(inputStr, "CON"),
-    distinguishing_feature: "",
-  };
-  actorData.system.statistics.dex = {
-    value: GetAttributeFromInput(inputStr, "DEX"),
-    distinguishing_feature: "",
-  };
-  actorData.system.statistics.int = {
-    value: GetAttributeFromInput(inputStr, "INT"),
-    distinguishing_feature: "",
-  };
-  actorData.system.statistics.pow = {
-    value: GetAttributeFromInput(inputStr, "POW"),
-    distinguishing_feature: "",
-  };
-  actorData.system.statistics.cha = {
-    value: GetAttributeFromInput(inputStr, "CHA"),
-    distinguishing_feature: "",
-  };
+  const { attributes } = statBlock;
+  Object.entries(attributes).forEach(([key, value]) => {
+    if (isNpcLike && NPC_ATTRIBUTES.includes(key) === false) {
+      actorData.system.statistics[key] = {
+        value,
+        distinguishing_feature: "",
+      };
 
-  if (actorType === "npc" || actorType === "unnatural") {
-    // don't want to try to set HP/SAN for player characters
-    actorData.system.health = {
-      min: 0,
-      max: GetAttributeFromInput(inputStr, "HP"),
-      value: GetAttributeFromInput(inputStr, "HP"),
-    };
-    actorData.system.sanity = {
-      max: actorData.system.statistics.pow.value * 5,
-      value: GetAttributeFromInput(inputStr, "SAN"),
-      currentBreakingPoint: GetAttributeFromInput(inputStr, "BREAKING POINT"),
-    };
-    actorData.system.wp = {
-      max: actorData.system.statistics.pow.value,
-      value: GetAttributeFromInput(inputStr, "WP"),
-      min: 0,
-    };
-  }
+      return;
+    }
+
+    if (key === "hp") {
+      actorData.system.health = {
+        value,
+        min: 0,
+        max: value,
+      };
+
+      return;
+    }
+
+    if (key === "san") {
+      actorData.system.sanity = {
+        value,
+        currentBreakingPoint: attributes.breaking_point,
+        max: attributes.pow * 5,
+      };
+
+      return;
+    }
+
+    if (key === "wp") {
+      actorData.system.wp = {
+        value,
+        min: 0,
+        max: attributes.pow,
+      };
+    }
+  });
+
+  const { skills } = statBlock;
+  Object.entries(SKILL_MAP).forEach(([label, skillInfo]) => {
+    if (skillInfo.npcOnly && !isNpcLike) return;
+
+    if (skillInfo.typed) {
+    }
+  });
 
   actorData.system.skills.accounting = {
     label: "Accounting",
