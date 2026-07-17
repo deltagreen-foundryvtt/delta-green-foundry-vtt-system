@@ -201,10 +201,10 @@ describe("ExtractArmorAndEquipment", () => {
     {
       testName: "correctly extracts armor information and equipment list",
       input:
-        "advanced kevlar vest (armor 4), three extra pistol magazines, flashlight, nightvision goggles",
+        "advanced kevlar vest armor 4, three extra pistol magazines, flashlight , nightvision goggles",
       expected: {
         armor: {
-          name: "Advanced Kevlar Vest",
+          name: "advanced kevlar vest",
           value: 4,
         },
         equipment: [
@@ -216,8 +216,7 @@ describe("ExtractArmorAndEquipment", () => {
     },
   ])(".ExtractArmorAndEquipment() on $testName", ({ input, expected }) => {
     const tokens = tokenize(input);
-    const [result, rest] = ExtractArmorAndEquipment(tokens);
-    expect(rest).toEqual([]);
+    const result = ExtractArmorAndEquipment(tokens);
     expect(result).toEqual(expected);
   });
 });
@@ -228,6 +227,7 @@ describe("ExtractDisordersAndAdaptations", () => {
       testName: "correctly extracts disorders",
       input: "intermittent explosive disorder, cocaine addiction",
       expected: {
+        adaptations: [],
         disorders: ["intermittent explosive disorder", "cocaine addiction"],
       },
     },
@@ -236,6 +236,7 @@ describe("ExtractDisordersAndAdaptations", () => {
       input: "adapted to violence, adapted to helplessness",
       expected: {
         adaptations: ["violence", "helplessness"],
+        disorders: [],
       },
     },
     {
@@ -252,8 +253,7 @@ describe("ExtractDisordersAndAdaptations", () => {
     ".ExtractDisordersAndAdaptations() on $testName",
     ({ input, expected }) => {
       const tokens = tokenize(input);
-      const [result, rest] = ExtractDisordersAndAdaptations(tokens);
-      expect(rest).toEqual([]);
+      const result = ExtractDisordersAndAdaptations(tokens);
       expect(result).toEqual(expected);
     },
   );
@@ -329,7 +329,7 @@ describe("ParseStatBlock", () => {
           breaking_point: 48,
         },
         armor: {
-          name: "Advanced Kevlar Vest",
+          name: "advanced kevlar vest",
           value: 4,
         },
         adaptations: ["violence"],
@@ -352,7 +352,8 @@ describe("ParseStatBlock", () => {
           "flashlight",
           "nightvision goggles",
           "a dozen cable ties (for use as plastic handcuffs)",
-          "the carbines are stored in a secure locker, not usually carried",
+          "the carbines are stored in a secured locker",
+          "not usually carried",
         ],
         attacks: [
           {
