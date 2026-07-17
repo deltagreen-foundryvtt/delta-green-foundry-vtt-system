@@ -1,4 +1,5 @@
 import { showDgDialog } from "../applications/dg-dialog.js";
+import { ParseStatBlock } from "./stat-block-parser.js";
 
 function GetAttacksFromInput(inputText) {
   const attacks = [];
@@ -294,6 +295,8 @@ async function RegexParseNpcStatBlock(inputStr, actorType) {
 
   actorData.system.health = { value: 10, min: 0, max: 10 };
   actorData.system.wp = { value: 10, min: 0, max: 10 };
+
+  const statBlock = ParseStatBlock(inputStr);
 
   let tempStr = "";
   let arr = [];

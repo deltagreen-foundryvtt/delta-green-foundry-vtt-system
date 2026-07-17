@@ -4,6 +4,8 @@ import fs from "node:fs";
 import {
   ExtractAttributes,
   ExtractSkills,
+  ExtractArmorAndEquipment,
+  ExtractDisordersAndAdaptations,
   tokenize,
   determineNextState,
   groupEntriesUntilNextSection,
@@ -63,12 +65,15 @@ describe("tokenize", () => {
     "skills:",
     "firearms",
     "45",
+    ",",
     "heavy",
     "weapons",
     "50",
+    ",",
     "melee",
     "weapons",
     "75",
+    ",",
     "science",
     "(biology)",
     "50",
@@ -191,6 +196,69 @@ describe("ExtractSkills", () => {
   });
 });
 
+describe("ExtractArmorAndEquipment", () => {
+  test.each([
+    {
+      testName: "correctly extracts armor information and equipment list",
+      input:
+        "advanced kevlar vest (armor 4), three extra pistol magazines, flashlight, nightvision goggles",
+      expected: {
+        armor: {
+          name: "Advanced Kevlar Vest",
+          value: 4,
+        },
+        equipment: [
+          "three extra pistol magazines",
+          "flashlight",
+          "nightvision goggles",
+        ],
+      },
+    },
+  ])(".ExtractArmorAndEquipment() on $testName", ({ input, expected }) => {
+    const tokens = tokenize(input);
+    const [result, rest] = ExtractArmorAndEquipment(tokens);
+    expect(rest).toEqual([]);
+    expect(result).toEqual(expected);
+  });
+});
+
+describe("ExtractDisordersAndAdaptations", () => {
+  test.each([
+    {
+      testName: "correctly extracts disorders",
+      input: "intermittent explosive disorder, cocaine addiction",
+      expected: {
+        disorders: ["intermittent explosive disorder", "cocaine addiction"],
+      },
+    },
+    {
+      testName: "correctly extracts adaptations",
+      input: "adapted to violence, adapted to helplessness",
+      expected: {
+        adaptations: ["violence", "helplessness"],
+      },
+    },
+    {
+      testName:
+        "correctly extract adaptations and disorders, regardless of where they are",
+      input:
+        "cocaine addiction, adapted to violence, intermittent explosive disorder, adapted to helplessness",
+      expected: {
+        adaptations: ["violence", "helplessness"],
+        disorders: ["cocaine addiction", "intermittent explosive disorder"],
+      },
+    },
+  ])(
+    ".ExtractDisordersAndAdaptations() on $testName",
+    ({ input, expected }) => {
+      const tokens = tokenize(input);
+      const [result, rest] = ExtractDisordersAndAdaptations(tokens);
+      expect(rest).toEqual([]);
+      expect(result).toEqual(expected);
+    },
+  );
+});
+
 describe("ParseStatBlock", () => {
   const readStatblock = (name) =>
     fs.readFileSync(`${__dirname}/statblocks/${name}.txt`, "utf8");
@@ -238,6 +306,78 @@ describe("ParseStatBlock", () => {
             name: "Big Knife",
             skillModifier: 50,
             damage: "1d8",
+            notes: "",
+          },
+        ],
+      },
+    },
+    {
+      testName: "Parsing a complex NPC statblock",
+      input: readStatblock("complex-stats"),
+      expected: {
+        name: "private military contractor",
+        attributes: {
+          str: 14,
+          con: 13,
+          dex: 12,
+          int: 11,
+          pow: 12,
+          cha: 7,
+          hp: 14,
+          wp: 10,
+          san: 53,
+          breaking_point: 48,
+        },
+        armor: {
+          name: "Advanced Kevlar Vest",
+          value: 4,
+        },
+        adaptations: ["violence"],
+        disorders: [],
+        skills: {
+          alertness: 60,
+          athletics: 50,
+          dodge: 40,
+          driving: 40,
+          firearms: 60,
+          humint: 40,
+          law: 30,
+          "melee weapons": 50,
+          persuade: 40,
+          search: 50,
+          "unarmed combat": 60,
+        },
+        equipment: [
+          "three extra pistol magazines",
+          "flashlight",
+          "nightvision goggles",
+          "a dozen cable ties (for use as plastic handcuffs)",
+          "the carbines are stored in a secure locker, not usually carried",
+        ],
+        attacks: [
+          {
+            name: "Medium Pistol",
+            skillModifier: 60,
+            damage: "1d10",
+            notes: "",
+          },
+          {
+            name: "Carbine",
+            skillModifier: 60,
+            damage: "1d12",
+            armorPiercing: 3,
+            notes: "",
+          },
+          {
+            name: "Baton",
+            skillModifier: 50,
+            damage: "1d6+1",
+            notes: "",
+          },
+          {
+            name: "Unarmed",
+            skillModifier: 60,
+            damage: "1d4",
             notes: "",
           },
         ],

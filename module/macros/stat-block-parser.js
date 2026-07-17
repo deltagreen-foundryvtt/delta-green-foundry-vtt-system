@@ -2,7 +2,12 @@ import { ExtractAttacks } from "./extract-attacks.js";
 
 const SKILL_SECTION = "skills:";
 const ATTACKS_SECTION = "attacks:";
+const COMMA = ",";
 const ENTRY_END = ".";
+// Make assumption that the following sections
+// always end in the same token
+const ARMOR_AND_EQUIPMENT_SECTION = "equipment:";
+const DISORDERS_AND_ADAPTATIONS_SECTION = "adaptations:";
 
 export const States = {
   BeginStatblock: "begin-statblock",
@@ -10,6 +15,8 @@ export const States = {
   AttributePairs: "attribute-pair",
   SkillPairs: "skill-pair",
   Attacks: "attack",
+  ArmorAndEquipment: "armor-and-equipment",
+  DisordersAndAdaptations: "disorders-and-adaptations",
   Unknown: "unknown",
 };
 
@@ -25,7 +32,8 @@ const Attributes = {
   san: "SAN",
 };
 
-const EXTRANEOUS_CHARACTERS = /%|,/g;
+const EXTRANEOUS_CHARACTERS = /%/g;
+const COMMA_MATCHER = /(.+),/g;
 const SECTION_TERMINATOR = /(.+)\./g;
 
 export function tokenize(stream) {
@@ -34,6 +42,10 @@ export function tokenize(stream) {
     .split(/\s+/)
     .flatMap((token) => {
       const strippedToken = token.replaceAll(EXTRANEOUS_CHARACTERS, "");
+      const commaMatch = COMMA_MATCHER.exec(strippedToken);
+      if (commaMatch != null) {
+        return [commaMatch[1], COMMA];
+      }
       const sectionTerminatorMatch = SECTION_TERMINATOR.exec(strippedToken);
       if (sectionTerminatorMatch !== null) {
         return [sectionTerminatorMatch[1], ENTRY_END];
@@ -80,6 +92,10 @@ export function determineNextState(token) {
       return States.SkillPairs;
     case ATTACKS_SECTION:
       return States.Attacks;
+    case DISORDERS_AND_ADAPTATIONS_SECTION:
+      return States.DisordersAndAdaptations;
+    case ARMOR_AND_EQUIPMENT_SECTION:
+      return States.ArmorAndEquipment;
     default:
       return States.Unknown;
   }
@@ -118,6 +134,14 @@ function extractSkillsImpl(tokens, skillsAccum, skillNameAccum) {
     return [skillsAccum, [maybeSkillScore, ...rest]];
   }
 
+  if (partialSkillName === COMMA) {
+    return extractSkillsImpl(
+      [maybeSkillScore, ...rest],
+      skillsAccum,
+      skillNameAccum,
+    );
+  }
+
   const skillValue = parseInt(maybeSkillScore);
   if (Number.isNaN(skillValue)) {
     return extractSkillsImpl([maybeSkillScore, ...rest], skillsAccum, [
@@ -133,12 +157,39 @@ function extractSkillsImpl(tokens, skillsAccum, skillNameAccum) {
   return extractSkillsImpl(rest, skills, []);
 }
 
+function extractArmorAndEquipmentImpl(
+  tokens,
+  armorAndEquipmentAccum,
+  equipmentAccum,
+) {
+  return [{}, []];
+}
+
+function extractDisordersAndAdaptationsImpl(
+  tokens,
+  adaptationsAccum,
+  adaptationNameAccum,
+) {
+  if (tokens === []) {
+    return [adaptationsAccum, tokens];
+  }
+  return [{}, []];
+}
+
 export function ExtractAttributes(tokens) {
   return extractAttributesImpl(tokens, { incomplete: true });
 }
 
 export function ExtractSkills(tokens) {
   return extractSkillsImpl(tokens, {}, []);
+}
+
+export function ExtractArmorAndEquipment(tokens) {
+  return extractArmorAndEquipmentImpl(tokens, {}, []);
+}
+
+export function ExtractDisordersAndAdaptations(tokens) {
+  return extractDisordersAndAdaptationsImpl(tokens, {}, []);
 }
 
 function parseStatBlockImpl(tokens, state, statBlock) {
@@ -194,6 +245,12 @@ function parseStatBlockImpl(tokens, state, statBlock) {
       ...statBlock,
       attacks,
     });
+  }
+
+  if (nextState === States.ArmorAndEquipment) {
+  }
+
+  if (nextState === States.DisordersAndAdaptations) {
   }
 
   return parseStatBlockImpl(rest, nextState, statBlock);

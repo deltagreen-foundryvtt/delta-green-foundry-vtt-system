@@ -6,7 +6,7 @@ import {
 
 const assaultRifleEntry = {
   input:
-    "assault rifle 45 damage 1d12+1 (or lethality 10) armor piercing 3".split(
+    "assault rifle 45 , damage 1d12+1 (or lethality 10) armor piercing 3".split(
       " ",
     ),
   expectedAttacks: [
@@ -21,7 +21,7 @@ const assaultRifleEntry = {
   expectedTokensRemaining: [],
 };
 const heavyRifleEntry = {
-  input: "heavy rifle 45 damage 1d12+2 armor piercing 3".split(" "),
+  input: "heavy rifle 45 , damage 1d12+2 armor piercing 3".split(" "),
   expectedAttacks: [
     {
       name: "Heavy Rifle",
@@ -33,7 +33,7 @@ const heavyRifleEntry = {
   expectedTokensRemaining: [],
 };
 const meleeWeaponEntry = {
-  input: "big knife 50 damage 1d8".split(" "),
+  input: "big knife 50 , damage 1d8".split(" "),
   expectedAttacks: [
     {
       name: "Big Knife",
@@ -44,7 +44,7 @@ const meleeWeaponEntry = {
   expectedTokensRemaining: [],
 };
 const handGrenadeEntry = {
-  input: "hand grenade 50 lethality 15".split(" "),
+  input: "hand grenade 50 , lethality 15".split(" "),
   expectedAttacks: [
     {
       name: "Hand Grenade",
@@ -55,7 +55,7 @@ const handGrenadeEntry = {
   expectedTokensRemaining: [],
 };
 const complexLethality = {
-  input: "danger stick 55 lethality 2 or 15 or 25 (see dangerous)".split(" "),
+  input: "danger stick 55 , lethality 2 or 15 or 25 (see dangerous)".split(" "),
   expectedAttacks: [
     {
       name: "Danger Stick",

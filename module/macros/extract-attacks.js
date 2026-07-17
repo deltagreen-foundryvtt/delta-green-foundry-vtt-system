@@ -95,8 +95,8 @@ function extractAttacksImpl(tokens, accumulatedAttacks, incompleteAttack) {
 }
 
 export function ExtractAttacks(tokens) {
-  const simplifiedTokens = tokens.filter(
-    (token) => token.replaceAll(/\(|\)/g, "") !== "or",
-  );
+  const simplifiedTokens = tokens
+    .filter((token) => token.replaceAll(/\(|\)/g, "") !== "or")
+    .filter((token) => token !== ",");
   return extractAttacksImpl(simplifiedTokens, [], { name: [] });
 }
