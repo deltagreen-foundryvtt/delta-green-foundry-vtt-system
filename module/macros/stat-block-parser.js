@@ -2,7 +2,13 @@ import { ExtractAttacks } from "./extract-attacks.js";
 
 const SKILL_SECTION = "skills:";
 const ATTACKS_SECTION = "attacks:";
+const COMMA = ",";
 const ENTRY_END = ".";
+const BREAKING = "breaking";
+// Make assumption that the following sections
+// always end in the same token
+const ARMOR_AND_EQUIPMENT_SECTION = "equipment:";
+const DISORDERS_AND_ADAPTATIONS_SECTION = "adaptations:";
 
 export const States = {
   BeginStatblock: "begin-statblock",
@@ -10,6 +16,8 @@ export const States = {
   AttributePairs: "attribute-pair",
   SkillPairs: "skill-pair",
   Attacks: "attack",
+  ArmorAndEquipment: "armor-and-equipment",
+  DisordersAndAdaptations: "disorders-and-adaptations",
   Unknown: "unknown",
 };
 
@@ -25,8 +33,16 @@ const Attributes = {
   san: "SAN",
 };
 
-const EXTRANEOUS_CHARACTERS = /%|,/g;
-const SECTION_TERMINATOR = /(.+)\./g;
+const OptionalAttributes = {
+  breaking: "breaking",
+  point: "point",
+  breaking_point: "breaking_point",
+};
+
+const EXTRANEOUS_CHARACTERS = /%/g;
+const COMMA_MATCHER = /(.+),/;
+const SECTION_TERMINATOR = /(.+)\./;
+const ARMOR_MATCHER = /armou?r/g;
 
 export function tokenize(stream) {
   return stream
@@ -34,6 +50,10 @@ export function tokenize(stream) {
     .split(/\s+/)
     .flatMap((token) => {
       const strippedToken = token.replaceAll(EXTRANEOUS_CHARACTERS, "");
+      const commaMatch = COMMA_MATCHER.exec(strippedToken);
+      if (commaMatch != null) {
+        return [commaMatch[1], COMMA];
+      }
       const sectionTerminatorMatch = SECTION_TERMINATOR.exec(strippedToken);
       if (sectionTerminatorMatch !== null) {
         return [sectionTerminatorMatch[1], ENTRY_END];
@@ -80,6 +100,10 @@ export function determineNextState(token) {
       return States.SkillPairs;
     case ATTACKS_SECTION:
       return States.Attacks;
+    case DISORDERS_AND_ADAPTATIONS_SECTION:
+      return States.DisordersAndAdaptations;
+    case ARMOR_AND_EQUIPMENT_SECTION:
+      return States.ArmorAndEquipment;
     default:
       return States.Unknown;
   }
@@ -90,15 +114,24 @@ function extractAttributesImpl(tokens, accumulator) {
     return [accumulator, tokens];
   }
 
+  const [attr, rawValue, ...rest] = tokens;
+  const value = parseInt(rawValue);
+
+  if (attr === OptionalAttributes.breaking) {
+    return extractAttributesImpl([rawValue, ...rest], accumulator);
+  }
+
+  if (attr === OptionalAttributes.point) {
+    accumulator[OptionalAttributes.breaking_point] = value;
+    return extractAttributesImpl(rest, accumulator);
+  }
+
   const currentKeys = new Set(Object.keys(accumulator));
   const expectedKeys = new Set(Object.keys(Attributes));
   if (currentKeys.intersection(expectedKeys).size === expectedKeys.size) {
     delete accumulator.incomplete;
     return [accumulator, tokens];
   }
-
-  const [attr, rawValue, ...rest] = tokens;
-  const value = parseInt(rawValue);
 
   if (Attributes[attr] == null || Number.isNaN(value)) {
     return [accumulator, tokens];
@@ -118,6 +151,14 @@ function extractSkillsImpl(tokens, skillsAccum, skillNameAccum) {
     return [skillsAccum, [maybeSkillScore, ...rest]];
   }
 
+  if (partialSkillName === COMMA) {
+    return extractSkillsImpl(
+      [maybeSkillScore, ...rest],
+      skillsAccum,
+      skillNameAccum,
+    );
+  }
+
   const skillValue = parseInt(maybeSkillScore);
   if (Number.isNaN(skillValue)) {
     return extractSkillsImpl([maybeSkillScore, ...rest], skillsAccum, [
@@ -133,12 +174,124 @@ function extractSkillsImpl(tokens, skillsAccum, skillNameAccum) {
   return extractSkillsImpl(rest, skills, []);
 }
 
+function extractArmorAndEquipmentImpl(
+  tokens,
+  armorAndEquipmentAccum,
+  equipmentAccum,
+) {
+  if (tokens.length === 0) {
+    return armorAndEquipmentAccum;
+  }
+
+  const [maybeArmor, ...tail] = tokens;
+
+  if (maybeArmor === COMMA && equipmentAccum.length === 0) {
+    return extractArmorAndEquipmentImpl(
+      tail,
+      armorAndEquipmentAccum,
+      equipmentAccum,
+    );
+  }
+
+  const matchesArmor = ARMOR_MATCHER.exec(maybeArmor);
+  if (matchesArmor !== null) {
+    const [maybeArmorValue, ...rest] = tail;
+    const armorName = equipmentAccum.join(" ");
+    const armorValue = parseInt(maybeArmorValue);
+    return extractArmorAndEquipmentImpl(
+      rest,
+      {
+        ...armorAndEquipmentAccum,
+        armor: {
+          name: armorName,
+          value: armorValue,
+        },
+      },
+      [],
+    );
+  }
+
+  if (maybeArmor === COMMA || tail.length === 0) {
+    const entry =
+      tail.length === 0 ? [...equipmentAccum, maybeArmor] : equipmentAccum;
+    const equipment = [...armorAndEquipmentAccum.equipment, entry.join(" ")];
+    return extractArmorAndEquipmentImpl(
+      tail,
+      {
+        ...armorAndEquipmentAccum,
+        equipment,
+      },
+      [],
+    );
+  }
+
+  return extractArmorAndEquipmentImpl(tail, armorAndEquipmentAccum, [
+    ...equipmentAccum,
+    maybeArmor,
+  ]);
+}
+
+function extractDisordersAndAdaptationsImpl(
+  tokens,
+  adaptationsAccum,
+  adaptationNameAccum,
+) {
+  const [maybeAdaptation, ...rest] = tokens;
+
+  if (maybeAdaptation === COMMA && adaptationNameAccum.length === 0) {
+    return extractDisordersAndAdaptationsImpl(rest, adaptationsAccum, []);
+  }
+
+  if (tokens.length === 0) {
+    return adaptationsAccum;
+  }
+
+  if (adaptationNameAccum[0] === "adapted" && adaptationNameAccum[1] === "to") {
+    const adaptations = [...adaptationsAccum.adaptations, maybeAdaptation];
+    return extractDisordersAndAdaptationsImpl(
+      rest,
+      { ...adaptationsAccum, adaptations },
+      [],
+    );
+  }
+
+  if (maybeAdaptation === COMMA || rest.length === 0) {
+    const disorder =
+      rest.length === 0
+        ? [...adaptationNameAccum, maybeAdaptation]
+        : adaptationNameAccum;
+    const disorders = [...adaptationsAccum.disorders, disorder.join(" ")];
+    return extractDisordersAndAdaptationsImpl(
+      rest,
+      { ...adaptationsAccum, disorders },
+      [],
+    );
+  }
+
+  return extractDisordersAndAdaptationsImpl(rest, adaptationsAccum, [
+    ...adaptationNameAccum,
+    maybeAdaptation,
+  ]);
+}
+
 export function ExtractAttributes(tokens) {
   return extractAttributesImpl(tokens, { incomplete: true });
 }
 
 export function ExtractSkills(tokens) {
   return extractSkillsImpl(tokens, {}, []);
+}
+
+export function ExtractArmorAndEquipment(tokens) {
+  return extractArmorAndEquipmentImpl(tokens, { equipment: [] }, []);
+}
+
+export function ExtractDisordersAndAdaptations(tokens) {
+  return extractDisordersAndAdaptationsImpl(
+    tokens,
+    { adaptations: [], disorders: [] },
+    [],
+  );
 }
 
 function parseStatBlockImpl(tokens, state, statBlock) {
@@ -193,6 +346,35 @@ function parseStatBlockImpl(tokens, state, statBlock) {
     return parseStatBlockImpl(remainingTokens, States.Unknown, {
       ...statBlock,
       attacks,
+    });
+  }
+
+  if (nextState === States.ArmorAndEquipment) {
+    const [armorAndEquipmentGroup, remainingTokens] =
+      groupEntriesUntilNextSection(rest);
+    const armorAndEquipment = ExtractArmorAndEquipment(
+      armorAndEquipmentGroup.flatMap((subarray, i) => {
+        if (i + 1 === armorAndEquipmentGroup.length) {
+          return subarray;
+        }
+        return [...subarray, COMMA];
+      }),
+    );
+    return parseStatBlockImpl(remainingTokens, States.Unknown, {
+      ...statBlock,
+      ...armorAndEquipment,
+    });
+  }
+
+  if (nextState === States.DisordersAndAdaptations) {
+    const [disordersAndAdaptationsGroup, remainingTokens] =
+      groupEntriesUntilNextSection(rest);
+    const disordersAndAdaptations = ExtractDisordersAndAdaptations(
+      disordersAndAdaptationsGroup.flatMap((subarray) => subarray),
+    );
+    return parseStatBlockImpl(remainingTokens, States.Unknown, {
+      ...statBlock,
+      ...disordersAndAdaptations,
     });
   }
 
