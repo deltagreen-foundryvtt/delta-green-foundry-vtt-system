@@ -191,6 +191,37 @@ const SKILL_MAP = {
   },
 };
 
+function findSkillScore({ key, alternativeSpellings }, skills) {
+  if (skills[key]) return skills[key];
+  if (alternativeSpellings === undefined) return null;
+
+  for (let i = 0; i < alternativeSpellings.length; i++) {
+    const alternateName = alternativeSpellings[i];
+    if (skills[alternateName]) return skills[alternateName];
+  }
+
+  return null;
+}
+
+/**
+ *
+ * @param {Object} skillDefinition - Map containing key (string) and alternativeSpellings (list)
+ * @param {Object} skills - Map of character skills
+ * @returns List of typed Skill names that match the skill definition
+ */
+function findRelevantTypedSkills({ key, alternativeSpellings }, skills) {
+  return Object.keys(skills).filter((skill) => {
+    if (skill.includes(key)) return true;
+    return (alternativeSpellings || []).some((altSpelling) =>
+      skill.includes(altSpelling),
+    );
+  });
+}
+
+function normalizeTypedSkill(name) {
+  name.replace(/\s+/, "_").replace(/\(|\)/, "");
+}
+
 function GetNotesFromInput(inputText) {
   const matchStr = "(?:ATTACKS:[\\S\\s]*?\\.\\n)([\\S\\s]*)";
   const re = new RegExp(matchStr, "gi");
@@ -215,57 +246,6 @@ function GetNotesFromInput(inputText) {
   }
 
   return [notes];
-}
-
-// this is the main stat call, it's exposed as part of the system itself for users to access
-// call this within a world as: game.deltagreen.ParseDeltaGreenStatBlock()
-function GetTypeSkillRatingsFromInput(inputText) {
-  const matchStr =
-    "(Art|Craft|Foreign Language|Native Language|Military Science|Pilot|Science)\\s?\\((\\w.*?)\\)\\s?(\\d?\\d)%";
-
-  inputText = inputText.replace(/[\n\r]/g, " ");
-
-  const re = new RegExp(matchStr, "gi");
-
-  const matches = [];
-  let match;
-
-  try {
-    // This is probably one of the few times where its recommended to assign within a while loop.
-    // See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/exec
-    // eslint-disable-next-line no-cond-assign
-    while ((match = re.exec(inputText))) {
-      matches.push({
-        group: match[1],
-        label: match[2],
-        proficiency: parseInt(match[3]),
-        failure: false,
-      });
-    }
-  } catch (ex) {
-    console.log("GetAttributeFromInput Error");
-    console.log(ex);
-  }
-
-  return matches;
-}
-
-function GetSkillRatingsFromInput(inputText, skill) {
-  const matchStr = `(?:${skill}\\n?\\s?\\n?)(\\d\\d?)`;
-  const re = new RegExp(matchStr, "i");
-  const results = inputText.match(re);
-  let skillValue = 0;
-
-  try {
-    if (results != null && results.length > 1) {
-      skillValue = parseInt(results[1]);
-    }
-  } catch (ex) {
-    console.log("GetAttributeFromInput Error");
-    console.log(ex);
-  }
-
-  return skillValue;
 }
 
 async function RegexParseNpcStatBlock(inputStr, actorType) {
@@ -340,265 +320,73 @@ async function RegexParseNpcStatBlock(inputStr, actorType) {
   Object.entries(SKILL_MAP).forEach(([label, skillInfo]) => {
     if (skillInfo.npcOnly && !isNpcLike) return;
 
+    const proficiency = findSkillScore(skillInfo, skills);
+    if (!proficiency) return;
     if (skillInfo.typed) {
+      findRelevantTypedSkills(skillInfo, skills).forEach((skillName) => {
+        const typedSkillKey = normalizeTypedSkill(skillName);
+        const typedSkillProficiency = findSkillScore(
+          { key: skillName },
+          skills,
+        );
+        actorData.system.typedSkills[typedSkillKey] = {
+          label: skillName,
+          proficiency: typedSkillProficiency,
+          failure: false,
+        };
+      });
+
+      return;
     }
+
+    actorData.system.skills[skillInfo.key] = {
+      label,
+      proficiency,
+      failure: false,
+    };
   });
-
-  actorData.system.skills.accounting = {
-    label: "Accounting",
-    proficiency: GetSkillRatingsFromInput(inputStr, "ACCOUNTING"),
-    failure: false,
-  };
-  actorData.system.skills.alertness = {
-    label: "Alertness",
-    proficiency: GetSkillRatingsFromInput(inputStr, "ALERTNESS"),
-    failure: false,
-  };
-  actorData.system.skills.anthropology = {
-    label: "Anthropology",
-    proficiency: GetSkillRatingsFromInput(inputStr, "ANTHROPOLOGY"),
-    failure: false,
-  };
-  actorData.system.skills.archeology = {
-    label: "Archeology",
-    proficiency: GetSkillRatingsFromInput(inputStr, "ARCHEOLOGY|ARCHAEOLOGY"),
-    failure: false,
-  }; // damn you british spellings
-  actorData.system.skills.artillery = {
-    label: "Artillery",
-    proficiency: GetSkillRatingsFromInput(inputStr, "ARTILLERY"),
-    failure: false,
-  };
-  actorData.system.skills.athletics = {
-    label: "Athletics",
-    proficiency: GetSkillRatingsFromInput(inputStr, "ATHLETICS"),
-    failure: false,
-  };
-  actorData.system.skills.bureaucracy = {
-    label: "Bureaucracy",
-    proficiency: GetSkillRatingsFromInput(inputStr, "BUREAUCRACY"),
-    failure: false,
-  };
-  actorData.system.skills.computer_science = {
-    label: "Computer Science",
-    proficiency: GetSkillRatingsFromInput(inputStr, "COMPUTER SCIENCE"),
-    failure: false,
-  };
-  actorData.system.skills.criminology = {
-    label: "Criminology",
-    proficiency: GetSkillRatingsFromInput(inputStr, "CRIMINOLOGY"),
-    failure: false,
-  };
-  actorData.system.skills.demolitions = {
-    label: "Demolitions",
-    proficiency: GetSkillRatingsFromInput(inputStr, "DEMOLITIONS"),
-    failure: false,
-  };
-  actorData.system.skills.disguise = {
-    label: "Disguise",
-    proficiency: GetSkillRatingsFromInput(inputStr, "DISGUISE"),
-    failure: false,
-  };
-  actorData.system.skills.dodge = {
-    label: "Dodge",
-    proficiency: GetSkillRatingsFromInput(inputStr, "DODGE"),
-    failure: false,
-  };
-  actorData.system.skills.drive = {
-    label: "Drive",
-    proficiency: GetSkillRatingsFromInput(inputStr, "DRIVE"),
-    failure: false,
-  };
-
-  // Impossible Landscapes seems to favor 'Driving' as the name for this instead for some reason
-  if (actorData.system.skills.drive.proficiency === 0) {
-    actorData.system.skills.drive = {
-      label: "Drive",
-      proficiency: GetSkillRatingsFromInput(inputStr, "DRIVING"),
-      failure: false,
-    };
-  }
-
-  actorData.system.skills.firearms = {
-    label: "Firearms",
-    proficiency: GetSkillRatingsFromInput(inputStr, "FIREARMS"),
-    failure: false,
-  };
-  actorData.system.skills.first_aid = {
-    label: "First Aid",
-    proficiency: GetSkillRatingsFromInput(inputStr, "FIRST AID"),
-    failure: false,
-  };
-  actorData.system.skills.forensics = {
-    label: "Forensics",
-    proficiency: GetSkillRatingsFromInput(inputStr, "FORENSICS"),
-    failure: false,
-  };
-  actorData.system.skills.heavy_machinery = {
-    label: "Heavy Machinery",
-    proficiency: GetSkillRatingsFromInput(inputStr, "HEAVY MACHINERY"),
-    failure: false,
-  }; // template.json has typo on heavy machinery...
-  actorData.system.skills.heavy_weapons = {
-    label: "Heavy Weapons",
-    proficiency: GetSkillRatingsFromInput(inputStr, "HEAVY WEAPONS"),
-    failure: false,
-  };
-  actorData.system.skills.history = {
-    label: "History",
-    proficiency: GetSkillRatingsFromInput(inputStr, "HISTORY"),
-    failure: false,
-  };
-  actorData.system.skills.humint = {
-    label: "HUMINT",
-    proficiency: GetSkillRatingsFromInput(inputStr, "HUMINT"),
-    failure: false,
-  };
-  actorData.system.skills.law = {
-    label: "Law",
-    proficiency: GetSkillRatingsFromInput(inputStr, "LAW"),
-    failure: false,
-  };
-  actorData.system.skills.medicine = {
-    label: "Medicine",
-    proficiency: GetSkillRatingsFromInput(inputStr, "MEDICINE"),
-    failure: false,
-  };
-  actorData.system.skills.melee_weapons = {
-    label: "Melee Weapons",
-    proficiency: GetSkillRatingsFromInput(inputStr, "MELEE WEAPONS"),
-    failure: false,
-  };
-  actorData.system.skills.navigate = {
-    label: "Navigate",
-    proficiency: GetSkillRatingsFromInput(inputStr, "NAVIGATE"),
-    failure: false,
-  };
-  actorData.system.skills.occult = {
-    label: "Occult",
-    proficiency: GetSkillRatingsFromInput(inputStr, "OCCULT"),
-    failure: false,
-  };
-  actorData.system.skills.persuade = {
-    label: "Persuade",
-    proficiency: GetSkillRatingsFromInput(inputStr, "PERSUADE"),
-    failure: false,
-  };
-  actorData.system.skills.pharmacy = {
-    label: "Pharmacy",
-    proficiency: GetSkillRatingsFromInput(inputStr, "PHARMACY"),
-    failure: false,
-  };
-  actorData.system.skills.psychotherapy = {
-    label: "Psychotherapy",
-    proficiency: GetSkillRatingsFromInput(inputStr, "PSYCHOTHERAPY"),
-    failure: false,
-  };
-  actorData.system.skills.ride = {
-    label: "Ride",
-    proficiency: GetSkillRatingsFromInput(inputStr, "RIDE"),
-    failure: false,
-  };
-  actorData.system.skills.search = {
-    label: "Search",
-    proficiency: GetSkillRatingsFromInput(inputStr, "SEARCH"),
-    failure: false,
-  };
-  actorData.system.skills.sigint = {
-    label: "SIGINT",
-    proficiency: GetSkillRatingsFromInput(inputStr, "SIGINT"),
-    failure: false,
-  };
-  actorData.system.skills.stealth = {
-    label: "Stealth",
-    proficiency: GetSkillRatingsFromInput(inputStr, "STEALTH"),
-    failure: false,
-  };
-  actorData.system.skills.surgery = {
-    label: "Surgery",
-    proficiency: GetSkillRatingsFromInput(inputStr, "SURGERY"),
-    failure: false,
-  };
-  actorData.system.skills.survival = {
-    label: "Survival",
-    proficiency: GetSkillRatingsFromInput(inputStr, "SURVIVAL"),
-    failure: false,
-  };
-  actorData.system.skills.swim = {
-    label: "Swim",
-    proficiency: GetSkillRatingsFromInput(inputStr, "SWIM"),
-    failure: false,
-  };
-  actorData.system.skills.unarmed_combat = {
-    label: "Unarmed Combat",
-    proficiency: GetSkillRatingsFromInput(inputStr, "UNARMED COMBAT"),
-    failure: false,
-  };
-  actorData.system.skills.unnatural = {
-    label: "Unnatural",
-    proficiency: GetSkillRatingsFromInput(inputStr, "UNNATURAL"),
-    failure: false,
-  };
-
-  // some npcs/unnatural have other skills
-  if (GetSkillRatingsFromInput(inputStr, "FLIGHT") > 0) {
-    actorData.system.skills.flight = {
-      label: "Flight",
-      proficiency: GetSkillRatingsFromInput(inputStr, "FLIGHT"),
-      failure: false,
-    };
-  }
-
-  arr = GetTypeSkillRatingsFromInput(inputStr);
-
-  for (let index = 0; index < arr.length; index += 1) {
-    const element = arr[index];
-    actorData.system.typedSkills[`tskill_${index.toString()}`] = element;
-  }
 
   if (actorType === "npc" || actorType === "unnatural") {
     actorData.system.notes = GetNotesFromInput(inputStr);
   }
 
-  console.log(actorData);
+  const [newActor] = await Actor.createDocuments([actorData]);
+  const { armor, attacks } = statBlock;
 
-  const newActors = await Actor.createDocuments([actorData]);
+  if (armor) {
+    await newActor.AddArmorItemToSheet(armor.name, "", armor.value, true);
+  }
 
-  if (armor !== null) {
-    if (armor.description === null || armor.description.trim() === "") {
-      armor.description = "Armor";
-    }
-
-    await newActors[0].AddArmorItemToSheet(
-      armor.name,
-      armor.description,
-      armor.armor,
-      true,
+  (attacks || []).forEach(async (attack) => {
+    const { name, skillModifier, damage, armorPiercing, lethality } = attack;
+    const [description, attackSkill, killRadius, expense] = [
+      "",
+      "custom",
+      "N/A",
+      "N/A",
+    ];
+    const [range, skillMod] = [0, 0];
+    const skillTarget = skillModifier;
+    const equipped = true;
+    const isLethal = damage === undefined && lethality !== undefined;
+    await newActor.AddWeaponItemToSheet(
+      name,
+      description,
+      damage,
+      attackSkill,
+      skillMod,
+      skillTarget,
+      armorPiercing,
+      lethality,
+      isLethal,
+      range,
+      killRadius,
+      expense,
+      equipped,
     );
-  }
+  });
 
-  if (attacks !== null && attacks.length > 0) {
-    for (const a of attacks) {
-      await newActors[0].AddWeaponItemToSheet(
-        a.name,
-        a.description,
-        a.damage,
-        a.skill,
-        a.skillModifier,
-        a.customSkillTarget,
-        a.armorPiercing,
-        a.lethality,
-        a.isLethal,
-        a.range,
-        a.killRadius,
-        a.ammo,
-        a.expense,
-        a.equipped,
-      );
-    }
-  }
-
-  newActors[0].sheet.render(true);
+  newActor.sheet.render(true);
 }
 
 async function GetUserInput() {
