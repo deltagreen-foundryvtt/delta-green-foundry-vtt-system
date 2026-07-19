@@ -65,20 +65,22 @@ function bindAssignStatsListeners(dialog, values) {
   if (!root) return;
 
   root.querySelectorAll("[data-stat-key]").forEach((input) => {
-    input.addEventListener("input", () => {
+    // While typing, only recompute the running total. Do not rewrite the field,
+    // otherwise a partial multi-digit entry (e.g. "1" toward "10") gets clamped
+    // mid-keystroke and corrupts the final value.
+    input.addEventListener("input", () => refreshAssignStatsUi(dialog, values));
+
+    // On commit (blur / Enter), clamp the field to the valid range.
+    input.addEventListener("change", () => {
       const key = input.dataset.statKey;
-      if (!key) return;
 
       let value = Number(input.value);
       if (!Number.isFinite(value)) value = STAT_MIN;
       value = Math.clamp(Math.trunc(value), STAT_MIN, STAT_MAX);
       input.value = String(value);
-      values[key] = value;
+      if (key) values[key] = value;
       refreshAssignStatsUi(dialog, values);
     });
-    input.addEventListener("change", () =>
-      refreshAssignStatsUi(dialog, values),
-    );
   });
 }
 
