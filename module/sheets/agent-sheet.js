@@ -37,6 +37,7 @@ export default class DGAgentSheet extends AgentSheetBase {
     actions: {
       // Resets.
       clearBondDamage: DGAgentSheet._clearBondDamage,
+      adjustBondScore: DGAgentSheet._adjustBondScore,
       resetBreakingPoint: DGAgentSheet._resetBreakingPoint,
       // Other actions.
       applySkillImprovements: DGAgentSheet._processSkillImprovements,
@@ -172,8 +173,37 @@ export default class DGAgentSheet extends AgentSheetBase {
     context.professionItem = this.actor.items.find(
       (i) => i.type === "profession",
     );
+    context.maxBondScore = DGAgentSheet._getMaxBondScore(this.actor);
+    context.bonds = this._prepareBonds(context.maxBondScore);
 
     return context;
+  }
+
+  /**
+   * A Bond's score can never exceed the agent's CHA, so CHA is the cap used for
+   * both the displayed maximum and the score adjustment buttons.
+   *
+   * @param {Actor} actor
+   * @returns {number}
+   */
+  static _getMaxBondScore(actor) {
+    return (
+      actor.system.statistics.cha.effectiveValue ??
+      actor.system.statistics.cha.value
+    );
+  }
+
+  /**
+   * @param {number} maxBondScore
+   * @returns {object[]}
+   */
+  _prepareBonds(maxBondScore) {
+    return this.actor.itemTypes.bond.map((bond) => ({
+      item: bond,
+      score: bond.system.score,
+      atMin: bond.system.score <= 0,
+      atMax: bond.system.score >= maxBondScore,
+    }));
   }
 
   /** @returns {object} */
@@ -300,6 +330,31 @@ export default class DGAgentSheet extends AgentSheetBase {
     const item = this.actor.items.get(itemId);
     if (item?.type !== "profession") return;
     await showRenameProfessionDialog(item);
+  }
+
+  /**
+   * Increment or decrement a bond's score from the sheet, clamped to 0 and the
+   * agent's CHA.
+   *
+   * @param {PointerEvent} event
+   * @param {HTMLElement} target
+   * @returns {Promise<void>}
+   */
+  static async _adjustBondScore(event, target) {
+    event.preventDefault();
+
+    const itemId = target.closest("[data-item-id]")?.dataset?.itemId;
+    const bond = this.actor.items.get(itemId);
+    if (bond?.type !== "bond") return;
+
+    const delta = Number(target.dataset.delta);
+    if (!Number.isFinite(delta) || delta === 0) return;
+
+    const max = DGAgentSheet._getMaxBondScore(this.actor);
+    const score = Math.clamp(bond.system.score + delta, 0, max);
+    if (score === bond.system.score) return;
+
+    await bond.update({ "system.score": score });
   }
 
   static _clearBondDamage() {

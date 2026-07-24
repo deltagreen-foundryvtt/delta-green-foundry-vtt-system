@@ -27,9 +27,51 @@ export default class DeltaGreenActor extends Actor {
     );
     const shouldSyncExhaustion =
       this.type === "agent" && updateTouchesExhaustionPhysical(sanitized);
+    const chaChanged =
+      this.type === "agent" &&
+      foundry.utils.hasProperty(sanitized, "system.statistics.cha");
+    // Capture the pre-update CHA cap so we can shift Bonds by the change.
+    const oldMaxBondScore = chaChanged ? this._getMaxBondScore() : null;
     const result = await super.update(sanitized, options);
     if (shouldSyncExhaustion) await syncExhaustionEffect(this);
+    // A Bond's score tracks the agent's CHA: each Bond keeps its gap below the
+    // cap (its accumulated Bond damage), so a CHA change shifts every Bond score
+    // by the same amount, floored at 0. E.g. 12/14 -> CHA 16 becomes 14/16, and
+    // -> CHA 12 becomes 10/12.
+    if (chaChanged) await this.shiftBondScoresByChaDelta(oldMaxBondScore);
     return result;
+  }
+
+  /**
+   * The current maximum Bond score (the agent's effective CHA).
+   * @returns {number|null}
+   */
+  _getMaxBondScore() {
+    const cha =
+      this.system.statistics?.cha?.effectiveValue ??
+      this.system.statistics?.cha?.value;
+    return typeof cha === "number" ? cha : null;
+  }
+
+  /**
+   * Shift every Bond's score by the change in the CHA cap, floored at 0, so each
+   * Bond preserves its gap below the maximum.
+   * @param {number|null} oldMax  the CHA cap before the update
+   */
+  async shiftBondScoresByChaDelta(oldMax) {
+    const newMax = this._getMaxBondScore();
+    if (typeof oldMax !== "number" || typeof newMax !== "number") return;
+    const delta = newMax - oldMax;
+    if (delta === 0) return;
+    const updates = this.itemTypes.bond
+      .map((bond) => {
+        const shifted = Math.max(0, bond.system.score + delta);
+        return shifted === bond.system.score
+          ? null
+          : { _id: bond.id, "system.score": shifted };
+      })
+      .filter(Boolean);
+    if (updates.length) await this.updateEmbeddedDocuments("Item", updates);
   }
 
   /** @override */

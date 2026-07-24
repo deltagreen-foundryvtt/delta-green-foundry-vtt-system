@@ -154,6 +154,67 @@
   justify-self: center;
 }
 
+/* Bond list columns. Header cells and row cells share these classes so the
+   columns stay aligned. */
+.deltagreen .bonds-list .bond-col-name {
+  flex: 1 1 30%;
+  min-width: 0;
+}
+
+.deltagreen .bonds-list .bond-col-relationship {
+  flex: 1 1 25%;
+  min-width: 0;
+}
+
+/* Score sits in the middle of the row, between the text columns and the
+   edit/delete controls, which stay pinned to the right. */
+.deltagreen .bonds-list .bond-col-score {
+  flex: 2 1 90px;
+  justify-content: center;
+  text-align: center;
+}
+
+.deltagreen .bonds-list .bond-score-adjust {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.deltagreen .bonds-list .bond-score-value {
+  min-width: 2ch;
+  text-align: center;
+}
+
+.deltagreen .bonds-list .bond-score-sep {
+  opacity: 0.5;
+}
+
+/* Read-only maximum shown after the score as a greyed-out box. */
+.deltagreen .bonds-list .bond-score-max {
+  min-width: 2ch;
+  padding: 0 4px;
+  text-align: center;
+  border: 1px solid var(--color-form-hint, rgba(0, 0, 0, 0.3));
+  border-radius: 2.5px;
+  background-color: rgba(0, 0, 0, 0.1);
+  color: var(--color-form-hint);
+}
+
+.deltagreen .bonds-list .bond-score-step {
+  cursor: var(--cursor-pointer); /* Variable name from Foundry */
+  opacity: 0.75;
+}
+
+.deltagreen .bonds-list .bond-score-step:hover {
+  opacity: 1;
+}
+
+.deltagreen .bonds-list .bond-score-step.disabled {
+  opacity: 0.25;
+  pointer-events: none;
+}
+
 .deltagreen .items-list .item img {
   display: block;
 }
