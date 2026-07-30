@@ -21,6 +21,7 @@ The roll tables added to generate operation code names comes from Reddit user /u
 - French Translation submitted by [Hrunh](https://github.com/Hrunh)
 - Japanese Translation submitted by [ryotai-trpg](https://github.com/ryotai-trpg)
 - Polish Translation submitted by [delgar89](https://github.com/delgar89)
+- Russian Translation submitted by [TroopJostle](https://github.com/TroopJostle)
 
 ## Fonts (Some in use, others that I would like to use at some point)
 
