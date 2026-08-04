@@ -27,9 +27,13 @@ export default class DeltaGreenActor extends Actor {
     );
     const shouldSyncExhaustion =
       this.type === "agent" && updateTouchesExhaustionPhysical(sanitized);
+    // Detect a CHA change in both nested and flat (dotted-key) payloads.
     const chaChanged =
       this.type === "agent" &&
-      foundry.utils.hasProperty(sanitized, "system.statistics.cha");
+      foundry.utils.hasProperty(
+        foundry.utils.expandObject(sanitized),
+        "system.statistics.cha",
+      );
     // Capture the pre-update CHA cap so we can shift Bonds by the change.
     const oldMaxBondScore = chaChanged ? this._getMaxBondScore() : null;
     const result = await super.update(sanitized, options);
