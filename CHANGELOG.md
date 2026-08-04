@@ -1,5 +1,11 @@
 # Release/Patch Notes
 
+## Unreleased
+
+### **Features:**
+
+- Bond scores now follow the agent's CHA: changing CHA shifts every Bond by the same amount (floored at 0), keeping each Bond's accumulated damage intact.
+
 ## Version 1.7.0 - 2026-06-20
 
 > Thanks to [hknmtt](https://github.com/hknmtt) for updating the Brazilian translation.
