@@ -5,6 +5,7 @@
 ### **Features:**
 
 - Bond scores now follow the agent's CHA: changing CHA shifts every Bond by the same amount (floored at 0), keeping each Bond's accumulated damage intact.
+- [#409](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/409) - Move the system documentation, support, and changelog links from the "?" tab on the actor sheets to a Delta Green section in the Game Settings sidebar. Documentation now links to the project Wiki, licensing and copyright notices moved to a dedicated Legal window, and a new Support window directs system issues to the GitHub tracker and premium module questions to Arc Dream Publishing.
 
 ## Version 1.7.0 - 2026-06-20
 

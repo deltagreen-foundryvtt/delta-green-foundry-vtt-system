@@ -77,7 +77,6 @@ export default class DGAgentSheet extends AgentSheetBase {
         { id: "motivations" },
         { id: "personal" },
         { id: "effects" },
-        { id: "about", icon: "fas fa-question-circle", label: "" },
       ],
     },
     leftBarRestSanity: {
@@ -109,7 +108,6 @@ export default class DGAgentSheet extends AgentSheetBase {
         `${this.TEMPLATE_PATH}/parts/motivations-tab-agent.html`,
         `${this.TEMPLATE_PATH}/parts/personal-tab-agent.html`,
         `${this.TEMPLATE_PATH}/parts/effects-tab.html`,
-        `${this.TEMPLATE_PATH}/parts/about-tab.html`,
         `${this.TEMPLATE_PATH}/partials/agent-skill-row-partial.html`,
         `${this.TEMPLATE_PATH}/partials/agent-special-training-row-partial.html`,
         `${this.TEMPLATE_PATH}/partials/custom-skills-partial-agent.html`,
