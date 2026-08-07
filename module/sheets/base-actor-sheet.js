@@ -78,10 +78,6 @@ export default class DGActorSheet extends ComposedActorSheetBase {
       templates: this.GEAR_SECTION_PARTIALS,
       scrollable: [""],
     },
-    about: {
-      template: `${this.TEMPLATE_PATH}/parts/about-tab.html`,
-      scrollable: [""],
-    },
   });
 
   /** @override */

@@ -7,11 +7,7 @@ export default class DGNPCSheet extends DGActorSheet {
     primary: {
       initial: "skills",
       labelPrefix: "DG.Navigation.NPC",
-      tabs: [
-        { id: "skills" },
-        { id: "gear" },
-        { id: "about", icon: "fas fa-question-circle", label: "" },
-      ],
+      tabs: [{ id: "skills" }, { id: "gear" }],
     },
   });
 
@@ -24,7 +20,6 @@ export default class DGNPCSheet extends DGActorSheet {
     tabs: this.BASE_PARTS.tabs,
     skills: this.BASE_PARTS.skills,
     gear: this.BASE_PARTS.gear,
-    about: this.BASE_PARTS.about,
   });
 
   /* -------------------------------------------- */

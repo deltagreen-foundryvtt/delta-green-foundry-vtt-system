@@ -148,17 +148,6 @@
     color: var(--dg-agent-tab-active-color);
   }
 
-  /* Pin the about tab to the right without opening a gap before it */
-  .tabs [data-action="tab"][data-tab="effects"] {
-    margin-right: auto;
-  }
-
-  .tabs [data-action="tab"][data-tab="about"] {
-    flex: 0 0 auto;
-    min-width: unset;
-    margin-left: -5px;
-  }
-
   .window-content > [data-application-part="rightBar"],
   .window-content > .right-bar {
     grid-column: 2;
@@ -979,59 +968,5 @@
   .tab.effects .effects-list .effect {
     min-height: 30px;
     padding: 3px 0;
-  }
-
-  /* About tab */
-  .tab.about .about-section-header {
-    display: none;
-  }
-
-  .tab.about .dg-about-links {
-    display: flex;
-    flex-direction: column;
-    gap: var(--dg-agent-section-gap);
-    margin-bottom: var(--dg-agent-section-gap);
-
-    a {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: var(--dg-agent-section-gap);
-      box-sizing: border-box;
-      width: 100%;
-      padding: 6px 8px;
-      text-align: center;
-      text-decoration: none;
-      border-radius: 2.5px;
-      background-color: rgba(0, 0, 0, 0.185);
-      font-weight: bold;
-      color: var(--dg-ink);
-
-      &:hover,
-      &:focus-visible {
-        color: var(--color-text-dark-header, #406539);
-        text-decoration: underline;
-      }
-
-      &:visited {
-        color: var(--dg-ink);
-      }
-
-      i {
-        flex: 0 0 auto;
-        color: inherit;
-      }
-
-      span {
-        flex: 0 0 auto;
-        line-height: 1.4;
-        text-align: center;
-      }
-    }
-  }
-
-  .tab.about .dg-about-legal p {
-    margin: 0.5rem 0;
-    font-size: 12px;
   }
 }
