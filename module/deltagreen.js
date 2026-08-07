@@ -25,6 +25,7 @@ import {
 import { handleInlineActions } from "./chat/inline.js";
 import { enrichDGChatCardMessage } from "./chat/dg-chat-card.js";
 import runWorldMigration from "./utils/world-migration.js";
+import injectSettingsAboutSection from "./utils/settings-sidebar-about.js";
 import DGNPCSheet from "./sheets/npc-sheet.js";
 import DGUnnaturalSheet from "./sheets/unnatural-sheet.js";
 import DGVehicleSheet from "./sheets/vehicle-sheet.js";
@@ -285,6 +286,11 @@ Hooks.on("renderActorDirectory", (app, element) => {
   button.addEventListener("click", () => {
     ParseDeltaGreenStatBlock();
   });
+});
+
+// Add documentation, support, and changelog links to the Settings sidebar.
+Hooks.on("renderSettings", (app, element) => {
+  injectSettingsAboutSection(element);
 });
 
 // Note - this event is fired on ALL connected clients...

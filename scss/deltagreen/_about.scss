@@ -1,0 +1,19 @@
+.dg-info-dialog-content {
+  .dg-info-heading {
+    margin: 0 0 0.75rem;
+    border-bottom: none;
+    text-align: center;
+  }
+
+  p {
+    margin: 0.5rem 0;
+    font-size: var(--font-size-13);
+    line-height: 1.4;
+  }
+
+  .dg-info-footnote {
+    margin-top: 1rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--color-border-light-tertiary, rgba(0, 0, 0, 0.2));
+  }
+}

@@ -62,19 +62,6 @@ function buildOccultSanityStatUpdate(actor, options) {
   return updateData;
 }
 
-async function adjustAllBondScores(actor, delta) {
-  const bonds = actor.items.filter((item) => item.type === "bond");
-  if (!bonds.length) return;
-
-  const updates = bonds.map((bond) => ({
-    _id: bond.id,
-    system: {
-      score: Math.max(0, Number(bond.system.score) + delta),
-    },
-  }));
-  await actor.updateEmbeddedDocuments("Item", updates);
-}
-
 async function applyExtremeViolence(actor) {
   const updateData = buildOccultSanityStatUpdate(actor, {
     occultBonus: 10,
@@ -85,8 +72,8 @@ async function applyExtremeViolence(actor) {
   updateData["system.sanity.adaptations.violence.incident2"] = true;
   updateData["system.sanity.adaptations.violence.incident3"] = true;
 
+  // The -3 CHA change shifts every Bond score via the actor's update override.
   await actor.update(updateData);
-  await adjustAllBondScores(actor, -3);
 }
 
 async function applyCaptivity(actor) {

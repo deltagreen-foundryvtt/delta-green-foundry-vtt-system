@@ -40,6 +40,17 @@ jobs:
       - name: Compile Sass
         run: npm run build:css
 
+  test:
+    name: Run Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Node Setup
+        uses: ./.github/actions/setup-node
+
+      - name: Run Jest
+        run: npm test
+
 defaults:
   run:
     shell: bash
