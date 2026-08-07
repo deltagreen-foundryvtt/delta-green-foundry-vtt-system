@@ -7,11 +7,7 @@ export default class DGVehicleSheet extends DGActorSheet {
     primary: {
       initial: "gear",
       labelPrefix: "DG.Navigation.Vehicle",
-      tabs: [
-        { id: "gear" },
-        { id: "notes" },
-        { id: "about", icon: "fas fa-question-circle", label: "" },
-      ],
+      tabs: [{ id: "gear" }, { id: "notes" }],
     },
   });
 
@@ -24,6 +20,5 @@ export default class DGVehicleSheet extends DGActorSheet {
       templates: [`${this.TEMPLATE_PATH}/partials/notes-partial.html`],
     },
     gear: this.BASE_PARTS.gear,
-    about: this.BASE_PARTS.about,
   });
 }

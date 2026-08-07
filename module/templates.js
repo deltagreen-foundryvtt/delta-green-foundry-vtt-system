@@ -11,5 +11,6 @@ export default async function preloadHandlebarsTemplates() {
     "systems/deltagreen/templates/item/parts/effects-tab.html",
     "systems/deltagreen/templates/active-effect/change-row.html",
     "systems/deltagreen/templates/actor/partials/ae-backed-input.html",
+    "systems/deltagreen/templates/sidebar/settings-about.html",
   ]);
 }
