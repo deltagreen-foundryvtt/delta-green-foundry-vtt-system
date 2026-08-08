@@ -1,32 +1,49 @@
 <div class="dice-roll" data-action="expandRoll">
-  <div class="dice-result">
-    <div style="{{styleOverride}}" class="dice-formula">{{resultString}}</div>
-    <div class="dice-tooltip">
-      <div class="wrapper">
-        <section class="tooltip-part">
-          <div class="dice">
-            <header class="part-header flexrow">
-              <span class="part-formula">{{formula}}</span>
-              <span class="part-total">{{total}}</span>
-            </header>
-            <ol class="dice-rolls">
-              <li class="roll die {{formula}}">{{total}}</li>
-            </ol>
-          </div>
-        </section>
-      </div>
+    <div class="dice-result">
+        <div style="{{styleOverride}}" class="dice-formula">{{resultString}}</div>
+        <div class="dice-tooltip">
+            <div class="wrapper">
+                <section class="tooltip-part">
+                    <div class="dice">
+                        <header class="part-header flexrow">
+                            <span class="part-formula">{{formula}}</span>
+                            <span class="part-total">{{total}}</span>
+                        </header>
+                        <ol class="dice-rolls">
+                            <li class="roll die {{formula}}">{{total}}</li>
+                        </ol>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <h4 class="dice-total">{{total}}</h4>
     </div>
-    <h4 class="dice-total">{{total}}</h4>
-  </div>
 
-  {{#if failureMark}}
-    <div class="rollback-section">
-      <label>{{localize 'DG.Messages.Skillsmark.Marked'}}</label>
-      <i class="fa fa-book" aria-hidden="true" data-tooltip="<p>{{localize 'DG.Messages.Skillsmark.Tooltip'}}</p>"></i>
-      <button type="button" data-action="rollback-skill-failure-state">
-        <i class="fa fa-undo" aria-hidden="true"></i>
-      </button>
-    </div>
-  {{/if}}
+    {{#if failureMark }}
+        <div class="rollback-section">
+            <label>{{localize 'DG.Messages.Skillsmark.Marked'}}</label>
+            <i class="fa fa-book"
+               aria-hidden="true"
+               data-tooltip="<p>{{localize 'DG.Messages.Skillsmark.Tooltip'}}</p>"></i>
+            <button type="button" data-action="rollback-skill-failure-state">
+                <i class="fa fa-undo" aria-hidden="true"></i>
+            </button>
+        </div>
+    {{/if}}
+
+    {{#if successfulAttack }}
+        <div class="dg-result-actions">
+            {{#if (hasWeaponDamage item.system.damage) }}
+                <button data-item-id={{item.uuid}} data-action="roll-damage">
+                    {{localize 'DG.Messages.RollDamage'}} {{ item.system.damage }}
+                </button>
+            {{/if}}
+            {{#if (hasWeaponLethality item.system.lethality) }}
+                <button data-item-id={{item.uuid}} data-action="roll-lethality">
+                    {{localize 'DG.Messages.RollLethality'}} {{ item.system.lethality }}%
+                </button>
+            {{/if}}
+        </div>
+    {{/if}}
 
 </div>

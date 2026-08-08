@@ -550,6 +550,8 @@
   "DG.SettingsMenu.handler.name": "Handler Settings",
   "DG.SettingsMenu.handler.label": "Handler Settings",
   "DG.SettingsMenu.handler.title": "Handler-only Settings",
+  "DG.Messages.RollDamage": "Damage Roll",
+  "DG.Messages.RollLethality": "Lethality Roll",
   "DG.Messages.Skillsmark.Marked": "This skill is marked",
   "DG.Messages.Skillsmark.Tooltip": "See p. 29 Agent's Handbook",
   "DG.Profession.Dialog.OptionPicksRequired": "Select exactly {picks} skill option(s).",

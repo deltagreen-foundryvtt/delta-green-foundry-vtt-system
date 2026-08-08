@@ -186,7 +186,7 @@ export async function rollSkillTestAndDamageForOwnedItem(
   roll.toChat();
 
   if (roll.isSuccess && rollDamageOnSuccess) {
-    item.roll(roll.isCritical);
+    item.roll({ critical: roll.isCritical });
   }
 
   return roll.isSuccess;

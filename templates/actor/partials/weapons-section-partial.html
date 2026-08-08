@@ -40,7 +40,6 @@
                          width="24"
                          height="24" />
                     <span>
-                        <span style="display: inline;" class="item-name">{{item.name}}</span>
                         <button type="button"
                                 class="rollable inline-roll"
                                 data-action="roll"
@@ -48,55 +47,56 @@
                                 data-rolltype="weapon"
                                 data-key="{{item.system.skill}}"
                                 title="{{localize 'DG.Tooltip.SkillLabel'}} ({{localizeWeaponSkill item.system.skill}})">
+                            <span style="display: inline;" class="item-name">{{item.name}}</span>
                             <i class="fas fa-dice" aria-hidden="true"></i>
                         </button>
                     </span>
                 </div>
 
-                {{#if (hasWeaponDamageAndLethality item)}}
-                <span class="centered-item-property weapons-col-damage rollable"
-                      data-action="roll"
-                      data-rolltype="damage-or-lethality"
-                      data-iid="{{item._id}}"
-                      title="{{localize 'DG.Gear.DamageOrLethality'}}">
-                    {{toUpperCase item.system.damage}}
-                    {{#if_eq item.system.skill 'unarmed_combat' }}
-                        {{actor.system.statistics.str.meleeDamageBonusFormula}}
-                    {{/if_eq}}
-                    {{#if_eq item.system.skill 'melee_weapons' }}
-                        {{actor.system.statistics.str.meleeDamageBonusFormula}}
-                    {{/if_eq}}
-                    / {{item.system.lethality}}%
-                    <i class="fas fa-dice" aria-hidden="true"></i>
-                </span>
+                {{#if (hasWeaponDamageAndLethality item) }}
+                    <span class="centered-item-property weapons-col-damage rollable"
+                          data-action="roll"
+                          data-rolltype="damage-or-lethality"
+                          data-iid="{{item._id}}"
+                          title="{{localize 'DG.Gear.DamageOrLethality'}}">
+                        {{toUpperCase item.system.damage}}
+                        {{#if_eq item.system.skill 'unarmed_combat' }}
+                            {{actor.system.statistics.str.meleeDamageBonusFormula}}
+                        {{/if_eq}}
+                        {{#if_eq item.system.skill 'melee_weapons' }}
+                            {{actor.system.statistics.str.meleeDamageBonusFormula}}
+                        {{/if_eq}}
+                        / {{item.system.lethality}}%
+                        <i class="fas fa-dice" aria-hidden="true"></i>
+                    </span>
                 {{else}}
-                    {{#if (hasWeaponDamage item.system.damage)}}
-                <span class="centered-item-property weapons-col-damage rollable"
-                      data-action="roll"
-                      data-rolltype="damage"
-                      data-iid="{{item._id}}"
-                      title="{{localize 'DG.Gear.DamageOrLethality'}}">
-                    {{toUpperCase item.system.damage}}
-                    {{#if_eq item.system.skill 'unarmed_combat' }}
-                        {{actor.system.statistics.str.meleeDamageBonusFormula}}
-                    {{/if_eq}}
-                    {{#if_eq item.system.skill 'melee_weapons' }}
-                        {{actor.system.statistics.str.meleeDamageBonusFormula}}
-                    {{/if_eq}}
-                    <i class="fas fa-dice" aria-hidden="true"></i>
-                </span>
+                    {{#if (hasWeaponDamage item.system.damage) }}
+                        <span class="centered-item-property weapons-col-damage rollable"
+                              data-action="roll"
+                              data-rolltype="damage"
+                              data-iid="{{item._id}}"
+                              title="{{localize 'DG.Gear.DamageOrLethality'}}">
+                            {{toUpperCase item.system.damage}}
+                            {{#if_eq item.system.skill 'unarmed_combat' }}
+                                {{actor.system.statistics.str.meleeDamageBonusFormula}}
+                            {{/if_eq}}
+                            {{#if_eq item.system.skill 'melee_weapons' }}
+                                {{actor.system.statistics.str.meleeDamageBonusFormula}}
+                            {{/if_eq}}
+                            <i class="fas fa-dice" aria-hidden="true"></i>
+                        </span>
                     {{else}}
-                        {{#if (hasWeaponLethality item.system.lethality)}}
-                <span class="centered-item-property weapons-col-damage rollable"
-                      data-action="roll"
-                      data-rolltype="lethality"
-                      data-iid="{{item._id}}"
-                      title="{{localize 'DG.ItemWindow.Weapons.LethalityTooltip'}}">
-                    {{item.system.lethality}}%
-                    <i class="fas fa-dice" aria-hidden="true"></i>
-                </span>
+                        {{#if (hasWeaponLethality item.system.lethality) }}
+                            <span class="centered-item-property weapons-col-damage rollable"
+                                  data-action="roll"
+                                  data-rolltype="lethality"
+                                  data-iid="{{item._id}}"
+                                  title="{{localize 'DG.ItemWindow.Weapons.LethalityTooltip'}}">
+                                {{item.system.lethality}}%
+                                <i class="fas fa-dice" aria-hidden="true"></i>
+                            </span>
                         {{else}}
-                <span class="centered-item-property weapons-col-damage"></span>
+                            <span class="centered-item-property weapons-col-damage"></span>
                         {{/if}}
                     {{/if}}
                 {{/if}}
