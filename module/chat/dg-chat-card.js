@@ -217,6 +217,17 @@ export function enrichDGChatCardMessage(message, element) {
     header.appendChild(metadataSlot);
   }
 
+  const applyDamage = card.querySelector(".dg-result-actions");
+  if (applyDamage) {
+    applyDamage.querySelectorAll("[data-action]").forEach((damageButton) => {
+      damageButton.addEventListener("click", async () => {
+        const item = await foundry.utils.fromUuid(damageButton.dataset.itemId);
+        const lethal = damageButton.dataset.action === "roll-lethality";
+        item.roll({ lethal });
+      });
+    });
+  }
+
   const foundryMetadata = foundryHeader?.querySelector(".message-metadata");
   if (metadataSlot && foundryMetadata) {
     metadataSlot.replaceWith(foundryMetadata);

@@ -12,12 +12,12 @@ export default class DeltaGreenItem extends Item {
    * @param {Event} event   The originating click event
    * @private
    */
-  async roll(isCrit = false) {
+  async roll({ critical = false, lethal = false }) {
     // Basic template rendering data
     const item = this;
     const { actor } = this;
     let roll;
-    if (item.system.isLethal) {
+    if (lethal) {
       roll = new DGLethalityRoll(
         "1D100",
         {},
@@ -36,7 +36,7 @@ export default class DeltaGreenItem extends Item {
         item.system.skill,
       );
 
-      if (isCrit) {
+      if (critical) {
         diceFormula = `2*(${diceFormula})`;
       }
 

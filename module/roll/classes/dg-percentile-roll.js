@@ -179,6 +179,8 @@ export class DGPercentileRoll extends DGRoll {
         resultString,
         formula: this.formula,
         total: this.total,
+        item: this.item,
+        successfulAttack: this.isSuccess && this.type === "weapon",
         failureMark,
       },
     );

@@ -140,6 +140,17 @@
   margin-top: 0.5em;
 }
 
+.dg-result-actions {
+  display: flex;
+  flex-direction: column;
+  order: 98;
+  margin: 0.5em 0;
+}
+
+.dg-result-actions button {
+  margin-top: 0.5em;
+}
+
 .rollback-section {
   order: 99;
   display: flex;
