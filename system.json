@@ -17,7 +17,7 @@
   ],
   "version": "dev",
   "compatibility": {
-    "minimum": "13",
+    "minimum": "14",
     "verified": "14",
     "maximum": "14"
   },
