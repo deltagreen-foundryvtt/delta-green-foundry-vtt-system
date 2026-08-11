@@ -1,11 +1,33 @@
 # Release/Patch Notes
 
-## Unreleased
+## Version 2.0.1 - 2026-08-10
 
 ### **Features:**
 
-- Bond scores now follow the agent's CHA: changing CHA shifts every Bond by the same amount (floored at 0), keeping each Bond's accumulated damage intact.
+### **Bug Fixes:**
+
+- [#445](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/445) - Limit 2.0.x versions to Foundry v14 or later
+
+## Version 2.0.0 - 2026-08-09
+
+### **Features:**
+
+- [#400](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/pull/400) - Added [Character Generation Wizard](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/wiki/Agent-creation)
+- [#123](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/123) - Support Active Effects
+- [#346](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/346) - Allow handlers to change max permitted values on sheets
+- [#365](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/365) - Add Rest Button
+- [#209](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/209) - Droppable profession items
+- [#284](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/284) - Add +/- buttons to bond tracking
+- [#285](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/285) - Bond scores now follow the agent's CHA: changing CHA shifts every Bond by the same amount (floored at 0), keeping each Bond's accumulated damage intact.
+- [#443](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/136) - Enable rolling for damage from attack chat card
 - [#409](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/409) - Move the system documentation, support, and changelog links from the "?" tab on the actor sheets to a Delta Green section in the Game Settings sidebar. Documentation now links to the project Wiki, licensing and copyright notices moved to a dedicated Legal window, and a new Support window directs system issues to the GitHub tracker and premium module questions to Arc Dream Publishing.
+
+### **Bug Fixes:**
+
+- [#223](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/223) - Convert Item sheets to V2 for Foundry v14 compatibility
+- [#231](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/231) - Improve Statblock Parser
+- [#396](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/396) - Fixed typed skill dialog when editing existing skill
+- [#420](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/420) - Fixed Actor Stats assignment bug
 
 ## Version 1.7.0 - 2026-06-20
 
@@ -32,8 +54,7 @@
 ### **Bug Fixes:**
 
 - [#392](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/392) - Fixed sheet rolls
-- [#394](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/394) - Unified actor and item description fields on schema with shared ProseMirror preparation
-- [#396](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/396) - Fixed typed skill dialog when editing existing skill
+- [#394](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/394) - Unified actor and item description fields on schema with shared ProseMirror preparatio
 
 ### **Under the Hood:**
 
