@@ -2,8 +2,6 @@
 
 ## Version 2.0.1 - 2026-08-10
 
-### **Features:**
-
 ### **Bug Fixes:**
 
 - [#445](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/445) - Limit 2.0.x versions to Foundry v14 or later
