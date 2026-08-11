@@ -1,6 +1,6 @@
 # Release/Patch Notes
 
-## Unreleased
+## Version 2.0.1 - 2026-08-10
 
 ### **Features:**
 
