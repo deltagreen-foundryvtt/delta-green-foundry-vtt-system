@@ -384,6 +384,16 @@ describe("ParseStatBlock", () => {
         ],
       },
     },
+    {
+      testName: "Parsing the alien steward statblock",
+      input: readStatblock("alien-steward-stats"),
+      expected: {},
+    },
+    {
+      testName: "Parsing the megalomaniac statblock",
+      input: readStatblock("megalomaniac-stats"),
+      expected: {},
+    },
   ])("$testName", ({ input, expected }) => {
     const actualStatBlock = ParseStatBlock(input);
     expect(actualStatBlock).toEqual(expected);

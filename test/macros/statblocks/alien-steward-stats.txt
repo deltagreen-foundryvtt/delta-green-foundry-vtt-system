@@ -1,0 +1,51 @@
+Hope
+Hapless protomatter Steward, age 28
+(use Hope’s stats for any Steward)
+STR 26 CON 23 DEX 15 INT 11 POW 10 CHA 14
+HP 19 WP 10 SAN 0
+SKILLS: Art (Photography) 53%, Athletics 93%,
+Computer Science 24%, Craft (Electronics) 64%,
+Craft (Lockpick) 74%, Disguise 74%, Dodge 38%,
+Drive 52%, Persuade 47%, SIGINT 61%, Stealth 92%,
+Unarmed Combat 44%, Unnatural 14%.
+ARMOR: Stewards are unharmed by all melee and
+unarmed blows. Firearms have all damage reduced
+to 1, and Hope regenerates 1D4 HP per round. Fire,
+electricity, acid, chemical irritants, and hypergeometric
+rituals inflict damage normally and stop all
+regeneration for the remainder of combat.
+ATTACKS: Slam and Strangle 44%, damage 2D6.
+Grapple 44%, see “Draw Close.”
+Swallow, damage special, see “Swallow.”
+Kiss, damage special, see “Kiss.”
+Mi-go electric gun 27%, Lethality 2%, 15%, or 25%,
+ignores armor.
+ELECTRIC GUN: This weapon appears as a pulsing,
+softball-sized glob with three dangling tendrils. When
+the weapon is picked up, the tendrils wrap around
+the user’s forearm. The weapon is a biomechanical organism that can eject bolts of electrical current, sort
+of like an electric eel. The charge of lightning emitted
+from the weapon is variable, but Hope has no need
+for anything but the deadliest setting. The only reason
+she would turn down the charge would be to protect
+her beloved Valiant, but in such instances, she gives
+her master the gun and attempts to suffocate or rend his
+enemies up close. The electric gun ignores body armor
+but can be blocked by cover.
+DRAW CLOSE: After a successful grapple, a victim must
+succeed on a STR×5 check opposing Hope’s successful
+attack roll to break free. On a failure, they suffer either
+Swallow or Kiss the next round.
+KISS: Hope spurts protomatter down the grappled victim’s
+throat and takes control of their body. Any Agent
+subjected to the Kiss loses control of their character
+until Hope is destroyed or withdraws her parasitic
+protomatter. The victim loses 1/1D6 SAN due to
+helplessness.
+SWALLOW: After successfully grappling a victim, Hope
+liquifies herself, surrounds, and engulfs the body in
+a constricting protomatter sac. Hope can then inflict
+2D6 damage to the victim with each action without an
+attack roll. The victim must take an action and roll STR×5
+to break free.
+SAN LOSS: 1/1D6 if seen as protomatter.

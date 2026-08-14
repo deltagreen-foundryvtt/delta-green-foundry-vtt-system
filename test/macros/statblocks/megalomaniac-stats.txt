@@ -1,0 +1,63 @@
+Ronald “Prince” Valiant/Doug Walters
+Unloved megalomaniac, age 35 in 1997
+(Stats in parentheses are when using the Boost power)
+STR 16 (22) CON 16 (22) DEX 12 (18)
+INT 12 POW 10 CHA 18
+HP 16 (22) WP 10 SAN 0
+SKILLS: Accounting 35%, Alertness 33%, Athletics 63%,
+Bureaucracy 35%, Computer Science 22%, Disguise
+19%, Dodge 33%, Drive 56%, Firearms 62%, First Aid
+34%, Foreign Language (Spanish) 14%, HUMINT 31%,
+Melee Weapons 57%, Military Science 38%, Navigate
+24%, Persuade 59%, Pharmacy 34%, SIGINT 18%,
+Stealth 53%, Survival 38%, Unarmed Combat 73%.
+ATTACKS: Unarmed 73%, damage 1D4 (1D8).
+(After THE MEETING [see page 38], Valiant uses no
+weapons but his hands and his psychic powers.)
+Knife (Marine Ka-Bar) 57%, damage 1D6+1 (1D6+3),
+Armor Piercing 3.
+S&W Model 645 Pistol 62%, damage 1D10.
+Colt M16A2 assault rifle 62%, damage 1D12 or
+Lethality 10%, Armor Piercing 3.
+Luigi Franchi SPAS-12 shotgun 82%, damage
+2D8, ×2 armor.
+Mi-go electric gun 12%, lethality 2%, 15%, or 25%
+(See notes for HOPE on this page).
+OBTRUSIONS: Valiant has awakened several deadly but
+draining gifts called obtrusions. If the Agents confront
+him before he leeches power from his followers (see
+THE MEETING on page 38), he can perform only 1
+Obtrusion. If the Agents interrupt the meeting soon
+after it begins, he can perform 10 Obtrusions. If they
+stop it late, he can perform 20. If they fail to interrupt
+the meeting at all, Valiant can perform 40 Obtrusions.
+Each can be used any number of times at a cost of 1
+Obtrusion per use. Each use is his action for the turn.
+• Ascendance: Valiant can fly up to 50 meters, shining
+brightly. If he has grappled an Agent, he can carry
+them with him. Whatever Valiant’s altitude after
+using this power, he lands safely unless unconscious.
+• Boost: Valiant can add 6 each to his STR, DEX, and
+CON for the next five turns, glowing faintly. He
+starts a fight with this power.
+• Disruption: If he has lost hit points since his last
+action, Valiant can angrily channel a flash of
+force into his hands. The next time he hits with an
+unarmed attack, its damage is Lethality 10%.
+• Impulsion: By touch, Valiant can plant an emotion
+in the target. It lasts 20 hours. To resist the sway of
+this emotion requires succeeding at a WP×5 test and
+then spending 1D6 WP. If the WP cost is too high,
+the target can choose to obey the emotion after all
+rather than spending it.
+• Protection: As an action, Valiant can surround
+himself in a glittering aura that causes all LETHALITY
+rolls to fail and deflects damage. The aura remains
+without his taking further actions, but upon stopping
+30 points of damage, it flickers out.
+• Repulsion: As an action, Valiant can lash out with
+a bright flare of force. This cannot be blocked or
+dodged. He can affect any number of targets within
+5 meters, each costing 1 Obtrusion. Every target
+flies 10 meters, takes 1D6 damage, and is stunned,
+unable to act until they succeed at a CON×5 test.
