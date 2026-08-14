@@ -1,0 +1,65 @@
+{
+  "folder": null,
+  "name": "Scientist",
+  "type": "profession",
+  "_id": "lp0CQ0AJm89yX5x6",
+  "img": "systems/deltagreen/assets/icons/person-black-bg.svg",
+  "system": {
+    "description": "<p>See Page 22 of the Agent's Handbook.</p>",
+    "bonds": 4,
+    "automaticSkills": {
+      "bureaucracy": 40,
+      "computer_science": 40,
+      "typed:Science:fATJ22WJ": 60,
+      "typed:Science:culOBNJ7": 50,
+      "typed:Science:dk1d5RID": 50
+    },
+    "automaticSkillMeta": {
+      "typed:Science:fATJ22WJ": {
+        "chooseOne": true
+      },
+      "typed:Science:culOBNJ7": {
+        "chooseOne": true
+      },
+      "typed:Science:dk1d5RID": {
+        "chooseOne": true
+      }
+    },
+    "optionSkills": {
+      "optionPicks": 3,
+      "accounting": 50,
+      "typed:Craft:cU4nVvID": 40,
+      "typed:ForeignLanguage:ZllSp65K": 40,
+      "forensics": 40,
+      "law": 40,
+      "pharmacy": 40
+    },
+    "optionSkillMeta": {
+      "typed:Craft:cU4nVvID": {
+        "chooseOne": true
+      },
+      "typed:ForeignLanguage:ZllSp65K": {
+        "chooseOne": true
+      }
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "deltagreen",
+    "systemVersion": "2.0.0-beta3",
+    "createdTime": 1782382835937,
+    "modifiedTime": 1782382835943,
+    "lastModifiedBy": "961R6wJiqwnS0zD3",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "961R6wJiqwnS0zD3": 3
+  },
+  "sort": 0,
+  "_key": "!items!lp0CQ0AJm89yX5x6"
+}

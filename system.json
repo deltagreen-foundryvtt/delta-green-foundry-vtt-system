@@ -110,6 +110,7 @@
         "firearms",
         "armor",
         "hand-to-hand-weapons",
+        "professions",
         "agent-pregens",
         "operation-code-name-generator-tables"
       ],
@@ -153,6 +154,18 @@
       "label": "Hand-to-Hand Weapons",
       "system": "deltagreen",
       "path": "packs/hand-to-hand-weapons",
+      "type": "Item",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "professions",
+      "label": "Professions",
+      "system": "deltagreen",
+      "path": "packs/professions",
       "type": "Item",
       "flags": {},
       "ownership": {

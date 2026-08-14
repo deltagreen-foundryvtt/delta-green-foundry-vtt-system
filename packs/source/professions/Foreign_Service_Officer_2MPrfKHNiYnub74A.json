@@ -1,0 +1,57 @@
+{
+  "folder": null,
+  "name": "Foreign Service Officer",
+  "type": "profession",
+  "_id": "2MPrfKHNiYnub74A",
+  "img": "systems/deltagreen/assets/icons/person-black-bg.svg",
+  "system": {
+    "description": "<p>See Page 23 of the Agent's Handbook.</p>",
+    "bonds": 3,
+    "automaticSkills": {
+      "accounting": 40,
+      "anthropology": 40,
+      "bureaucracy": 60,
+      "typed:ForeignLanguage:5KmWvvyL": 50,
+      "typed:ForeignLanguage:HBosCZhb": 50,
+      "typed:ForeignLanguage:LDA7AvfM": 40,
+      "history": 40,
+      "humint": 50,
+      "law": 40,
+      "persuade": 50
+    },
+    "automaticSkillMeta": {
+      "typed:ForeignLanguage:5KmWvvyL": {
+        "chooseOne": true
+      },
+      "typed:ForeignLanguage:HBosCZhb": {
+        "chooseOne": true
+      },
+      "typed:ForeignLanguage:LDA7AvfM": {
+        "chooseOne": true
+      }
+    },
+    "optionSkills": {
+      "optionPicks": 0
+    },
+    "optionSkillMeta": {}
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "deltagreen",
+    "systemVersion": "2.0.0-beta3",
+    "createdTime": 1782382835930,
+    "modifiedTime": 1782382835940,
+    "lastModifiedBy": "961R6wJiqwnS0zD3",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "961R6wJiqwnS0zD3": 3
+  },
+  "sort": 0,
+  "_key": "!items!2MPrfKHNiYnub74A"
+}

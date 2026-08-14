@@ -1,0 +1,63 @@
+{
+  "folder": null,
+  "name": "Program Manager",
+  "type": "profession",
+  "_id": "cjlhFhpvqMswe8lS",
+  "img": "systems/deltagreen/assets/icons/person-black-bg.svg",
+  "system": {
+    "description": "<p>See Page 25 of the Agent's Handbook.</p>",
+    "bonds": 4,
+    "automaticSkills": {
+      "accounting": 60,
+      "bureaucracy": 60,
+      "computer_science": 50,
+      "criminology": 30,
+      "typed:ForeignLanguage:iFHwRvVJ": 50,
+      "history": 40,
+      "law": 40,
+      "persuade": 50
+    },
+    "automaticSkillMeta": {
+      "typed:ForeignLanguage:iFHwRvVJ": {
+        "chooseOne": true
+      }
+    },
+    "optionSkills": {
+      "optionPicks": 1,
+      "anthropology": 30,
+      "typed:Art:rIgBrvKM": 30,
+      "typed:Craft:7wEbjUyG": 30,
+      "typed:Science:yw1JqTt0": 30
+    },
+    "optionSkillMeta": {
+      "typed:Art:rIgBrvKM": {
+        "chooseOne": true
+      },
+      "typed:Craft:7wEbjUyG": {
+        "chooseOne": true
+      },
+      "typed:Science:yw1JqTt0": {
+        "chooseOne": true
+      }
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "deltagreen",
+    "systemVersion": "2.0.0-beta3",
+    "createdTime": 1782382835936,
+    "modifiedTime": 1782382835942,
+    "lastModifiedBy": "961R6wJiqwnS0zD3",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "961R6wJiqwnS0zD3": 3
+  },
+  "sort": 0,
+  "_key": "!items!cjlhFhpvqMswe8lS"
+}
