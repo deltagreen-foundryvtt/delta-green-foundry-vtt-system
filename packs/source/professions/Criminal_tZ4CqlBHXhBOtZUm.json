@@ -1,0 +1,61 @@
+{
+  "folder": null,
+  "name": "Criminal",
+  "type": "profession",
+  "_id": "tZ4CqlBHXhBOtZUm",
+  "img": "systems/deltagreen/assets/icons/person-black-bg.svg",
+  "system": {
+    "description": "<p>See Page 23 of the Agent's Handbook.</p>",
+    "bonds": 4,
+    "automaticSkills": {
+      "alertness": 50,
+      "athletics": 50,
+      "criminology": 60,
+      "dodge": 40,
+      "drive": 50,
+      "firearms": 40,
+      "law": 20,
+      "melee_weapons": 40,
+      "persuade": 50,
+      "stealth": 50,
+      "unarmed_combat": 50
+    },
+    "automaticSkillMeta": {},
+    "optionSkills": {
+      "optionPicks": 2,
+      "Craft (Locksmithing)": 40,
+      "demolitions": 40,
+      "disguise": 50,
+      "typed:ForeignLanguage:HsAiTuog": 40,
+      "forensics": 40,
+      "humint": 50,
+      "navigate": 50,
+      "occult": 50,
+      "pharmacy": 40
+    },
+    "optionSkillMeta": {
+      "typed:ForeignLanguage:HsAiTuog": {
+        "chooseOne": true
+      }
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "deltagreen",
+    "systemVersion": "2.0.0-beta3",
+    "createdTime": 1782382835928,
+    "modifiedTime": 1782382835939,
+    "lastModifiedBy": "961R6wJiqwnS0zD3",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "961R6wJiqwnS0zD3": 3
+  },
+  "sort": 0,
+  "_key": "!items!tZ4CqlBHXhBOtZUm"
+}

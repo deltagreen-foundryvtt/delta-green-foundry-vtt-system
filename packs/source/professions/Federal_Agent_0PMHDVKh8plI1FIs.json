@@ -1,0 +1,56 @@
+{
+  "folder": null,
+  "name": "Federal Agent",
+  "type": "profession",
+  "_id": "0PMHDVKh8plI1FIs",
+  "img": "systems/deltagreen/assets/icons/person-black-bg.svg",
+  "system": {
+    "description": "<p>See Page 21 of the Agent's Handbook.</p>",
+    "bonds": 3,
+    "automaticSkills": {
+      "alertness": 50,
+      "bureaucracy": 40,
+      "criminology": 50,
+      "drive": 50,
+      "firearms": 50,
+      "humint": 60,
+      "law": 30,
+      "persuade": 50,
+      "search": 50,
+      "unarmed_combat": 60
+    },
+    "automaticSkillMeta": {},
+    "optionSkills": {
+      "optionPicks": 1,
+      "accounting": 60,
+      "computer_science": 50,
+      "typed:ForeignLanguage:cSvjqgRT": 50,
+      "heavy_weapons": 50,
+      "pharmacy": 50
+    },
+    "optionSkillMeta": {
+      "typed:ForeignLanguage:cSvjqgRT": {
+        "chooseOne": true
+      }
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "deltagreen",
+    "systemVersion": "2.0.0-beta3",
+    "createdTime": 1782382835929,
+    "modifiedTime": 1782382835940,
+    "lastModifiedBy": "961R6wJiqwnS0zD3",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "961R6wJiqwnS0zD3": 3
+  },
+  "sort": 0,
+  "_key": "!items!0PMHDVKh8plI1FIs"
+}

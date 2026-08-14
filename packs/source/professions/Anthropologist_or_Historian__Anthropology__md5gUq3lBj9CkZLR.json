@@ -1,0 +1,58 @@
+{
+  "folder": null,
+  "name": "Anthropologist or Historian (Anthropology)",
+  "type": "profession",
+  "_id": "md5gUq3lBj9CkZLR",
+  "img": "systems/deltagreen/assets/icons/person-black-bg.svg",
+  "system": {
+    "description": "<p>See Page 20 of the Agent's Handbook.</p>",
+    "bonds": 4,
+    "automaticSkills": {
+      "anthropology": 50,
+      "bureaucracy": 40,
+      "typed:ForeignLanguage:GTHrglZg": 50,
+      "typed:ForeignLanguage:BDuPpCMu": 40,
+      "history": 60,
+      "occult": 40,
+      "persuade": 40
+    },
+    "automaticSkillMeta": {
+      "typed:ForeignLanguage:GTHrglZg": {
+        "chooseOne": true
+      },
+      "typed:ForeignLanguage:BDuPpCMu": {
+        "chooseOne": true
+      }
+    },
+    "optionSkills": {
+      "optionPicks": 0,
+      "anthropology": 40,
+      "archeology": 40,
+      "humint": 50,
+      "navigate": 50,
+      "ride": 50,
+      "search": 60,
+      "survival": 50
+    },
+    "optionSkillMeta": {}
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "deltagreen",
+    "systemVersion": "2.0.0-beta3",
+    "createdTime": 1782382835926,
+    "modifiedTime": 1782382835938,
+    "lastModifiedBy": "961R6wJiqwnS0zD3",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "961R6wJiqwnS0zD3": 3
+  },
+  "sort": 0,
+  "_key": "!items!md5gUq3lBj9CkZLR"
+}
