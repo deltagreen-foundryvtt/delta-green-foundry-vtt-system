@@ -47,30 +47,51 @@ const ARMOR_MATCHER = /armou?r/g;
 export function tokenize(stream) {
   return stream
     .toLowerCase()
-    .split(/\s+/)
-    .flatMap((token) => {
-      const strippedToken = token.replaceAll(EXTRANEOUS_CHARACTERS, "");
-      const commaMatch = COMMA_MATCHER.exec(strippedToken);
-      if (commaMatch != null) {
-        return [commaMatch[1], COMMA];
-      }
-      const sectionTerminatorMatch = SECTION_TERMINATOR.exec(strippedToken);
-      if (sectionTerminatorMatch !== null) {
-        return [sectionTerminatorMatch[1], ENTRY_END];
-      }
-      return strippedToken;
-    });
+    .split(/[\n|\r\n]+/)
+    .map((line) => {
+      return line
+        .split(/\s+/)
+        .flatMap((token) => {
+          const strippedToken = token.replaceAll(EXTRANEOUS_CHARACTERS, "");
+          const commaMatch = COMMA_MATCHER.exec(strippedToken);
+          if (commaMatch != null) {
+            return [commaMatch[1], COMMA];
+          }
+          const sectionTerminatorMatch = SECTION_TERMINATOR.exec(strippedToken);
+          if (sectionTerminatorMatch !== null) {
+            return [sectionTerminatorMatch[1], ENTRY_END];
+          }
+          return strippedToken;
+        })
+        .filter((token) => token.length > 0);
+    })
+    .filter((line) => line.length > 0);
+}
+
+export function collectTokensUntilNextSection(lines) {
+  let tokens = [];
+  let otherLines = [];
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const colonIndex = line.findIndex((token) => token.includes(":"));
+    const rest = line.slice(colonIndex);
+    if (colonIndex >= 0 && tokens.length > 0) {
+      otherLines = lines.slice(i);
+      break;
+    } else if (colonIndex > 0) {
+      tokens = [...tokens, ...rest];
+    } else {
+      tokens = [...tokens, ...line];
+    }
+  }
+
+  return [tokens, otherLines];
 }
 
 export function groupEntriesUntilNextSection(tokens) {
   const groups = [];
-  const rest = [];
 
   tokens.reduce((accum, token) => {
-    if (token.includes(":") || accum === "DONE") {
-      rest.push(token);
-      return "DONE";
-    }
     if (token === ENTRY_END) {
       groups.push(accum);
       return [];
@@ -84,11 +105,16 @@ export function groupEntriesUntilNextSection(tokens) {
     return accum;
   }, []);
 
-  return [groups, rest];
+  return groups;
 }
 
 const attributeKeys = Object.keys(Attributes);
-export function determineNextState(token) {
+export function determineNextState(nextLine) {
+  if (nextLine === undefined) {
+    return States.Unknown;
+  }
+
+  const token = nextLine.find((t) => t.includes(":")) || nextLine[0];
   if (attributeKeys.indexOf(token) >= 0) {
     return States.AttributePairs;
   }
@@ -110,8 +136,8 @@ export function determineNextState(token) {
 }
 
 function extractAttributesImpl(tokens, accumulator) {
-  if (tokens === []) {
-    return [accumulator, tokens];
+  if (tokens.length === []) {
+    return accumulator;
   }
 
   const [attr, rawValue, ...rest] = tokens;
@@ -130,11 +156,13 @@ function extractAttributesImpl(tokens, accumulator) {
   const expectedKeys = new Set(Object.keys(Attributes));
   if (currentKeys.intersection(expectedKeys).size === expectedKeys.size) {
     delete accumulator.incomplete;
-    return [accumulator, tokens];
+    return accumulator;
   }
 
   if (Attributes[attr] == null || Number.isNaN(value)) {
-    return [accumulator, tokens];
+    if (rest.length <= 0) return accumulator;
+
+    return extractAttributesImpl([rawValue, ...rest], accumulator);
   }
 
   accumulator[attr] = value;
@@ -143,7 +171,7 @@ function extractAttributesImpl(tokens, accumulator) {
 
 function extractSkillsImpl(tokens, skillsAccum, skillNameAccum) {
   if (tokens === []) {
-    return [skillsAccum, tokens];
+    return skillsAccum;
   }
 
   const [partialSkillName, maybeSkillScore, ...rest] = tokens;
@@ -294,64 +322,63 @@ export function ExtractDisordersAndAdaptations(tokens) {
   );
 }
 
-function parseStatBlockImpl(tokens, state, statBlock) {
-  if (tokens.length === 0) {
-    return statBlock;
+function parseStatBlockImpl(lines, state, statBlock) {
+  if (lines.length === 0) {
+    return { ...statBlock, notes: statBlock.notes.join("\n") };
   }
 
-  const [nextToken, ...rest] = tokens;
-  const nextState = determineNextState(nextToken);
-
-  if (state === States.BeginStatblock && nextState === States.Unknown) {
-    const characterNameParts = [...(statBlock.name || []), nextToken];
-    return parseStatBlockImpl(rest, state, {
-      ...statBlock,
-      name: characterNameParts,
-    });
-  }
-
+  const [firstLine, ...rest] = lines;
   if (state === States.BeginStatblock) {
-    const name = (statBlock.name || []).join(" ");
-    return parseStatBlockImpl(tokens, nextState, {
-      ...statBlock,
-      name,
-    });
+    if (statBlock.name === undefined) {
+      return parseStatBlockImpl(rest, determineNextState(rest[0]), {
+        ...statBlock,
+        name: firstLine.join(" "),
+      });
+    }
   }
 
-  if (state === States.AttributePairs) {
-    const [attributes, remainingTokens] = ExtractAttributes(tokens);
-    return parseStatBlockImpl(remainingTokens, States.Unknown, {
+  if (state === States.Unknown) {
+    statBlock.notes.push(firstLine.join(" "));
+    return parseStatBlockImpl(rest, determineNextState(rest[0]), statBlock);
+  }
+
+  const [tokens, otherLines] = collectTokensUntilNextSection(lines);
+  const nextState = determineNextState(otherLines[0]);
+
+  if (state === States.AttributePairs && statBlock.attributes === undefined) {
+    const attributes = ExtractAttributes(tokens);
+    return parseStatBlockImpl(otherLines, nextState, {
       ...statBlock,
       attributes,
     });
   }
 
-  if (nextState === States.SkillPairs) {
-    const [skills, remainingTokens] = ExtractSkills(rest);
-    return parseStatBlockImpl(remainingTokens, States.Unknown, {
+  if (state === States.SkillPairs) {
+    const [skills] = ExtractSkills(tokens.slice(1));
+    return parseStatBlockImpl(otherLines, nextState, {
       ...statBlock,
       skills,
     });
   }
 
-  if (nextState === States.Attacks) {
-    const [groupedAttacks, remainingTokens] =
-      groupEntriesUntilNextSection(rest);
+  if (state === States.Attacks) {
+    const groupedAttacks = groupEntriesUntilNextSection(tokens.slice(1));
     const attacks = groupedAttacks.flatMap((group) => {
       const [results, trailingTokens] = ExtractAttacks(group);
       return results.map((a) => {
         return { ...a, notes: trailingTokens.join(" ") };
       });
     });
-    return parseStatBlockImpl(remainingTokens, States.Unknown, {
+    return parseStatBlockImpl(otherLines, nextState, {
       ...statBlock,
       attacks,
     });
   }
 
-  if (nextState === States.ArmorAndEquipment) {
-    const [armorAndEquipmentGroup, remainingTokens] =
-      groupEntriesUntilNextSection(rest);
+  if (state === States.ArmorAndEquipment) {
+    const armorAndEquipmentGroup = groupEntriesUntilNextSection(
+      tokens.slice(1),
+    );
     const armorAndEquipment = ExtractArmorAndEquipment(
       armorAndEquipmentGroup.flatMap((subarray, i) => {
         if (i + 1 === armorAndEquipmentGroup.length) {
@@ -360,27 +387,30 @@ function parseStatBlockImpl(tokens, state, statBlock) {
         return [...subarray, COMMA];
       }),
     );
-    return parseStatBlockImpl(remainingTokens, States.Unknown, {
+    return parseStatBlockImpl(otherLines, nextState, {
       ...statBlock,
       ...armorAndEquipment,
     });
   }
 
-  if (nextState === States.DisordersAndAdaptations) {
-    const [disordersAndAdaptationsGroup, remainingTokens] =
-      groupEntriesUntilNextSection(rest);
+  if (state === States.DisordersAndAdaptations) {
+    const disordersAndAdaptationsGroup = groupEntriesUntilNextSection(
+      tokens.slice(1),
+    );
     const disordersAndAdaptations = ExtractDisordersAndAdaptations(
       disordersAndAdaptationsGroup.flatMap((subarray) => subarray),
     );
-    return parseStatBlockImpl(remainingTokens, States.Unknown, {
+    return parseStatBlockImpl(otherLines, nextState, {
       ...statBlock,
       ...disordersAndAdaptations,
     });
   }
 
-  return parseStatBlockImpl(rest, nextState, statBlock);
+  return parseStatBlockImpl(otherLines, nextState, statBlock);
 }
 
 export function ParseStatBlock(stream) {
-  return parseStatBlockImpl(tokenize(stream), States.BeginStatblock, {});
+  return parseStatBlockImpl(tokenize(stream), States.BeginStatblock, {
+    notes: [],
+  });
 }

@@ -89,6 +89,10 @@ function extractAttacksImpl(tokens, accumulatedAttacks, incompleteAttack) {
     return extractAttacksImpl(rest, accumulatedAttacks, partialAttack);
   }
 
+  if (accumulatedAttacks.length === 0) {
+    return [[partialAttack], tokens];
+  }
+
   return [accumulatedAttacks, tokens];
 }
 
@@ -96,5 +100,9 @@ export function ExtractAttacks(tokens) {
   const simplifiedTokens = tokens
     .filter((token) => token.replaceAll(/\(|\)/g, "") !== "or")
     .filter((token) => token !== ",");
+  const [firstToken] = simplifiedTokens;
+  if (firstToken && firstToken.includes("(")) {
+    return [[{ name: "Too complicated to parse. See notes." }], tokens];
+  }
   return extractAttacksImpl(simplifiedTokens, [], { name: [] });
 }
