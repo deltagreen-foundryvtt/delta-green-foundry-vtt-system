@@ -358,13 +358,15 @@ async function RegexParseNpcStatBlock(inputStr, actorType) {
   }
 
   (attacks || []).forEach(async (attack) => {
-    const { name, skillModifier, damage, armorPiercing, lethality } = attack;
-    const [description, attackSkill, killRadius, expense] = [
-      "",
-      "custom",
-      "N/A",
-      "N/A",
-    ];
+    const {
+      name,
+      skillModifier,
+      damage,
+      armorPiercing,
+      lethality,
+      notes: description,
+    } = attack;
+    const [attackSkill, killRadius, expense] = ["custom", "N/A", "N/A"];
     const [range, skillMod] = [0, 0];
     const skillTarget = skillModifier;
     const equipped = true;
