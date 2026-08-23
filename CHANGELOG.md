@@ -9,6 +9,7 @@
 ### **Features:**
 
 - [#436](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/436) Add professions compendia (props to @Vogliadicone for doing the hard part!)
+- [#440](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/440) - Remove "Is Lethal" checkbox from attack form
 
 ## Version 2.0.1 - 2026-08-10
 
