@@ -1,0 +1,57 @@
+{
+  "folder": "G8Adye9VNVVhlv1N",
+  "name": "ATF - Explosives Specialist",
+  "type": "profession",
+  "_id": "nIcqfB00HzC5WW32",
+  "img": "systems/deltagreen/assets/icons/person-black-bg.svg",
+  "system": {
+    "description": "<p>Extra profession (ATF pilot). Source: local DG extra professions sheet.</p>",
+    "bonds": 3,
+    "automaticSkills": {
+      "alertness": 50,
+      "athletics": 60,
+      "bureaucracy": 40,
+      "criminology": 40,
+      "demolitions": 60,
+      "drive": 50,
+      "firearms": 50,
+      "heavy_weapons": 50,
+      "humint": 40,
+      "law": 30,
+      "Military Science (Land)": 40,
+      "search": 40,
+      "stealth": 50,
+      "survival": 50,
+      "unarmed_combat": 50
+    },
+    "automaticSkillMeta": {},
+    "optionSkills": {
+      "optionPicks": 1,
+      "artillery": 40,
+      "dodge": 50,
+      "first_aid": 40,
+      "heavy_machiner": 60,
+      "swim": 50
+    },
+    "optionSkillMeta": {}
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "deltagreen",
+    "systemVersion": "2.0.0-beta3",
+    "createdTime": 1788973736493,
+    "modifiedTime": 1788973736493,
+    "lastModifiedBy": "961R6wJiqwnS0zD3",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "961R6wJiqwnS0zD3": 3
+  },
+  "sort": 0,
+  "_key": "!items!nIcqfB00HzC5WW32"
+}
