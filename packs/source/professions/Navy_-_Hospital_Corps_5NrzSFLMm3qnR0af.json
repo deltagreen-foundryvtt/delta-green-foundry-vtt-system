@@ -1,0 +1,50 @@
+{
+  "folder": "ApVsWYxCNH1JIknC",
+  "name": "Navy - Hospital Corps",
+  "type": "profession",
+  "_id": "5NrzSFLMm3qnR0af",
+  "img": "systems/deltagreen/assets/icons/person-black-bg.svg",
+  "system": {
+    "description": "<p>Extra profession (Navy). Local DG extra professions sheet.</p>",
+    "bonds": 3,
+    "automaticSkills": {
+      "alertness": 50,
+      "athletics": 50,
+      "bureaucracy": 40,
+      "firearms": 40,
+      "first_aid": 60,
+      "humint": 40,
+      "medicine": 40,
+      "persuade": 50,
+      "pharmacy": 40,
+      "psychotherapy": 40,
+      "Science (Biology)": 40,
+      "surgery": 40,
+      "survival": 50
+    },
+    "automaticSkillMeta": {},
+    "optionSkills": {
+      "optionPicks": 0
+    },
+    "optionSkillMeta": {}
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "deltagreen",
+    "systemVersion": "2.0.0-beta3",
+    "createdTime": 1789040000000,
+    "modifiedTime": 1789040000000,
+    "lastModifiedBy": "961R6wJiqwnS0zD3",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "961R6wJiqwnS0zD3": 3
+  },
+  "sort": 0,
+  "_key": "!items!5NrzSFLMm3qnR0af"
+}

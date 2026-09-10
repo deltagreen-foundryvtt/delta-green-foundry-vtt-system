@@ -1,0 +1,60 @@
+{
+  "folder": "Vy5urxE8W3L7DMVO",
+  "name": "CBP - Border Tactical Unit",
+  "type": "profession",
+  "_id": "XzK3M4MZJ4MX7bu9",
+  "img": "systems/deltagreen/assets/icons/person-black-bg.svg",
+  "system": {
+    "description": "<p>Extra profession (CBP). Local DG extra professions sheet.</p>",
+    "bonds": 3,
+    "automaticSkills": {
+      "alertness": 70,
+      "athletics": 50,
+      "criminology": 50,
+      "drive": 70,
+      "firearms": 70,
+      "heavy_weapons": 40,
+      "melee_weapons": 50,
+      "Military Science (Land)": 20,
+      "navigate": 60,
+      "search": 50,
+      "survival": 60,
+      "swim": 40,
+      "unarmed_combat": 60
+    },
+    "automaticSkillMeta": {},
+    "optionSkills": {
+      "optionPicks": 1,
+      "bureaucracy": 40,
+      "humint": 40,
+      "law": 30,
+      "persuade": 50,
+      "typed:ForeignLanguage:QBeOn8KP": 40,
+      "pharmacy": 50
+    },
+    "optionSkillMeta": {
+      "typed:ForeignLanguage:QBeOn8KP": {
+        "chooseOne": true
+      }
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "deltagreen",
+    "systemVersion": "2.0.0-beta3",
+    "createdTime": 1789040000000,
+    "modifiedTime": 1789040000000,
+    "lastModifiedBy": "961R6wJiqwnS0zD3",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "961R6wJiqwnS0zD3": 3
+  },
+  "sort": 0,
+  "_key": "!items!XzK3M4MZJ4MX7bu9"
+}

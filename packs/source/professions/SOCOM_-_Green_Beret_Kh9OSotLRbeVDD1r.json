@@ -1,0 +1,57 @@
+{
+  "folder": "KOHgzIZ7oXGzfhzn",
+  "name": "SOCOM - Green Beret",
+  "type": "profession",
+  "_id": "Kh9OSotLRbeVDD1r",
+  "img": "systems/deltagreen/assets/icons/person-black-bg.svg",
+  "system": {
+    "description": "<p>Extra profession (SOCOM). Local DG extra professions sheet.</p>",
+    "bonds": 2,
+    "automaticSkills": {
+      "alertness": 50,
+      "athletics": 60,
+      "demolitions": 40,
+      "firearms": 60,
+      "heavy_weapons": 50,
+      "humint": 40,
+      "melee_weapons": 50,
+      "Military Science (Land)": 60,
+      "navigate": 50,
+      "persuade": 40,
+      "sigint": 40,
+      "stealth": 50,
+      "survival": 50,
+      "swim": 50,
+      "unarmed_combat": 60
+    },
+    "automaticSkillMeta": {},
+    "optionSkills": {
+      "optionPicks": 1,
+      "typed:ForeignLanguage:CHwiNAzv": 20
+    },
+    "optionSkillMeta": {
+      "typed:ForeignLanguage:CHwiNAzv": {
+        "chooseOne": true
+      }
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "deltagreen",
+    "systemVersion": "2.0.0-beta3",
+    "createdTime": 1789040000000,
+    "modifiedTime": 1789040000000,
+    "lastModifiedBy": "961R6wJiqwnS0zD3",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "961R6wJiqwnS0zD3": 3
+  },
+  "sort": 0,
+  "_key": "!items!Kh9OSotLRbeVDD1r"
+}

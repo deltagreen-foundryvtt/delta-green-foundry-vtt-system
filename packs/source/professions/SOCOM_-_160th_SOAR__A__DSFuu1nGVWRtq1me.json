@@ -1,0 +1,50 @@
+{
+  "folder": "KOHgzIZ7oXGzfhzn",
+  "name": "SOCOM - 160th SOAR (A)",
+  "type": "profession",
+  "_id": "DSFuu1nGVWRtq1me",
+  "img": "systems/deltagreen/assets/icons/person-black-bg.svg",
+  "system": {
+    "description": "<p>Extra profession (SOCOM). Local DG extra professions sheet.</p>",
+    "bonds": 2,
+    "automaticSkills": {
+      "alertness": 60,
+      "athletics": 50,
+      "bureaucracy": 30,
+      "Craft (Electrician)": 40,
+      "Craft (Mechanic)": 40,
+      "firearms": 40,
+      "heavy_weapons": 50,
+      "Military Science (Air)": 60,
+      "navigate": 60,
+      "Pilot (Helicopter)": 60,
+      "Science (Meteorology)": 50,
+      "swim": 50
+    },
+    "automaticSkillMeta": {},
+    "optionSkills": {
+      "optionPicks": 1,
+      "Military Science (Land)": 20
+    },
+    "optionSkillMeta": {}
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "deltagreen",
+    "systemVersion": "2.0.0-beta3",
+    "createdTime": 1789040000000,
+    "modifiedTime": 1789040000000,
+    "lastModifiedBy": "961R6wJiqwnS0zD3",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "961R6wJiqwnS0zD3": 3
+  },
+  "sort": 0,
+  "_key": "!items!DSFuu1nGVWRtq1me"
+}

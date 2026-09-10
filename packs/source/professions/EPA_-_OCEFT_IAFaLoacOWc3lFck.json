@@ -1,0 +1,48 @@
+{
+  "folder": "mzHt6u5ImOWE1Wkb",
+  "name": "EPA - OCEFT",
+  "type": "profession",
+  "_id": "IAFaLoacOWc3lFck",
+  "img": "systems/deltagreen/assets/icons/person-black-bg.svg",
+  "system": {
+    "description": "<p>Extra profession (EPA). Local DG extra professions sheet.</p>",
+    "bonds": 4,
+    "automaticSkills": {
+      "alertness": 50,
+      "bureaucracy": 40,
+      "criminology": 50,
+      "drive": 40,
+      "firearms": 40,
+      "forensics": 40,
+      "humint": 50,
+      "law": 30,
+      "persuade": 50,
+      "search": 50,
+      "unarmed_combat": 60
+    },
+    "automaticSkillMeta": {},
+    "optionSkills": {
+      "optionPicks": 0
+    },
+    "optionSkillMeta": {}
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "deltagreen",
+    "systemVersion": "2.0.0-beta3",
+    "createdTime": 1789040000000,
+    "modifiedTime": 1789040000000,
+    "lastModifiedBy": "961R6wJiqwnS0zD3",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "961R6wJiqwnS0zD3": 3
+  },
+  "sort": 0,
+  "_key": "!items!IAFaLoacOWc3lFck"
+}

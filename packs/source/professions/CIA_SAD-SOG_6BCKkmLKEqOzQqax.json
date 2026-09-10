@@ -1,0 +1,58 @@
+{
+  "folder": "RVfK6sw69bqPhHe8",
+  "name": "CIA SAD-SOG",
+  "type": "profession",
+  "_id": "6BCKkmLKEqOzQqax",
+  "img": "systems/deltagreen/assets/icons/person-black-bg.svg",
+  "system": {
+    "description": "<p>Extra profession (CIA). Local DG extra professions sheet.</p>",
+    "bonds": 2,
+    "automaticSkills": {
+      "alertness": 60,
+      "athletics": 50,
+      "demolitions": 40,
+      "drive": 60,
+      "firearms": 60,
+      "heavy_weapons": 50,
+      "melee_weapons": 50,
+      "Military Science (Land)": 50,
+      "navigate": 50,
+      "stealth": 50,
+      "survival": 50,
+      "swim": 40,
+      "unarmed_combat": 60
+    },
+    "automaticSkillMeta": {},
+    "optionSkills": {
+      "optionPicks": 1,
+      "humint": 30,
+      "persuade": 40,
+      "sigint": 40,
+      "typed:ForeignLanguage:OutRkSyM": 40
+    },
+    "optionSkillMeta": {
+      "typed:ForeignLanguage:OutRkSyM": {
+        "chooseOne": true
+      }
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "deltagreen",
+    "systemVersion": "2.0.0-beta3",
+    "createdTime": 1789040000000,
+    "modifiedTime": 1789040000000,
+    "lastModifiedBy": "961R6wJiqwnS0zD3",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "961R6wJiqwnS0zD3": 3
+  },
+  "sort": 0,
+  "_key": "!items!6BCKkmLKEqOzQqax"
+}

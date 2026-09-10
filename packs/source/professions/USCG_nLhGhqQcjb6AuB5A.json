@@ -1,0 +1,18 @@
+{
+  "name": "USCG",
+  "type": "Item",
+  "_id": "nLhGhqQcjb6AuB5A",
+  "folder": null,
+  "sorting": "a",
+  "sort": 0,
+  "flags": {},
+  "_stats": {
+    "systemId": "deltagreen",
+    "systemVersion": "2.0.0-beta3",
+    "coreVersion": "14.364",
+    "createdTime": 1789040000000,
+    "modifiedTime": 1789040000000,
+    "lastModifiedBy": "961R6wJiqwnS0zD3"
+  },
+  "_key": "!folders!nLhGhqQcjb6AuB5A"
+}

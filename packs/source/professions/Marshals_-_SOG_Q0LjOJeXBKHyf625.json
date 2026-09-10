@@ -1,0 +1,52 @@
+{
+  "folder": "Y7md574V9zmRNCBJ",
+  "name": "Marshals - SOG",
+  "type": "profession",
+  "_id": "Q0LjOJeXBKHyf625",
+  "img": "systems/deltagreen/assets/icons/person-black-bg.svg",
+  "system": {
+    "description": "<p>Extra profession (Marshals). Local DG extra professions sheet.</p>",
+    "bonds": 3,
+    "automaticSkills": {
+      "alertness": 50,
+      "athletics": 60,
+      "bureaucracy": 40,
+      "criminology": 50,
+      "dodge": 60,
+      "drive": 50,
+      "firearms": 50,
+      "heavy_weapons": 50,
+      "humint": 60,
+      "law": 30,
+      "persuade": 50,
+      "search": 50,
+      "unarmed_combat": 60
+    },
+    "automaticSkillMeta": {},
+    "optionSkills": {
+      "optionPicks": 1,
+      "forensics": 30,
+      "stealth": 40
+    },
+    "optionSkillMeta": {}
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "deltagreen",
+    "systemVersion": "2.0.0-beta3",
+    "createdTime": 1789040000000,
+    "modifiedTime": 1789040000000,
+    "lastModifiedBy": "961R6wJiqwnS0zD3",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "961R6wJiqwnS0zD3": 3
+  },
+  "sort": 0,
+  "_key": "!items!Q0LjOJeXBKHyf625"
+}
