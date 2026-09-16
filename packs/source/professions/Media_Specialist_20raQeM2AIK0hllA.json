@@ -1,0 +1,69 @@
+{
+  "folder": null,
+  "name": "Media Specialist",
+  "type": "profession",
+  "_id": "20raQeM2AIK0hllA",
+  "img": "systems/deltagreen/assets/icons/person-black-bg.svg",
+  "system": {
+    "description": "<p>See Page 24 of the Agent's Handbook.</p>",
+    "bonds": 4,
+    "automaticSkills": {
+      "typed:Art:9FGlk18y": 60,
+      "history": 40,
+      "humint": 40,
+      "persuade": 50
+    },
+    "automaticSkillMeta": {
+      "typed:Art:9FGlk18y": {
+        "chooseOne": true
+      }
+    },
+    "optionSkills": {
+      "optionPicks": 5,
+      "anthropology": 40,
+      "archeology": 40,
+      "typed:Art:jiWgggHu": 40,
+      "bureaucracy": 50,
+      "computer_science": 40,
+      "criminology": 50,
+      "typed:ForeignLanguage:qgtHFHdc": 40,
+      "law": 40,
+      "typed:MilitaryScience:SdmeUKSF": 40,
+      "occult": 50,
+      "typed:Science:MCr9wIQg": 40
+    },
+    "optionSkillMeta": {
+      "typed:Art:jiWgggHu": {
+        "chooseOne": true
+      },
+      "typed:ForeignLanguage:qgtHFHdc": {
+        "chooseOne": true
+      },
+      "typed:MilitaryScience:SdmeUKSF": {
+        "chooseOne": true
+      },
+      "typed:Science:MCr9wIQg": {
+        "chooseOne": true
+      }
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "deltagreen",
+    "systemVersion": "2.0.0-beta3",
+    "createdTime": 1782382835933,
+    "modifiedTime": 1782382835941,
+    "lastModifiedBy": "961R6wJiqwnS0zD3",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "961R6wJiqwnS0zD3": 3
+  },
+  "sort": 0,
+  "_key": "!items!20raQeM2AIK0hllA"
+}

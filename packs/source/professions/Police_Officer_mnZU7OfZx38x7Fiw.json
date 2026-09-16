@@ -1,0 +1,54 @@
+{
+  "folder": null,
+  "name": "Police Officer",
+  "type": "profession",
+  "_id": "mnZU7OfZx38x7Fiw",
+  "img": "systems/deltagreen/assets/icons/person-black-bg.svg",
+  "system": {
+    "description": "<p>See Page 25 of the Agent's Handbook.</p>",
+    "bonds": 3,
+    "automaticSkills": {
+      "alertness": 60,
+      "bureaucracy": 40,
+      "criminology": 40,
+      "drive": 50,
+      "firearms": 40,
+      "first_aid": 30,
+      "humint": 50,
+      "law": 30,
+      "melee_weapons": 50,
+      "navigate": 40,
+      "persuade": 40,
+      "search": 40,
+      "unarmed_combat": 60
+    },
+    "automaticSkillMeta": {},
+    "optionSkills": {
+      "optionPicks": 1,
+      "forensics": 50,
+      "heavy_machiner": 60,
+      "heavy_weapons": 50,
+      "ride": 60
+    },
+    "optionSkillMeta": {}
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "deltagreen",
+    "systemVersion": "2.0.0-beta3",
+    "createdTime": 1782382835936,
+    "modifiedTime": 1782382835942,
+    "lastModifiedBy": "961R6wJiqwnS0zD3",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "961R6wJiqwnS0zD3": 3
+  },
+  "sort": 0,
+  "_key": "!items!mnZU7OfZx38x7Fiw"
+}

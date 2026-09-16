@@ -1,0 +1,50 @@
+{
+  "folder": null,
+  "name": "Lawyer or Business Executive",
+  "type": "profession",
+  "_id": "lvQCWcd7R1VFpMuC",
+  "img": "systems/deltagreen/assets/icons/person-black-bg.svg",
+  "system": {
+    "description": "<p>See Page 24 of the Agent's Handbook.</p>",
+    "bonds": 4,
+    "automaticSkills": {
+      "accounting": 50,
+      "bureaucracy": 50,
+      "humint": 40,
+      "persuade": 60
+    },
+    "automaticSkillMeta": {},
+    "optionSkills": {
+      "optionPicks": 4,
+      "computer_science": 50,
+      "criminology": 60,
+      "typed:ForeignLanguage:U8k4UxgF": 50,
+      "law": 50,
+      "pharmacy": 50
+    },
+    "optionSkillMeta": {
+      "typed:ForeignLanguage:U8k4UxgF": {
+        "chooseOne": true
+      }
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "deltagreen",
+    "systemVersion": "2.0.0-beta3",
+    "createdTime": 1782382835932,
+    "modifiedTime": 1782382835941,
+    "lastModifiedBy": "961R6wJiqwnS0zD3",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "961R6wJiqwnS0zD3": 3
+  },
+  "sort": 0,
+  "_key": "!items!lvQCWcd7R1VFpMuC"
+}

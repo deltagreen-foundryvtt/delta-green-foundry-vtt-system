@@ -1,0 +1,57 @@
+{
+  "folder": null,
+  "name": "Intelligence Case Officer",
+  "type": "profession",
+  "_id": "W70c4NfKo19aKU48",
+  "img": "systems/deltagreen/assets/icons/person-black-bg.svg",
+  "system": {
+    "description": "<p>See Page 24 of the Agent's Handbook.</p>",
+    "bonds": 2,
+    "automaticSkills": {
+      "alertness": 50,
+      "bureaucracy": 40,
+      "criminology": 50,
+      "disguise": 50,
+      "drive": 40,
+      "firearms": 40,
+      "typed:ForeignLanguage:7DRxXCZJ": 50,
+      "typed:ForeignLanguage:YdUdgmkc": 40,
+      "humint": 60,
+      "persuade": 60,
+      "sigint": 40,
+      "stealth": 50,
+      "unarmed_combat": 50
+    },
+    "automaticSkillMeta": {
+      "typed:ForeignLanguage:7DRxXCZJ": {
+        "chooseOne": true
+      },
+      "typed:ForeignLanguage:YdUdgmkc": {
+        "chooseOne": true
+      }
+    },
+    "optionSkills": {
+      "optionPicks": 0
+    },
+    "optionSkillMeta": {}
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "deltagreen",
+    "systemVersion": "2.0.0-beta3",
+    "createdTime": 1782382835931,
+    "modifiedTime": 1782382835940,
+    "lastModifiedBy": "961R6wJiqwnS0zD3",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "961R6wJiqwnS0zD3": 3
+  },
+  "sort": 0,
+  "_key": "!items!W70c4NfKo19aKU48"
+}

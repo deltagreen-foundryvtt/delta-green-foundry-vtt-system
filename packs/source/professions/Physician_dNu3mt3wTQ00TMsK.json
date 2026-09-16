@@ -1,0 +1,52 @@
+{
+  "folder": null,
+  "name": "Physician",
+  "type": "profession",
+  "_id": "dNu3mt3wTQ00TMsK",
+  "img": "systems/deltagreen/assets/icons/person-black-bg.svg",
+  "system": {
+    "description": "<p>See Page 22 of the Agent's Handbook.</p>",
+    "bonds": 3,
+    "automaticSkills": {
+      "bureaucracy": 50,
+      "first_aid": 60,
+      "medicine": 60,
+      "persuade": 40,
+      "pharmacy": 50,
+      "Science (Biology)": 60,
+      "search": 40
+    },
+    "automaticSkillMeta": {},
+    "optionSkills": {
+      "optionPicks": 2,
+      "forensics": 50,
+      "psychotherapy": 60,
+      "typed:Science:iC63GBbu": 50,
+      "surgery": 50
+    },
+    "optionSkillMeta": {
+      "typed:Science:iC63GBbu": {
+        "chooseOne": true
+      }
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "deltagreen",
+    "systemVersion": "2.0.0-beta3",
+    "createdTime": 1782382835934,
+    "modifiedTime": 1782382835941,
+    "lastModifiedBy": "961R6wJiqwnS0zD3",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "961R6wJiqwnS0zD3": 3
+  },
+  "sort": 0,
+  "_key": "!items!dNu3mt3wTQ00TMsK"
+}

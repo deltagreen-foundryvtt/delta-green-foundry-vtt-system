@@ -1,0 +1,50 @@
+{
+  "folder": null,
+  "name": "Nurse or Paramedic",
+  "type": "profession",
+  "_id": "HLkrseugCuC1qLv7",
+  "img": "systems/deltagreen/assets/icons/person-black-bg.svg",
+  "system": {
+    "description": "<p>See Page 25 of the Agent's Handbook.</p>",
+    "bonds": 4,
+    "automaticSkills": {
+      "alertness": 40,
+      "bureaucracy": 40,
+      "first_aid": 60,
+      "humint": 40,
+      "medicine": 40,
+      "persuade": 40,
+      "pharmacy": 40,
+      "Science (Biology)": 40
+    },
+    "automaticSkillMeta": {},
+    "optionSkills": {
+      "optionPicks": 2,
+      "drive": 60,
+      "forensics": 40,
+      "navigate": 50,
+      "psychotherapy": 50,
+      "search": 60
+    },
+    "optionSkillMeta": {}
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "deltagreen",
+    "systemVersion": "2.0.0-beta3",
+    "createdTime": 1782382835933,
+    "modifiedTime": 1782382835941,
+    "lastModifiedBy": "961R6wJiqwnS0zD3",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "961R6wJiqwnS0zD3": 3
+  },
+  "sort": 0,
+  "_key": "!items!HLkrseugCuC1qLv7"
+}

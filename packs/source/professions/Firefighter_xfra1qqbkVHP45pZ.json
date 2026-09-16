@@ -1,0 +1,48 @@
+{
+  "folder": null,
+  "name": "Firefighter",
+  "type": "profession",
+  "_id": "xfra1qqbkVHP45pZ",
+  "img": "systems/deltagreen/assets/icons/person-black-bg.svg",
+  "system": {
+    "description": "<p>See Page 23 of the Agent's Handbook.</p>",
+    "bonds": 3,
+    "automaticSkills": {
+      "alertness": 50,
+      "athletics": 60,
+      "Craft (Electrician)": 40,
+      "Craft (Mechanic)": 40,
+      "demolitions": 50,
+      "drive": 50,
+      "first_aid": 50,
+      "forensics": 40,
+      "heavy_machiner": 50,
+      "navigate": 50,
+      "search": 40
+    },
+    "automaticSkillMeta": {},
+    "optionSkills": {
+      "optionPicks": 0
+    },
+    "optionSkillMeta": {}
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "deltagreen",
+    "systemVersion": "2.0.0-beta3",
+    "createdTime": 1782382835930,
+    "modifiedTime": 1782382835940,
+    "lastModifiedBy": "961R6wJiqwnS0zD3",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "961R6wJiqwnS0zD3": 3
+  },
+  "sort": 0,
+  "_key": "!items!xfra1qqbkVHP45pZ"
+}

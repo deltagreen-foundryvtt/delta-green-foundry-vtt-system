@@ -1,0 +1,60 @@
+{
+  "folder": null,
+  "name": "Computer Scientist or Engineer",
+  "type": "profession",
+  "_id": "KNrTM4jLomNSTSCh",
+  "img": "systems/deltagreen/assets/icons/person-black-bg.svg",
+  "system": {
+    "description": "<p>See Page 21 of the Agent's Handbook.</p>",
+    "bonds": 3,
+    "automaticSkills": {
+      "computer_science": 60,
+      "Craft (Electrician)": 30,
+      "Craft (Mechanic)": 30,
+      "Craft (Microelectronics)": 40,
+      "Science (Mathematics)": 40,
+      "sigint": 40
+    },
+    "automaticSkillMeta": {},
+    "optionSkills": {
+      "optionPicks": 4,
+      "accounting": 50,
+      "bureaucracy": 50,
+      "typed:Craft:CQseZ4mK": 40,
+      "typed:ForeignLanguage:LOHNweby": 40,
+      "heavy_machiner": 50,
+      "law": 40,
+      "typed:Science:n2M8FiNY": 40
+    },
+    "optionSkillMeta": {
+      "typed:Craft:CQseZ4mK": {
+        "chooseOne": true
+      },
+      "typed:ForeignLanguage:LOHNweby": {
+        "chooseOne": true
+      },
+      "typed:Science:n2M8FiNY": {
+        "chooseOne": true
+      }
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "deltagreen",
+    "systemVersion": "2.0.0-beta3",
+    "createdTime": 1782382835927,
+    "modifiedTime": 1782382835939,
+    "lastModifiedBy": "961R6wJiqwnS0zD3",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "961R6wJiqwnS0zD3": 3
+  },
+  "sort": 0,
+  "_key": "!items!KNrTM4jLomNSTSCh"
+}

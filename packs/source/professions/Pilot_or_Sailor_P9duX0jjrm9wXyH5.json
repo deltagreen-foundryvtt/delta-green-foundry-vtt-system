@@ -1,0 +1,63 @@
+{
+  "folder": null,
+  "name": "Pilot or Sailor",
+  "type": "profession",
+  "_id": "P9duX0jjrm9wXyH5",
+  "img": "systems/deltagreen/assets/icons/person-black-bg.svg",
+  "system": {
+    "description": "<p>See Page 25 of the Agent's Handbook.</p>",
+    "bonds": 3,
+    "automaticSkills": {
+      "alertness": 60,
+      "bureaucracy": 30,
+      "Craft (Electrician)": 40,
+      "Craft (Mechanic)": 40,
+      "navigate": 50,
+      "typed:Pilot:tgOhrg2a": 60,
+      "Science (Meteorology)": 40,
+      "swim": 40
+    },
+    "automaticSkillMeta": {
+      "typed:Pilot:tgOhrg2a": {
+        "chooseOne": true
+      }
+    },
+    "optionSkills": {
+      "optionPicks": 2,
+      "typed:ForeignLanguage:QHgvu0po": 50,
+      "typed:Pilot:X1LyIgyT": 50,
+      "heavy_weapons": 50,
+      "typed:MilitaryScience:UfLrfqi9": 50
+    },
+    "optionSkillMeta": {
+      "typed:ForeignLanguage:QHgvu0po": {
+        "chooseOne": true
+      },
+      "typed:Pilot:X1LyIgyT": {
+        "chooseOne": true
+      },
+      "typed:MilitaryScience:UfLrfqi9": {
+        "chooseOne": true
+      }
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "deltagreen",
+    "systemVersion": "2.0.0-beta3",
+    "createdTime": 1782382835934,
+    "modifiedTime": 1782382835942,
+    "lastModifiedBy": "961R6wJiqwnS0zD3",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "961R6wJiqwnS0zD3": 3
+  },
+  "sort": 0,
+  "_key": "!items!P9duX0jjrm9wXyH5"
+}

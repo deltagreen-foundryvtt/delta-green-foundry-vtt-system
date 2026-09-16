@@ -1,0 +1,57 @@
+{
+  "folder": null,
+  "name": "Intelligence Analyst",
+  "type": "profession",
+  "_id": "pPZVbu7aXUirCdZs",
+  "img": "systems/deltagreen/assets/icons/person-black-bg.svg",
+  "system": {
+    "description": "<p>See Page 24 of the Agent's Handbook.</p>",
+    "bonds": 3,
+    "automaticSkills": {
+      "anthropology": 40,
+      "bureaucracy": 50,
+      "computer_science": 40,
+      "criminology": 40,
+      "typed:ForeignLanguage:3wuG9i1B": 50,
+      "typed:ForeignLanguage:BXNOusYj": 50,
+      "typed:ForeignLanguage:VC1P4AtU": 40,
+      "history": 40,
+      "humint": 50,
+      "sigint": 40
+    },
+    "automaticSkillMeta": {
+      "typed:ForeignLanguage:3wuG9i1B": {
+        "chooseOne": true
+      },
+      "typed:ForeignLanguage:BXNOusYj": {
+        "chooseOne": true
+      },
+      "typed:ForeignLanguage:VC1P4AtU": {
+        "chooseOne": true
+      }
+    },
+    "optionSkills": {
+      "optionPicks": 0
+    },
+    "optionSkillMeta": {}
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "deltagreen",
+    "systemVersion": "2.0.0-beta3",
+    "createdTime": 1782382835931,
+    "modifiedTime": 1782382835940,
+    "lastModifiedBy": "961R6wJiqwnS0zD3",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "961R6wJiqwnS0zD3": 3
+  },
+  "sort": 0,
+  "_key": "!items!pPZVbu7aXUirCdZs"
+}

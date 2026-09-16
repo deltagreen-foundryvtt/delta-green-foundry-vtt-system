@@ -1,0 +1,64 @@
+{
+  "folder": null,
+  "name": "Soldier or Marine",
+  "type": "profession",
+  "_id": "vIyvnGYXLOhHDfgN",
+  "img": "systems/deltagreen/assets/icons/person-black-bg.svg",
+  "system": {
+    "description": "<p>See Page 26 of the Agent's Handbook.</p>",
+    "bonds": 4,
+    "automaticSkills": {
+      "alertness": 50,
+      "athletics": 50,
+      "bureaucracy": 30,
+      "drive": 40,
+      "firearms": 40,
+      "first_aid": 40,
+      "Military Science (Land)": 40,
+      "navigate": 40,
+      "persuade": 30,
+      "unarmed_combat": 50
+    },
+    "automaticSkillMeta": {},
+    "optionSkills": {
+      "optionPicks": 3,
+      "artillery": 40,
+      "computer_science": 40,
+      "typed:Craft:PdQrtKaS": 40,
+      "demolitions": 40,
+      "typed:ForeignLanguage:SwGh6wLp": 40,
+      "heavy_machiner": 50,
+      "heavy_weapons": 40,
+      "search": 60,
+      "sigint": 40,
+      "swim": 60
+    },
+    "optionSkillMeta": {
+      "typed:Craft:PdQrtKaS": {
+        "chooseOne": true
+      },
+      "typed:ForeignLanguage:SwGh6wLp": {
+        "chooseOne": true
+      }
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "deltagreen",
+    "systemVersion": "2.0.0-beta3",
+    "createdTime": 1782382835938,
+    "modifiedTime": 1782382835943,
+    "lastModifiedBy": "961R6wJiqwnS0zD3",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "961R6wJiqwnS0zD3": 3
+  },
+  "sort": 0,
+  "_key": "!items!vIyvnGYXLOhHDfgN"
+}

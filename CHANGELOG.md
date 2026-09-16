@@ -6,6 +6,10 @@
 
 - [#456](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/456) - Hide breaking point from players if "Hide Sanity" setting is enabled
 
+### **Features:**
+
+- [#436](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/436) Add professions compendia (props to @Vogliadicone for doing the hard part!)
+
 ## Version 2.0.1 - 2026-08-10
 
 ### **Bug Fixes:**
