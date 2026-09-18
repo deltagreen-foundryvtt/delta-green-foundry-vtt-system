@@ -1,0 +1,68 @@
+Part Human, Part Ghoul
+Inhuman shapeshifter, age 25.
+STR 25 CON 25 DEX 12 INT 15 POW 13 CHA 11*
+HP 25 WP 13 SAN 0
+* CHA applies only in a human form.
+BONDS: None.
+MOTIVATIONS: Revenge on Delta Green.
+Revenge on Agent Example0.
+(Only as human) Protecting Agent Example1.
+Dissociative identity disorder (transforms into
+Agent Example2).
+Delusions (sometimes can’t distinguish reality from
+the memories of the dead).
+SKILLS: Alertness 65%, Athletics 50%, Criminology 55%,
+Firearms 45%, Foreign Language (Ghoul) 80%, Forensics
+40%, HUMINT 40%, Law 60%, Medicine 45%, Occult
+95%, Pharmacy 75%, Psychotherapy 80%, Science
+(Chemistry) 25%, Search 55%, Stealth 85%, Track (by
+scent) 55%, Unarmed Combat 75%, Unnatural 60%.
+ATTACKS: Claws 75%, damage 1D8, Armor Piercing 3
+(in ghoul form).
+Bite 75%, damage 1D10+2 (in ghoul form; see
+WORRY AND RIP).
+Unarmed 75%, damage 2D4 (in human form).
+CHARNEL VISAGE: In her true form, that of a loathsome
+ghoul, has no CHA stat as humans would
+understand it. Can transform rapidly between her
+native form and any human form consumed with the
+Changeling Feast ritual.
+GIFT OF THE GRAVE: Consuming rotten human flesh
+immediately restores 1D8 HP to an injured ghoul. This
+may be done once per 24 hours.
+IMMORTALITY: A ghoul never grows old, starves to death,
+or perishes through natural causes.
+INHUMAN AGILITY: With a successful Athletics roll,
+a ghoul can leap five meters in any direction from a
+standing position, scale any vertical surface, or drop up
+to 15 meters without damage. At top speed, a ghoul can
+run nearly 60 kph.
+INHUMAN STRENGTH: Adds 1D6 damage to all
+attacks with melee weapons and thrown weapons.
+LIFE UNDERGROUND: A ghoul can burrow through
+earth at up to three meters per minute. Ghouls thrive
+underground. They prefer to breathe air, and may go
+into a sort of torpor if suffocated long enough, but can
+survive indefinitely without it. A ghoul can see in absolute
+darkness, identify things by smell, and hear a human
+heartbeat at a distance of 15 meters.
+MEPHITIC MEMORIES: With an INT test, can bring
+to mind the memories of any of the many human beings
+whose brains it has devoured: insane cultists, MAJESTIC
+researchers, murderers, rapists, Delta Green agents,
+helpless victims, and many others. If the test fumbles, the
+memories come confusingly and heartbreakingly to the
+forefront of her thoughts, beyond her control.
+RESILIENT: A successful Lethality roll does not destroy a
+ghoul, but inflicts HP damage equal to the Lethality rating.
+WORRY AND RIP: After succeeding with a bite attack, a
+ghoul may inflict 1D6 damage on the same target each
+turn, without requiring an attack roll. The ghoul can take
+other actions while holding and worrying a victim. If
+the bite attack pierced the victim’s armor, the “worry
+and rip” damage ignores armor. The victim can attempt
+an opposed STR test as his or her action each turn to
+break free.
+RITUALS: Changeling Feast, Charnel Meditation,
+Obscure Memories.
+SAN LOSS: 0/1D6 (in ghoul form).

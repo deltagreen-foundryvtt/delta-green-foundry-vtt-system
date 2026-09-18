@@ -1,5 +1,11 @@
 # Release/Patch Notes
 
+## Unreleased
+
+### **Bug Fixes:**
+
+- [#452](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/452) - Fix stat block parser on very complicated stat blocks
+
 ## Version 2.0.1 - 2026-08-10
 
 ### **Bug Fixes:**

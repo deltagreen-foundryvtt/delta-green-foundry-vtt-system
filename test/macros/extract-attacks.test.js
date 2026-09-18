@@ -75,6 +75,17 @@ const complexLethality = {
   ],
   expectedTokensRemaining: ["(see", "dangerous)"],
 };
+const specialAttack = {
+  input: "kiss , damage special , see “Kiss.”".split(" "),
+  expectedAttacks: [
+    {
+      name: "Kiss See “Kiss.”",
+      damage: "special",
+      skillModifier: 0,
+    },
+  ],
+  expectedTokensRemaining: [],
+};
 
 describe("ExtractAttacks", () => {
   test.each([
@@ -86,6 +97,7 @@ describe("ExtractAttacks", () => {
     { ...heavyRifleEntry, testName: "Weapon with armor piercing" },
     { ...handGrenadeEntry, testName: "Explosive weapon with just lethality" },
     { ...complexLethality, testName: "Attack with complex lethality rules" },
+    { ...specialAttack, testName: "An attack with special rules" },
   ])("$testName", ({ input, expectedAttacks, expectedTokensRemaining }) => {
     const [actual, remainingTokens] = ExtractAttacks(input);
     expect(remainingTokens).toEqual(expectedTokensRemaining);

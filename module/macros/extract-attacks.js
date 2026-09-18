@@ -72,7 +72,11 @@ function extractAttacksImpl(tokens, accumulatedAttacks, incompleteAttack) {
     return extractAttacksImpl(rest, accumulatedAttacks, partialAttack);
   }
 
-  if (Number.isNaN(skillModifier) && typeof partialAttack.name !== "string") {
+  if (
+    Number.isNaN(skillModifier) &&
+    typeof partialAttack.name !== "string" &&
+    maybeAttackDetail !== undefined
+  ) {
     partialAttack.name = [...partialAttack.name, attackName];
     return extractAttacksImpl(
       [maybeAttackDetail, ...rest],
@@ -85,8 +89,14 @@ function extractAttacksImpl(tokens, accumulatedAttacks, incompleteAttack) {
     partialAttack.name = [...partialAttack.name, attackName]
       .map(capitalize)
       .join(" ");
-    partialAttack.skillModifier = skillModifier;
+    partialAttack.skillModifier = Number.isNaN(skillModifier)
+      ? 0
+      : skillModifier;
     return extractAttacksImpl(rest, accumulatedAttacks, partialAttack);
+  }
+
+  if (accumulatedAttacks.length === 0) {
+    return [[partialAttack], tokens];
   }
 
   return [accumulatedAttacks, tokens];
@@ -96,5 +106,9 @@ export function ExtractAttacks(tokens) {
   const simplifiedTokens = tokens
     .filter((token) => token.replaceAll(/\(|\)/g, "") !== "or")
     .filter((token) => token !== ",");
+  const [firstToken] = simplifiedTokens;
+  if (firstToken && firstToken.includes("(")) {
+    return [[{ name: "Too complicated to parse. See notes." }], tokens];
+  }
   return extractAttacksImpl(simplifiedTokens, [], { name: [] });
 }
