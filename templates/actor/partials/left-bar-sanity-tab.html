@@ -1,6 +1,6 @@
 <div class="tab {{leftBarRestSanityTabs.sanity.cssClass}}"
-        data-group="leftBarRestSanity"
-        data-tab="sanity">
+     data-group="leftBarRestSanity"
+     data-tab="sanity">
     <div class="breaking-point-inline">
         <label class="bolded-label breaking-point-label"
                title="{{localize 'DG.Mental.Tooltip.BreakingPoint'}}">
@@ -8,9 +8,14 @@
         </label>
         <input class="breaking-point-input centered"
                type="text"
+               {{#if hideBreakingPoint }}
+               value="???"
+               disabled=""
+               {{else }}
                name="system.sanity.currentBreakingPoint"
-               value="{{actor.system.sanity.currentBreakingPoint}}"
+               value="{{actor.system.sanity.currentBreakingPoint }}"
                data-dtype="Number"
+               {{/if }}
                title="{{localize 'DG.Mental.Tooltip.BreakingPoint'}}" />
         <a class="fa fa-refresh"
            data-action="resetBreakingPoint"
@@ -48,7 +53,7 @@
             <label class="adapted-label"
                    data-tooltip="{{localize 'DG.Tooltip.AdaptedToViolence'}}">
                 {{#if actor.system.sanity.adaptations.violence.isAdapted }}
-                {{localize 'DG.Mental.AdaptedToViolence'}}
+                    {{localize 'DG.Mental.AdaptedToViolence'}}
                 {{/if}}
             </label>
         </div>
@@ -79,7 +84,7 @@
             <label class="adapted-label"
                    data-tooltip="{{localize 'DG.Tooltip.AdaptedToHelplessness'}}">
                 {{#if actor.system.sanity.adaptations.helplessness.isAdapted }}
-                {{localize 'DG.Mental.AdaptedToHelplessness'}}
+                    {{localize 'DG.Mental.AdaptedToHelplessness'}}
                 {{/if}}
             </label>
         </div>

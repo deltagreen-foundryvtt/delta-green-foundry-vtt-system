@@ -13,7 +13,12 @@ export default class WeaponItemData extends foundry.abstract.TypeDataModel {
       damage: new StringField({ initial: "1D8" }),
       armorPiercing: new NumberField({ initial: 0, integer: true }),
       lethality: new NumberField({ initial: 0, integer: true }),
-      isLethal: new BooleanField({ initial: false }),
+      /**
+       * Deprecated:
+       * isLethal is no longer required, but to retain compatibility with
+       * existing worlds is kept as a read-only field.
+       */
+      isLethal: new BooleanField({ initial: false, persisted: false }),
       killRadius: new StringField({ initial: "N/A" }),
       ammo: new StringField({ initial: "" }),
       expense: new StringField({ initial: "Standard" }),

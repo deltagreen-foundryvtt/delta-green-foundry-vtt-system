@@ -158,7 +158,7 @@ div .exhausted-section {
 
   background-color: rgba(0, 0, 0, 0.05);
 
-  border: 1px solid rgb(122, 121, 113);
+  border: 1px solid var(--dg-border-grey);
   border-radius: 3px;
   margin-left: 10px;
   margin-bottom: 5px;
@@ -203,7 +203,7 @@ textarea.wounds {
 }
 
 div.max-resource-value {
-  border: 1px solid rgb(122, 121, 113);
+  border: 1px solid var(--dg-border-grey);
   border-radius: 3px;
   height: 100%;
   display: flex;

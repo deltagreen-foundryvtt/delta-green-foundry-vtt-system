@@ -154,6 +154,12 @@ export default class DGAgentSheet extends AgentSheetBase {
 
     if (this.actor.type !== "agent") return context;
 
+    const keepSanityPrivate = game.settings.get(
+      "deltagreen",
+      "keepSanityPrivate",
+    );
+    context.hideBreakingPoint = keepSanityPrivate && !game.user.isGM;
+
     const sortSkillsByColumn = game.settings.get("deltagreen", "sortSkills");
     context.sortSkillsByColumn = sortSkillsByColumn;
     context.skillColumns = prepareAgentSkillColumns(

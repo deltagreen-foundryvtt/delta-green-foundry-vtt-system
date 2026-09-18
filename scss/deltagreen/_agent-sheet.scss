@@ -284,6 +284,12 @@
       justify-self: end;
     }
 
+    .breaking-point-input:disabled {
+      filter: invert(100%);
+      background: none;
+      border: 1px solid var(--dg-border-grey);
+    }
+
     .fa-refresh {
       text-decoration: none;
       font-size: 12px;

@@ -54,7 +54,7 @@
   input[type="password"],
   select {
     background-color: rgba(0, 0, 0, 0.05);
-    border: 1px solid rgb(122, 121, 113);
+    border: 1px solid var(--dg-border-grey);
     border-radius: 3px;
     color: inherit;
   }

@@ -57,7 +57,7 @@
   width: 3rem;
   min-height: 3rem;
   padding: 0.5rem;
-  border: 1px dashed rgb(122, 121, 113);
+  border: 1px dashed var(--dg-border-grey);
   border-radius: 4px;
 }
 
@@ -75,7 +75,7 @@
   padding: 0;
   font-weight: bold;
   font-size: var(--font-size-16, 1rem);
-  border: 1px solid rgb(122, 121, 113);
+  border: 1px solid var(--dg-border-grey);
   border-radius: 4px;
   background: rgba(0, 0, 0, 0.05);
   cursor: grab;
@@ -113,7 +113,7 @@
   height: 2.5rem;
   flex: 0 0 auto;
   padding: 0;
-  border: 1px dashed rgb(122, 121, 113);
+  border: 1px dashed var(--dg-border-grey);
   border-radius: 4px;
   box-sizing: border-box;
 }
@@ -245,7 +245,7 @@
 .dg-dialog--modify-roll .modify-roll-section {
   margin-top: 1rem;
   padding-top: 0.75rem;
-  border-top: 1px solid rgb(122, 121, 113);
+  border-top: 1px solid var(--dg-border-grey);
 }
 
 .dg-dialog--modify-roll .modify-roll-section h3 {
