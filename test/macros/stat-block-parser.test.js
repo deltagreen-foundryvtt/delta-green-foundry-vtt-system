@@ -6,6 +6,7 @@ import {
   ExtractSkills,
   ExtractArmorAndEquipment,
   ExtractDisordersAndAdaptations,
+  ExtractSanLoss,
   tokenize,
   collectTokensUntilNextSection,
   determineNextState,
@@ -20,6 +21,9 @@ describe("determineNextState", () => {
     { nextLine: ["fox"], expected: States.Unknown },
     { nextLine: ["attacks:"], expected: States.Attacks },
     { nextLine: ["."], expected: States.EndEntry },
+    { nextLine: ["loss:"], expected: States.SanLoss },
+    { nextLine: ["equipment:"], expected: States.ArmorAndEquipment },
+    { nextLine: ["adaptations:"], expected: States.DisordersAndAdaptations },
   ])(
     ".determineNextState() for $nextToken is $expected",
     ({ nextLine, expected }) => {
@@ -183,6 +187,11 @@ describe("ExtractAttributes", () => {
 describe("ExtractSkills", () => {
   test.each([
     {
+      testName: "an empty skills list extracts cleanly",
+      input: "",
+      expected: {},
+    },
+    {
       testName: "valid skills extract cleanly",
       input:
         "Firearms 45%, Heavy Weapons 35%, Melee Weapons 50%, Unarmed Combat 60%.",
@@ -296,6 +305,61 @@ describe("ExtractDisordersAndAdaptations", () => {
       expect(result).toEqual(expected);
     },
   );
+});
+
+describe("ExtractSanLoss", () => {
+  test.each([
+    {
+      testName: "an empty san loss entry extracts cleanly",
+      input: "",
+      expected: {
+        successLoss: "0",
+        failedLoss: "0",
+        notes: "",
+        type: "unnatural",
+      },
+    },
+    {
+      testName: "a statblock that includes a note",
+      input: "1d6/1d20 (as werewolf)",
+      expected: {
+        successLoss: "1d6",
+        failedLoss: "1d20",
+        notes: "(as werewolf)",
+        type: "unnatural",
+      },
+    },
+    {
+      testName: "when san loss is from a source of violence",
+      justification: [
+        "Looking through numerous operations and the handlers guide",
+        "it appears that sanity loss from an NPC is always unnatural so the exact",
+        "copy that a violence or helplessness sanity trigger is not known",
+        "so this test is somewhat speculative",
+      ],
+      input: "1/1d4 from violence",
+      expected: {
+        successLoss: "1",
+        failedLoss: "1d4",
+        notes: "from violence",
+        type: "violence",
+      },
+    },
+    {
+      testName: "when san loss is from a source of helplessness",
+      input: "1/1d4 a bunch of words but helplessness was present",
+      expected: {
+        successLoss: "1",
+        failedLoss: "1d4",
+        notes: "a bunch of words but helplessness was present",
+        type: "helplessness",
+      },
+    },
+  ])(".ExtractSanLoss() on $testName", ({ input, expected }) => {
+    const [tokens] = collectTokensUntilNextSection(tokenize(input));
+    const result = ExtractSanLoss(tokens);
+    expect(result).toEqual(expected);
+  });
 });
 
 describe("ParseStatBlock", () => {
