@@ -37,46 +37,57 @@ const TABS_PART = /** @type {const} */ ({
  * @param {string} config.header
  * @param {string} config.description
  * @param {string} config.descriptionLabel
+ * @param {boolean} config.hasActiveEffects default: true
  * @returns {object}
  */
-function activeEffectItemLayout({ header, description, descriptionLabel }) {
+function editItemLayout({
+  header,
+  description,
+  descriptionLabel,
+  hasActiveEffects = true,
+}) {
+  let tabs = [{ id: "description", label: descriptionLabel }];
+  if (hasActiveEffects) {
+    tabs = [...tabs, EFFECTS_TAB];
+  }
   return {
     tabs: {
       initial: "description",
-      tabs: [{ id: "description", label: descriptionLabel }, EFFECTS_TAB],
+      tabs,
     },
     parts: {
       header: { template: header },
       ...TABS_PART,
       description: { template: description, scrollable: [""] },
-      ...EFFECTS_PART,
+      ...(hasActiveEffects ? EFFECTS_PART : {}),
     },
   };
 }
 
 /** Tab and part layout per item type. */
 const ITEM_SHEET_LAYOUT = /** @type {const} */ ({
-  weapon: activeEffectItemLayout({
+  weapon: editItemLayout({
     header: `${ITEM_PARTS_PATH}/weapon-header.html`,
     description: `${ITEM_PARTS_PATH}/weapon-description.html`,
     descriptionLabel: "DG.ItemWindow.Weapons.Description",
   }),
-  gear: activeEffectItemLayout({
+  gear: editItemLayout({
     header: `${ITEM_PARTS_PATH}/gear-header.html`,
     description: `${ITEM_PARTS_PATH}/gear-description.html`,
     descriptionLabel: "DG.ItemWindow.Gear.Description",
   }),
-  armor: activeEffectItemLayout({
+  armor: editItemLayout({
     header: `${ITEM_PARTS_PATH}/armor-header.html`,
     description: `${ITEM_PARTS_PATH}/armor-description.html`,
     descriptionLabel: "DG.ItemWindow.Armor.Description",
   }),
-  bond: activeEffectItemLayout({
+  bond: editItemLayout({
     header: `${ITEM_PARTS_PATH}/bond-header.html`,
     description: `${ITEM_PARTS_PATH}/bond-description.html`,
     descriptionLabel: "DG.ItemWindow.Bonds.Description",
+    hasActiveEffects: false,
   }),
-  motivation: activeEffectItemLayout({
+  motivation: editItemLayout({
     header: `${ITEM_PARTS_PATH}/motivation-header.html`,
     description: `${ITEM_PARTS_PATH}/motivation-description.html`,
     descriptionLabel: "DG.ItemWindow.Motivations.Description",
