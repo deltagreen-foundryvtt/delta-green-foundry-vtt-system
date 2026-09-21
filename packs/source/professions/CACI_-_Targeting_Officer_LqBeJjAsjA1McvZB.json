@@ -5,7 +5,7 @@
   "_id": "LqBeJjAsjA1McvZB",
   "img": "systems/deltagreen/assets/icons/person-black-bg.svg",
   "system": {
-    "description": "<p>Extra profession (CACI). Local DG extra professions sheet.</p>",
+    "description": "<p>See Delta Green: Agent Dossiers.</p>",
     "bonds": 3,
     "automaticSkills": {
       "accounting": 50,

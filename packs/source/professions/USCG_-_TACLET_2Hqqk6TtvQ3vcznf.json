@@ -5,7 +5,7 @@
   "_id": "2Hqqk6TtvQ3vcznf",
   "img": "systems/deltagreen/assets/icons/person-black-bg.svg",
   "system": {
-    "description": "<p>Extra profession (USCG). Local DG extra professions sheet.</p>",
+    "description": "<p>See Delta Green: Agent Dossiers.</p>",
     "bonds": 3,
     "automaticSkills": {
       "alertness": 50,
