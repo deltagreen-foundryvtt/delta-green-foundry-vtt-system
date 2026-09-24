@@ -1,0 +1,60 @@
+{
+  "folder": "Vy5urxE8W3L7DMVO",
+  "name": "CBP - Marine Interdiction",
+  "type": "profession",
+  "_id": "wRDsXGSDGSnDSgRz",
+  "img": "systems/deltagreen/assets/icons/person-black-bg.svg",
+  "system": {
+    "description": "<p>See Delta Green: Agent Dossiers.</p>",
+    "bonds": 3,
+    "automaticSkills": {
+      "alertness": 70,
+      "athletics": 50,
+      "criminology": 50,
+      "dodge": 50,
+      "drive": 50,
+      "firearms": 50,
+      "humint": 60,
+      "law": 30,
+      "navigate": 50,
+      "Pilot (Boat)": 60,
+      "search": 70,
+      "swim": 50,
+      "unarmed_combat": 60
+    },
+    "automaticSkillMeta": {},
+    "optionSkills": {
+      "optionPicks": 1,
+      "bureaucracy": 30,
+      "forensics": 30,
+      "heavy_weapons": 30,
+      "persuade": 40,
+      "sigint": 40,
+      "typed:ForeignLanguage:pqjA4zOy": 50
+    },
+    "optionSkillMeta": {
+      "typed:ForeignLanguage:pqjA4zOy": {
+        "chooseOne": true
+      }
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "deltagreen",
+    "systemVersion": "2.0.0-beta3",
+    "createdTime": 1789040000000,
+    "modifiedTime": 1789040000000,
+    "lastModifiedBy": "961R6wJiqwnS0zD3",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "961R6wJiqwnS0zD3": 3
+  },
+  "sort": 0,
+  "_key": "!items!wRDsXGSDGSnDSgRz"
+}

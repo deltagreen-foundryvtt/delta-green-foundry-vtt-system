@@ -1,0 +1,51 @@
+{
+  "folder": "dxxFrIp98TxfW6b2",
+  "name": "NPS - Interpretive Ranger",
+  "type": "profession",
+  "_id": "voxO8ZdxucB82Yec",
+  "img": "systems/deltagreen/assets/icons/person-black-bg.svg",
+  "system": {
+    "description": "<p>See Delta Green: Agent Dossiers.</p>",
+    "bonds": 3,
+    "automaticSkills": {
+      "bureaucracy": 50,
+      "first_aid": 60,
+      "forensics": 50,
+      "history": 60,
+      "humint": 60,
+      "navigate": 40,
+      "persuade": 60,
+      "search": 50,
+      "survival": 60,
+      "typed:Science:0qV6ur0x": 60
+    },
+    "automaticSkillMeta": {
+      "typed:Science:0qV6ur0x": {
+        "chooseOne": true
+      }
+    },
+    "optionSkills": {
+      "optionPicks": 0
+    },
+    "optionSkillMeta": {}
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "deltagreen",
+    "systemVersion": "2.0.0-beta3",
+    "createdTime": 1789040000000,
+    "modifiedTime": 1789040000000,
+    "lastModifiedBy": "961R6wJiqwnS0zD3",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "961R6wJiqwnS0zD3": 3
+  },
+  "sort": 0,
+  "_key": "!items!voxO8ZdxucB82Yec"
+}

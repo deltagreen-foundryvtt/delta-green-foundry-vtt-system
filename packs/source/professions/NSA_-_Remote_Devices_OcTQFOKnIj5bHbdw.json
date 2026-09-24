@@ -1,0 +1,53 @@
+{
+  "folder": "nfz9Xb0dOkaFz5Wa",
+  "name": "NSA - Remote Devices",
+  "type": "profession",
+  "_id": "OcTQFOKnIj5bHbdw",
+  "img": "systems/deltagreen/assets/icons/person-black-bg.svg",
+  "system": {
+    "description": "<p>See Delta Green: Agent Dossiers.</p>",
+    "bonds": 3,
+    "automaticSkills": {
+      "alertness": 50,
+      "Craft (Electrician)": 40,
+      "Craft (Locksmithing)": 60,
+      "criminology": 50,
+      "disguise": 50,
+      "drive": 50,
+      "firearms": 40,
+      "search": 60,
+      "sigint": 60,
+      "stealth": 60,
+      "unarmed_combat": 50
+    },
+    "automaticSkillMeta": {},
+    "optionSkills": {
+      "optionPicks": 1,
+      "dodge": 40,
+      "humint": 30,
+      "law": 40,
+      "melee_weapons": 40,
+      "persuade": 50
+    },
+    "optionSkillMeta": {}
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "deltagreen",
+    "systemVersion": "2.0.0-beta3",
+    "createdTime": 1789040000000,
+    "modifiedTime": 1789040000000,
+    "lastModifiedBy": "961R6wJiqwnS0zD3",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "961R6wJiqwnS0zD3": 3
+  },
+  "sort": 0,
+  "_key": "!items!OcTQFOKnIj5bHbdw"
+}

@@ -1,0 +1,52 @@
+{
+  "folder": "KOHgzIZ7oXGzfhzn",
+  "name": "SOCOM - 720th Special Tactics Group",
+  "type": "profession",
+  "_id": "qTVZNpiQGke5LTE7",
+  "img": "systems/deltagreen/assets/icons/person-black-bg.svg",
+  "system": {
+    "description": "<p>See Delta Green: Agent Dossiers.</p>",
+    "bonds": 2,
+    "automaticSkills": {
+      "alertness": 60,
+      "athletics": 60,
+      "demolitions": 40,
+      "firearms": 60,
+      "first_aid": 50,
+      "heavy_weapons": 50,
+      "melee_weapons": 50,
+      "Military Science (Land)": 60,
+      "navigate": 50,
+      "search": 60,
+      "sigint": 50,
+      "stealth": 50,
+      "survival": 50,
+      "swim": 50,
+      "unarmed_combat": 60
+    },
+    "automaticSkillMeta": {},
+    "optionSkills": {
+      "optionPicks": 0
+    },
+    "optionSkillMeta": {}
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "deltagreen",
+    "systemVersion": "2.0.0-beta3",
+    "createdTime": 1789040000000,
+    "modifiedTime": 1789040000000,
+    "lastModifiedBy": "961R6wJiqwnS0zD3",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "961R6wJiqwnS0zD3": 3
+  },
+  "sort": 0,
+  "_key": "!items!qTVZNpiQGke5LTE7"
+}

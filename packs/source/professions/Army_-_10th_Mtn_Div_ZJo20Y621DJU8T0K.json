@@ -1,0 +1,49 @@
+{
+  "folder": "7kotZv6fRqKasDCV",
+  "name": "Army - 10th Mtn Div",
+  "type": "profession",
+  "_id": "ZJo20Y621DJU8T0K",
+  "img": "systems/deltagreen/assets/icons/person-black-bg.svg",
+  "system": {
+    "description": "<p>See Delta Green: Agent Dossiers.</p>",
+    "bonds": 3,
+    "automaticSkills": {
+      "alertness": 50,
+      "athletics": 60,
+      "bureaucracy": 30,
+      "drive": 40,
+      "firearms": 40,
+      "first_aid": 30,
+      "heavy_weapons": 40,
+      "Military Science (Land)": 40,
+      "navigate": 50,
+      "persuade": 30,
+      "survival": 50,
+      "unarmed_combat": 50
+    },
+    "automaticSkillMeta": {},
+    "optionSkills": {
+      "optionPicks": 0
+    },
+    "optionSkillMeta": {}
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "deltagreen",
+    "systemVersion": "2.0.0-beta3",
+    "createdTime": 1789040000000,
+    "modifiedTime": 1789040000000,
+    "lastModifiedBy": "961R6wJiqwnS0zD3",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "961R6wJiqwnS0zD3": 3
+  },
+  "sort": 0,
+  "_key": "!items!ZJo20Y621DJU8T0K"
+}
