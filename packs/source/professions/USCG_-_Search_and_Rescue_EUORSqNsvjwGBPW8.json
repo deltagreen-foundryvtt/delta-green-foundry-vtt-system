@@ -1,0 +1,53 @@
+{
+  "folder": "nLhGhqQcjb6AuB5A",
+  "name": "USCG - Search and Rescue",
+  "type": "profession",
+  "_id": "EUORSqNsvjwGBPW8",
+  "img": "systems/deltagreen/assets/icons/person-black-bg.svg",
+  "system": {
+    "description": "<p>See Delta Green: Agent Dossiers.</p>",
+    "bonds": 3,
+    "automaticSkills": {
+      "alertness": 80,
+      "athletics": 60,
+      "Craft (Electrician)": 40,
+      "Craft (Mechanic)": 40,
+      "first_aid": 70,
+      "humint": 40,
+      "navigate": 70,
+      "Pilot (Small Boat)": 50,
+      "Science (Meteorology)": 50,
+      "swim": 80
+    },
+    "automaticSkillMeta": {},
+    "optionSkills": {
+      "optionPicks": 1,
+      "Pilot (Helicopter)": 30,
+      "typed:ForeignLanguage:jhrsjcTY": 20
+    },
+    "optionSkillMeta": {
+      "typed:ForeignLanguage:jhrsjcTY": {
+        "chooseOne": true
+      }
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "deltagreen",
+    "systemVersion": "2.0.0-beta3",
+    "createdTime": 1789040000000,
+    "modifiedTime": 1789040000000,
+    "lastModifiedBy": "961R6wJiqwnS0zD3",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "961R6wJiqwnS0zD3": 3
+  },
+  "sort": 0,
+  "_key": "!items!EUORSqNsvjwGBPW8"
+}

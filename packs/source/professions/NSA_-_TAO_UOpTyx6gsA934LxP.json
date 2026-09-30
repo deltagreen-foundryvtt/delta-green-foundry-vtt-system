@@ -1,0 +1,52 @@
+{
+  "folder": "nfz9Xb0dOkaFz5Wa",
+  "name": "NSA - TAO",
+  "type": "profession",
+  "_id": "UOpTyx6gsA934LxP",
+  "img": "systems/deltagreen/assets/icons/person-black-bg.svg",
+  "system": {
+    "description": "<p>See Delta Green: Agent Dossiers.</p>",
+    "bonds": 3,
+    "automaticSkills": {
+      "bureaucracy": 50,
+      "computer_science": 80,
+      "Craft (Microelectronics)": 50,
+      "criminology": 60,
+      "humint": 50,
+      "typed:ForeignLanguage:50dSqCJu": 60,
+      "Science (Mathematics)": 40,
+      "sigint": 80
+    },
+    "automaticSkillMeta": {
+      "typed:ForeignLanguage:50dSqCJu": {
+        "chooseOne": true
+      }
+    },
+    "optionSkills": {
+      "optionPicks": 1,
+      "accounting": 50,
+      "Craft (Electrician)": 30,
+      "Craft (Mechanic)": 30
+    },
+    "optionSkillMeta": {}
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "deltagreen",
+    "systemVersion": "2.0.0-beta3",
+    "createdTime": 1789040000000,
+    "modifiedTime": 1789040000000,
+    "lastModifiedBy": "961R6wJiqwnS0zD3",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "961R6wJiqwnS0zD3": 3
+  },
+  "sort": 0,
+  "_key": "!items!UOpTyx6gsA934LxP"
+}

@@ -1,0 +1,55 @@
+{
+  "folder": "G8Adye9VNVVhlv1N",
+  "name": "ATF - Tactical Canine Program",
+  "type": "profession",
+  "_id": "qUyjEx5qWAzGg8Ga",
+  "img": "systems/deltagreen/assets/icons/person-black-bg.svg",
+  "system": {
+    "description": "<p>See Delta Green: Agent Dossiers.</p>",
+    "bonds": 3,
+    "automaticSkills": {
+      "alertness": 50,
+      "athletics": 50,
+      "bureaucracy": 40,
+      "Craft (Dog Training)": 60,
+      "criminology": 50,
+      "drive": 50,
+      "firearms": 50,
+      "heavy_weapons": 50,
+      "humint": 60,
+      "law": 30,
+      "melee_weapons": 50,
+      "persuade": 50,
+      "search": 70,
+      "survival": 50,
+      "unarmed_combat": 60
+    },
+    "automaticSkillMeta": {},
+    "optionSkills": {
+      "optionPicks": 1,
+      "first_aid": 40,
+      "forensics": 40,
+      "navigate": 40
+    },
+    "optionSkillMeta": {}
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "deltagreen",
+    "systemVersion": "2.0.0-beta3",
+    "createdTime": 1788973736493,
+    "modifiedTime": 1788973736493,
+    "lastModifiedBy": "961R6wJiqwnS0zD3",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "961R6wJiqwnS0zD3": 3
+  },
+  "sort": 0,
+  "_key": "!items!qUyjEx5qWAzGg8Ga"
+}

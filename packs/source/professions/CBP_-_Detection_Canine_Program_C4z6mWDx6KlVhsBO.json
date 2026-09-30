@@ -1,0 +1,53 @@
+{
+  "folder": "Vy5urxE8W3L7DMVO",
+  "name": "CBP - Detection Canine Program",
+  "type": "profession",
+  "_id": "C4z6mWDx6KlVhsBO",
+  "img": "systems/deltagreen/assets/icons/person-black-bg.svg",
+  "system": {
+    "description": "<p>See Delta Green: Agent Dossiers.</p>",
+    "bonds": 3,
+    "automaticSkills": {
+      "alertness": 70,
+      "athletics": 50,
+      "bureaucracy": 40,
+      "Craft (Dog Training)": 60,
+      "criminology": 50,
+      "drive": 50,
+      "firearms": 50,
+      "humint": 60,
+      "law": 30,
+      "persuade": 50,
+      "Science (Veterinary Science)": 40,
+      "search": 70,
+      "unarmed_combat": 60
+    },
+    "automaticSkillMeta": {},
+    "optionSkills": {
+      "optionPicks": 1,
+      "first_aid": 30,
+      "forensics": 30,
+      "navigate": 30
+    },
+    "optionSkillMeta": {}
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "deltagreen",
+    "systemVersion": "2.0.0-beta3",
+    "createdTime": 1789040000000,
+    "modifiedTime": 1789040000000,
+    "lastModifiedBy": "961R6wJiqwnS0zD3",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "961R6wJiqwnS0zD3": 3
+  },
+  "sort": 0,
+  "_key": "!items!C4z6mWDx6KlVhsBO"
+}
