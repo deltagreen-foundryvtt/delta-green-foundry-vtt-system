@@ -37,7 +37,6 @@ export const SUPPORTED_ITEM_TYPES = new Set([
   "weapon",
   "armor",
   "gear",
-  "bond",
   "motivation",
 ]);
 

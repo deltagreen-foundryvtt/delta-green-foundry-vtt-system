@@ -10,6 +10,7 @@
 
 - [#436](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/436) Add professions compendia (props to @Vogliadicone for doing the hard part!)
 - [#440](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/440) - Remove "Is Lethal" checkbox from attack form
+- [#439](https://github.com/deltagreen-foundryvtt/delta-green-foundry-vtt-system/issues/439) - Remove effects tab from Bond items
 
 ## Version 2.0.1 - 2026-08-10
 
