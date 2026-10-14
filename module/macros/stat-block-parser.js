@@ -144,8 +144,20 @@ export function determineNextState(nextLine) {
   }
 }
 
+const EXPECTED_ATTRIBUTE_KEYS = new Set(Object.keys(Attributes));
+function _attributesAreComplete(attributes) {
+  const currentKeys = new Set(Object.keys(attributes));
+  return (
+    currentKeys.intersection(EXPECTED_ATTRIBUTE_KEYS).size ===
+    EXPECTED_ATTRIBUTE_KEYS.size
+  );
+}
+
 function extractAttributesImpl(tokens, accumulator) {
-  if (tokens.length === []) {
+  if (tokens.length === 0) {
+    if (_attributesAreComplete(accumulator)) {
+      delete accumulator.incomplete;
+    }
     return accumulator;
   }
 
@@ -161,9 +173,7 @@ function extractAttributesImpl(tokens, accumulator) {
     return extractAttributesImpl(rest, accumulator);
   }
 
-  const currentKeys = new Set(Object.keys(accumulator));
-  const expectedKeys = new Set(Object.keys(Attributes));
-  if (currentKeys.intersection(expectedKeys).size === expectedKeys.size) {
+  if (_attributesAreComplete(accumulator)) {
     delete accumulator.incomplete;
     return accumulator;
   }
@@ -179,8 +189,8 @@ function extractAttributesImpl(tokens, accumulator) {
 }
 
 function extractSkillsImpl(tokens, skillsAccum, skillNameAccum) {
-  if (tokens === []) {
-    return skillsAccum;
+  if (tokens.length === 0) {
+    return [skillsAccum, tokens];
   }
 
   const [partialSkillName, maybeSkillScore, ...rest] = tokens;
@@ -332,6 +342,10 @@ export function ExtractDisordersAndAdaptations(tokens) {
 }
 
 export function ExtractSanLoss(tokens) {
+  if (tokens.length === 0) {
+    return { successLoss: "0", failedLoss: "0", notes: "", type: "unnatural" };
+  }
+
   const [sanLoss, ...rest] = tokens;
   const [successLoss, failedLoss] = sanLoss.split("/");
   const sanLossType = rest.find(
