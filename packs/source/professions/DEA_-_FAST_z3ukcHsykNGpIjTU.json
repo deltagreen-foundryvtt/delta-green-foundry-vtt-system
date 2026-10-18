@@ -1,0 +1,60 @@
+{
+  "folder": "JYowU4TDDq5h2SbE",
+  "name": "DEA - FAST",
+  "type": "profession",
+  "_id": "z3ukcHsykNGpIjTU",
+  "img": "systems/deltagreen/assets/icons/person-black-bg.svg",
+  "system": {
+    "description": "<p>See Delta Green: Agent Dossiers.</p>",
+    "bonds": 3,
+    "automaticSkills": {
+      "alertness": 50,
+      "athletics": 50,
+      "bureaucracy": 40,
+      "criminology": 50,
+      "dodge": 50,
+      "drive": 40,
+      "firearms": 50,
+      "forensics": 50,
+      "humint": 40,
+      "law": 30,
+      "persuade": 40,
+      "search": 70,
+      "unarmed_combat": 60
+    },
+    "automaticSkillMeta": {},
+    "optionSkills": {
+      "optionPicks": 1,
+      "heavy_weapons": 30,
+      "Military Science (Land)": 30,
+      "navigate": 30,
+      "pharmacy": 30,
+      "survival": 30,
+      "typed:ForeignLanguage:TWmarEgz": 30
+    },
+    "optionSkillMeta": {
+      "typed:ForeignLanguage:TWmarEgz": {
+        "chooseOne": true
+      }
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "deltagreen",
+    "systemVersion": "2.0.0-beta3",
+    "createdTime": 1789040000000,
+    "modifiedTime": 1789040000000,
+    "lastModifiedBy": "961R6wJiqwnS0zD3",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "961R6wJiqwnS0zD3": 3
+  },
+  "sort": 0,
+  "_key": "!items!z3ukcHsykNGpIjTU"
+}

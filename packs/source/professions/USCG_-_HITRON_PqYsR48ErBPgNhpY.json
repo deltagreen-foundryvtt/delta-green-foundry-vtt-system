@@ -1,0 +1,49 @@
+{
+  "folder": "nLhGhqQcjb6AuB5A",
+  "name": "USCG - HITRON",
+  "type": "profession",
+  "_id": "PqYsR48ErBPgNhpY",
+  "img": "systems/deltagreen/assets/icons/person-black-bg.svg",
+  "system": {
+    "description": "<p>See Delta Green: Agent Dossiers.</p>",
+    "bonds": 3,
+    "automaticSkills": {
+      "alertness": 60,
+      "athletics": 40,
+      "bureaucracy": 30,
+      "Craft (Electrician)": 50,
+      "Craft (Mechanic)": 50,
+      "firearms": 60,
+      "heavy_machiner": 40,
+      "Military Science (Sea)": 50,
+      "navigate": 50,
+      "Pilot (Helicopter)": 50,
+      "Science (Meteorology)": 40,
+      "swim": 50
+    },
+    "automaticSkillMeta": {},
+    "optionSkills": {
+      "optionPicks": 0
+    },
+    "optionSkillMeta": {}
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "deltagreen",
+    "systemVersion": "2.0.0-beta3",
+    "createdTime": 1789040000000,
+    "modifiedTime": 1789040000000,
+    "lastModifiedBy": "961R6wJiqwnS0zD3",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "961R6wJiqwnS0zD3": 3
+  },
+  "sort": 0,
+  "_key": "!items!PqYsR48ErBPgNhpY"
+}

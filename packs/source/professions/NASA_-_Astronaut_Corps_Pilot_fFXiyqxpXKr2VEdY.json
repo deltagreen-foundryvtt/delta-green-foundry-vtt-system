@@ -1,0 +1,50 @@
+{
+  "folder": "Yryt6v86CdEJR2Uj",
+  "name": "NASA - Astronaut Corps Pilot",
+  "type": "profession",
+  "_id": "fFXiyqxpXKr2VEdY",
+  "img": "systems/deltagreen/assets/icons/person-black-bg.svg",
+  "system": {
+    "description": "<p>See Delta Green: Agent Dossiers.</p>",
+    "bonds": 3,
+    "automaticSkills": {
+      "alertness": 60,
+      "athletics": 50,
+      "bureaucracy": 30,
+      "Craft (Electrician)": 40,
+      "Craft (Mechanic)": 40,
+      "navigate": 70,
+      "Pilot (Airplane)": 80,
+      "Science (Mathematics)": 40,
+      "Science (Meteorology)": 40,
+      "Science (Physics)": 40,
+      "swim": 40
+    },
+    "automaticSkillMeta": {},
+    "optionSkills": {
+      "optionPicks": 1,
+      "heavy_weapons": 40,
+      "Military Science (Air)": 30
+    },
+    "optionSkillMeta": {}
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "deltagreen",
+    "systemVersion": "2.0.0-beta3",
+    "createdTime": 1789040000000,
+    "modifiedTime": 1789040000000,
+    "lastModifiedBy": "961R6wJiqwnS0zD3",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "961R6wJiqwnS0zD3": 3
+  },
+  "sort": 0,
+  "_key": "!items!fFXiyqxpXKr2VEdY"
+}

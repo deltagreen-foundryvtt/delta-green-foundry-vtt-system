@@ -1,0 +1,18 @@
+{
+  "name": "United States",
+  "type": "Item",
+  "_id": "vW51q47ZWA2MXp6E",
+  "folder": null,
+  "sorting": "a",
+  "sort": 0,
+  "flags": {},
+  "_stats": {
+    "systemId": "deltagreen",
+    "systemVersion": "2.0.0-beta3",
+    "coreVersion": "14.364",
+    "createdTime": 1789040001000,
+    "modifiedTime": 1789040001000,
+    "lastModifiedBy": "961R6wJiqwnS0zD3"
+  },
+  "_key": "!folders!vW51q47ZWA2MXp6E"
+}

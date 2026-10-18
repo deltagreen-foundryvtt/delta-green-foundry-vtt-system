@@ -1,0 +1,60 @@
+{
+  "folder": "Z79UsNX0gIcWtRmD",
+  "name": "Marines - MSPF",
+  "type": "profession",
+  "_id": "bh8YpYmIwK3FXBZd",
+  "img": "systems/deltagreen/assets/icons/person-black-bg.svg",
+  "system": {
+    "description": "<p>See Delta Green: Agent Dossiers.</p>",
+    "bonds": 2,
+    "automaticSkills": {
+      "alertness": 60,
+      "athletics": 60,
+      "demolitions": 40,
+      "dodge": 50,
+      "firearms": 60,
+      "heavy_machiner": 50,
+      "heavy_weapons": 50,
+      "melee_weapons": 50,
+      "Military Science (Land)": 40,
+      "navigate": 40,
+      "survival": 50,
+      "swim": 60,
+      "unarmed_combat": 60
+    },
+    "automaticSkillMeta": {},
+    "optionSkills": {
+      "optionPicks": 1,
+      "bureaucracy": 30,
+      "drive": 40,
+      "first_aid": 30,
+      "persuade": 30,
+      "stealth": 30,
+      "typed:ForeignLanguage:r08wEXmq": 40
+    },
+    "optionSkillMeta": {
+      "typed:ForeignLanguage:r08wEXmq": {
+        "chooseOne": true
+      }
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "deltagreen",
+    "systemVersion": "2.0.0-beta3",
+    "createdTime": 1789040000000,
+    "modifiedTime": 1789040000000,
+    "lastModifiedBy": "961R6wJiqwnS0zD3",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "961R6wJiqwnS0zD3": 3
+  },
+  "sort": 0,
+  "_key": "!items!bh8YpYmIwK3FXBZd"
+}

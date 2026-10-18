@@ -1,0 +1,50 @@
+{
+  "folder": "XwHeO3b4EwcHmgTA",
+  "name": "CACI - Targeting Officer",
+  "type": "profession",
+  "_id": "LqBeJjAsjA1McvZB",
+  "img": "systems/deltagreen/assets/icons/person-black-bg.svg",
+  "system": {
+    "description": "<p>See Delta Green: Agent Dossiers.</p>",
+    "bonds": 3,
+    "automaticSkills": {
+      "accounting": 50,
+      "anthropology": 60,
+      "bureaucracy": 60,
+      "criminology": 70,
+      "typed:ForeignLanguage:JqBMyd76": 50,
+      "history": 60,
+      "humint": 60,
+      "sigint": 60
+    },
+    "automaticSkillMeta": {
+      "typed:ForeignLanguage:JqBMyd76": {
+        "chooseOne": true
+      }
+    },
+    "optionSkills": {
+      "optionPicks": 1,
+      "forensics": 30
+    },
+    "optionSkillMeta": {}
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "deltagreen",
+    "systemVersion": "2.0.0-beta3",
+    "createdTime": 1789040000000,
+    "modifiedTime": 1789040000000,
+    "lastModifiedBy": "961R6wJiqwnS0zD3",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "961R6wJiqwnS0zD3": 3
+  },
+  "sort": 0,
+  "_key": "!items!LqBeJjAsjA1McvZB"
+}
